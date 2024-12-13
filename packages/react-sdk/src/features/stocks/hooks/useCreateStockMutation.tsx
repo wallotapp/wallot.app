@@ -14,17 +14,13 @@ export const useCreateStockMutation = (
 		CreateStockMutationData,
 		CreateStockMutationError,
 		CreateStockMutationParams
-	>(
-		(params: CreateStockMutationParams) =>
-			createStock(params),
-		{
-			onError: (error: CreateStockMutationError) => {
-				console.error('Create operation failed:', error);
-			},
-			onSuccess: (data: CreateStockMutationData) => {
-				console.log('Create operation successful', data);
-			},
-			...options,
+	>((params: CreateStockMutationParams) => createStock(params), {
+		onError: (error: CreateStockMutationError) => {
+			console.error('Create operation failed:', error);
 		},
-	);
+		onSuccess: (data: CreateStockMutationData) => {
+			console.log('Create operation successful', data);
+		},
+		...options,
+	});
 };

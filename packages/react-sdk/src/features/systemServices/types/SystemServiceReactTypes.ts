@@ -17,13 +17,17 @@ import {
 export type SystemServicePageQueryResponse =
 	GeneralizedFirestoreCollectionPage<SystemService>;
 
-export type UseQuerySystemServicePageQueryKeyFn = GeneralizedUseQueryKeyFn<SystemService>;
+export type UseQuerySystemServicePageQueryKeyFn =
+	GeneralizedUseQueryKeyFn<SystemService>;
 
-export type UseQuerySystemServicePageOptions = GeneralizedUseQueryPageOptions<SystemService>;
+export type UseQuerySystemServicePageOptions =
+	GeneralizedUseQueryPageOptions<SystemService>;
 
-export type UseQuerySystemServicePageProps = GeneralizedUseQueryPageProps<SystemService>;
+export type UseQuerySystemServicePageProps =
+	GeneralizedUseQueryPageProps<SystemService>;
 
-export type UseQuerySystemServicePageOptionsFn = GeneralizedUseQueryOptionsFn<SystemService>;
+export type UseQuerySystemServicePageOptionsFn =
+	GeneralizedUseQueryOptionsFn<SystemService>;
 
 export type UseQuerySystemServicePageObserver =
 	GeneralizedUseQueryPageObserver<SystemService>;
@@ -33,8 +37,10 @@ export type UseCreateSystemServiceMutationOptions =
 		SystemService,
 		CreateSystemServiceParams
 	>;
-export type CreateSystemServiceMutationData = GeneralizedResponse<SystemService>;
-export type CreateSystemServiceMutationError = GeneralizedResponse<SystemService>;
+export type CreateSystemServiceMutationData =
+	GeneralizedResponse<SystemService>;
+export type CreateSystemServiceMutationError =
+	GeneralizedResponse<SystemService>;
 export type CreateSystemServiceMutationParams =
 	FirestoreDocumentCreateParams<CreateSystemServiceParams>;
 
@@ -44,6 +50,7 @@ export type UseUpdateSystemServiceMutationOptions =
 		UpdateSystemServiceParams
 	>;
 export type UpdateSystemServiceMutationData = unknown;
-export type UpdateSystemServiceMutationError = GeneralizedResponse<SystemService>;
+export type UpdateSystemServiceMutationError =
+	GeneralizedResponse<SystemService>;
 export type UpdateSystemServiceMutationParams =
 	FirestoreDocumentUpdateParams<UpdateSystemServiceParams>;

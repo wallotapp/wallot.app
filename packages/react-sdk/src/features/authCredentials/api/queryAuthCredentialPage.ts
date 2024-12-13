@@ -6,7 +6,8 @@ import {
 	authCredentialsApi,
 } from '@wallot/js';
 
-export const queryAuthCredentialPage = generalizedFirestoreCollectionPageQuery<AuthCredential>(
-	getFirestoreCollectionPath('auth_credential'),
-	authCredentialsApi as unknown as GeneralizedApiResourceSpec,
-);
+export const queryAuthCredentialPage =
+	generalizedFirestoreCollectionPageQuery<AuthCredential>(
+		getFirestoreCollectionPath('auth_credential'),
+		authCredentialsApi as unknown as GeneralizedApiResourceSpec,
+	);

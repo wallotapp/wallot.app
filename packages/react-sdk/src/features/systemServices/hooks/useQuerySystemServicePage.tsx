@@ -17,7 +17,9 @@ export const getQuerySystemServicePageReactQueryKey: UseQuerySystemServicePageQu
 export const getQuerySystemServicePageReactQueryOptions: UseQuerySystemServicePageOptionsFn =
 	(props) => ({
 		queryFn: () => querySystemServicePage(props.firestoreQueryOptions),
-		queryKey: getQuerySystemServicePageReactQueryKey(props.firestoreQueryOptions),
+		queryKey: getQuerySystemServicePageReactQueryKey(
+			props.firestoreQueryOptions,
+		),
 		...(props.reactQueryOptions ?? {}),
 	});
 

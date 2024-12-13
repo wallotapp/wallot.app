@@ -17,13 +17,17 @@ import {
 export type TransactionPageQueryResponse =
 	GeneralizedFirestoreCollectionPage<Transaction>;
 
-export type UseQueryTransactionPageQueryKeyFn = GeneralizedUseQueryKeyFn<Transaction>;
+export type UseQueryTransactionPageQueryKeyFn =
+	GeneralizedUseQueryKeyFn<Transaction>;
 
-export type UseQueryTransactionPageOptions = GeneralizedUseQueryPageOptions<Transaction>;
+export type UseQueryTransactionPageOptions =
+	GeneralizedUseQueryPageOptions<Transaction>;
 
-export type UseQueryTransactionPageProps = GeneralizedUseQueryPageProps<Transaction>;
+export type UseQueryTransactionPageProps =
+	GeneralizedUseQueryPageProps<Transaction>;
 
-export type UseQueryTransactionPageOptionsFn = GeneralizedUseQueryOptionsFn<Transaction>;
+export type UseQueryTransactionPageOptionsFn =
+	GeneralizedUseQueryOptionsFn<Transaction>;
 
 export type UseQueryTransactionPageObserver =
 	GeneralizedUseQueryPageObserver<Transaction>;

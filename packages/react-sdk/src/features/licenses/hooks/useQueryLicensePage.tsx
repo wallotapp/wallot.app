@@ -7,12 +7,13 @@ import {
 	UseQueryLicensePageProps,
 } from '@wallot/react/src/features/licenses/types/LicenseReactTypes';
 
-export const getQueryLicensePageReactQueryKey: UseQueryLicensePageQueryKeyFn =
-	(params) =>
-		[
-			'license',
-			JSON.stringify(R.omit(['startAfterDocumentReference'], params)),
-		] as const;
+export const getQueryLicensePageReactQueryKey: UseQueryLicensePageQueryKeyFn = (
+	params,
+) =>
+	[
+		'license',
+		JSON.stringify(R.omit(['startAfterDocumentReference'], params)),
+	] as const;
 
 export const getQueryLicensePageReactQueryOptions: UseQueryLicensePageOptionsFn =
 	(props) => ({

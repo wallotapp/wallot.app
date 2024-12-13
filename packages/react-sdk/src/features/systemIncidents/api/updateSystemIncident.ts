@@ -7,11 +7,10 @@ import {
 } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const updateSystemIncident =
-	generalizedFirestoreDocumentUpdateOperation<
-		UpdateSystemIncidentParams,
-		SystemIncident
-	>(
-		getFirestoreCollectionPath('system_incident'),
-		systemIncidentsApi as unknown as GeneralizedApiResourceSpec,
-	);
+export const updateSystemIncident = generalizedFirestoreDocumentUpdateOperation<
+	UpdateSystemIncidentParams,
+	SystemIncident
+>(
+	getFirestoreCollectionPath('system_incident'),
+	systemIncidentsApi as unknown as GeneralizedApiResourceSpec,
+);

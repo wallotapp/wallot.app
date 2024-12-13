@@ -7,11 +7,10 @@ import {
 } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const updatePaymentMethod =
-	generalizedFirestoreDocumentUpdateOperation<
-		UpdatePaymentMethodParams,
-		PaymentMethod
-	>(
-		getFirestoreCollectionPath('payment_method'),
-		paymentMethodsApi as unknown as GeneralizedApiResourceSpec,
-	);
+export const updatePaymentMethod = generalizedFirestoreDocumentUpdateOperation<
+	UpdatePaymentMethodParams,
+	PaymentMethod
+>(
+	getFirestoreCollectionPath('payment_method'),
+	paymentMethodsApi as unknown as GeneralizedApiResourceSpec,
+);

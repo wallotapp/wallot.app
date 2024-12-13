@@ -14,17 +14,13 @@ export const useUpdatePositionMutation = (
 		UpdatePositionMutationData,
 		UpdatePositionMutationError,
 		UpdatePositionMutationParams
-	>(
-		(params: UpdatePositionMutationParams) =>
-			updatePosition(params),
-		{
-			onError: (error: UpdatePositionMutationError) => {
-				console.error('Update operation failed:', error);
-			},
-			onSuccess: (data: UpdatePositionMutationData) => {
-				console.log('Update operation successful', data);
-			},
-			...options,
+	>((params: UpdatePositionMutationParams) => updatePosition(params), {
+		onError: (error: UpdatePositionMutationError) => {
+			console.error('Update operation failed:', error);
 		},
-	);
+		onSuccess: (data: UpdatePositionMutationData) => {
+			console.log('Update operation successful', data);
+		},
+		...options,
+	});
 };

@@ -14,17 +14,13 @@ export const useCreateLicenseMutation = (
 		CreateLicenseMutationData,
 		CreateLicenseMutationError,
 		CreateLicenseMutationParams
-	>(
-		(params: CreateLicenseMutationParams) =>
-			createLicense(params),
-		{
-			onError: (error: CreateLicenseMutationError) => {
-				console.error('Create operation failed:', error);
-			},
-			onSuccess: (data: CreateLicenseMutationData) => {
-				console.log('Create operation successful', data);
-			},
-			...options,
+	>((params: CreateLicenseMutationParams) => createLicense(params), {
+		onError: (error: CreateLicenseMutationError) => {
+			console.error('Create operation failed:', error);
 		},
-	);
+		onSuccess: (data: CreateLicenseMutationData) => {
+			console.log('Create operation successful', data);
+		},
+		...options,
+	});
 };

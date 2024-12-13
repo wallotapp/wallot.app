@@ -1,3 +1,15 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Wallot](#wallot)
+  - [Testing the APIs:](#testing-the-apis)
+    - [REST API](#rest-api)
+  - [User Experience:](#user-experience)
+  - [Architecture:](#architecture)
+  - [Key Terms:](#key-terms)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Wallot
 
 ## Testing the APIs:

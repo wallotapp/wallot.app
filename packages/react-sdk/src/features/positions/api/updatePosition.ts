@@ -7,11 +7,10 @@ import {
 } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const updatePosition =
-	generalizedFirestoreDocumentUpdateOperation<
-		UpdatePositionParams,
-		Position
-	>(
-		getFirestoreCollectionPath('position'),
-		positionsApi as unknown as GeneralizedApiResourceSpec,
-	);
+export const updatePosition = generalizedFirestoreDocumentUpdateOperation<
+	UpdatePositionParams,
+	Position
+>(
+	getFirestoreCollectionPath('position'),
+	positionsApi as unknown as GeneralizedApiResourceSpec,
+);

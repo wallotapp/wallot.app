@@ -14,17 +14,13 @@ export const useCreateModelMutation = (
 		CreateModelMutationData,
 		CreateModelMutationError,
 		CreateModelMutationParams
-	>(
-		(params: CreateModelMutationParams) =>
-			createModel(params),
-		{
-			onError: (error: CreateModelMutationError) => {
-				console.error('Create operation failed:', error);
-			},
-			onSuccess: (data: CreateModelMutationData) => {
-				console.log('Create operation successful', data);
-			},
-			...options,
+	>((params: CreateModelMutationParams) => createModel(params), {
+		onError: (error: CreateModelMutationError) => {
+			console.error('Create operation failed:', error);
 		},
-	);
+		onSuccess: (data: CreateModelMutationData) => {
+			console.log('Create operation successful', data);
+		},
+		...options,
+	});
 };

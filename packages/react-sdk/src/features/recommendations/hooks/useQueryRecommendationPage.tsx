@@ -17,7 +17,9 @@ export const getQueryRecommendationPageReactQueryKey: UseQueryRecommendationPage
 export const getQueryRecommendationPageReactQueryOptions: UseQueryRecommendationPageOptionsFn =
 	(props) => ({
 		queryFn: () => queryRecommendationPage(props.firestoreQueryOptions),
-		queryKey: getQueryRecommendationPageReactQueryKey(props.firestoreQueryOptions),
+		queryKey: getQueryRecommendationPageReactQueryKey(
+			props.firestoreQueryOptions,
+		),
 		...(props.reactQueryOptions ?? {}),
 	});
 

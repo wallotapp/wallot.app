@@ -17,13 +17,17 @@ import {
 export type RecommendationPageQueryResponse =
 	GeneralizedFirestoreCollectionPage<Recommendation>;
 
-export type UseQueryRecommendationPageQueryKeyFn = GeneralizedUseQueryKeyFn<Recommendation>;
+export type UseQueryRecommendationPageQueryKeyFn =
+	GeneralizedUseQueryKeyFn<Recommendation>;
 
-export type UseQueryRecommendationPageOptions = GeneralizedUseQueryPageOptions<Recommendation>;
+export type UseQueryRecommendationPageOptions =
+	GeneralizedUseQueryPageOptions<Recommendation>;
 
-export type UseQueryRecommendationPageProps = GeneralizedUseQueryPageProps<Recommendation>;
+export type UseQueryRecommendationPageProps =
+	GeneralizedUseQueryPageProps<Recommendation>;
 
-export type UseQueryRecommendationPageOptionsFn = GeneralizedUseQueryOptionsFn<Recommendation>;
+export type UseQueryRecommendationPageOptionsFn =
+	GeneralizedUseQueryOptionsFn<Recommendation>;
 
 export type UseQueryRecommendationPageObserver =
 	GeneralizedUseQueryPageObserver<Recommendation>;
@@ -33,8 +37,10 @@ export type UseCreateRecommendationMutationOptions =
 		Recommendation,
 		CreateRecommendationParams
 	>;
-export type CreateRecommendationMutationData = GeneralizedResponse<Recommendation>;
-export type CreateRecommendationMutationError = GeneralizedResponse<Recommendation>;
+export type CreateRecommendationMutationData =
+	GeneralizedResponse<Recommendation>;
+export type CreateRecommendationMutationError =
+	GeneralizedResponse<Recommendation>;
 export type CreateRecommendationMutationParams =
 	FirestoreDocumentCreateParams<CreateRecommendationParams>;
 
@@ -44,6 +50,7 @@ export type UseUpdateRecommendationMutationOptions =
 		UpdateRecommendationParams
 	>;
 export type UpdateRecommendationMutationData = unknown;
-export type UpdateRecommendationMutationError = GeneralizedResponse<Recommendation>;
+export type UpdateRecommendationMutationError =
+	GeneralizedResponse<Recommendation>;
 export type UpdateRecommendationMutationParams =
 	FirestoreDocumentUpdateParams<UpdateRecommendationParams>;

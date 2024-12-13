@@ -6,7 +6,8 @@ import {
 	systemServicesApi,
 } from '@wallot/js';
 
-export const querySystemServicePage = generalizedFirestoreCollectionPageQuery<SystemService>(
-	getFirestoreCollectionPath('system_service'),
-	systemServicesApi as unknown as GeneralizedApiResourceSpec,
-);
+export const querySystemServicePage =
+	generalizedFirestoreCollectionPageQuery<SystemService>(
+		getFirestoreCollectionPath('system_service'),
+		systemServicesApi as unknown as GeneralizedApiResourceSpec,
+	);

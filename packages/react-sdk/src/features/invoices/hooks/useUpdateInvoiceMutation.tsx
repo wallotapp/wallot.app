@@ -14,17 +14,13 @@ export const useUpdateInvoiceMutation = (
 		UpdateInvoiceMutationData,
 		UpdateInvoiceMutationError,
 		UpdateInvoiceMutationParams
-	>(
-		(params: UpdateInvoiceMutationParams) =>
-			updateInvoice(params),
-		{
-			onError: (error: UpdateInvoiceMutationError) => {
-				console.error('Update operation failed:', error);
-			},
-			onSuccess: (data: UpdateInvoiceMutationData) => {
-				console.log('Update operation successful', data);
-			},
-			...options,
+	>((params: UpdateInvoiceMutationParams) => updateInvoice(params), {
+		onError: (error: UpdateInvoiceMutationError) => {
+			console.error('Update operation failed:', error);
 		},
-	);
+		onSuccess: (data: UpdateInvoiceMutationData) => {
+			console.log('Update operation successful', data);
+		},
+		...options,
+	});
 };

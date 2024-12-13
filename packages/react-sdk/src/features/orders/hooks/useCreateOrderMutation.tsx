@@ -14,17 +14,13 @@ export const useCreateOrderMutation = (
 		CreateOrderMutationData,
 		CreateOrderMutationError,
 		CreateOrderMutationParams
-	>(
-		(params: CreateOrderMutationParams) =>
-			createOrder(params),
-		{
-			onError: (error: CreateOrderMutationError) => {
-				console.error('Create operation failed:', error);
-			},
-			onSuccess: (data: CreateOrderMutationData) => {
-				console.log('Create operation successful', data);
-			},
-			...options,
+	>((params: CreateOrderMutationParams) => createOrder(params), {
+		onError: (error: CreateOrderMutationError) => {
+			console.error('Create operation failed:', error);
 		},
-	);
+		onSuccess: (data: CreateOrderMutationData) => {
+			console.log('Create operation successful', data);
+		},
+		...options,
+	});
 };

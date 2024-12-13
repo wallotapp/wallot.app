@@ -17,7 +17,9 @@ export const getQueryFundingAccountPageReactQueryKey: UseQueryFundingAccountPage
 export const getQueryFundingAccountPageReactQueryOptions: UseQueryFundingAccountPageOptionsFn =
 	(props) => ({
 		queryFn: () => queryFundingAccountPage(props.firestoreQueryOptions),
-		queryKey: getQueryFundingAccountPageReactQueryKey(props.firestoreQueryOptions),
+		queryKey: getQueryFundingAccountPageReactQueryKey(
+			props.firestoreQueryOptions,
+		),
 		...(props.reactQueryOptions ?? {}),
 	});
 

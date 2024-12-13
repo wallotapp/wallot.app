@@ -15,8 +15,7 @@ export const useCreateSystemServiceMutation = (
 		CreateSystemServiceMutationError,
 		CreateSystemServiceMutationParams
 	>(
-		(params: CreateSystemServiceMutationParams) =>
-			createSystemService(params),
+		(params: CreateSystemServiceMutationParams) => createSystemService(params),
 		{
 			onError: (error: CreateSystemServiceMutationError) => {
 				console.error('Create operation failed:', error);

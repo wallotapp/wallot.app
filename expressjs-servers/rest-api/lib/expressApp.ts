@@ -2,15 +2,12 @@ import * as cors from 'cors';
 import * as express from 'express';
 import { statSync } from 'fs';
 import {
-  addHealthRoutesToExpressApp,
-  initializeResLocalsWithGeneralizedResponseFields,
-  logExpressInvocation,
-  sendExpressResponse,
+	addHealthRoutesToExpressApp,
+	initializeResLocalsWithGeneralizedResponseFields,
+	logExpressInvocation,
+	sendExpressResponse,
 } from 'ergonomic-node';
-import {
-  Widget,
-  widgetsApi as apiResourceSpec,
-} from '@wallot/js';
+import { Widget, widgetsApi as apiResourceSpec } from '@wallot/js';
 import serverVariablesLive from './serverVariables.live.json' assert { type: 'json' };
 import serverVariablesTest from './serverVariables.test.json' assert { type: 'json' };
 import { secrets } from './secrets.js';
@@ -35,27 +32,27 @@ app.use(initializeResLocalsWithGeneralizedResponseFields());
 // Gmail API
 const gmailApiServiceAccountPath = `${directoryPath}/../gmailApiServiceAccount.json`;
 if (!statSync(gmailApiServiceAccountPath).isFile()) {
-  throw new Error(`${gmailApiServiceAccountPath} is not a file`);
+	throw new Error(`${gmailApiServiceAccountPath} is not a file`);
 }
 
 // JavaScript SDK
 const mockApiResource: Widget = {
-  ...apiResourceSpec.apiResourceDefaultJson,
-  category: 'default',
-  height_cm: 100,
-  name: 'My Widget',
-  weight_kg: 0.25,
-  width_cm: 100,
+	...apiResourceSpec.apiResourceDefaultJson,
+	category: 'default',
+	height_cm: 100,
+	name: 'My Widget',
+	weight_kg: 0.25,
+	width_cm: 100,
 };
 
 // Add routes
 addHealthRoutesToExpressApp(app, {
-  ...secrets,
-  ...serverVariables,
-  apiResourceSpec,
-  corsPolicy,
-  gmailApiServiceAccountPath,
-  mockApiResource,
+	...secrets,
+	...serverVariables,
+	apiResourceSpec,
+	corsPolicy,
+	gmailApiServiceAccountPath,
+	mockApiResource,
 });
 
 // ---- End of Invocation Middleware ---- //

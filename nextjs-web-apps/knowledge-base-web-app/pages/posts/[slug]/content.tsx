@@ -10,7 +10,8 @@ import { KnowledgeBaseWebAppRouteQueryParams } from '@wallot/js/utils/routeDefin
 // ==== Static Page Props ==== //
 
 // Route Static ID
-const ROUTE_STATIC_ID = 'KNOWLEDGE_BASE_WEB_APP__/POSTS/[SLUG]/CONTENT' as const;
+const ROUTE_STATIC_ID =
+	'KNOWLEDGE_BASE_WEB_APP__/POSTS/[SLUG]/CONTENT' as const;
 
 // Route Static Props
 const ROUTE_STATIC_PROPS: PageStaticProps = {
@@ -19,10 +20,10 @@ const ROUTE_STATIC_PROPS: PageStaticProps = {
 };
 
 // Route Query Params Type
-type RouteQueryParams = KnowledgeBaseWebAppRouteQueryParams[typeof ROUTE_STATIC_ID];
+type RouteQueryParams =
+	KnowledgeBaseWebAppRouteQueryParams[typeof ROUTE_STATIC_ID];
 
 const Page: NextPage = () => {
-
 	// ==== Hooks ==== //
 
 	// Router
@@ -37,10 +38,7 @@ const Page: NextPage = () => {
 	const { slug } = query;
 
 	// Runtime Route ID
-	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace(
-		'[SLUG]',
-		slug || '',
-	);
+	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace('[SLUG]', slug || '');
 
 	// Runtime Page Props
 	const pageProps: PageProps = {
@@ -52,11 +50,10 @@ const Page: NextPage = () => {
 	return (
 		<PageComponent {...pageProps}>
 			<p className='font-medium text-xl'>
-				Hello, and welcome to a dynamic route in Wallot's Knowledge Base Web App! 🚀
+				Hello, and welcome to a dynamic route in Wallot's Knowledge Base Web
+				App! 🚀
 			</p>
-			<p className='font-light text-sm'>
-				The slug for this page is: {slug}
-			</p>
+			<p className='font-light text-sm'>The slug for this page is: {slug}</p>
 		</PageComponent>
 	);
 };

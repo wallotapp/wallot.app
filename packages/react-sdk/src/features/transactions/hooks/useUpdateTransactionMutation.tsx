@@ -14,17 +14,13 @@ export const useUpdateTransactionMutation = (
 		UpdateTransactionMutationData,
 		UpdateTransactionMutationError,
 		UpdateTransactionMutationParams
-	>(
-		(params: UpdateTransactionMutationParams) =>
-			updateTransaction(params),
-		{
-			onError: (error: UpdateTransactionMutationError) => {
-				console.error('Update operation failed:', error);
-			},
-			onSuccess: (data: UpdateTransactionMutationData) => {
-				console.log('Update operation successful', data);
-			},
-			...options,
+	>((params: UpdateTransactionMutationParams) => updateTransaction(params), {
+		onError: (error: UpdateTransactionMutationError) => {
+			console.error('Update operation failed:', error);
 		},
-	);
+		onSuccess: (data: UpdateTransactionMutationData) => {
+			console.log('Update operation successful', data);
+		},
+		...options,
+	});
 };

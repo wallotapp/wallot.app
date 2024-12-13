@@ -17,7 +17,9 @@ export const getQueryPaymentMethodPageReactQueryKey: UseQueryPaymentMethodPageQu
 export const getQueryPaymentMethodPageReactQueryOptions: UseQueryPaymentMethodPageOptionsFn =
 	(props) => ({
 		queryFn: () => queryPaymentMethodPage(props.firestoreQueryOptions),
-		queryKey: getQueryPaymentMethodPageReactQueryKey(props.firestoreQueryOptions),
+		queryKey: getQueryPaymentMethodPageReactQueryKey(
+			props.firestoreQueryOptions,
+		),
 		...(props.reactQueryOptions ?? {}),
 	});
 

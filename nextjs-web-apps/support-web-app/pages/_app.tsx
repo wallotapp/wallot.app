@@ -18,10 +18,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 		<AuthProvider>
 			<RouteStateProvider>
 				<QueryClientProvider client={queryClient}>
-					<ThemeProvider
-						disableTransitionOnChange
-						attribute='class'
-					>
+					<ThemeProvider disableTransitionOnChange attribute='class'>
 						<Elements stripe={stripePromise} options={undefined}>
 							<>
 								<InitializeGoogleAnalytics />
@@ -40,8 +37,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 								{NODE_ENV !== 'test' && (
 									<ReactQueryDevtools
 										position={
-											(process.env
-												.NEXT_PUBLIC_REACT_QUERY_DEVTOOLS_POSITION as
+											(process.env.NEXT_PUBLIC_REACT_QUERY_DEVTOOLS_POSITION as
 												| 'top-right'
 												| 'bottom-right'
 												| 'top-left'

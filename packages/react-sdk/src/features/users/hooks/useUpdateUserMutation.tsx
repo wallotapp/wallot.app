@@ -14,17 +14,13 @@ export const useUpdateUserMutation = (
 		UpdateUserMutationData,
 		UpdateUserMutationError,
 		UpdateUserMutationParams
-	>(
-		(params: UpdateUserMutationParams) =>
-			updateUser(params),
-		{
-			onError: (error: UpdateUserMutationError) => {
-				console.error('Update operation failed:', error);
-			},
-			onSuccess: (data: UpdateUserMutationData) => {
-				console.log('Update operation successful', data);
-			},
-			...options,
+	>((params: UpdateUserMutationParams) => updateUser(params), {
+		onError: (error: UpdateUserMutationError) => {
+			console.error('Update operation failed:', error);
 		},
-	);
+		onSuccess: (data: UpdateUserMutationData) => {
+			console.log('Update operation successful', data);
+		},
+		...options,
+	});
 };

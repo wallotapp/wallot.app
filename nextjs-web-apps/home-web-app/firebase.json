@@ -5,7 +5,10 @@
 			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
 			"public": "out",
 			"rewrites": [
-				{"source":"/posts/**/content","destination":"/posts/[slug]/content.html"}
+				{
+					"source": "/posts/**/content",
+					"destination": "/posts/[slug]/content.html"
+				}
 			],
 			"site": "app-wallot-production",
 			"target": "live"
@@ -15,7 +18,10 @@
 			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
 			"public": "out",
 			"rewrites": [
-				{"source":"/posts/**/content","destination":"/posts/[slug]/content.html"}
+				{
+					"source": "/posts/**/content",
+					"destination": "/posts/[slug]/content.html"
+				}
 			],
 			"site": "app-wallot-staging",
 			"target": "test"

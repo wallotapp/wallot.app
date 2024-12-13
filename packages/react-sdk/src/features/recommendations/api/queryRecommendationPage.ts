@@ -6,7 +6,8 @@ import {
 	recommendationsApi,
 } from '@wallot/js';
 
-export const queryRecommendationPage = generalizedFirestoreCollectionPageQuery<Recommendation>(
-	getFirestoreCollectionPath('recommendation'),
-	recommendationsApi as unknown as GeneralizedApiResourceSpec,
-);
+export const queryRecommendationPage =
+	generalizedFirestoreCollectionPageQuery<Recommendation>(
+		getFirestoreCollectionPath('recommendation'),
+		recommendationsApi as unknown as GeneralizedApiResourceSpec,
+	);

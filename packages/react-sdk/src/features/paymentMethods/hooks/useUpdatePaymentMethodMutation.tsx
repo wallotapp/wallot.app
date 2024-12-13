@@ -15,8 +15,7 @@ export const useUpdatePaymentMethodMutation = (
 		UpdatePaymentMethodMutationError,
 		UpdatePaymentMethodMutationParams
 	>(
-		(params: UpdatePaymentMethodMutationParams) =>
-			updatePaymentMethod(params),
+		(params: UpdatePaymentMethodMutationParams) => updatePaymentMethod(params),
 		{
 			onError: (error: UpdatePaymentMethodMutationError) => {
 				console.error('Update operation failed:', error);

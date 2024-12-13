@@ -14,17 +14,13 @@ export const useUpdateForecastMutation = (
 		UpdateForecastMutationData,
 		UpdateForecastMutationError,
 		UpdateForecastMutationParams
-	>(
-		(params: UpdateForecastMutationParams) =>
-			updateForecast(params),
-		{
-			onError: (error: UpdateForecastMutationError) => {
-				console.error('Update operation failed:', error);
-			},
-			onSuccess: (data: UpdateForecastMutationData) => {
-				console.log('Update operation successful', data);
-			},
-			...options,
+	>((params: UpdateForecastMutationParams) => updateForecast(params), {
+		onError: (error: UpdateForecastMutationError) => {
+			console.error('Update operation failed:', error);
 		},
-	);
+		onSuccess: (data: UpdateForecastMutationData) => {
+			console.log('Update operation successful', data);
+		},
+		...options,
+	});
 };

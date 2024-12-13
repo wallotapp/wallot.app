@@ -14,17 +14,13 @@ export const useCreateUserMutation = (
 		CreateUserMutationData,
 		CreateUserMutationError,
 		CreateUserMutationParams
-	>(
-		(params: CreateUserMutationParams) =>
-			createUser(params),
-		{
-			onError: (error: CreateUserMutationError) => {
-				console.error('Create operation failed:', error);
-			},
-			onSuccess: (data: CreateUserMutationData) => {
-				console.log('Create operation successful', data);
-			},
-			...options,
+	>((params: CreateUserMutationParams) => createUser(params), {
+		onError: (error: CreateUserMutationError) => {
+			console.error('Create operation failed:', error);
 		},
-	);
+		onSuccess: (data: CreateUserMutationData) => {
+			console.log('Create operation successful', data);
+		},
+		...options,
+	});
 };

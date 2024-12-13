@@ -6,7 +6,8 @@ import {
 	fundingAccountsApi,
 } from '@wallot/js';
 
-export const queryFundingAccountPage = generalizedFirestoreCollectionPageQuery<FundingAccount>(
-	getFirestoreCollectionPath('funding_account'),
-	fundingAccountsApi as unknown as GeneralizedApiResourceSpec,
-);
+export const queryFundingAccountPage =
+	generalizedFirestoreCollectionPageQuery<FundingAccount>(
+		getFirestoreCollectionPath('funding_account'),
+		fundingAccountsApi as unknown as GeneralizedApiResourceSpec,
+	);

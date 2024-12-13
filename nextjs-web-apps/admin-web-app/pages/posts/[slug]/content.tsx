@@ -22,7 +22,6 @@ const ROUTE_STATIC_PROPS: PageStaticProps = {
 type RouteQueryParams = AdminWebAppRouteQueryParams[typeof ROUTE_STATIC_ID];
 
 const Page: NextPage = () => {
-
 	// ==== Hooks ==== //
 
 	// Router
@@ -37,10 +36,7 @@ const Page: NextPage = () => {
 	const { slug } = query;
 
 	// Runtime Route ID
-	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace(
-		'[SLUG]',
-		slug || '',
-	);
+	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace('[SLUG]', slug || '');
 
 	// Runtime Page Props
 	const pageProps: PageProps = {
@@ -54,9 +50,7 @@ const Page: NextPage = () => {
 			<p className='font-medium text-xl'>
 				Hello, and welcome to a dynamic route in Wallot's Admin Web App! 🚀
 			</p>
-			<p className='font-light text-sm'>
-				The slug for this page is: {slug}
-			</p>
+			<p className='font-light text-sm'>The slug for this page is: {slug}</p>
 		</PageComponent>
 	);
 };

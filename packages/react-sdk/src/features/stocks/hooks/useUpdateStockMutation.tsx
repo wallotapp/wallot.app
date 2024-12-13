@@ -14,17 +14,13 @@ export const useUpdateStockMutation = (
 		UpdateStockMutationData,
 		UpdateStockMutationError,
 		UpdateStockMutationParams
-	>(
-		(params: UpdateStockMutationParams) =>
-			updateStock(params),
-		{
-			onError: (error: UpdateStockMutationError) => {
-				console.error('Update operation failed:', error);
-			},
-			onSuccess: (data: UpdateStockMutationData) => {
-				console.log('Update operation successful', data);
-			},
-			...options,
+	>((params: UpdateStockMutationParams) => updateStock(params), {
+		onError: (error: UpdateStockMutationError) => {
+			console.error('Update operation failed:', error);
 		},
-	);
+		onSuccess: (data: UpdateStockMutationData) => {
+			console.log('Update operation successful', data);
+		},
+		...options,
+	});
 };

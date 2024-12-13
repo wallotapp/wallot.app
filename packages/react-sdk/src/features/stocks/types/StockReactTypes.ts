@@ -8,14 +8,9 @@ import {
 	GeneralizedUseUpdateDocumentsMutationOptions,
 } from 'ergonomic-react/src/lib/tanstackQuery';
 import { GeneralizedFirestoreCollectionPage } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreCollectionPageQuery';
-import {
-	Stock,
-	CreateStockParams,
-	UpdateStockParams,
-} from '@wallot/js';
+import { Stock, CreateStockParams, UpdateStockParams } from '@wallot/js';
 
-export type StockPageQueryResponse =
-	GeneralizedFirestoreCollectionPage<Stock>;
+export type StockPageQueryResponse = GeneralizedFirestoreCollectionPage<Stock>;
 
 export type UseQueryStockPageQueryKeyFn = GeneralizedUseQueryKeyFn<Stock>;
 
@@ -25,24 +20,17 @@ export type UseQueryStockPageProps = GeneralizedUseQueryPageProps<Stock>;
 
 export type UseQueryStockPageOptionsFn = GeneralizedUseQueryOptionsFn<Stock>;
 
-export type UseQueryStockPageObserver =
-	GeneralizedUseQueryPageObserver<Stock>;
+export type UseQueryStockPageObserver = GeneralizedUseQueryPageObserver<Stock>;
 
 export type UseCreateStockMutationOptions =
-	GeneralizedUseCreateDocumentsMutationOptions<
-		Stock,
-		CreateStockParams
-	>;
+	GeneralizedUseCreateDocumentsMutationOptions<Stock, CreateStockParams>;
 export type CreateStockMutationData = GeneralizedResponse<Stock>;
 export type CreateStockMutationError = GeneralizedResponse<Stock>;
 export type CreateStockMutationParams =
 	FirestoreDocumentCreateParams<CreateStockParams>;
 
 export type UseUpdateStockMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		Stock,
-		UpdateStockParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<Stock, UpdateStockParams>;
 export type UpdateStockMutationData = unknown;
 export type UpdateStockMutationError = GeneralizedResponse<Stock>;
 export type UpdateStockMutationParams =

@@ -14,17 +14,13 @@ export const useCreatePositionMutation = (
 		CreatePositionMutationData,
 		CreatePositionMutationError,
 		CreatePositionMutationParams
-	>(
-		(params: CreatePositionMutationParams) =>
-			createPosition(params),
-		{
-			onError: (error: CreatePositionMutationError) => {
-				console.error('Create operation failed:', error);
-			},
-			onSuccess: (data: CreatePositionMutationData) => {
-				console.log('Create operation successful', data);
-			},
-			...options,
+	>((params: CreatePositionMutationParams) => createPosition(params), {
+		onError: (error: CreatePositionMutationError) => {
+			console.error('Create operation failed:', error);
 		},
-	);
+		onSuccess: (data: CreatePositionMutationData) => {
+			console.log('Create operation successful', data);
+		},
+		...options,
+	});
 };

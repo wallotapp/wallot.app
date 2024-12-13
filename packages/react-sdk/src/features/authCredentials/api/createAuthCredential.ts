@@ -7,11 +7,10 @@ import {
 } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const createAuthCredential =
-	generalizedFirestoreDocumentCreateOperation<
-		CreateAuthCredentialParams,
-		AuthCredential
-	>(
-		getFirestoreCollectionPath('auth_credential'),
-		authCredentialsApi as unknown as GeneralizedApiResourceSpec,
-	);
+export const createAuthCredential = generalizedFirestoreDocumentCreateOperation<
+	CreateAuthCredentialParams,
+	AuthCredential
+>(
+	getFirestoreCollectionPath('auth_credential'),
+	authCredentialsApi as unknown as GeneralizedApiResourceSpec,
+);

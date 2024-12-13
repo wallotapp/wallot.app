@@ -17,13 +17,17 @@ import {
 export type SystemIncidentUpdatePageQueryResponse =
 	GeneralizedFirestoreCollectionPage<SystemIncidentUpdate>;
 
-export type UseQuerySystemIncidentUpdatePageQueryKeyFn = GeneralizedUseQueryKeyFn<SystemIncidentUpdate>;
+export type UseQuerySystemIncidentUpdatePageQueryKeyFn =
+	GeneralizedUseQueryKeyFn<SystemIncidentUpdate>;
 
-export type UseQuerySystemIncidentUpdatePageOptions = GeneralizedUseQueryPageOptions<SystemIncidentUpdate>;
+export type UseQuerySystemIncidentUpdatePageOptions =
+	GeneralizedUseQueryPageOptions<SystemIncidentUpdate>;
 
-export type UseQuerySystemIncidentUpdatePageProps = GeneralizedUseQueryPageProps<SystemIncidentUpdate>;
+export type UseQuerySystemIncidentUpdatePageProps =
+	GeneralizedUseQueryPageProps<SystemIncidentUpdate>;
 
-export type UseQuerySystemIncidentUpdatePageOptionsFn = GeneralizedUseQueryOptionsFn<SystemIncidentUpdate>;
+export type UseQuerySystemIncidentUpdatePageOptionsFn =
+	GeneralizedUseQueryOptionsFn<SystemIncidentUpdate>;
 
 export type UseQuerySystemIncidentUpdatePageObserver =
 	GeneralizedUseQueryPageObserver<SystemIncidentUpdate>;
@@ -33,8 +37,10 @@ export type UseCreateSystemIncidentUpdateMutationOptions =
 		SystemIncidentUpdate,
 		CreateSystemIncidentUpdateParams
 	>;
-export type CreateSystemIncidentUpdateMutationData = GeneralizedResponse<SystemIncidentUpdate>;
-export type CreateSystemIncidentUpdateMutationError = GeneralizedResponse<SystemIncidentUpdate>;
+export type CreateSystemIncidentUpdateMutationData =
+	GeneralizedResponse<SystemIncidentUpdate>;
+export type CreateSystemIncidentUpdateMutationError =
+	GeneralizedResponse<SystemIncidentUpdate>;
 export type CreateSystemIncidentUpdateMutationParams =
 	FirestoreDocumentCreateParams<CreateSystemIncidentUpdateParams>;
 
@@ -44,6 +50,7 @@ export type UseUpdateSystemIncidentUpdateMutationOptions =
 		UpdateSystemIncidentUpdateParams
 	>;
 export type UpdateSystemIncidentUpdateMutationData = unknown;
-export type UpdateSystemIncidentUpdateMutationError = GeneralizedResponse<SystemIncidentUpdate>;
+export type UpdateSystemIncidentUpdateMutationError =
+	GeneralizedResponse<SystemIncidentUpdate>;
 export type UpdateSystemIncidentUpdateMutationParams =
 	FirestoreDocumentUpdateParams<UpdateSystemIncidentUpdateParams>;

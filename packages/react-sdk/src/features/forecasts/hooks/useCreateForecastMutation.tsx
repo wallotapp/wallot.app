@@ -14,17 +14,13 @@ export const useCreateForecastMutation = (
 		CreateForecastMutationData,
 		CreateForecastMutationError,
 		CreateForecastMutationParams
-	>(
-		(params: CreateForecastMutationParams) =>
-			createForecast(params),
-		{
-			onError: (error: CreateForecastMutationError) => {
-				console.error('Create operation failed:', error);
-			},
-			onSuccess: (data: CreateForecastMutationData) => {
-				console.log('Create operation successful', data);
-			},
-			...options,
+	>((params: CreateForecastMutationParams) => createForecast(params), {
+		onError: (error: CreateForecastMutationError) => {
+			console.error('Create operation failed:', error);
 		},
-	);
+		onSuccess: (data: CreateForecastMutationData) => {
+			console.log('Create operation successful', data);
+		},
+		...options,
+	});
 };

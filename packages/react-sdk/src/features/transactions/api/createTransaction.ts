@@ -7,11 +7,10 @@ import {
 } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const createTransaction =
-	generalizedFirestoreDocumentCreateOperation<
-		CreateTransactionParams,
-		Transaction
-	>(
-		getFirestoreCollectionPath('transaction'),
-		transactionsApi as unknown as GeneralizedApiResourceSpec,
-	);
+export const createTransaction = generalizedFirestoreDocumentCreateOperation<
+	CreateTransactionParams,
+	Transaction
+>(
+	getFirestoreCollectionPath('transaction'),
+	transactionsApi as unknown as GeneralizedApiResourceSpec,
+);

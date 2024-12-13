@@ -7,19 +7,21 @@ import {
 	UseQueryModelPageProps,
 } from '@wallot/react/src/features/models/types/ModelReactTypes';
 
-export const getQueryModelPageReactQueryKey: UseQueryModelPageQueryKeyFn =
-	(params) =>
-		[
-			'model',
-			JSON.stringify(R.omit(['startAfterDocumentReference'], params)),
-		] as const;
+export const getQueryModelPageReactQueryKey: UseQueryModelPageQueryKeyFn = (
+	params,
+) =>
+	[
+		'model',
+		JSON.stringify(R.omit(['startAfterDocumentReference'], params)),
+	] as const;
 
-export const getQueryModelPageReactQueryOptions: UseQueryModelPageOptionsFn =
-	(props) => ({
-		queryFn: () => queryModelPage(props.firestoreQueryOptions),
-		queryKey: getQueryModelPageReactQueryKey(props.firestoreQueryOptions),
-		...(props.reactQueryOptions ?? {}),
-	});
+export const getQueryModelPageReactQueryOptions: UseQueryModelPageOptionsFn = (
+	props,
+) => ({
+	queryFn: () => queryModelPage(props.firestoreQueryOptions),
+	queryKey: getQueryModelPageReactQueryKey(props.firestoreQueryOptions),
+	...(props.reactQueryOptions ?? {}),
+});
 
 export const useQueryModelPage = ({
 	firestoreQueryOptions,

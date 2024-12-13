@@ -14,17 +14,13 @@ export const useCreateTransactionMutation = (
 		CreateTransactionMutationData,
 		CreateTransactionMutationError,
 		CreateTransactionMutationParams
-	>(
-		(params: CreateTransactionMutationParams) =>
-			createTransaction(params),
-		{
-			onError: (error: CreateTransactionMutationError) => {
-				console.error('Create operation failed:', error);
-			},
-			onSuccess: (data: CreateTransactionMutationData) => {
-				console.log('Create operation successful', data);
-			},
-			...options,
+	>((params: CreateTransactionMutationParams) => createTransaction(params), {
+		onError: (error: CreateTransactionMutationError) => {
+			console.error('Create operation failed:', error);
 		},
-	);
+		onSuccess: (data: CreateTransactionMutationData) => {
+			console.log('Create operation successful', data);
+		},
+		...options,
+	});
 };

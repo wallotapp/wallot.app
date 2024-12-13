@@ -21,7 +21,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// Router Query Param Values
 	const _ = query;
 	typeof _;
-	
+
 	// ==== Constants ==== //
 
 	// Runtime Route ID
@@ -36,7 +36,9 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<p className='font-medium text-xl'>Hello, and welcome to Wallot's Blog Web App! 🚀</p>
+			<p className='font-medium text-xl'>
+				Hello, and welcome to Wallot's Blog Web App! 🚀
+			</p>
 			<p className='font-light text-sm'>
 				Almost before we knew it, we had left the ground.
 			</p>
@@ -52,8 +54,7 @@ export default Page;
 const ROUTE_STATIC_ID = 'BLOG_WEB_APP__/INDEX' as const;
 
 // Route Query Params Type
-type RouteQueryParams =
-	BlogWebAppRouteQueryParams[typeof ROUTE_STATIC_ID];
+type RouteQueryParams = BlogWebAppRouteQueryParams[typeof ROUTE_STATIC_ID];
 
 export const getStaticProps: GetStaticProps<PageStaticProps> = () => {
 	// Route Static Props

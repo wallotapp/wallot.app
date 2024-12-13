@@ -7,11 +7,10 @@ import {
 } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const createLicense =
-	generalizedFirestoreDocumentCreateOperation<
-		CreateLicenseParams,
-		License
-	>(
-		getFirestoreCollectionPath('license'),
-		licensesApi as unknown as GeneralizedApiResourceSpec,
-	);
+export const createLicense = generalizedFirestoreDocumentCreateOperation<
+	CreateLicenseParams,
+	License
+>(
+	getFirestoreCollectionPath('license'),
+	licensesApi as unknown as GeneralizedApiResourceSpec,
+);

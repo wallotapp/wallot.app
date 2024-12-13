@@ -14,17 +14,13 @@ export const useUpdateOrderMutation = (
 		UpdateOrderMutationData,
 		UpdateOrderMutationError,
 		UpdateOrderMutationParams
-	>(
-		(params: UpdateOrderMutationParams) =>
-			updateOrder(params),
-		{
-			onError: (error: UpdateOrderMutationError) => {
-				console.error('Update operation failed:', error);
-			},
-			onSuccess: (data: UpdateOrderMutationData) => {
-				console.log('Update operation successful', data);
-			},
-			...options,
+	>((params: UpdateOrderMutationParams) => updateOrder(params), {
+		onError: (error: UpdateOrderMutationError) => {
+			console.error('Update operation failed:', error);
 		},
-	);
+		onSuccess: (data: UpdateOrderMutationData) => {
+			console.log('Update operation successful', data);
+		},
+		...options,
+	});
 };

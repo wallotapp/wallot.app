@@ -17,13 +17,17 @@ import {
 export type SystemIncidentPageQueryResponse =
 	GeneralizedFirestoreCollectionPage<SystemIncident>;
 
-export type UseQuerySystemIncidentPageQueryKeyFn = GeneralizedUseQueryKeyFn<SystemIncident>;
+export type UseQuerySystemIncidentPageQueryKeyFn =
+	GeneralizedUseQueryKeyFn<SystemIncident>;
 
-export type UseQuerySystemIncidentPageOptions = GeneralizedUseQueryPageOptions<SystemIncident>;
+export type UseQuerySystemIncidentPageOptions =
+	GeneralizedUseQueryPageOptions<SystemIncident>;
 
-export type UseQuerySystemIncidentPageProps = GeneralizedUseQueryPageProps<SystemIncident>;
+export type UseQuerySystemIncidentPageProps =
+	GeneralizedUseQueryPageProps<SystemIncident>;
 
-export type UseQuerySystemIncidentPageOptionsFn = GeneralizedUseQueryOptionsFn<SystemIncident>;
+export type UseQuerySystemIncidentPageOptionsFn =
+	GeneralizedUseQueryOptionsFn<SystemIncident>;
 
 export type UseQuerySystemIncidentPageObserver =
 	GeneralizedUseQueryPageObserver<SystemIncident>;
@@ -33,8 +37,10 @@ export type UseCreateSystemIncidentMutationOptions =
 		SystemIncident,
 		CreateSystemIncidentParams
 	>;
-export type CreateSystemIncidentMutationData = GeneralizedResponse<SystemIncident>;
-export type CreateSystemIncidentMutationError = GeneralizedResponse<SystemIncident>;
+export type CreateSystemIncidentMutationData =
+	GeneralizedResponse<SystemIncident>;
+export type CreateSystemIncidentMutationError =
+	GeneralizedResponse<SystemIncident>;
 export type CreateSystemIncidentMutationParams =
 	FirestoreDocumentCreateParams<CreateSystemIncidentParams>;
 
@@ -44,6 +50,7 @@ export type UseUpdateSystemIncidentMutationOptions =
 		UpdateSystemIncidentParams
 	>;
 export type UpdateSystemIncidentMutationData = unknown;
-export type UpdateSystemIncidentMutationError = GeneralizedResponse<SystemIncident>;
+export type UpdateSystemIncidentMutationError =
+	GeneralizedResponse<SystemIncident>;
 export type UpdateSystemIncidentMutationParams =
 	FirestoreDocumentUpdateParams<UpdateSystemIncidentParams>;

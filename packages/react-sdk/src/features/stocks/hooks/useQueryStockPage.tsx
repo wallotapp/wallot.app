@@ -7,19 +7,21 @@ import {
 	UseQueryStockPageProps,
 } from '@wallot/react/src/features/stocks/types/StockReactTypes';
 
-export const getQueryStockPageReactQueryKey: UseQueryStockPageQueryKeyFn =
-	(params) =>
-		[
-			'stock',
-			JSON.stringify(R.omit(['startAfterDocumentReference'], params)),
-		] as const;
+export const getQueryStockPageReactQueryKey: UseQueryStockPageQueryKeyFn = (
+	params,
+) =>
+	[
+		'stock',
+		JSON.stringify(R.omit(['startAfterDocumentReference'], params)),
+	] as const;
 
-export const getQueryStockPageReactQueryOptions: UseQueryStockPageOptionsFn =
-	(props) => ({
-		queryFn: () => queryStockPage(props.firestoreQueryOptions),
-		queryKey: getQueryStockPageReactQueryKey(props.firestoreQueryOptions),
-		...(props.reactQueryOptions ?? {}),
-	});
+export const getQueryStockPageReactQueryOptions: UseQueryStockPageOptionsFn = (
+	props,
+) => ({
+	queryFn: () => queryStockPage(props.firestoreQueryOptions),
+	queryKey: getQueryStockPageReactQueryKey(props.firestoreQueryOptions),
+	...(props.reactQueryOptions ?? {}),
+});
 
 export const useQueryStockPage = ({
 	firestoreQueryOptions,

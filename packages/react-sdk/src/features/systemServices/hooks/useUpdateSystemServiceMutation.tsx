@@ -15,8 +15,7 @@ export const useUpdateSystemServiceMutation = (
 		UpdateSystemServiceMutationError,
 		UpdateSystemServiceMutationParams
 	>(
-		(params: UpdateSystemServiceMutationParams) =>
-			updateSystemService(params),
+		(params: UpdateSystemServiceMutationParams) => updateSystemService(params),
 		{
 			onError: (error: UpdateSystemServiceMutationError) => {
 				console.error('Update operation failed:', error);

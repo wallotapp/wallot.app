@@ -14,17 +14,13 @@ export const useCreateTeamMutation = (
 		CreateTeamMutationData,
 		CreateTeamMutationError,
 		CreateTeamMutationParams
-	>(
-		(params: CreateTeamMutationParams) =>
-			createTeam(params),
-		{
-			onError: (error: CreateTeamMutationError) => {
-				console.error('Create operation failed:', error);
-			},
-			onSuccess: (data: CreateTeamMutationData) => {
-				console.log('Create operation successful', data);
-			},
-			...options,
+	>((params: CreateTeamMutationParams) => createTeam(params), {
+		onError: (error: CreateTeamMutationError) => {
+			console.error('Create operation failed:', error);
 		},
-	);
+		onSuccess: (data: CreateTeamMutationData) => {
+			console.log('Create operation successful', data);
+		},
+		...options,
+	});
 };

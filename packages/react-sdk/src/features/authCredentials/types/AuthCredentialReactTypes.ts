@@ -17,13 +17,17 @@ import {
 export type AuthCredentialPageQueryResponse =
 	GeneralizedFirestoreCollectionPage<AuthCredential>;
 
-export type UseQueryAuthCredentialPageQueryKeyFn = GeneralizedUseQueryKeyFn<AuthCredential>;
+export type UseQueryAuthCredentialPageQueryKeyFn =
+	GeneralizedUseQueryKeyFn<AuthCredential>;
 
-export type UseQueryAuthCredentialPageOptions = GeneralizedUseQueryPageOptions<AuthCredential>;
+export type UseQueryAuthCredentialPageOptions =
+	GeneralizedUseQueryPageOptions<AuthCredential>;
 
-export type UseQueryAuthCredentialPageProps = GeneralizedUseQueryPageProps<AuthCredential>;
+export type UseQueryAuthCredentialPageProps =
+	GeneralizedUseQueryPageProps<AuthCredential>;
 
-export type UseQueryAuthCredentialPageOptionsFn = GeneralizedUseQueryOptionsFn<AuthCredential>;
+export type UseQueryAuthCredentialPageOptionsFn =
+	GeneralizedUseQueryOptionsFn<AuthCredential>;
 
 export type UseQueryAuthCredentialPageObserver =
 	GeneralizedUseQueryPageObserver<AuthCredential>;
@@ -33,8 +37,10 @@ export type UseCreateAuthCredentialMutationOptions =
 		AuthCredential,
 		CreateAuthCredentialParams
 	>;
-export type CreateAuthCredentialMutationData = GeneralizedResponse<AuthCredential>;
-export type CreateAuthCredentialMutationError = GeneralizedResponse<AuthCredential>;
+export type CreateAuthCredentialMutationData =
+	GeneralizedResponse<AuthCredential>;
+export type CreateAuthCredentialMutationError =
+	GeneralizedResponse<AuthCredential>;
 export type CreateAuthCredentialMutationParams =
 	FirestoreDocumentCreateParams<CreateAuthCredentialParams>;
 
@@ -44,6 +50,7 @@ export type UseUpdateAuthCredentialMutationOptions =
 		UpdateAuthCredentialParams
 	>;
 export type UpdateAuthCredentialMutationData = unknown;
-export type UpdateAuthCredentialMutationError = GeneralizedResponse<AuthCredential>;
+export type UpdateAuthCredentialMutationError =
+	GeneralizedResponse<AuthCredential>;
 export type UpdateAuthCredentialMutationParams =
 	FirestoreDocumentUpdateParams<UpdateAuthCredentialParams>;

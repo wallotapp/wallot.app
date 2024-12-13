@@ -12,9 +12,7 @@ export type GetReferralsWebAppRouteOptions<
 	routeStaticId: T;
 };
 
-export const getReferralsWebAppRoute = <
-	T extends ReferralsWebAppRouteStaticId,
->(
+export const getReferralsWebAppRoute = <T extends ReferralsWebAppRouteStaticId>(
 	options: GetReferralsWebAppRouteOptions<T>,
 ) => {
 	const { includeOrigin = false, origin } = options;
@@ -32,8 +30,8 @@ export const getReferralsWebAppRoute = <
 	if (options.routeStaticId === 'REFERRALS_WEB_APP__/POSTS/[SLUG]/CONTENT') {
 		const queryParams =
 			options.queryParams as ReferralsWebAppRouteQueryParams['REFERRALS_WEB_APP__/POSTS/[SLUG]/CONTENT'];
-    const slug = queryParams.slug;
-    const path = `/posts/${slug}/content`;
+		const slug = queryParams.slug;
+		const path = `/posts/${slug}/content`;
 		if (includeOrigin) {
 			if (!origin) {
 				console.error('Origin is required');

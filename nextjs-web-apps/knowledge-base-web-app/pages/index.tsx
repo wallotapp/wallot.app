@@ -21,7 +21,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// Router Query Param Values
 	const _ = query;
 	typeof _;
-	
+
 	// ==== Constants ==== //
 
 	// Runtime Route ID
@@ -36,7 +36,9 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<p className='font-medium text-xl'>Hello, and welcome to Wallot's Knowledge Base Web App! 🚀</p>
+			<p className='font-medium text-xl'>
+				Hello, and welcome to Wallot's Knowledge Base Web App! 🚀
+			</p>
 			<p className='font-light text-sm'>
 				Almost before we knew it, we had left the ground.
 			</p>

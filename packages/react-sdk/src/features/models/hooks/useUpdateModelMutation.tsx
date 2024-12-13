@@ -14,17 +14,13 @@ export const useUpdateModelMutation = (
 		UpdateModelMutationData,
 		UpdateModelMutationError,
 		UpdateModelMutationParams
-	>(
-		(params: UpdateModelMutationParams) =>
-			updateModel(params),
-		{
-			onError: (error: UpdateModelMutationError) => {
-				console.error('Update operation failed:', error);
-			},
-			onSuccess: (data: UpdateModelMutationData) => {
-				console.log('Update operation successful', data);
-			},
-			...options,
+	>((params: UpdateModelMutationParams) => updateModel(params), {
+		onError: (error: UpdateModelMutationError) => {
+			console.error('Update operation failed:', error);
 		},
-	);
+		onSuccess: (data: UpdateModelMutationData) => {
+			console.log('Update operation successful', data);
+		},
+		...options,
+	});
 };

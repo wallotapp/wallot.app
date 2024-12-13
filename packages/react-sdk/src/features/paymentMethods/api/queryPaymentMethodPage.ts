@@ -6,7 +6,8 @@ import {
 	paymentMethodsApi,
 } from '@wallot/js';
 
-export const queryPaymentMethodPage = generalizedFirestoreCollectionPageQuery<PaymentMethod>(
-	getFirestoreCollectionPath('payment_method'),
-	paymentMethodsApi as unknown as GeneralizedApiResourceSpec,
-);
+export const queryPaymentMethodPage =
+	generalizedFirestoreCollectionPageQuery<PaymentMethod>(
+		getFirestoreCollectionPath('payment_method'),
+		paymentMethodsApi as unknown as GeneralizedApiResourceSpec,
+	);

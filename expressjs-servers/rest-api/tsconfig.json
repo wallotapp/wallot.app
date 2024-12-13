@@ -1,41 +1,41 @@
 {
-  "compilerOptions": {
-    // Start -- Shared compiler options for the entire workspace
-    "alwaysStrict": true,
-    "esModuleInterop": true,
-    "noEmitOnError": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    // End -- Shared compiler options for the entire workspace
+	"compilerOptions": {
+		// Start -- Shared compiler options for the entire workspace
+		"alwaysStrict": true,
+		"esModuleInterop": true,
+		"noEmitOnError": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"resolveJsonModule": true,
+		"strict": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": true,
+		// End -- Shared compiler options for the entire workspace
 
-    // Start -- Compiler options for ES6 modules (using esnext for the module option)
-    "module": "esnext",
-    "moduleResolution": "node",
-    "target": "es6",
-    // End -- Compiler options for ES6 modules (using esnext for the module option)
+		// Start -- Compiler options for ES6 modules (using esnext for the module option)
+		"module": "esnext",
+		"moduleResolution": "node",
+		"target": "es6",
+		// End -- Compiler options for ES6 modules (using esnext for the module option)
 
-    // Start -- Compiler options for Cloud Functions
-    "baseUrl": ".",
-    "outDir": "./dist",
-    "paths": {
-      "*": ["node_modules", "../../node_modules"],
-      "firebase-admin/*": [
-        "node_modules/firebase-admin/lib/*",
-        "../../node_modules/firebase-admin/lib/*"
-      ]
-    },
-    "rootDir": "./lib"
-    // End -- Compiler options for Cloud Functions
-  },
-  "exclude": ["./dist"],
-  "extends": "../../tsconfig.template-es6.json"
+		// Start -- Compiler options for Cloud Functions
+		"baseUrl": ".",
+		"outDir": "./dist",
+		"paths": {
+			"*": ["node_modules", "../../node_modules"],
+			"firebase-admin/*": [
+				"node_modules/firebase-admin/lib/*",
+				"../../node_modules/firebase-admin/lib/*"
+			]
+		},
+		"rootDir": "./lib"
+		// End -- Compiler options for Cloud Functions
+	},
+	"exclude": ["./dist"],
+	"extends": "../../tsconfig.template-es6.json"
 }

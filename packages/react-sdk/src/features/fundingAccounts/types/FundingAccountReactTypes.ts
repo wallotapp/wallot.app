@@ -17,13 +17,17 @@ import {
 export type FundingAccountPageQueryResponse =
 	GeneralizedFirestoreCollectionPage<FundingAccount>;
 
-export type UseQueryFundingAccountPageQueryKeyFn = GeneralizedUseQueryKeyFn<FundingAccount>;
+export type UseQueryFundingAccountPageQueryKeyFn =
+	GeneralizedUseQueryKeyFn<FundingAccount>;
 
-export type UseQueryFundingAccountPageOptions = GeneralizedUseQueryPageOptions<FundingAccount>;
+export type UseQueryFundingAccountPageOptions =
+	GeneralizedUseQueryPageOptions<FundingAccount>;
 
-export type UseQueryFundingAccountPageProps = GeneralizedUseQueryPageProps<FundingAccount>;
+export type UseQueryFundingAccountPageProps =
+	GeneralizedUseQueryPageProps<FundingAccount>;
 
-export type UseQueryFundingAccountPageOptionsFn = GeneralizedUseQueryOptionsFn<FundingAccount>;
+export type UseQueryFundingAccountPageOptionsFn =
+	GeneralizedUseQueryOptionsFn<FundingAccount>;
 
 export type UseQueryFundingAccountPageObserver =
 	GeneralizedUseQueryPageObserver<FundingAccount>;
@@ -33,8 +37,10 @@ export type UseCreateFundingAccountMutationOptions =
 		FundingAccount,
 		CreateFundingAccountParams
 	>;
-export type CreateFundingAccountMutationData = GeneralizedResponse<FundingAccount>;
-export type CreateFundingAccountMutationError = GeneralizedResponse<FundingAccount>;
+export type CreateFundingAccountMutationData =
+	GeneralizedResponse<FundingAccount>;
+export type CreateFundingAccountMutationError =
+	GeneralizedResponse<FundingAccount>;
 export type CreateFundingAccountMutationParams =
 	FirestoreDocumentCreateParams<CreateFundingAccountParams>;
 
@@ -44,6 +50,7 @@ export type UseUpdateFundingAccountMutationOptions =
 		UpdateFundingAccountParams
 	>;
 export type UpdateFundingAccountMutationData = unknown;
-export type UpdateFundingAccountMutationError = GeneralizedResponse<FundingAccount>;
+export type UpdateFundingAccountMutationError =
+	GeneralizedResponse<FundingAccount>;
 export type UpdateFundingAccountMutationParams =
 	FirestoreDocumentUpdateParams<UpdateFundingAccountParams>;

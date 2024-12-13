@@ -7,11 +7,10 @@ import {
 } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const createTeam =
-	generalizedFirestoreDocumentCreateOperation<
-		CreateTeamParams,
-		Team
-	>(
-		getFirestoreCollectionPath('team'),
-		teamsApi as unknown as GeneralizedApiResourceSpec,
-	);
+export const createTeam = generalizedFirestoreDocumentCreateOperation<
+	CreateTeamParams,
+	Team
+>(
+	getFirestoreCollectionPath('team'),
+	teamsApi as unknown as GeneralizedApiResourceSpec,
+);

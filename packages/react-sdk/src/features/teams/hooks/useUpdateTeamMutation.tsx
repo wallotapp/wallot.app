@@ -14,17 +14,13 @@ export const useUpdateTeamMutation = (
 		UpdateTeamMutationData,
 		UpdateTeamMutationError,
 		UpdateTeamMutationParams
-	>(
-		(params: UpdateTeamMutationParams) =>
-			updateTeam(params),
-		{
-			onError: (error: UpdateTeamMutationError) => {
-				console.error('Update operation failed:', error);
-			},
-			onSuccess: (data: UpdateTeamMutationData) => {
-				console.log('Update operation successful', data);
-			},
-			...options,
+	>((params: UpdateTeamMutationParams) => updateTeam(params), {
+		onError: (error: UpdateTeamMutationError) => {
+			console.error('Update operation failed:', error);
 		},
-	);
+		onSuccess: (data: UpdateTeamMutationData) => {
+			console.log('Update operation successful', data);
+		},
+		...options,
+	});
 };

@@ -17,7 +17,9 @@ export const getQuerySystemIncidentPageReactQueryKey: UseQuerySystemIncidentPage
 export const getQuerySystemIncidentPageReactQueryOptions: UseQuerySystemIncidentPageOptionsFn =
 	(props) => ({
 		queryFn: () => querySystemIncidentPage(props.firestoreQueryOptions),
-		queryKey: getQuerySystemIncidentPageReactQueryKey(props.firestoreQueryOptions),
+		queryKey: getQuerySystemIncidentPageReactQueryKey(
+			props.firestoreQueryOptions,
+		),
 		...(props.reactQueryOptions ?? {}),
 	});
 

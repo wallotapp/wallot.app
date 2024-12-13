@@ -6,7 +6,8 @@ import {
 	transactionsApi,
 } from '@wallot/js';
 
-export const queryTransactionPage = generalizedFirestoreCollectionPageQuery<Transaction>(
-	getFirestoreCollectionPath('transaction'),
-	transactionsApi as unknown as GeneralizedApiResourceSpec,
-);
+export const queryTransactionPage =
+	generalizedFirestoreCollectionPageQuery<Transaction>(
+		getFirestoreCollectionPath('transaction'),
+		transactionsApi as unknown as GeneralizedApiResourceSpec,
+	);

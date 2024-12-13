@@ -29,11 +29,13 @@ export const getKnowledgeBaseWebAppRoute = <
 		}
 		return path;
 	}
-	if (options.routeStaticId === 'KNOWLEDGE_BASE_WEB_APP__/POSTS/[SLUG]/CONTENT') {
+	if (
+		options.routeStaticId === 'KNOWLEDGE_BASE_WEB_APP__/POSTS/[SLUG]/CONTENT'
+	) {
 		const queryParams =
 			options.queryParams as KnowledgeBaseWebAppRouteQueryParams['KNOWLEDGE_BASE_WEB_APP__/POSTS/[SLUG]/CONTENT'];
-    const slug = queryParams.slug;
-    const path = `/posts/${slug}/content`;
+		const slug = queryParams.slug;
+		const path = `/posts/${slug}/content`;
 		if (includeOrigin) {
 			if (!origin) {
 				console.error('Origin is required');

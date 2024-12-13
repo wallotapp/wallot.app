@@ -17,7 +17,9 @@ export const getQueryAuthCredentialPageReactQueryKey: UseQueryAuthCredentialPage
 export const getQueryAuthCredentialPageReactQueryOptions: UseQueryAuthCredentialPageOptionsFn =
 	(props) => ({
 		queryFn: () => queryAuthCredentialPage(props.firestoreQueryOptions),
-		queryKey: getQueryAuthCredentialPageReactQueryKey(props.firestoreQueryOptions),
+		queryKey: getQueryAuthCredentialPageReactQueryKey(
+			props.firestoreQueryOptions,
+		),
 		...(props.reactQueryOptions ?? {}),
 	});
 

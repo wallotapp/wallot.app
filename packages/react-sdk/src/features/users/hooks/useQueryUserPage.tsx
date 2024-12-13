@@ -7,19 +7,21 @@ import {
 	UseQueryUserPageProps,
 } from '@wallot/react/src/features/users/types/UserReactTypes';
 
-export const getQueryUserPageReactQueryKey: UseQueryUserPageQueryKeyFn =
-	(params) =>
-		[
-			'user',
-			JSON.stringify(R.omit(['startAfterDocumentReference'], params)),
-		] as const;
+export const getQueryUserPageReactQueryKey: UseQueryUserPageQueryKeyFn = (
+	params,
+) =>
+	[
+		'user',
+		JSON.stringify(R.omit(['startAfterDocumentReference'], params)),
+	] as const;
 
-export const getQueryUserPageReactQueryOptions: UseQueryUserPageOptionsFn =
-	(props) => ({
-		queryFn: () => queryUserPage(props.firestoreQueryOptions),
-		queryKey: getQueryUserPageReactQueryKey(props.firestoreQueryOptions),
-		...(props.reactQueryOptions ?? {}),
-	});
+export const getQueryUserPageReactQueryOptions: UseQueryUserPageOptionsFn = (
+	props,
+) => ({
+	queryFn: () => queryUserPage(props.firestoreQueryOptions),
+	queryKey: getQueryUserPageReactQueryKey(props.firestoreQueryOptions),
+	...(props.reactQueryOptions ?? {}),
+});
 
 export const useQueryUserPage = ({
 	firestoreQueryOptions,

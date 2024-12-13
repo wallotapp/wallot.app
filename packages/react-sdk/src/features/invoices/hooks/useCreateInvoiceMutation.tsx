@@ -14,17 +14,13 @@ export const useCreateInvoiceMutation = (
 		CreateInvoiceMutationData,
 		CreateInvoiceMutationError,
 		CreateInvoiceMutationParams
-	>(
-		(params: CreateInvoiceMutationParams) =>
-			createInvoice(params),
-		{
-			onError: (error: CreateInvoiceMutationError) => {
-				console.error('Create operation failed:', error);
-			},
-			onSuccess: (data: CreateInvoiceMutationData) => {
-				console.log('Create operation successful', data);
-			},
-			...options,
+	>((params: CreateInvoiceMutationParams) => createInvoice(params), {
+		onError: (error: CreateInvoiceMutationError) => {
+			console.error('Create operation failed:', error);
 		},
-	);
+		onSuccess: (data: CreateInvoiceMutationData) => {
+			console.log('Create operation successful', data);
+		},
+		...options,
+	});
 };

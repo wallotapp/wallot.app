@@ -19,30 +19,26 @@ export type PositionPageQueryResponse =
 
 export type UseQueryPositionPageQueryKeyFn = GeneralizedUseQueryKeyFn<Position>;
 
-export type UseQueryPositionPageOptions = GeneralizedUseQueryPageOptions<Position>;
+export type UseQueryPositionPageOptions =
+	GeneralizedUseQueryPageOptions<Position>;
 
 export type UseQueryPositionPageProps = GeneralizedUseQueryPageProps<Position>;
 
-export type UseQueryPositionPageOptionsFn = GeneralizedUseQueryOptionsFn<Position>;
+export type UseQueryPositionPageOptionsFn =
+	GeneralizedUseQueryOptionsFn<Position>;
 
 export type UseQueryPositionPageObserver =
 	GeneralizedUseQueryPageObserver<Position>;
 
 export type UseCreatePositionMutationOptions =
-	GeneralizedUseCreateDocumentsMutationOptions<
-		Position,
-		CreatePositionParams
-	>;
+	GeneralizedUseCreateDocumentsMutationOptions<Position, CreatePositionParams>;
 export type CreatePositionMutationData = GeneralizedResponse<Position>;
 export type CreatePositionMutationError = GeneralizedResponse<Position>;
 export type CreatePositionMutationParams =
 	FirestoreDocumentCreateParams<CreatePositionParams>;
 
 export type UseUpdatePositionMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		Position,
-		UpdatePositionParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<Position, UpdatePositionParams>;
 export type UpdatePositionMutationData = unknown;
 export type UpdatePositionMutationError = GeneralizedResponse<Position>;
 export type UpdatePositionMutationParams =

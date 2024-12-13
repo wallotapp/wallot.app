@@ -15,8 +15,7 @@ export const useCreatePaymentMethodMutation = (
 		CreatePaymentMethodMutationError,
 		CreatePaymentMethodMutationParams
 	>(
-		(params: CreatePaymentMethodMutationParams) =>
-			createPaymentMethod(params),
+		(params: CreatePaymentMethodMutationParams) => createPaymentMethod(params),
 		{
 			onError: (error: CreatePaymentMethodMutationError) => {
 				console.error('Create operation failed:', error);

@@ -1,10 +1,6 @@
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 import { generalizedFirestoreCollectionPageQuery } from 'ergonomic-react/src/features/data';
-import {
-	Model,
-	getFirestoreCollectionPath,
-	modelsApi,
-} from '@wallot/js';
+import { Model, getFirestoreCollectionPath, modelsApi } from '@wallot/js';
 
 export const queryModelPage = generalizedFirestoreCollectionPageQuery<Model>(
 	getFirestoreCollectionPath('model'),

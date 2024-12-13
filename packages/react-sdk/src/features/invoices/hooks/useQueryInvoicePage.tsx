@@ -7,12 +7,13 @@ import {
 	UseQueryInvoicePageProps,
 } from '@wallot/react/src/features/invoices/types/InvoiceReactTypes';
 
-export const getQueryInvoicePageReactQueryKey: UseQueryInvoicePageQueryKeyFn =
-	(params) =>
-		[
-			'invoice',
-			JSON.stringify(R.omit(['startAfterDocumentReference'], params)),
-		] as const;
+export const getQueryInvoicePageReactQueryKey: UseQueryInvoicePageQueryKeyFn = (
+	params,
+) =>
+	[
+		'invoice',
+		JSON.stringify(R.omit(['startAfterDocumentReference'], params)),
+	] as const;
 
 export const getQueryInvoicePageReactQueryOptions: UseQueryInvoicePageOptionsFn =
 	(props) => ({

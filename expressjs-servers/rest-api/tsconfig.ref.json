@@ -1,27 +1,27 @@
 {
-  "compilerOptions": {
-    // Start -- Shared compiler options for the entire workspace
-    "alwaysStrict": true,
-    "esModuleInterop": true,
-    "noEmitOnError": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    // End -- Shared compiler options for the entire workspace
+	"compilerOptions": {
+		// Start -- Shared compiler options for the entire workspace
+		"alwaysStrict": true,
+		"esModuleInterop": true,
+		"noEmitOnError": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"resolveJsonModule": true,
+		"strict": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": true,
+		// End -- Shared compiler options for the entire workspace
 
-    // Start -- Compiler options for monorepo workspace packages
-    "composite": true
-    // End -- Compiler options for monorepo workspace packages
-  },
-  "exclude": ["./dist", "**/*.test.ts"],
-  "extends": "./tsconfig.json",
-  "include": ["**/*.ts", "**/lib/*.json"]
+		// Start -- Compiler options for monorepo workspace packages
+		"composite": true
+		// End -- Compiler options for monorepo workspace packages
+	},
+	"exclude": ["./dist", "**/*.test.ts"],
+	"extends": "./tsconfig.json",
+	"include": ["**/*.ts", "**/lib/*.json"]
 }

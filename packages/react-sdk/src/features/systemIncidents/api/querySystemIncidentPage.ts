@@ -6,7 +6,8 @@ import {
 	systemIncidentsApi,
 } from '@wallot/js';
 
-export const querySystemIncidentPage = generalizedFirestoreCollectionPageQuery<SystemIncident>(
-	getFirestoreCollectionPath('system_incident'),
-	systemIncidentsApi as unknown as GeneralizedApiResourceSpec,
-);
+export const querySystemIncidentPage =
+	generalizedFirestoreCollectionPageQuery<SystemIncident>(
+		getFirestoreCollectionPath('system_incident'),
+		systemIncidentsApi as unknown as GeneralizedApiResourceSpec,
+	);

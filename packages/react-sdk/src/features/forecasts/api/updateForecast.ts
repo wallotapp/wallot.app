@@ -7,11 +7,10 @@ import {
 } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const updateForecast =
-	generalizedFirestoreDocumentUpdateOperation<
-		UpdateForecastParams,
-		Forecast
-	>(
-		getFirestoreCollectionPath('forecast'),
-		forecastsApi as unknown as GeneralizedApiResourceSpec,
-	);
+export const updateForecast = generalizedFirestoreDocumentUpdateOperation<
+	UpdateForecastParams,
+	Forecast
+>(
+	getFirestoreCollectionPath('forecast'),
+	forecastsApi as unknown as GeneralizedApiResourceSpec,
+);
