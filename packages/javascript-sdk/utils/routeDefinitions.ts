@@ -2,19 +2,36 @@ import { getEnum, EnumMember } from 'ergonomic';
 
 // Home Web App
 export const HomeWebAppRouteStaticIdEnum = getEnum([
+	'HOME_WEB_APP__/ASSETS',
+	'HOME_WEB_APP__/CONFIRM-FINANCIAL-CONNECTION',
 	'HOME_WEB_APP__/INDEX',
-	'HOME_WEB_APP__/POSTS/[SLUG]/CONTENT',
+	'HOME_WEB_APP__/GET_STARTED',
+	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM',
+	'HOME_WEB_APP__/RECOMMENDATIONS/[RECOMMENDATION_ID]/DETAILS',
 ]);
 export type HomeWebAppRouteStaticId = EnumMember<
 	typeof HomeWebAppRouteStaticIdEnum
 >;
 
 export type HomeWebAppRouteQueryParams = {
+	'HOME_WEB_APP__/ASSETS': {
+		//
+	};
+	'HOME_WEB_APP__/CONFIRM-FINANCIAL-CONNECTION': {
+		//
+	};
 	'HOME_WEB_APP__/INDEX': {
 		//
 	};
-	'HOME_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
+	'HOME_WEB_APP__/GET_STARTED': {
+		//
+	};
+	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM': {
+		order_id: string | undefined;
+	};
+	'HOME_WEB_APP__/RECOMMENDATIONS/[RECOMMENDATION_ID]/DETAILS': {
+		client_token?: string | undefined;
+		recommendation_id: string | undefined;
 	};
 };
 
@@ -32,7 +49,7 @@ export type AdminWebAppRouteQueryParams = {
 		//
 	};
 	'ADMIN_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
+		slug: string | undefined;
 	};
 };
 
@@ -50,7 +67,7 @@ export type BlogWebAppRouteQueryParams = {
 		//
 	};
 	'BLOG_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
+		slug: string | undefined;
 	};
 };
 
@@ -68,7 +85,7 @@ export type KnowledgeBaseWebAppRouteQueryParams = {
 		//
 	};
 	'KNOWLEDGE_BASE_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
+		slug: string | undefined;
 	};
 };
 
@@ -86,7 +103,7 @@ export type ReferralsWebAppRouteQueryParams = {
 		//
 	};
 	'REFERRALS_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
+		slug: string | undefined;
 	};
 };
 
@@ -104,7 +121,7 @@ export type SsoWebAppRouteQueryParams = {
 		//
 	};
 	'SSO_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
+		slug: string | undefined;
 	};
 };
 
@@ -122,7 +139,7 @@ export type StatusWebAppRouteQueryParams = {
 		//
 	};
 	'STATUS_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
+		slug: string | undefined;
 	};
 };
 
@@ -140,7 +157,7 @@ export type SupportWebAppRouteQueryParams = {
 		//
 	};
 	'SUPPORT_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
+		slug: string | undefined;
 	};
 };
 
