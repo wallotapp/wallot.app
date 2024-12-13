@@ -1,16 +1,7 @@
 import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreDocumentWrite';
-import {
-	UpdateForecastParams,
-	Forecast,
-	getFirestoreCollectionPath,
-	forecastsApi,
-} from '@wallot/js';
-import { GeneralizedApiResourceSpec } from 'ergonomic';
+import { UpdateForecastParams, getFirestoreCollectionPath } from '@wallot/js';
 
-export const updateForecast = generalizedFirestoreDocumentUpdateOperation<
-	UpdateForecastParams,
-	Forecast
->(
-	getFirestoreCollectionPath('forecast'),
-	forecastsApi as unknown as GeneralizedApiResourceSpec,
-);
+export const updateForecast =
+	generalizedFirestoreDocumentUpdateOperation<UpdateForecastParams>(
+		getFirestoreCollectionPath('forecast'),
+	);
