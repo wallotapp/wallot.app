@@ -64,4 +64,4 @@ jobs:
       - name: Deploy function:rest_api
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_REST_API == 'true')
         run: |
-          ./scripts/deploy-firebase-cloud-function.sh rest-api
+          chmod +x ./scripts/deploy-firebase-cloud-function.sh && ./scripts/deploy-firebase-cloud-function.sh rest-api
