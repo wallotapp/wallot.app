@@ -1,0 +1,8 @@
+{
+  "errorOnDeprecated": true,
+  "preset": "ts-jest",
+  "rootDir": "../..",
+  "roots": ["./packages/javascript-sdk/."],
+  "testEnvironment": "node",
+  "verbose": true
+}

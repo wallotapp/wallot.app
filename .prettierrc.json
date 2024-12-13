@@ -1,0 +1,20 @@
+{
+	"arrowParens": "always",
+	"bracketSameLine": false,
+	"bracketSpacing": true,
+	"endOfLine": "lf",
+	"jsxSingleQuote": true,
+	"overrides": [
+		{
+			"files": "*.mdx",
+			"options": { "parser": "markdown" }
+		}
+	],
+	"printWidth": 80,
+	"quoteProps": "as-needed",
+	"semi": true,
+	"singleQuote": true,
+	"tabWidth": 2,
+	"trailingComma": "all",
+	"useTabs": true
+}

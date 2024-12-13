@@ -1,0 +1,39 @@
+{
+	"cSpell.words": [
+		"autochangelog",
+		"doctoc",
+		"expressjs",
+		"firestore",
+		"gtag",
+		"libphonenumber",
+		"luxon",
+		"nextjs",
+		"Parens",
+		"polyfillio",
+		"preconnect",
+		"rrule",
+		"tailwindcss",
+		"tanstack"
+	],
+	"clock.format": "isoUtcDateTime",
+	"cloudcode.project": "app-wallot-staging",
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"files.eol": "\n",
+	"github.copilot.enable": {
+		"properties": false,
+		"json": false,
+		"csv": false
+	},
+	"jest.runMode": "on-demand",
+	"jest.outputConfig": {
+		"revealOn": "demand"
+	},
+	"terminal.integrated.confirmOnExit": "always",
+	"testing.automaticallyOpenTestResults": "neverOpen",
+	"workbench.colorCustomizations": {
+		"editorIndentGuide.background1": "#8CA58B8F",
+		"editorIndentGuide.activeBackground1": "#39FF148F",
+		"tree.indentGuidesStroke": "#39FF148F"
+	}
+}

@@ -1,0 +1,41 @@
+{
+	"author": "Wallot <support@wallot.app> (https://wallot.app)",
+	"bugs": "https://github.com/wallotapp/wallot.app/issues",
+	"contributors": [
+		"Kamar Mack <kamar.mack@wallot.app>"
+	],
+	"description": "Stock trading for absolutely everyone",
+	"engines": {
+		"node": "20"
+	},
+	"homepage": "https://wallot.app",
+	"name": "@wallot/monorepo",
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/wallotapp/wallot.app.git"
+	},
+	"scripts": {
+		"build": "tsc --build ./tsconfig.json",
+		"build-web-app": "cd ./nextjs-web-apps/$npm_config_web_app_name && npm run build && cd -",
+		"ci": "echo 'ci is not implemented yet'",
+		"clean": "tsc --build ./tsconfig.json --clean",
+		"deploy-server": "cd ./expressjs-servers/$npm_config_server_name && npm run deploy && cd -",
+		"deploy-web-app": "cd ./nextjs-web-apps/$npm_config_web_app_name && npm run deploy && cd -",
+		"dev-server": "cd ./expressjs-servers/$npm_config_server_name && npm run dev",
+		"dev-web-app": "cd ./nextjs-web-apps/$npm_config_web_app_name && npm run dev",
+		"format": "doctoc . && prettier --write .",
+		"lint": "eslint . --ext .ts,.tsx",
+		"prepare": "husky install && chmod +x .husky/*",
+		"publish-public-package": "cd ./packages/$npm_config_package_name && npm publish --access public --tag $( [ \"$npm_config_deployment_environment\" = \"live\" ] && echo \"latest\" || echo \"next\" )  && cd -",
+		"publish-restricted-package": "cd ./packages/$npm_config_package_name && npm publish --access restricted --tag $( [ \"$npm_config_deployment_environment\" = \"live\" ] && echo \"latest\" || echo \"next\" )  && cd -",
+		"test": "NODE_OPTIONS=\"--experimental-vm-modules\" npx jest --config='jest.config.json' --verbose",
+		"watch": "tsc --build --watch ./tsconfig.json"
+	},
+	"version": "0.0.1",
+	"workspaces": [
+		"expressjs-servers/*",
+		"nextjs-web-apps/*",
+		"packages/*"
+	]
+}

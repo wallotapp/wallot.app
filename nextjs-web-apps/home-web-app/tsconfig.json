@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    // Start -- Base TypeScript Configurations for a strict environment
+    "alwaysStrict": true,
+    "esModuleInterop": true,
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    // End -- Base TypeScript Configurations for a strict environment
+
+    // Start -- Base TypeScript Configurations for a Next.js environment
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "target": "esnext"
+    // End -- Base TypeScript Configurations for a Next.js environment
+  },
+  "exclude": ["node_modules"],
+  "extends": "../../tsconfig.template-nextjs.json",
+  "include": ["next-env.d.ts", "next-theme.d.ts", "**/*.ts", "**/*.tsx"]
+}

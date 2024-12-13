@@ -1,0 +1,24 @@
+{
+	"hosting": [
+		{
+			"cleanUrls": true,
+			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+			"public": "out",
+			"rewrites": [
+				{"source":"/posts/**/content","destination":"/posts/[slug]/content.html"}
+			],
+			"site": "app-wallot-support-production",
+			"target": "live"
+		},
+		{
+			"cleanUrls": true,
+			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+			"public": "out",
+			"rewrites": [
+				{"source":"/posts/**/content","destination":"/posts/[slug]/content.html"}
+			],
+			"site": "app-wallot-support-staging",
+			"target": "test"
+		}
+	]
+}

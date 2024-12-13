@@ -1,0 +1,8 @@
+{
+  "functions": [
+    {
+      "codebase": "rest-api",
+      "source": "."
+    }
+  ]
+}
