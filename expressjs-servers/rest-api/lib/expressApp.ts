@@ -7,7 +7,7 @@ import {
 	logExpressInvocation,
 	sendExpressResponse,
 } from 'ergonomic-node';
-import { Widget, widgetsApi as apiResourceSpec } from '@wallot/js';
+import { User, usersApi as apiResourceSpec } from '@wallot/js';
 import serverVariablesLive from './serverVariables.live.json' assert { type: 'json' };
 import serverVariablesTest from './serverVariables.test.json' assert { type: 'json' };
 import { secrets } from './secrets.js';
@@ -36,13 +36,10 @@ if (!statSync(gmailApiServiceAccountPath).isFile()) {
 }
 
 // JavaScript SDK
-const mockApiResource: Widget = {
+const mockApiResource: User = {
 	...apiResourceSpec.apiResourceDefaultJson,
 	category: 'default',
-	height_cm: 100,
-	name: 'My Widget',
-	weight_kg: 0.25,
-	width_cm: 100,
+	name: 'My User',
 };
 
 // Add routes
