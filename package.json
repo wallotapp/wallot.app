@@ -27,8 +27,8 @@
 		"format": "doctoc . && prettier --write .",
 		"lint": "eslint . --ext .ts,.tsx",
 		"prepare": "husky install && chmod +x .husky/*",
-		"publish-public-package": "cd ./packages/$npm_config_package_name && npm publish --access public --tag $( [ \"$npm_config_deployment_environment\" = \"live\" ] && echo \"latest\" || echo \"next\" )  && cd -",
-		"publish-restricted-package": "cd ./packages/$npm_config_package_name && npm publish --access restricted --tag $( [ \"$npm_config_deployment_environment\" = \"live\" ] && echo \"latest\" || echo \"next\" )  && cd -",
+		"publish-public-package": "cd ./packages/$npm_config_package_name && echo \"//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN\" > .npmrc && npm publish --access public --tag $( [ \"$npm_config_deployment_environment\" = \"live\" ] && echo \"latest\" || echo \"next\" ) && rm .npmrc && cd -",
+		"publish-restricted-package": "cd ./packages/$npm_config_package_name && echo \"//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN\" > .npmrc && npm publish --access restricted --tag $( [ \"$npm_config_deployment_environment\" = \"live\" ] && echo \"latest\" || echo \"next\" ) && rm .npmrc && cd -",
 		"test": "NODE_OPTIONS=\"--experimental-vm-modules\" npx jest --config='jest.config.json' --verbose",
 		"watch": "tsc --build --watch ./tsconfig.json"
 	},
