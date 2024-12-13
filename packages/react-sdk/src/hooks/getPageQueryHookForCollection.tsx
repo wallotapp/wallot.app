@@ -1,6 +1,6 @@
 import { GeneralizedApiResource, GeneralizedResponse } from 'ergonomic';
 import { UseQueryResult } from '@tanstack/react-query';
-import { GeneralizedFirestoreCollectionPage } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreCollectionPageQuery';
+import { GeneralizedFirestoreCollectionPage } from 'ergonomic-react/src/features/data';
 import { GeneralizedUseQueryPageProps } from 'ergonomic-react/src/lib/tanstackQuery';
 import { WallotCollection } from '@wallot/js';
 

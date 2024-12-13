@@ -1,3 +1,4 @@
+import { GeneralizedResponse } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -7,7 +8,11 @@ import {
 	GeneralizedUseCreateDocumentsMutationOptions,
 	GeneralizedUseUpdateDocumentsMutationOptions,
 } from 'ergonomic-react/src/lib/tanstackQuery';
-import { GeneralizedFirestoreCollectionPage } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreCollectionPageQuery';
+import {
+	FirestoreDocumentCreateParams,
+	FirestoreDocumentUpdateParams,
+	GeneralizedFirestoreCollectionPage,
+} from 'ergonomic-react/src/features/data';
 import {
 	SystemIncident,
 	CreateSystemIncidentParams,
