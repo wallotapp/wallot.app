@@ -43,4 +43,5 @@ jobs:
       - name: Deploy web-app:support-web-app
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_WEB_APPS == 'true' || env.DEPLOY_SUPPORT_WEB_APP == 'true')
         run: |
-          chmod +x ./scripts/deploy-firebase-hosting-site.sh && ./scripts/deploy-firebase-hosting-site.sh support-web-app
+          chmod +x ./scripts/deploy-firebase-hosting-site.sh;
+          ./scripts/deploy-firebase-hosting-site.sh support-web-app ${{ github.ref_name == 'master' && 'app-wallot-support-production' || 'app-wallot-support-staging' }};
