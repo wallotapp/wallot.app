@@ -71,7 +71,7 @@ export const getPageQueryHookForCollection = (
 		return fallbackPageQueryHookForCollection;
 	}
 
-	const hook = queryHookMap[collectionId as AcmeCollection];
+	const hook = queryHookMap[collectionId as WallotCollection];
 	if (!hook) {
 		throw new Error(`No hook found for collection: ${collectionId}`);
 	}
