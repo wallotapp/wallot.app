@@ -110,7 +110,7 @@ export type ReferralsWebAppRouteQueryParams = {
 // SSO Web App
 export const SsoWebAppRouteStaticIdEnum = getEnum([
 	'SSO_WEB_APP__/INDEX',
-	'SSO_WEB_APP__/POSTS/[SLUG]/CONTENT',
+	'SSO_WEB_APP__/REGISTER',
 ]);
 export type SsoWebAppRouteStaticId = EnumMember<
 	typeof SsoWebAppRouteStaticIdEnum
@@ -120,8 +120,8 @@ export type SsoWebAppRouteQueryParams = {
 	'SSO_WEB_APP__/INDEX': {
 		//
 	};
-	'SSO_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string | undefined;
+	'SSO_WEB_APP__/REGISTER': {
+		dest?: string | undefined;
 	};
 };
 

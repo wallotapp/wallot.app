@@ -25,18 +25,14 @@ export const getSsoWebAppRoute = <T extends SsoWebAppRouteStaticId>(
 		}
 		return path;
 	}
-	if (options.routeStaticId === 'SSO_WEB_APP__/POSTS/[SLUG]/CONTENT') {
+	if (options.routeStaticId === 'SSO_WEB_APP__/REGISTER') {
 		const queryParams =
-			options.queryParams as SsoWebAppRouteQueryParams['SSO_WEB_APP__/POSTS/[SLUG]/CONTENT'];
-		const slug = queryParams.slug;
-		const path = `/posts/${slug}/content`;
-		if (includeOrigin) {
-			if (!origin) {
-				console.error('Origin is required');
-				return '/';
-			}
-			return `${origin}${path}`;
-		}
+			options.queryParams as SsoWebAppRouteQueryParams['SSO_WEB_APP__/REGISTER'];
+		const dest = queryParams.dest;
+		const destQuery = dest ? `dest=${encodeURIComponent(dest)}` : '';
+		const queries = [destQuery].filter(Boolean);
+		const path = `/register${queries.length ? `?${queries.join('&')}` : ''}`;
+		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
 	throw new Error('Invalid routeStaticId');
