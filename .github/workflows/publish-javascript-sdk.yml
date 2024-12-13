@@ -41,7 +41,7 @@ jobs:
           docker run --rm \
             -v "${{ github.workspace }}:/usr/src/app" \
             -w "/usr/src/app" \
-            -e NODE_AUTH_TOKEN \
+            -e NPM_TOKEN \
             monorepo-image \
             /bin/bash -c "
               npm ci &&
@@ -50,4 +50,4 @@ jobs:
             "
         env:
           SECRET_CRED_DEPLOYMENT_ENVIRONMENT: ${{ secrets.SECRET_CRED_DEPLOYMENT_ENVIRONMENT }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_GAT }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
