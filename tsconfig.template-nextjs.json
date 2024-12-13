@@ -31,5 +31,5 @@
 		"target": "esnext"
 		// End -- Compiler options for Next.js web apps
 	},
-	"extends": "./tsconfig.template-nextjs.json"
+	"extends": "./tsconfig.template-base.json"
 }
