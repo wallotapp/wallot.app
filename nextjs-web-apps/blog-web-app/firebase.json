@@ -10,8 +10,7 @@
 					"destination": "/posts/[slug]/content.html"
 				}
 			],
-			"site": "app-wallot-blog-production",
-			"target": "live"
+			"site": "app-wallot-blog-production"
 		},
 		{
 			"cleanUrls": true,
@@ -23,8 +22,7 @@
 					"destination": "/posts/[slug]/content.html"
 				}
 			],
-			"site": "app-wallot-blog-staging",
-			"target": "test"
+			"site": "app-wallot-blog-staging"
 		}
 	]
 }

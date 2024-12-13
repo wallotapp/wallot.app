@@ -10,8 +10,7 @@
 					"destination": "/posts/[slug]/content.html"
 				}
 			],
-			"site": "app-wallot-sso-production",
-			"target": "live"
+			"site": "app-wallot-sso-production"
 		},
 		{
 			"cleanUrls": true,
@@ -23,8 +22,7 @@
 					"destination": "/posts/[slug]/content.html"
 				}
 			],
-			"site": "app-wallot-sso-staging",
-			"target": "test"
+			"site": "app-wallot-sso-staging"
 		}
 	]
 }
