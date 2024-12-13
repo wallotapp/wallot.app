@@ -1,0 +1,22 @@
+{
+	"projects": {
+		"live": "app-wallot-production",
+		"test": "app-wallot-staging"
+	},
+	"targets": {
+		"app-wallot-production": {
+			"hosting": {
+				"live": [
+					"app-wallot-blog-production"
+				]
+			}
+		},
+		"app-wallot-staging": {
+			"hosting": {
+				"test": [
+					"app-wallot-blog-staging"
+				]
+			}
+		}
+	}
+}

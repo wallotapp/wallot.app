@@ -1,0 +1,35 @@
+{
+	"compilerOptions": {
+		// Start -- Shared compiler options for the entire workspace
+		"alwaysStrict": true,
+		"esModuleInterop": true,
+		"noEmitOnError": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": true,
+		// End -- Shared compiler options for the entire workspace
+
+		// Start -- Compiler options for Next.js web apps
+		"allowJs": true,
+		"forceConsistentCasingInFileNames": true,
+		"incremental": true,
+		"isolatedModules": true,
+		"jsx": "preserve",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"module": "esnext",
+		"moduleResolution": "node",
+		"noEmit": true,
+		"target": "esnext"
+		// End -- Compiler options for Next.js web apps
+	},
+	"extends": "./tsconfig.template-base.json"
+}

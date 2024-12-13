@@ -1,0 +1,179 @@
+{
+	"tasks": [
+		{
+			"command": "if [ \"${DEVCONTAINER}\" = \"true\" ]; then chmod +x ./scripts/on-vscode-folder-open.sh && bash ./scripts/on-vscode-folder-open.sh; fi",
+			"label": "Handle VS Code Folder Open",
+			"options": {
+				"statusbar": {
+					"hide": true
+				}
+			},
+			"problemMatcher": [],
+			"runOptions": {
+				"runOn": "folderOpen"
+			},
+			"type": "shell"
+		},
+		{
+			"command": "npm run watch",
+			"label": "Start TypeScript Compiler",
+			"options": {
+				"statusbar": {
+					"detail": "Starts the TypeScript compiler in watch mode.",
+					"label": "$(terminal) tsc --watch"
+				}
+			},
+			"presentation": {
+				"group": "Compiler",
+				"reveal": "always"
+			},
+			"problemMatcher": [],
+			"type": "shell"
+		},
+		{
+			"command": "npm run dev-server --server_name=\"rest-api\"",
+			"label": "Run REST API Locally in Test Environment",
+			"options": {
+				"statusbar": {
+					"detail": "Run REST API Locally in Test Environment",
+					"label": "$(terminal) rest-api"
+				}
+			},
+			"presentation": {
+				"group": "Express Servers",
+				"reveal": "always"
+			},
+			"problemMatcher": [],
+			"type": "shell"
+		},
+		{
+			"command": "npm run dev-web-app --web_app_name=\"home-web-app\"",
+			"label": "Run Home Web App Locally in Test Environment",
+			"options": {
+				"statusbar": {
+					"detail": "Run Home Web App Locally in Test Environment",
+					"label": "$(globe) home"
+				}
+			},
+			"presentation": {
+				"group": "Web Apps",
+				"reveal": "always"
+			},
+			"problemMatcher": [],
+			"type": "shell"
+		},
+		{
+			"command": "npm run dev-web-app --web_app_name=\"admin-web-app\"",
+			"label": "Run Admin Web App Locally in Test Environment",
+			"options": {
+				"statusbar": {
+					"detail": "Run Admin Web App Locally in Test Environment",
+					"label": "$(globe) admin"
+				}
+			},
+			"presentation": {
+				"group": "Web Apps",
+				"reveal": "always"
+			},
+			"problemMatcher": [],
+			"type": "shell"
+		},
+		{
+			"command": "npm run dev-web-app --web_app_name=\"blog-web-app\"",
+			"label": "Run Blog Web App Locally in Test Environment",
+			"options": {
+				"statusbar": {
+					"detail": "Run Blog Web App Locally in Test Environment",
+					"label": "$(globe) blog"
+				}
+			},
+			"presentation": {
+				"group": "Web Apps",
+				"reveal": "always"
+			},
+			"problemMatcher": [],
+			"type": "shell"
+		},
+		{
+			"command": "npm run dev-web-app --web_app_name=\"knowledge-base-web-app\"",
+			"label": "Run Knowledge Base Web App Locally in Test Environment",
+			"options": {
+				"statusbar": {
+					"detail": "Run Knowledge Base Web App Locally in Test Environment",
+					"label": "$(globe) knowledge-base"
+				}
+			},
+			"presentation": {
+				"group": "Web Apps",
+				"reveal": "always"
+			},
+			"problemMatcher": [],
+			"type": "shell"
+		},
+		{
+			"command": "npm run dev-web-app --web_app_name=\"referrals-web-app\"",
+			"label": "Run Referrals Web App Locally in Test Environment",
+			"options": {
+				"statusbar": {
+					"detail": "Run Referrals Web App Locally in Test Environment",
+					"label": "$(globe) referrals"
+				}
+			},
+			"presentation": {
+				"group": "Web Apps",
+				"reveal": "always"
+			},
+			"problemMatcher": [],
+			"type": "shell"
+		},
+		{
+			"command": "npm run dev-web-app --web_app_name=\"sso-web-app\"",
+			"label": "Run SSO Web App Locally in Test Environment",
+			"options": {
+				"statusbar": {
+					"detail": "Run SSO Web App Locally in Test Environment",
+					"label": "$(globe) sso"
+				}
+			},
+			"presentation": {
+				"group": "Web Apps",
+				"reveal": "always"
+			},
+			"problemMatcher": [],
+			"type": "shell"
+		},
+		{
+			"command": "npm run dev-web-app --web_app_name=\"status-web-app\"",
+			"label": "Run Status Web App Locally in Test Environment",
+			"options": {
+				"statusbar": {
+					"detail": "Run Status Web App Locally in Test Environment",
+					"label": "$(globe) status"
+				}
+			},
+			"presentation": {
+				"group": "Web Apps",
+				"reveal": "always"
+			},
+			"problemMatcher": [],
+			"type": "shell"
+		},
+		{
+			"command": "npm run dev-web-app --web_app_name=\"support-web-app\"",
+			"label": "Run Support Web App Locally in Test Environment",
+			"options": {
+				"statusbar": {
+					"detail": "Run Support Web App Locally in Test Environment",
+					"label": "$(globe) support"
+				}
+			},
+			"presentation": {
+				"group": "Web Apps",
+				"reveal": "always"
+			},
+			"problemMatcher": [],
+			"type": "shell"
+		}
+	],
+	"version": "2.0.0"
+}
