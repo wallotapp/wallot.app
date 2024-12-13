@@ -1,0 +1,31 @@
+{
+	"recommendations": [
+		"GitHub.codespaces",
+		"GitHub.copilot-chat",
+		"GoogleCloudTools.cloudcode",
+		"Orta.vscode-jest",
+		"actboy168.tasks",
+		"adam-bender.commit-message-editor",
+		"angelo-breuer.clock",
+		"bradlc.vscode-tailwindcss",
+		"christian-kohler.path-intellisense",
+		"dbaeumer.vscode-eslint",
+		"eamodio.gitlens",
+		"enkia.tokyo-night",
+		"esbenp.prettier-vscode",
+		"fivepointseven.vscode-theme-onedark-vivid",
+		"github.copilot",
+		"github.vscode-github-actions",
+		"github.vscode-pull-request-github",
+		"huytd.tokyo-city",
+		"mechatroner.rainbow-csv",
+		"ms-vscode-remote.remote-containers",
+		"naumovs.color-highlight",
+		"nycdude.nyc-lights",
+		"statelyai.stately-vscode",
+		"streetsidesoftware.code-spell-checker",
+		"tomoki1207.pdf",
+		"unifiedjs.vscode-mdx",
+		"wix.vscode-import-cost"
+	]
+}

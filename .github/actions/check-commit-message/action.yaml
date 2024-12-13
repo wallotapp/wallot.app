@@ -1,0 +1,104 @@
+# .github/actions/check-commit-message/action.yaml
+name: 'Check Commit Message'
+description: 'Check commit message and set environment variables'
+inputs:
+  commit_message:
+    description: 'The commit message'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - run: |
+        echo 'Commit message: '
+        echo '${{ inputs.commit_message }}'
+        if echo '${{ inputs.commit_message }}' | grep -q '\[skip-build\]'
+        then
+          echo "SKIP_BUILD=true" >> $GITHUB_ENV
+        else
+          echo "SKIP_BUILD=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[publish package:all\]'
+        then
+          echo "PUBLISH_ALL_PACKAGES=true" >> $GITHUB_ENV
+        else
+          echo "PUBLISH_ALL_PACKAGES=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[publish package:javascript-sdk\]'
+        then
+          echo "PUBLISH_JAVASCRIPT_SDK=true" >> $GITHUB_ENV
+        else
+          echo "PUBLISH_JAVASCRIPT_SDK=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[publish package:react-sdk\]'
+        then
+          echo "PUBLISH_REACT_SDK=true" >> $GITHUB_ENV
+        else
+          echo "PUBLISH_REACT_SDK=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:all\]'
+        then
+          echo "DEPLOY_ALL_FUNCTIONS=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_ALL_FUNCTIONS=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:rest-api\]'
+        then
+          echo "DEPLOY_REST_API=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_REST_API=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:all\]'
+        then
+          echo "DEPLOY_ALL_WEB_APPS=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_ALL_WEB_APPS=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:home-web-app\]'
+        then
+          echo "DEPLOY_HOME_WEB_APP=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_HOME_WEB_APP=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:admin-web-app\]'
+        then
+          echo "DEPLOY_ADMIN_WEB_APP=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_ADMIN_WEB_APP=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:blog-web-app\]'
+        then
+          echo "DEPLOY_BLOG_WEB_APP=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_BLOG_WEB_APP=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:knowledge-base-web-app\]'
+        then
+          echo "DEPLOY_KNOWLEDGE_BASE_WEB_APP=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_KNOWLEDGE_BASE_WEB_APP=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:referrals-web-app\]'
+        then
+          echo "DEPLOY_REFERRALS_WEB_APP=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_REFERRALS_WEB_APP=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:sso-web-app\]'
+        then
+          echo "DEPLOY_SSO_WEB_APP=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_SSO_WEB_APP=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:status-web-app\]'
+        then
+          echo "DEPLOY_STATUS_WEB_APP=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_STATUS_WEB_APP=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:support-web-app\]'
+        then
+          echo "DEPLOY_SUPPORT_WEB_APP=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_SUPPORT_WEB_APP=false" >> $GITHUB_ENV
+        fi
+      shell: bash

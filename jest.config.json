@@ -1,0 +1,7 @@
+{
+	"passWithNoTests": true,
+	"preset": "ts-jest",
+	"rootDir": ".",
+	"testEnvironment": "node",
+	"testPathIgnorePatterns": [".test.ts"]
+}
