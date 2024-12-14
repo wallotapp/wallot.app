@@ -59,7 +59,13 @@ export const ConnectBankAccountButton = () => {
 		}: GeneralizedResponse<StripeFinancialConnectionSession>) => {
 			const clientSecret = data[0]?.client_secret as string;
 			const stripe = await stripePromise;
-			if (!stripe) return; // handle error
+			if (!stripe) {
+				toast({
+					title: 'Error',
+					description: 'Failed to connect to Stripe',
+				});
+				return;
+			}
 			const { financialConnectionsSession } =
 				await stripe.collectFinancialConnectionsAccounts({
 					clientSecret,
