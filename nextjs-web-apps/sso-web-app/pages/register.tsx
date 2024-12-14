@@ -5,13 +5,28 @@ import {
 	PageProps,
 	Page as PageComponent,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { SsoWebAppRouteQueryParams } from '@wallot/js/utils/routeDefinitions';
+import { SsoWebAppRouteQueryParams, getHomeWebAppRoute } from '@wallot/js';
+import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
+import { useForm } from 'react-hook-form';
+import { Input } from 'ergonomic-react/src/components/ui/input';
+import { Label } from 'ergonomic-react/src/components/ui/label';
+import { Button } from 'ergonomic-react/src/components/ui/button';
+import { default as cn } from 'ergonomic-react/src/lib/cn';
+
+const wallotMockUserPayload = {
+	email: 'agitated_carver_88160509@example.com',
+	password: '123456',
+};
+type WallotUserPayload = typeof wallotMockUserPayload;
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
 
 	// Router
 	const router = useRouter();
+
+	// Toaster
+	const { toast } = useToast();
 
 	// ==== Constants ==== //
 
@@ -20,7 +35,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 
 	// Router Query Param Values
 	const { dest } = query;
-	const destDecoded = decodeURIComponent(dest ?? '');
+	const destDecoded = dest ? decodeURIComponent(dest) : null;
 
 	// ==== Constants ==== //
 
@@ -32,20 +47,78 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		...props,
 		routeId: ROUTE_RUNTIME_ID,
 	};
+	const recommendationRoute = getHomeWebAppRoute({
+		includeOrigin: false,
+		origin: null,
+		queryParams: { recommendation_id: '1' },
+		routeStaticId: 'HOME_WEB_APP__/RECOMMENDATIONS/[RECOMMENDATION_ID]/DETAILS',
+	});
+	const {
+		formState: { isSubmitting },
+		handleSubmit,
+		register,
+	} = useForm<WallotUserPayload>({
+		defaultValues: wallotMockUserPayload,
+		shouldUnregister: false,
+	});
+	const onSubmit = async (data: WallotUserPayload) => {
+		toast({
+			title: 'Creating your Wallot account...',
+			description: 'This may take a few seconds.',
+		});
+		// Wait 1 second
+		await new Promise((resolve) => setTimeout(resolve, 2500));
+		console.log('Registering user with following data data:', data);
+		const clientToken = 'mock_tk_123';
+		const redirectUrl =
+			(destDecoded || recommendationRoute) + '?client_token=' + clientToken;
+		await router.push(redirectUrl);
+	};
 
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<p className='font-medium text-xl'>
-				Hello, and welcome to Wallot's SSO Web App! 🚀
-			</p>
-			<p className='font-light text-sm'>
-				Almost before we knew it, we had left the ground.
-			</p>
-			<p className='font-light text-sm'>The dest for this page is: {dest}</p>
-			<p className='font-light text-sm'>
-				The dest for this page (decoded) is: {destDecoded}
-			</p>
+			<div className='p-8'>
+				<div className='max-w-2xl'>
+					<div>
+						<p className='text-2xl font-bold'>Create your account</p>
+					</div>
+					<div className='mt-4'>
+						<form onSubmit={handleSubmit(onSubmit) as () => void}>
+							<div>
+								<Label>
+									<p>Email address</p>
+								</Label>
+								<Input
+									placeholder='Email address'
+									type='text'
+									{...register('email', { required: true })}
+								/>
+							</div>
+							<div className='mt-4 text-right'>
+								<Button disabled={isSubmitting} type='submit'>
+									<div>
+										{isSubmitting ? (
+											<>
+												<div className='flex items-center justify-center space-x-2 min-w-16'>
+													<div
+														className={cn(
+															'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
+															'border-t-[#7F43D7] border-r-[#7F43D7] border-b-[#7F43D7]',
+														)}
+													></div>
+												</div>
+											</>
+										) : (
+											<p>Continue</p>
+										)}
+									</div>
+								</Button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
 		</PageComponent>
 	);
 };
