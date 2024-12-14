@@ -19,8 +19,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const query: RouteQueryParams = router?.query ?? {};
 
 	// Router Query Param Values
-	const _ = query;
-	typeof _;
+	const { step } = query;
 
 	// ==== Constants ==== //
 
@@ -42,6 +41,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			<p className='font-light text-sm'>
 				Almost before we knew it, we had left the ground.
 			</p>
+			<p className='font-light text-sm'>The step for this page is: {step}</p>
 		</PageComponent>
 	);
 };

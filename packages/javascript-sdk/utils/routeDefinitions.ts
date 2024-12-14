@@ -24,7 +24,7 @@ export type HomeWebAppRouteQueryParams = {
 		//
 	};
 	'HOME_WEB_APP__/GET_STARTED': {
-		//
+		step?: string | undefined;
 	};
 	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM': {
 		order_id: string | undefined;

@@ -35,7 +35,15 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 	}
 	if (options.routeStaticId === 'HOME_WEB_APP__/GET_STARTED') {
 		const path = `/get-started`;
-		if (includeOrigin) return `${origin as string}${path}`;
+		const queryParams =
+			options.queryParams as HomeWebAppRouteQueryParams['HOME_WEB_APP__/GET_STARTED'];
+		const step = queryParams.step;
+		const stepQuery = step ? `step=${step}` : '';
+		const queries = [stepQuery].filter(Boolean);
+		if (includeOrigin)
+			return `${origin as string}${path}${
+				queries.length ? `?${queries.join('&')}` : ''
+			}`;
 		return path;
 	}
 	if (options.routeStaticId === 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM') {
