@@ -3,7 +3,7 @@ import { GeneralizedResponse } from 'ergonomic';
 import { handleRouterFunctionError } from './handleRouterFunctionError.js';
 
 export const createRouterFunction = <TResponseData, TParams>(
-	mainLogicFn: (args: TParams) => Promise<TResponseData[]>,
+	fn: (args: TParams) => Promise<TResponseData[]>,
 ) => {
 	return (
 			req: express.Request<unknown, unknown, TParams>,
@@ -13,11 +13,11 @@ export const createRouterFunction = <TResponseData, TParams>(
 		() => {
 			return void (async () => {
 				try {
-					// Extract the ID token from the request body
+					// Extract the parameters from the request body
 					const params = req.body;
 
-					// Store the custom token in the response locals
-					res.locals.data = await mainLogicFn(params);
+					// Call the router function
+					res.locals.data = await fn(params);
 
 					// Proceed to the next middleware
 					return next();
