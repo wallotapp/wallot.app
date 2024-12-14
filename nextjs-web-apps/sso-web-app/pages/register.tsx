@@ -12,6 +12,7 @@ import { Input } from 'ergonomic-react/src/components/ui/input';
 import { Label } from 'ergonomic-react/src/components/ui/label';
 import { Button } from 'ergonomic-react/src/components/ui/button';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
+import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 
 const wallotMockUserPayload = {
 	email: 'agitated_carver_88160509@example.com',
@@ -47,9 +48,10 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		...props,
 		routeId: ROUTE_RUNTIME_ID,
 	};
+	const siteOriginByTarget = useSiteOriginByTarget();
 	const recommendationRoute = getHomeWebAppRoute({
-		includeOrigin: false,
-		origin: null,
+		includeOrigin: true,
+		origin: siteOriginByTarget.HOME_WEB_APP,
 		queryParams: { recommendation_id: '1' },
 		routeStaticId: 'HOME_WEB_APP__/RECOMMENDATIONS/[RECOMMENDATION_ID]/DETAILS',
 	});
