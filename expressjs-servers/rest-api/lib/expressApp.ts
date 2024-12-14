@@ -42,7 +42,7 @@ app.use(initializeResLocalsWithGeneralizedResponseFields());
 // ---- Application Routes: Wallot ---- //
 
 // Users
-import { createUserFunction } from './app/wallot/users/createUserFunction.js';
+import { createUser } from './app/wallot/users/createUser.js';
 app.options('*/v0/users', corsPolicy);
 app.post(
 	'*/v0/users',
@@ -51,14 +51,14 @@ app.post(
 		res: express.Response<unknown, GeneralizedResponse<unknown>>,
 		next,
 	) => {
-		corsPolicy(req, res, createUserFunction(req, res, next));
+		corsPolicy(req, res, createUser(req, res, next));
 	},
 );
 
 // ---- Application Routes: Alpaca ---- //
 
 // Accounts
-import { createAlpacaAccountFunction } from './app/alpaca/accounts/createAlpacaAccountFunction.js';
+import { createAlpacaAccount } from './app/alpaca/accounts/createAlpacaAccount.js';
 app.options('*/v0/alpaca/accounts', corsPolicy);
 app.post(
 	'*/v0/alpaca/accounts',
@@ -67,12 +67,12 @@ app.post(
 		res: express.Response<unknown, GeneralizedResponse<unknown>>,
 		next,
 	) => {
-		corsPolicy(req, res, createAlpacaAccountFunction(req, res, next));
+		corsPolicy(req, res, createAlpacaAccount(req, res, next));
 	},
 );
 
 // ACH Relationships
-import { createAlpacaAchRelationshipFunction } from './app/alpaca/achRelationships/createAlpacaAchRelationshipFunction.js';
+import { createAlpacaAchRelationship } from './app/alpaca/achRelationships/createAlpacaAchRelationship.js';
 app.options('*/v0/alpaca/ach-relationships', corsPolicy);
 app.post(
 	'*/v0/alpaca/ach-relationships',
@@ -81,12 +81,12 @@ app.post(
 		res: express.Response<unknown, GeneralizedResponse<AlpacaAchRelationship>>,
 		next,
 	) => {
-		corsPolicy(req, res, createAlpacaAchRelationshipFunction(req, res, next));
+		corsPolicy(req, res, createAlpacaAchRelationship(req, res, next));
 	},
 );
 
 // ACH Transfers
-import { createAlpacaAchTransferFunction } from './app/alpaca/achTransfers/createAlpacaAchTransferFunction.js';
+import { createAlpacaAchTransfer } from './app/alpaca/achTransfers/createAlpacaAchTransfer.js';
 app.options('*/v0/alpaca/ach-transfers', corsPolicy);
 app.post(
 	'*/v0/alpaca/ach-transfers',
@@ -95,12 +95,12 @@ app.post(
 		res: express.Response<unknown, GeneralizedResponse<unknown>>,
 		next,
 	) => {
-		corsPolicy(req, res, createAlpacaAchTransferFunction(req, res, next));
+		corsPolicy(req, res, createAlpacaAchTransfer(req, res, next));
 	},
 );
 
 // Orders
-import { createAlpacaOrderFunction } from './app/alpaca/orders/createAlpacaOrderFunction.js';
+import { createAlpacaOrder } from './app/alpaca/orders/createAlpacaOrder.js';
 app.options('*/v0/alpaca/orders', corsPolicy);
 app.post(
 	'*/v0/alpaca/orders',
@@ -109,7 +109,7 @@ app.post(
 		res: express.Response<unknown, GeneralizedResponse<unknown>>,
 		next,
 	) => {
-		corsPolicy(req, res, createAlpacaOrderFunction(req, res, next));
+		corsPolicy(req, res, createAlpacaOrder(req, res, next));
 	},
 );
 
@@ -141,7 +141,7 @@ app.post(
 // ---- Application Routes: Stripe ---- //
 
 // Attach Payment Method
-import { attachStripePaymentMethodFunction } from './app/stripe/paymentMethods/attachStripePaymentMethodFunction.js';
+import { attachStripePaymentMethod } from './app/stripe/paymentMethods/attachStripePaymentMethod.js';
 app.options('*/v0/stripe/attach-payment-method', corsPolicy);
 app.post(
 	'*/v0/stripe/attach-payment-method',
@@ -150,12 +150,12 @@ app.post(
 		res: express.Response<unknown, GeneralizedResponse<unknown>>,
 		next,
 	) => {
-		corsPolicy(req, res, attachStripePaymentMethodFunction(req, res, next));
+		corsPolicy(req, res, attachStripePaymentMethod(req, res, next));
 	},
 );
 
 // Financial Connection Sessions
-import { createStripeFinancialConnectionSessionFunction } from './app/stripe/financialConnections/createStripeFinancialConnectionSessionFunction.js';
+import { createStripeFinancialConnectionSession } from './app/stripe/financialConnections/createStripeFinancialConnectionSession.js';
 app.options('*/v0/stripe/financial-connection-sessions', corsPolicy);
 app.post(
 	'*/v0/stripe/financial-connection-sessions',
@@ -174,13 +174,13 @@ app.post(
 		corsPolicy(
 			req,
 			res,
-			createStripeFinancialConnectionSessionFunction(req, res, next),
+			createStripeFinancialConnectionSession(req, res, next),
 		);
 	},
 );
 
 // Subscriptions
-import { createStripeSubscriptionFunction } from './app/stripe/subscriptions/createStripeSubscriptionFunction.js';
+import { createStripeSubscription } from './app/stripe/subscriptions/createStripeSubscription.js';
 app.options('*/v0/stripe/subscriptions', corsPolicy);
 app.post(
 	'*/v0/stripe/subscriptions',
@@ -189,7 +189,7 @@ app.post(
 		res: express.Response<unknown, GeneralizedResponse<unknown>>,
 		next,
 	) => {
-		corsPolicy(req, res, createStripeSubscriptionFunction(req, res, next));
+		corsPolicy(req, res, createStripeSubscription(req, res, next));
 	},
 );
 

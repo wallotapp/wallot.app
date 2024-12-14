@@ -1,21 +1,10 @@
 import * as express from 'express';
 import { GeneralizedResponse, getGeneralizedError } from 'ergonomic';
-import {
-	CreateStripeFinancialConnectionSessionParams,
-	StripeFinancialConnectionSession,
-} from '@wallot/js';
 
-export const createStripeFinancialConnectionSessionFunction =
+export const createUser =
 	(
-		_req: express.Request<
-			unknown,
-			unknown,
-			CreateStripeFinancialConnectionSessionParams
-		>,
-		res: express.Response<
-			unknown,
-			GeneralizedResponse<StripeFinancialConnectionSession>
-		>,
+		_req: express.Request<unknown, unknown, unknown>,
+		res: express.Response<unknown, GeneralizedResponse<unknown>>,
 		next: express.NextFunction,
 	) =>
 	() => {
@@ -24,7 +13,7 @@ export const createStripeFinancialConnectionSessionFunction =
 				// Wait 1 second
 				await new Promise((resolve) => setTimeout(resolve, 2500));
 				// Response
-				res.locals.data = [{ client_secret: 'todo' }];
+				res.locals.data = [];
 				return next();
 			} catch (err) {
 				const message = (err as Error)?.message || 'Unknown error';

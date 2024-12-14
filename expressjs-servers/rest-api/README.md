@@ -6,14 +6,14 @@ This project is a REST API that provides a set of functions that can be used to 
 
 ## Status
 
-| Service  | Function Name                                  | Implemented? | Documented? | Tested? |
-| -------- | ---------------------------------------------- | ------------ | ----------- | ------- |
-| Wallot   | createUserFunction                             | ❌           | ❌          | ❌      |
-| Alpaca   | createAlpacaAccountFunction                    | ❌           | ❌          | ❌      |
-| Alpaca   | createAlpacaAchRelationshipFunction            | ❌           | ❌          | ❌      |
-| Alpaca   | createAlpacaAchTransferFunction                | ❌           | ❌          | ❌      |
-| Alpaca   | createAlpacaOrderFunction                      | ❌           | ❌          | ❌      |
-| Firebase | createFirebaseAuthCustomTokenFunction          | ✅           | ✅          | ✅      |
-| Stripe   | attachStripePaymentMethodFunction              | ❌           | ❌          | ❌      |
-| Stripe   | createStripeFinancialConnectionSessionFunction | ❌           | ❌          | ❌      |
-| Stripe   | createStripeSubscriptionFunction               | ❌           | ❌          | ❌      |
+| Service  | Function Name                          | Implemented? | Documented? | Tested? |
+| -------- | -------------------------------------- | ------------ | ----------- | ------- |
+| Wallot   | createUser                             | ❌           | ❌          | ❌      |
+| Alpaca   | createAlpacaAccount                    | ❌           | ❌          | ❌      |
+| Alpaca   | createAlpacaAchRelationship            | ❌           | ❌          | ❌      |
+| Alpaca   | createAlpacaAchTransfer                | ❌           | ❌          | ❌      |
+| Alpaca   | createAlpacaOrder                      | ❌           | ❌          | ❌      |
+| Firebase | createFirebaseAuthCustomToken          | ✅           | ✅          | ✅      |
+| Stripe   | attachStripePaymentMethod              | ❌           | ❌          | ❌      |
+| Stripe   | createStripeFinancialConnectionSession | ❌           | ❌          | ❌      |
+| Stripe   | createStripeSubscription               | ❌           | ❌          | ❌      |

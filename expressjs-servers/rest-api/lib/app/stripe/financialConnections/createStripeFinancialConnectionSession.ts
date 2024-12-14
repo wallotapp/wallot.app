@@ -1,18 +1,21 @@
 import * as express from 'express';
 import { GeneralizedResponse, getGeneralizedError } from 'ergonomic';
 import {
-	CreateAlpacaAchRelationshipParams,
-	AlpacaAchRelationship,
+	CreateStripeFinancialConnectionSessionParams,
+	StripeFinancialConnectionSession,
 } from '@wallot/js';
 
-export const createAlpacaAchRelationshipFunction =
+export const createStripeFinancialConnectionSession =
 	(
 		_req: express.Request<
 			unknown,
 			unknown,
-			CreateAlpacaAchRelationshipParams[]
+			CreateStripeFinancialConnectionSessionParams
 		>,
-		res: express.Response<unknown, GeneralizedResponse<AlpacaAchRelationship>>,
+		res: express.Response<
+			unknown,
+			GeneralizedResponse<StripeFinancialConnectionSession>
+		>,
 		next: express.NextFunction,
 	) =>
 	() => {
@@ -21,20 +24,7 @@ export const createAlpacaAchRelationshipFunction =
 				// Wait 1 second
 				await new Promise((resolve) => setTimeout(resolve, 2500));
 				// Response
-				res.locals.data = [
-					{
-						bank_account_number_last4: '1234',
-						bank_account_type: 'checking',
-						id: 'relationship_1',
-						status: 'QUEUED',
-					},
-					{
-						bank_account_number_last4: '5678',
-						bank_account_type: 'savings',
-						id: 'relationship_2',
-						status: 'QUEUED',
-					},
-				];
+				res.locals.data = [{ client_secret: 'todo' }];
 				return next();
 			} catch (err) {
 				const message = (err as Error)?.message || 'Unknown error';
