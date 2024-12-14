@@ -1,8 +1,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
-
 - [REST API](#rest-api)
   - [Overview](#overview)
   - [Status](#status)
@@ -25,6 +23,7 @@ This project is a REST API that provides a set of functions that can be used to 
 | Alpaca   | createAlpacaAchTransfer                | ❌           | ❌          | ❌      |
 | Alpaca   | createAlpacaOrder                      | ❌           | ❌          | ❌      |
 | Firebase | createFirebaseAuthCustomToken          | ✅           | ✅          | ✅      |
+| Stripe   | createStripeCustomer                   | ❌           | ❌          | ❌      |
 | Stripe   | attachStripePaymentMethod              | ❌           | ❌          | ❌      |
 | Stripe   | createStripeFinancialConnectionSession | ❌           | ❌          | ❌      |
 | Stripe   | createStripeSubscription               | ❌           | ❌          | ❌      |
