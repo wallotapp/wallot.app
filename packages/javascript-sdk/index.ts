@@ -13,6 +13,5 @@ export * from './stocks/index.js';
 export * from './systemIncidents/index.js';
 export * from './systemIncidentUpdates/index.js';
 export * from './systemServices/index.js';
-export * from './teams/index.js';
 export * from './transactions/index.js';
 export * from './users/index.js';

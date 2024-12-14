@@ -16,7 +16,6 @@ import { useUpdateStockMutation } from '@wallot/react/src/features/stocks';
 import { useUpdateSystemIncidentMutation } from '@wallot/react/src/features/systemIncidents';
 import { useUpdateSystemIncidentUpdateMutation } from '@wallot/react/src/features/systemIncidentUpdates';
 import { useUpdateSystemServiceMutation } from '@wallot/react/src/features/systemServices';
-import { useUpdateTeamMutation } from '@wallot/react/src/features/teams';
 import { useUpdateTransactionMutation } from '@wallot/react/src/features/transactions';
 import { useUpdateUserMutation } from '@wallot/react/src/features/users';
 
@@ -40,7 +39,6 @@ const updateOperationMutationMap = {
 	system_incident: useUpdateSystemIncidentMutation,
 	system_incident_update: useUpdateSystemIncidentUpdateMutation,
 	system_service: useUpdateSystemServiceMutation,
-	team: useUpdateTeamMutation,
 	transaction: useUpdateTransactionMutation,
 	user: useUpdateUserMutation,
 } as unknown as Record<WallotCollection, MutationHook>;

@@ -14,7 +14,6 @@ import { stocksApi } from '../stocks/index.js';
 import { systemIncidentsApi } from '../systemIncidents/index.js';
 import { systemIncidentUpdatesApi } from '../systemIncidentUpdates/index.js';
 import { systemServicesApi } from '../systemServices/index.js';
-import { teamsApi } from '../teams/index.js';
 import { transactionsApi } from '../transactions/index.js';
 import { usersApi } from '../users/index.js';
 
@@ -50,8 +49,6 @@ export const getApiResourceSpec = (
 			return systemIncidentUpdatesApi as unknown as GeneralizedApiResourceSpec;
 		case 'system_service':
 			return systemServicesApi as unknown as GeneralizedApiResourceSpec;
-		case 'team':
-			return teamsApi as unknown as GeneralizedApiResourceSpec;
 		case 'transaction':
 			return transactionsApi as unknown as GeneralizedApiResourceSpec;
 		case 'user':

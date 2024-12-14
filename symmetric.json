@@ -85,12 +85,6 @@
 			"visibility": "public"
 		},
 		{
-			"id_prefix": "tm",
-			"name_plural": "teams",
-			"name_singular": "team",
-			"visibility": "public"
-		},
-		{
 			"id_prefix": "tr",
 			"name_plural": "transactions",
 			"name_singular": "transaction",

@@ -15,7 +15,6 @@ export const idPrefixByCollection = {
 	system_incident: 'incd',
 	system_incident_update: 'incd_up',
 	system_service: 'serv',
-	team: 'tm',
 	transaction: 'tr',
 	user: 'usr',
 } as const;
@@ -35,7 +34,6 @@ export const apiYupHelpers = getApiResourceYupHelpers(
 		'system_incident',
 		'system_incident_update',
 		'system_service',
-		'team',
 		'transaction',
 		'user',
 	],
