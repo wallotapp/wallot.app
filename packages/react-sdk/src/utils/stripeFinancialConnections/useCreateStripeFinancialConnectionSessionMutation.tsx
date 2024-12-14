@@ -24,13 +24,13 @@ export const useCreateStripeFinancialConnectionSessionMutation = (
 		(params: CreateStripeFinancialConnectionSessionFormData) =>
 			createStripeFinancialConnectionSession(firebaseUser, params),
 		{
-			onError: (error: unknown) => {
+			onError: (error: GeneralizedResponse) => {
 				console.error(
 					'CreateStripeFinancialConnectionSession operation failed:',
 					error,
 				);
 			},
-			onSuccess: (data: unknown) => {
+			onSuccess: (data: StripeFinancialConnectionSessionResponseData) => {
 				console.log(
 					'CreateStripeFinancialConnectionSession operation successful',
 					data,
