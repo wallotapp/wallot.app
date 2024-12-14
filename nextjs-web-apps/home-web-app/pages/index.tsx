@@ -5,7 +5,8 @@ import {
 	PageProps,
 	Page as PageComponent,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { HomeWebAppRouteQueryParams } from '@wallot/js/utils/routeDefinitions';
+import { HomeWebAppRouteQueryParams, getHomeWebAppRoute } from '@wallot/js';
+import Link from 'next/link';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -33,15 +34,20 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		routeId: ROUTE_RUNTIME_ID,
 	};
 
+	const getStartedRoute = getHomeWebAppRoute({
+		includeOrigin: false,
+		origin: null,
+		queryParams: { step: '1' },
+		routeStaticId: 'HOME_WEB_APP__/GET_STARTED',
+	});
+
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<p className='font-medium text-xl'>
-				Hello, and welcome to Wallot's Home Web App! 🚀
-			</p>
-			<p className='font-light text-sm'>
-				Almost before we knew it, we had left the ground.
-			</p>
+			<h1>Welcome</h1>
+			<Link href={getStartedRoute}>
+				<p>Get Started</p>
+			</Link>
 		</PageComponent>
 	);
 };

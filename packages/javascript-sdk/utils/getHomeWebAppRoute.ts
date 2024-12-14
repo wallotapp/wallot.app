@@ -13,48 +13,44 @@ export type GetHomeWebAppRouteOptions<T extends HomeWebAppRouteStaticId> = {
 export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 	options: GetHomeWebAppRouteOptions<T>,
 ) => {
-	const { includeOrigin = false, origin } = options;
+	const { includeOrigin = false, origin, routeStaticId } = options;
 	if (includeOrigin && !origin) {
 		console.error('Origin is required');
 		return '/';
 	}
-	if (options.routeStaticId === 'HOME_WEB_APP__/ASSETS') {
+	if (routeStaticId === 'HOME_WEB_APP__/ASSETS') {
 		const path = `/assets`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
-	if (options.routeStaticId === 'HOME_WEB_APP__/CONFIRM_FINANCIAL_CONNECTION') {
-		const path = `/confirm-financial-connection`;
+	if (routeStaticId === 'HOME_WEB_APP__/CONFIRM_FINANCIAL_CONNECTION') {
 		const queryParams =
 			options.queryParams as HomeWebAppRouteQueryParams['HOME_WEB_APP__/CONFIRM_FINANCIAL_CONNECTION'];
 		const dest = queryParams.dest;
 		const destQuery = dest ? `dest=${encodeURIComponent(dest)}` : '';
 		const queries = [destQuery].filter(Boolean);
-		if (includeOrigin)
-			return `${origin as string}${path}${
-				queries.length ? `?${queries.join('&')}` : ''
-			}`;
+		const path = `/confirm-financial-connection${
+			queries.length ? `?${queries.join('&')}` : ''
+		}`;
+		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
-	if (options.routeStaticId === 'HOME_WEB_APP__/INDEX') {
+	if (routeStaticId === 'HOME_WEB_APP__/INDEX') {
 		const path = `/`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
-	if (options.routeStaticId === 'HOME_WEB_APP__/GET_STARTED') {
-		const path = `/get-started`;
+	if (routeStaticId === 'HOME_WEB_APP__/GET_STARTED') {
 		const queryParams =
 			options.queryParams as HomeWebAppRouteQueryParams['HOME_WEB_APP__/GET_STARTED'];
 		const step = queryParams.step;
 		const stepQuery = step ? `step=${step}` : '';
 		const queries = [stepQuery].filter(Boolean);
-		if (includeOrigin)
-			return `${origin as string}${path}${
-				queries.length ? `?${queries.join('&')}` : ''
-			}`;
+		const path = `/get-started${queries.length ? `?${queries.join('&')}` : ''}`;
+		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
-	if (options.routeStaticId === 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM') {
+	if (routeStaticId === 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM') {
 		const queryParams =
 			options.queryParams as HomeWebAppRouteQueryParams['HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM'];
 		const orderId = queryParams.order_id;
@@ -67,7 +63,7 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 		return path;
 	}
 	if (
-		options.routeStaticId ===
+		routeStaticId ===
 		'HOME_WEB_APP__/RECOMMENDATIONS/[RECOMMENDATION_ID]/DETAILS'
 	) {
 		const queryParams =

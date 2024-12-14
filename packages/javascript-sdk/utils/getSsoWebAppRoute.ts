@@ -13,19 +13,17 @@ export type GetSsoWebAppRouteOptions<T extends SsoWebAppRouteStaticId> = {
 export const getSsoWebAppRoute = <T extends SsoWebAppRouteStaticId>(
 	options: GetSsoWebAppRouteOptions<T>,
 ) => {
-	const { includeOrigin = false, origin } = options;
-	if (options.routeStaticId === 'SSO_WEB_APP__/INDEX') {
+	const { includeOrigin = false, origin, routeStaticId } = options;
+	if (includeOrigin && !origin) {
+		console.error('Origin is required');
+		return '/';
+	}
+	if (routeStaticId === 'SSO_WEB_APP__/INDEX') {
 		const path = `/`;
-		if (includeOrigin) {
-			if (!origin) {
-				console.error('Origin is required');
-				return '/';
-			}
-			return `${origin}${path}`;
-		}
+		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
-	if (options.routeStaticId === 'SSO_WEB_APP__/REGISTER') {
+	if (routeStaticId === 'SSO_WEB_APP__/REGISTER') {
 		const queryParams =
 			options.queryParams as SsoWebAppRouteQueryParams['SSO_WEB_APP__/REGISTER'];
 		const dest = queryParams.dest;
