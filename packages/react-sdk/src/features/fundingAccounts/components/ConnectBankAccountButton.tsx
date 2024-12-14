@@ -1,6 +1,6 @@
 import { Button } from 'ergonomic-react/src/components/ui/button';
 import { stripePromise } from 'ergonomic-react/src/lib/stripe';
-import { useCreateStripeFinancialConnectionSessionMutation } from '@wallot/react/src/utils/stripeFinancialConnections/useCreateStripeFinancialConnectionSessionMutation';
+import { useCreateStripeFinancialConnectionSessionMutation } from '@wallot/react/src/features/fundingAccounts/hooks/useCreateStripeFinancialConnectionSessionMutation';
 import { StripeFinancialConnectionSessionResponseData } from '@wallot/js';
 
 export const ConnectBankAccountButton = () => {

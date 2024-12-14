@@ -5,7 +5,7 @@ import {
 	CreateStripeFinancialConnectionSessionFormData,
 	StripeFinancialConnectionSessionResponseData,
 } from '@wallot/js';
-import { createStripeFinancialConnectionSession } from '@wallot/react/src/utils/stripeFinancialConnections/createStripeFinancialConnectionSession';
+import { createStripeFinancialConnectionSession } from '@wallot/react/src/features/fundingAccounts/api/createStripeFinancialConnectionSession';
 import { GeneralizedResponse } from 'ergonomic';
 
 export const useCreateStripeFinancialConnectionSessionMutation = (
