@@ -2,6 +2,14 @@ import * as express from 'express';
 import { GeneralizedResponse } from 'ergonomic';
 import { handleRouterFunctionError } from './handleRouterFunctionError.js';
 
+/**
+ * Creates an Express router function that handles asynchronous operations.
+ *
+ * @template TResponseData - The type of the response data.
+ * @template TParams - The type of the parameters.
+ * @param {function(TParams): Promise<TResponseData[]>} fn - The asynchronous function to be executed.
+ * @returns An Express middleware function.
+ */
 export const createRouterFunction = <TResponseData, TParams>(
 	fn: (args: TParams) => Promise<TResponseData[]>,
 ) => {
