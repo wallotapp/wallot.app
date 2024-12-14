@@ -144,13 +144,14 @@
 			{
 				"workspace_package_package_name": "@wallot/rest-api",
 				"custom_environment_variables": [
+					"SECRET_CRED_ALPACA_BROKER_API_BASE_URL",
+					"SECRET_CRED_ALPACA_BROKER_API_KEY",
+					"SECRET_CRED_ALPACA_BROKER_API_SECRET",
 					"SECRET_CRED_ALPHA_VANTAGE_API_KEY",
-					"SECRET_CRED_ALPACA_API_KEY",
-					"SECRET_CRED_ALPACA_API_SECRET",
 					"SECRET_CRED_OPENAI_API_KEY",
 					"SECRET_CRED_STRIPE_API_KEY",
-					"SECRET_CRED_STRIPE_PREMIUM_LICENSE_PRODUCT_ID",
-					"SECRET_CRED_STRIPE_PREMIUM_LICENSE_PRODUCT_MONTHLY_PRICE_ID"
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_ID",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_MONTHLY_PRICE_ID"
 				],
 				"targets": [
 					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"17101\",\"project_id\":\"app-wallot-production\",\"deployment_environment\":\"live\",\"label\":\"rest_api\"}",
