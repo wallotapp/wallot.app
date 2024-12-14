@@ -25,7 +25,15 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 	}
 	if (options.routeStaticId === 'HOME_WEB_APP__/CONFIRM_FINANCIAL_CONNECTION') {
 		const path = `/confirm-financial-connection`;
-		if (includeOrigin) return `${origin as string}${path}`;
+		const queryParams =
+			options.queryParams as HomeWebAppRouteQueryParams['HOME_WEB_APP__/CONFIRM_FINANCIAL_CONNECTION'];
+		const dest = queryParams.dest;
+		const destQuery = dest ? `dest=${encodeURIComponent(dest)}` : '';
+		const queries = [destQuery].filter(Boolean);
+		if (includeOrigin)
+			return `${origin as string}${path}${
+				queries.length ? `?${queries.join('&')}` : ''
+			}`;
 		return path;
 	}
 	if (options.routeStaticId === 'HOME_WEB_APP__/INDEX') {

@@ -18,7 +18,7 @@ export type HomeWebAppRouteQueryParams = {
 		//
 	};
 	'HOME_WEB_APP__/CONFIRM_FINANCIAL_CONNECTION': {
-		//
+		dest?: string | undefined;
 	};
 	'HOME_WEB_APP__/INDEX': {
 		//

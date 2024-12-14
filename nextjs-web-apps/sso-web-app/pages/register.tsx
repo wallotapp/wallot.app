@@ -19,8 +19,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const query: RouteQueryParams = router?.query ?? {};
 
 	// Router Query Param Values
-	const _ = query;
-	typeof _;
+	const { dest } = query;
+	const destDecoded = decodeURIComponent(dest ?? '');
 
 	// ==== Constants ==== //
 
@@ -41,6 +41,10 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			</p>
 			<p className='font-light text-sm'>
 				Almost before we knew it, we had left the ground.
+			</p>
+			<p className='font-light text-sm'>The dest for this page is: {dest}</p>
+			<p className='font-light text-sm'>
+				The dest for this page (decoded) is: {destDecoded}
 			</p>
 		</PageComponent>
 	);
