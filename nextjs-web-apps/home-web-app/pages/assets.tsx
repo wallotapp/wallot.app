@@ -7,6 +7,48 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { HomeWebAppRouteQueryParams } from '@wallot/js/utils/routeDefinitions';
 
+const alpacaMockAssets = [
+	{
+		id: '...',
+		client_order_id: '...',
+		created_at: '2024-12-12T17:42:48.325445516Z',
+		updated_at: '2024-12-12T17:42:48.383109161Z',
+		submitted_at: '2024-12-12T17:42:48.331538917Z',
+		filled_at: '2024-12-12T17:42:48.381423893Z',
+		expired_at: null,
+		canceled_at: null,
+		failed_at: null,
+		replaced_at: null,
+		replaced_by: null,
+		replaces: null,
+		asset_id: '...',
+		symbol: 'AAPL',
+		asset_class: 'us_equity',
+		notional: null,
+		qty: '1',
+		filled_qty: '1',
+		filled_avg_price: '248.04',
+		order_class: '',
+		order_type: 'market',
+		type: 'market',
+		side: 'buy',
+		position_intent: 'buy_to_open',
+		time_in_force: 'gtc',
+		limit_price: null,
+		stop_price: null,
+		status: 'filled',
+		extended_hours: false,
+		legs: null,
+		trail_percent: null,
+		trail_price: null,
+		hwm: null,
+		commission: '0',
+		subtag: null,
+		source: null,
+		expires_at: '2025-03-12T20:00:00Z',
+	},
+];
+
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
 
@@ -36,12 +78,38 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<p className='font-medium text-xl'>
-				Hello, and welcome to Wallot's Home Web App! 🚀
-			</p>
-			<p className='font-light text-sm'>
-				Almost before we knew it, we had left the ground.
-			</p>
+			<div className='p-8'>
+				<div className='max-w-2xl'>
+					<div>
+						<p className='text-2xl font-bold'>Here are your Wallot Assets</p>
+					</div>
+					<div className='mt-4'>
+						<div className='flex flex-col space-y-4'>
+							{alpacaMockAssets.map((asset) => (
+								<div
+									key={asset.id}
+									className='flex flex-col space-y-2 p-4 bg-gray-100 rounded-md'
+								>
+									<div className='flex justify-between'>
+										<p className='text-lg font-bold'>{asset.symbol}</p>
+										<p className='text-lg font-bold'>{asset.qty}</p>
+									</div>
+									<div className='flex justify-between'>
+										<p className='text-sm text-gray-500'>Filled at</p>
+										<p className='text-sm text-gray-500'>
+											{asset.filled_avg_price}
+										</p>
+									</div>
+									<div className='flex justify-between'>
+										<p className='text-sm text-gray-500'>Filled on</p>
+										<p className='text-sm text-gray-500'>{asset.filled_at}</p>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+				</div>
+			</div>
 		</PageComponent>
 	);
 };
