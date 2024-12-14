@@ -2,13 +2,13 @@ import { User as FirebaseUser } from 'firebase/auth';
 import { handleKyError } from 'ergonomic';
 import { getAuthenticatedKyInstance } from '@wallot/react/src/lib/ky';
 import {
-	CreateStripeFinancialConnectionSessionParams,
-	StripeFinancialConnectionSession,
+	CreateAlpacaAchRelationshipsParams,
+	AlpacaAchRelationships,
 } from '@wallot/js';
 
-export const createStripeFinancialConnectionSession = async (
+export const createAlpacaAchRelationships = async (
 	firebaseUser: FirebaseUser | null,
-	params: CreateStripeFinancialConnectionSessionParams,
+	params: CreateAlpacaAchRelationshipsParams,
 ) => {
 	try {
 		if (!firebaseUser) {
@@ -16,10 +16,10 @@ export const createStripeFinancialConnectionSession = async (
 		}
 
 		const data = await getAuthenticatedKyInstance(firebaseUser)
-			.post('v0/stripe-financial-connections/create-session', {
+			.post('v0/alpaca-ach-relationships', {
 				json: params,
 			})
-			.json<StripeFinancialConnectionSession>();
+			.json<AlpacaAchRelationships>();
 		return data;
 	} catch (err) {
 		const kyErr = await handleKyError(err);

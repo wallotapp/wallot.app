@@ -1,8 +1,8 @@
 import * as express from 'express';
 import { getGeneralizedError } from 'ergonomic';
 import {
-	CreateStripeFinancialConnectionSessionFormData,
-	StripeFinancialConnectionSessionResponseData,
+	CreateStripeFinancialConnectionSessionParams,
+	StripeFinancialConnectionSession,
 } from '@wallot/js';
 
 export const createStripeFinancialConnectionSessionFunction =
@@ -10,12 +10,9 @@ export const createStripeFinancialConnectionSessionFunction =
 		_req: express.Request<
 			unknown,
 			unknown,
-			CreateStripeFinancialConnectionSessionFormData
+			CreateStripeFinancialConnectionSessionParams
 		>,
-		res: express.Response<
-			unknown,
-			StripeFinancialConnectionSessionResponseData
-		>,
+		res: express.Response<unknown, StripeFinancialConnectionSession>,
 		next: express.NextFunction,
 	) =>
 	() => {

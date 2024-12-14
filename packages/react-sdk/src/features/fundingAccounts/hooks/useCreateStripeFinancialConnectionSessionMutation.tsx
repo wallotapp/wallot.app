@@ -2,26 +2,26 @@ import { useContext } from 'react';
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 import { AuthContext } from 'ergonomic-react/src/features/authentication/providers/AuthProvider';
 import {
-	CreateStripeFinancialConnectionSessionFormData,
-	StripeFinancialConnectionSessionResponseData,
+	CreateStripeFinancialConnectionSessionParams,
+	StripeFinancialConnectionSession,
 } from '@wallot/js';
 import { createStripeFinancialConnectionSession } from '@wallot/react/src/features/fundingAccounts/api/createStripeFinancialConnectionSession';
 import { GeneralizedResponse } from 'ergonomic';
 
 export const useCreateStripeFinancialConnectionSessionMutation = (
 	options?: UseMutationOptions<
-		StripeFinancialConnectionSessionResponseData,
+		StripeFinancialConnectionSession,
 		GeneralizedResponse,
-		CreateStripeFinancialConnectionSessionFormData
+		CreateStripeFinancialConnectionSessionParams
 	>,
 ) => {
 	const { user: firebaseUser } = useContext(AuthContext);
 	return useMutation<
-		StripeFinancialConnectionSessionResponseData,
+		StripeFinancialConnectionSession,
 		GeneralizedResponse,
-		CreateStripeFinancialConnectionSessionFormData
+		CreateStripeFinancialConnectionSessionParams
 	>(
-		(params: CreateStripeFinancialConnectionSessionFormData) =>
+		(params: CreateStripeFinancialConnectionSessionParams) =>
 			createStripeFinancialConnectionSession(firebaseUser, params),
 		{
 			onError: (error: GeneralizedResponse) => {
@@ -30,7 +30,7 @@ export const useCreateStripeFinancialConnectionSessionMutation = (
 					error,
 				);
 			},
-			onSuccess: (data: StripeFinancialConnectionSessionResponseData) => {
+			onSuccess: (data: StripeFinancialConnectionSession) => {
 				console.log(
 					'CreateStripeFinancialConnectionSession operation successful',
 					data,

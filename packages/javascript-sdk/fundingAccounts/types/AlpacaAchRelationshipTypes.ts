@@ -1,6 +1,6 @@
 import { GeneralizedResponse } from 'ergonomic';
 
-export type CreateAlpacaAchRelationshipPageFormData = {
+export type CreateAlpacaAchRelationshipsParams = {
 	stripe_financial_account_ids: string[];
 };
 
@@ -10,6 +10,6 @@ export type AlpacaAchRelationship = {
 	id: string;
 	status: string;
 };
-export type AlpacaAchRelationshipPageResponseData = GeneralizedResponse<{
+export type AlpacaAchRelationships = GeneralizedResponse<{
 	ach_relationships: AlpacaAchRelationship[];
 }>;

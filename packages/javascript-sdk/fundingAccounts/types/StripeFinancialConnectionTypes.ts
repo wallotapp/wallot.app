@@ -1,9 +1,9 @@
 import { GeneralizedResponse } from 'ergonomic';
 
-export type CreateStripeFinancialConnectionSessionFormData = Record<
+export type CreateStripeFinancialConnectionSessionParams = Record<
 	string,
 	never
 >;
-export type StripeFinancialConnectionSessionResponseData = GeneralizedResponse<{
+export type StripeFinancialConnectionSession = GeneralizedResponse<{
 	client_secret: string;
 }>;

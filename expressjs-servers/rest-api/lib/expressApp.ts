@@ -10,8 +10,8 @@ import {
 import {
 	User,
 	usersApi as apiResourceSpec,
-	CreateStripeFinancialConnectionSessionFormData,
-	StripeFinancialConnectionSessionResponseData,
+	CreateStripeFinancialConnectionSessionParams,
+	StripeFinancialConnectionSession,
 } from '@wallot/js';
 import serverVariablesLive from './serverVariables.live.json' assert { type: 'json' };
 import serverVariablesTest from './serverVariables.test.json' assert { type: 'json' };
@@ -66,12 +66,9 @@ app.post(
 		req: express.Request<
 			unknown,
 			unknown,
-			CreateStripeFinancialConnectionSessionFormData
+			CreateStripeFinancialConnectionSessionParams
 		>,
-		res: express.Response<
-			unknown,
-			StripeFinancialConnectionSessionResponseData
-		>,
+		res: express.Response<unknown, StripeFinancialConnectionSession>,
 		next,
 	) => {
 		corsPolicy(

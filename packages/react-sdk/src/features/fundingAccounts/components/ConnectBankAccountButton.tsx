@@ -1,16 +1,14 @@
 import { Button } from 'ergonomic-react/src/components/ui/button';
 import { stripePromise } from 'ergonomic-react/src/lib/stripe';
 import { useCreateStripeFinancialConnectionSessionMutation } from '@wallot/react/src/features/fundingAccounts/hooks/useCreateStripeFinancialConnectionSessionMutation';
-import { StripeFinancialConnectionSessionResponseData } from '@wallot/js';
+import { StripeFinancialConnectionSession } from '@wallot/js';
 
 export const ConnectBankAccountButton = () => {
 	const {
 		mutate: createStripeFinancialConnectionSession,
 		isLoading: isCreateStripeFinancialConnectionSessionRunning,
 	} = useCreateStripeFinancialConnectionSessionMutation({
-		onSuccess: async ({
-			data,
-		}: StripeFinancialConnectionSessionResponseData) => {
+		onSuccess: async ({ data }: StripeFinancialConnectionSession) => {
 			const clientSecret = data[0]?.client_secret as string;
 			const stripe = await stripePromise;
 			if (!stripe) return; // handle error
