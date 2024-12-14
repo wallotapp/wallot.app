@@ -14,3 +14,6 @@ export * from './getReferralsWebAppRoute.js';
 export * from './getSsoWebAppRoute.js';
 export * from './getStatusWebAppRoute.js';
 export * from './getSupportWebAppRoute.js';
+
+// Custom
+export * from './stripeFinancialConnections/index.js';
