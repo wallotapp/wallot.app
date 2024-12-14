@@ -13,7 +13,7 @@ import { Label } from 'ergonomic-react/src/components/ui/label';
 import { Button } from 'ergonomic-react/src/components/ui/button';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 
-const alpacaMockPayload = {
+const alpacaMockAccountPayload = {
 	contact: {
 		email_address: 'agitated_carver_88160509@example.com',
 		phone_number: '226-555-0970',
@@ -87,7 +87,7 @@ const alpacaMockPayload = {
 	ultimate_beneficial_owners: null,
 	sub_correspondent: null,
 };
-type AlpacaPayload = typeof alpacaMockPayload;
+type AlpacaAccountPayload = typeof alpacaMockAccountPayload;
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -128,11 +128,11 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		formState: { isSubmitting },
 		handleSubmit,
 		register,
-	} = useForm<AlpacaPayload>({
-		defaultValues: alpacaMockPayload,
+	} = useForm<AlpacaAccountPayload>({
+		defaultValues: alpacaMockAccountPayload,
 		shouldUnregister: false,
 	});
-	const onSubmit = async (data: AlpacaPayload) => {
+	const onSubmit = async (data: AlpacaAccountPayload) => {
 		toast({
 			title: 'Building your recommendation...',
 			description: 'This may take a few seconds.',
