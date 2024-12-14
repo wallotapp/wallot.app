@@ -6,8 +6,12 @@
 			"public": "out",
 			"rewrites": [
 				{
-					"source": "/posts/**/content",
-					"destination": "/posts/[slug]/content.html"
+					"source": "/orders/**/confirm",
+					"destination": "/orders/[order_id]/confirm.html"
+				},
+				{
+					"source": "/recommendations/**/details",
+					"destination": "/recommendations/[recommendation_id]/details.html"
 				}
 			],
 			"site": "app-wallot-production"
@@ -18,8 +22,12 @@
 			"public": "out",
 			"rewrites": [
 				{
-					"source": "/posts/**/content",
-					"destination": "/posts/[slug]/content.html"
+					"source": "/orders/**/confirm",
+					"destination": "/orders/[order_id]/confirm.html"
+				},
+				{
+					"source": "/recommendations/**/details",
+					"destination": "/recommendations/[recommendation_id]/details.html"
 				}
 			],
 			"site": "app-wallot-staging"
