@@ -11,9 +11,6 @@ import { paymentMethodsApi } from '../paymentMethods/index.js';
 import { positionsApi } from '../positions/index.js';
 import { recommendationsApi } from '../recommendations/index.js';
 import { stocksApi } from '../stocks/index.js';
-import { systemIncidentsApi } from '../systemIncidents/index.js';
-import { systemIncidentUpdatesApi } from '../systemIncidentUpdates/index.js';
-import { systemServicesApi } from '../systemServices/index.js';
 import { transactionsApi } from '../transactions/index.js';
 import { usersApi } from '../users/index.js';
 
@@ -43,12 +40,6 @@ export const getApiResourceSpec = (
 			return recommendationsApi as unknown as GeneralizedApiResourceSpec;
 		case 'stock':
 			return stocksApi as unknown as GeneralizedApiResourceSpec;
-		case 'system_incident':
-			return systemIncidentsApi as unknown as GeneralizedApiResourceSpec;
-		case 'system_incident_update':
-			return systemIncidentUpdatesApi as unknown as GeneralizedApiResourceSpec;
-		case 'system_service':
-			return systemServicesApi as unknown as GeneralizedApiResourceSpec;
 		case 'transaction':
 			return transactionsApi as unknown as GeneralizedApiResourceSpec;
 		case 'user':

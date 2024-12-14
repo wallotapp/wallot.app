@@ -67,24 +67,6 @@
 			"visibility": "public"
 		},
 		{
-			"id_prefix": "incd",
-			"name_plural": "system_incidents",
-			"name_singular": "system_incident",
-			"visibility": "public"
-		},
-		{
-			"id_prefix": "incd_up",
-			"name_plural": "system_incident_updates",
-			"name_singular": "system_incident_update",
-			"visibility": "public"
-		},
-		{
-			"id_prefix": "serv",
-			"name_plural": "system_services",
-			"name_singular": "system_service",
-			"visibility": "public"
-		},
-		{
 			"id_prefix": "tr",
 			"name_plural": "transactions",
 			"name_singular": "transaction",

@@ -10,8 +10,5 @@ export * from './paymentMethods/index.js';
 export * from './positions/index.js';
 export * from './recommendations/index.js';
 export * from './stocks/index.js';
-export * from './systemIncidents/index.js';
-export * from './systemIncidentUpdates/index.js';
-export * from './systemServices/index.js';
 export * from './transactions/index.js';
 export * from './users/index.js';

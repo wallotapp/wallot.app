@@ -15,9 +15,6 @@ import { useQueryPaymentMethodPage } from '@wallot/react/src/features/paymentMet
 import { useQueryPositionPage } from '@wallot/react/src/features/positions';
 import { useQueryRecommendationPage } from '@wallot/react/src/features/recommendations';
 import { useQueryStockPage } from '@wallot/react/src/features/stocks';
-import { useQuerySystemIncidentPage } from '@wallot/react/src/features/systemIncidents';
-import { useQuerySystemIncidentUpdatePage } from '@wallot/react/src/features/systemIncidentUpdates';
-import { useQuerySystemServicePage } from '@wallot/react/src/features/systemServices';
 import { useQueryTransactionPage } from '@wallot/react/src/features/transactions';
 import { useQueryUserPage } from '@wallot/react/src/features/users';
 
@@ -38,9 +35,6 @@ const queryHookMap = {
 	position: useQueryPositionPage,
 	recommendation: useQueryRecommendationPage,
 	stock: useQueryStockPage,
-	system_incident: useQuerySystemIncidentPage,
-	system_incident_update: useQuerySystemIncidentUpdatePage,
-	system_service: useQuerySystemServicePage,
 	transaction: useQueryTransactionPage,
 	user: useQueryUserPage,
 } as Record<WallotCollection, PageQueryHook>;
