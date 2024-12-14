@@ -21,9 +21,16 @@ import serverVariablesTest from './serverVariables.test.json' assert { type: 'js
 import { secrets } from './secrets.js';
 import { directoryPath } from './directoryPath.js';
 import {
+	createAlpacaAccountFunction,
 	createAlpacaAchRelationshipFunction,
+	createAlpacaAchTransferFunction,
+	createAlpacaOrder,
+} from './app/alpaca/index.js';
+import {
+	attachStripePaymentMethodFunction,
 	createStripeFinancialConnectionSessionFunction,
-} from './app/index.js';
+	createStripeSubscriptionFunction,
+} from './app/stripe/index.js';
 
 const { SECRET_CRED_DEPLOYMENT_ENVIRONMENT } = secrets;
 const serverVariables =
@@ -64,7 +71,22 @@ addHealthRoutesToExpressApp(app, {
 	mockApiResource,
 });
 
-// ---- Application Routes: Billing ---- //
+// ---- Application Routes: Alpaca ---- //
+
+// Accounts
+app.options('*/v0/alpaca/accounts', corsPolicy);
+app.post(
+	'*/v0/alpaca/accounts',
+	(
+		req: express.Request<unknown, unknown, unknown>,
+		res: express.Response<unknown, GeneralizedResponse<unknown>>,
+		next,
+	) => {
+		corsPolicy(req, res, createAlpacaAccountFunction(req, res, next));
+	},
+);
+
+// ACH Relationships
 app.options('*/v0/alpaca/ach-relationships', corsPolicy);
 app.post(
 	'*/v0/alpaca/ach-relationships',
@@ -76,9 +98,52 @@ app.post(
 		corsPolicy(req, res, createAlpacaAchRelationshipFunction(req, res, next));
 	},
 );
-app.options('*/v0/stripe/financial-connections/create-session', corsPolicy);
+
+// ACH Transfers
+app.options('*/v0/alpaca/ach-transfers', corsPolicy);
 app.post(
-	'*/v0/stripe/financial-connections/create-session',
+	'*/v0/alpaca/ach-transfers',
+	(
+		req: express.Request<unknown, unknown, unknown>,
+		res: express.Response<unknown, GeneralizedResponse<unknown>>,
+		next,
+	) => {
+		corsPolicy(req, res, createAlpacaAchTransferFunction(req, res, next));
+	},
+);
+
+// Orders
+app.options('*/v0/alpaca/orders', corsPolicy);
+app.post(
+	'*/v0/alpaca/orders',
+	(
+		req: express.Request<unknown, unknown, unknown>,
+		res: express.Response<unknown, GeneralizedResponse<unknown>>,
+		next,
+	) => {
+		corsPolicy(req, res, createAlpacaOrder(req, res, next));
+	},
+);
+
+// ---- Application Routes: Stripe ---- //
+
+// Attach Payment Method
+app.options('*/v0/stripe/attach-payment-method', corsPolicy);
+app.post(
+	'*/v0/stripe/attach-payment-method',
+	(
+		req: express.Request<unknown, unknown, unknown>,
+		res: express.Response<unknown, GeneralizedResponse<unknown>>,
+		next,
+	) => {
+		corsPolicy(req, res, attachStripePaymentMethodFunction(req, res, next));
+	},
+);
+
+// Financial Connection Sessions
+app.options('*/v0/stripe/financial-connection-sessions', corsPolicy);
+app.post(
+	'*/v0/stripe/financial-connection-sessions',
 	(
 		req: express.Request<
 			unknown,
@@ -96,6 +161,19 @@ app.post(
 			res,
 			createStripeFinancialConnectionSessionFunction(req, res, next),
 		);
+	},
+);
+
+// Subscriptions
+app.options('*/v0/stripe/subscriptions', corsPolicy);
+app.post(
+	'*/v0/stripe/subscriptions',
+	(
+		req: express.Request<unknown, unknown, unknown>,
+		res: express.Response<unknown, GeneralizedResponse<unknown>>,
+		next,
+	) => {
+		corsPolicy(req, res, createStripeSubscriptionFunction(req, res, next));
 	},
 );
 
