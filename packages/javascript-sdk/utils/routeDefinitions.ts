@@ -3,7 +3,7 @@ import { getEnum, EnumMember } from 'ergonomic';
 // Home Web App
 export const HomeWebAppRouteStaticIdEnum = getEnum([
 	'HOME_WEB_APP__/ASSETS',
-	'HOME_WEB_APP__/CONFIRM-FINANCIAL-CONNECTION',
+	'HOME_WEB_APP__/CONFIRM_FINANCIAL_CONNECTION',
 	'HOME_WEB_APP__/INDEX',
 	'HOME_WEB_APP__/GET_STARTED',
 	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM',
@@ -17,7 +17,7 @@ export type HomeWebAppRouteQueryParams = {
 	'HOME_WEB_APP__/ASSETS': {
 		//
 	};
-	'HOME_WEB_APP__/CONFIRM-FINANCIAL-CONNECTION': {
+	'HOME_WEB_APP__/CONFIRM_FINANCIAL_CONNECTION': {
 		//
 	};
 	'HOME_WEB_APP__/INDEX': {

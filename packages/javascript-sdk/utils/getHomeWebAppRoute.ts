@@ -23,7 +23,7 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
-	if (options.routeStaticId === 'HOME_WEB_APP__/CONFIRM-FINANCIAL-CONNECTION') {
+	if (options.routeStaticId === 'HOME_WEB_APP__/CONFIRM_FINANCIAL_CONNECTION') {
 		const path = `/confirm-financial-connection`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
