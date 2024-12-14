@@ -1,7 +1,11 @@
 import * as cors from 'cors';
 import * as express from 'express';
 import { statSync } from 'fs';
-import { GeneralizedResponse } from 'ergonomic';
+import {
+	GeneralizedResponse,
+	FirebaseUserCustomTokenParams,
+	FirebaseUserCustomTokenResponse,
+} from 'ergonomic';
 import {
 	addHealthRoutesToExpressApp,
 	initializeResLocalsWithGeneralizedResponseFields,
@@ -117,8 +121,8 @@ app.options('*/v0/firebase/auth/custom-tokens', corsPolicy);
 app.post(
 	'*/v0/firebase/auth/custom-tokens',
 	(
-		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResponse<unknown>>,
+		req: express.Request<unknown, unknown, FirebaseUserCustomTokenParams>,
+		res: express.Response<unknown, FirebaseUserCustomTokenResponse>,
 		next,
 	) => {
 		corsPolicy(req, res, createFirebaseAuthCustomTokenFunction(req, res, next));
