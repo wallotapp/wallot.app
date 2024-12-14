@@ -7,11 +7,17 @@ import {
 	logExpressInvocation,
 	sendExpressResponse,
 } from 'ergonomic-node';
-import { User, usersApi as apiResourceSpec } from '@wallot/js';
+import {
+	User,
+	usersApi as apiResourceSpec,
+	CreateStripeFinancialConnectionSessionFormData,
+	StripeFinancialConnectionSessionResponseData,
+} from '@wallot/js';
 import serverVariablesLive from './serverVariables.live.json' assert { type: 'json' };
 import serverVariablesTest from './serverVariables.test.json' assert { type: 'json' };
 import { secrets } from './secrets.js';
 import { directoryPath } from './directoryPath.js';
+import { createStripeFinancialConnectionSessionFunction } from './app/index.js';
 
 const { SECRET_CRED_DEPLOYMENT_ENVIRONMENT } = secrets;
 const serverVariables =
@@ -51,6 +57,30 @@ addHealthRoutesToExpressApp(app, {
 	gmailApiServiceAccountPath,
 	mockApiResource,
 });
+
+// ---- Application Routes: Stripe Financial Connections ---- //
+app.options('*/v0/stripe-financial-connections/create-session', corsPolicy);
+app.post(
+	'*/v0/stripe-financial-connections/create-session',
+	(
+		req: express.Request<
+			unknown,
+			unknown,
+			CreateStripeFinancialConnectionSessionFormData
+		>,
+		res: express.Response<
+			unknown,
+			StripeFinancialConnectionSessionResponseData
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createStripeFinancialConnectionSessionFunction(req, res, next),
+		);
+	},
+);
 
 // ---- End of Invocation Middleware ---- //
 app.use(sendExpressResponse());
