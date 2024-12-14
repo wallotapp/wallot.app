@@ -2,33 +2,33 @@ import { useContext } from 'react';
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 import { AuthContext } from 'ergonomic-react/src/features/authentication/providers/AuthProvider';
 import {
-	CreateAlpacaAchRelationshipsParams,
+	CreateAlpacaAchRelationshipParams,
 	AlpacaAchRelationship,
 } from '@wallot/js';
-import { createAlpacaAchRelationships } from '@wallot/react/src/features/fundingAccounts/api/createAlpacaAchRelationships';
+import { createAlpacaAchRelationship } from '@wallot/react/src/features/fundingAccounts/api/createAlpacaAchRelationship';
 import { GeneralizedResponse } from 'ergonomic';
 
-export const useCreateAlpacaAchRelationshipsMutation = (
+export const useCreateAlpacaAchRelationshipMutation = (
 	options?: UseMutationOptions<
 		GeneralizedResponse<AlpacaAchRelationship>,
 		GeneralizedResponse,
-		CreateAlpacaAchRelationshipsParams
+		CreateAlpacaAchRelationshipParams[]
 	>,
 ) => {
 	const { user: firebaseUser } = useContext(AuthContext);
 	return useMutation<
 		GeneralizedResponse<AlpacaAchRelationship>,
 		GeneralizedResponse,
-		CreateAlpacaAchRelationshipsParams
+		CreateAlpacaAchRelationshipParams[]
 	>(
-		(params: CreateAlpacaAchRelationshipsParams) =>
-			createAlpacaAchRelationships(firebaseUser, params),
+		(params: CreateAlpacaAchRelationshipParams[]) =>
+			createAlpacaAchRelationship(firebaseUser, params),
 		{
 			onError: (error: GeneralizedResponse) => {
-				console.error('CreateAlpacaAchRelationships operation failed:', error);
+				console.error('CreateAlpacaAchRelationship operation failed:', error);
 			},
 			onSuccess: (data: GeneralizedResponse<AlpacaAchRelationship>) => {
-				console.log('CreateAlpacaAchRelationships operation successful', data);
+				console.log('CreateAlpacaAchRelationship operation successful', data);
 			},
 			...options,
 		},

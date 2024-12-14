@@ -1,13 +1,17 @@
 import * as express from 'express';
 import { GeneralizedResponse, getGeneralizedError } from 'ergonomic';
 import {
-	CreateAlpacaAchRelationshipsParams,
+	CreateAlpacaAchRelationshipParams,
 	AlpacaAchRelationship,
 } from '@wallot/js';
 
 export const createAlpacaAchRelationshipFunction =
 	(
-		_req: express.Request<unknown, unknown, CreateAlpacaAchRelationshipsParams>,
+		_req: express.Request<
+			unknown,
+			unknown,
+			CreateAlpacaAchRelationshipParams[]
+		>,
 		res: express.Response<unknown, GeneralizedResponse<AlpacaAchRelationship>>,
 		next: express.NextFunction,
 	) =>

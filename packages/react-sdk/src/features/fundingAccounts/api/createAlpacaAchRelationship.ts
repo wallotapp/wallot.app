@@ -2,13 +2,13 @@ import { User as FirebaseUser } from 'firebase/auth';
 import { GeneralizedResponse, handleKyError } from 'ergonomic';
 import { getAuthenticatedKyInstance } from '@wallot/react/src/lib/ky';
 import {
-	CreateAlpacaAchRelationshipsParams,
+	CreateAlpacaAchRelationshipParams,
 	AlpacaAchRelationship,
 } from '@wallot/js';
 
-export const createAlpacaAchRelationships = async (
+export const createAlpacaAchRelationship = async (
 	firebaseUser: FirebaseUser | null,
-	params: CreateAlpacaAchRelationshipsParams,
+	params: CreateAlpacaAchRelationshipParams[],
 ) => {
 	try {
 		if (!firebaseUser) {

@@ -13,7 +13,8 @@
 		"preconnect",
 		"rrule",
 		"tailwindcss",
-		"tanstack"
+		"tanstack",
+		"wallot"
 	],
 	"clock.format": "isoUtcDateTime",
 	"cloudcode.project": "app-wallot-staging",

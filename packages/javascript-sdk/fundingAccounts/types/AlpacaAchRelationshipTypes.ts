@@ -1,5 +1,5 @@
-export type CreateAlpacaAchRelationshipsParams = {
-	stripe_financial_account_ids: string[];
+export type CreateAlpacaAchRelationshipParams = {
+	stripe_financial_account_id: string;
 };
 
 export type AlpacaAchRelationship = {

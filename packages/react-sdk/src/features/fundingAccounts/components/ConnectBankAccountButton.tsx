@@ -6,7 +6,7 @@ import {
 	AlpacaAchRelationship,
 	StripeFinancialConnectionSession,
 } from '@wallot/js';
-import { useCreateAlpacaAchRelationshipsMutation } from '@wallot/react/src/features/fundingAccounts/hooks/useCreateAlpacaAchRelationshipsMutation';
+import { useCreateAlpacaAchRelationshipMutation } from '@wallot/react/src/features/fundingAccounts/hooks/useCreateAlpacaAchRelationshipMutation';
 import { useCreateStripeFinancialConnectionSessionMutation } from '@wallot/react/src/features/fundingAccounts/hooks/useCreateStripeFinancialConnectionSessionMutation';
 import { useState } from 'react';
 
@@ -23,9 +23,9 @@ export const ConnectBankAccountButton = () => {
 	>([]);
 
 	const {
-		mutate: createAlpacaAchRelationships,
-		isLoading: isCreateAlpacaAchRelationshipsRunning,
-	} = useCreateAlpacaAchRelationshipsMutation({
+		mutate: createAlpacaAchRelationship,
+		isLoading: isCreateAlpacaAchRelationshipRunning,
+	} = useCreateAlpacaAchRelationshipMutation({
 		onError: ({ errors }: GeneralizedResponse) => {
 			const error = errors[0]?.error.message || defaultErrorMessage;
 			toast({
@@ -79,14 +79,16 @@ export const ConnectBankAccountButton = () => {
 			);
 			const { accounts } = financialConnectionsSession;
 			const accountIds: string[] = accounts.map((account) => account.id);
-			createAlpacaAchRelationships({
-				stripe_financial_account_ids: accountIds,
-			});
+			createAlpacaAchRelationship(
+				accountIds.map((id) => ({
+					stripe_financial_account_id: id,
+				})),
+			);
 		},
 	});
 
 	const operationState =
-		isCreateAlpacaAchRelationshipsRunning ||
+		isCreateAlpacaAchRelationshipRunning ||
 		isCreateStripeFinancialConnectionSessionRunning
 			? 'running'
 			: 'idle';
