@@ -24,6 +24,12 @@ export const createAlpacaAchRelationshipFunction =
 						id: 'relationship_1',
 						status: 'QUEUED',
 					},
+					{
+						bank_account_number_last4: '5678',
+						bank_account_type: 'savings',
+						id: 'relationship_2',
+						status: 'QUEUED',
+					},
 				];
 				return next();
 			} catch (err) {
