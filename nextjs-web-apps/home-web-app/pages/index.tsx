@@ -7,6 +7,7 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { HomeWebAppRouteQueryParams, getHomeWebAppRoute } from '@wallot/js';
 import Link from 'next/link';
+import { Button } from 'ergonomic-react/src/components/ui/button';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -44,10 +45,20 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<h1>Welcome</h1>
-			<Link href={getStartedRoute}>
-				<p>Get Started</p>
-			</Link>
+			<div className='p-8'>
+				<div className='max-w-2xl'>
+					<div>
+						<p className='text-2xl font-bold'>Welcome to Wallot</p>
+					</div>
+					<div className='mt-4'>
+						<Link href={getStartedRoute}>
+							<Button>
+								<p>Get started</p>
+							</Button>
+						</Link>
+					</div>
+				</div>
+			</div>
 		</PageComponent>
 	);
 };

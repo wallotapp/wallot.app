@@ -6,6 +6,8 @@ import {
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { HomeWebAppRouteQueryParams } from '@wallot/js/utils/routeDefinitions';
+import Link from 'next/link';
+import { Button } from 'ergonomic-react/src/components/ui/button';
 
 // ==== Static Page Props ==== //
 
@@ -33,7 +35,8 @@ const Page: NextPage = () => {
 	const query = (router?.query as RouteQueryParams) ?? {};
 
 	// Router Query Param Values
-	const { order_id } = query;
+	const { client_token, order_id } = query;
+	client_token;
 
 	// Runtime Route ID
 	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace(
@@ -47,15 +50,25 @@ const Page: NextPage = () => {
 		routeId: ROUTE_RUNTIME_ID,
 	};
 
+	const connectBankAccountUrl = `https://stripe.com/todo`;
+
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<p className='font-medium text-xl'>
-				Hello, and welcome to a dynamic route in Wallot's Blog Web App! 🚀
-			</p>
-			<p className='font-light text-sm'>
-				The order_id for this page is: {order_id}
-			</p>
+			<div className='p-8'>
+				<div className='max-w-2xl'>
+					<div>
+						<p className='text-2xl font-bold'>Welcome to Wallot</p>
+					</div>
+					<div className='mt-4'>
+						<Link href={connectBankAccountUrl}>
+							<Button>
+								<p>Connect your bank account</p>
+							</Button>
+						</Link>
+					</div>
+				</div>
+			</div>
 		</PageComponent>
 	);
 };
