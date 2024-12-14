@@ -1,7 +1,5 @@
-import {
-	FirebaseUserCustomTokenParams,
-	FirebaseUserCustomTokenResponse,
-} from 'ergonomic';
+import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
+import { FirebaseUserCustomTokenResponse } from 'ergonomic';
 import { getFirebaseAuth } from 'ergonomic-node';
 import { secrets } from '../../../secrets.js';
 
@@ -15,21 +13,23 @@ import { secrets } from '../../../secrets.js';
  * Learn more about custom tokens:
  * {@link https://firebase.google.com/docs/auth/admin/create-custom-tokens}
  *
- * @param {FirebaseUserCustomTokenParams} params The request parameters.
- * @param {string} params.id_token The ID token of the user.
+ * @param {Record<string, never>} _params None
+ * @param {Record<string, never>} _query None
+ * @param {FirebaseUser | null} firebaseUser The Firebase user.
  * @returns {Promise<FirebaseUserCustomTokenResponse['data']>} The custom token for the user.
  */
 export const createFirebaseAuthCustomToken = async (
-	params: FirebaseUserCustomTokenParams,
+	_params: Record<string, never>,
+	_query: Record<string, never>,
+	firebaseUser: FirebaseUser | null,
 ): Promise<FirebaseUserCustomTokenResponse['data']> => {
+	if (!firebaseUser) throw new Error('Unauthorized');
+
 	// Initialize Firebase Auth with the provided secrets
 	const auth = getFirebaseAuth(secrets);
 
-	// Verify the ID token and extract the user ID (uid)
-	const { uid } = await auth.verifyIdToken(params.id_token);
-
 	// Create a custom token for the user
-	const customToken = await auth.createCustomToken(uid);
+	const customToken = await auth.createCustomToken(firebaseUser.uid);
 
 	// Store the custom token in the response locals
 	return [{ custom_token: customToken }];

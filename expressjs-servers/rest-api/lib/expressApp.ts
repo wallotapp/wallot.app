@@ -3,7 +3,6 @@ import * as express from 'express';
 import { statSync } from 'fs';
 import {
 	GeneralizedResponse,
-	FirebaseUserCustomTokenParams,
 	FirebaseUserCustomTokenResponse,
 } from 'ergonomic';
 import {
@@ -122,7 +121,12 @@ app.options('*/v0/firebase/auth/custom-tokens', corsPolicy);
 app.post(
 	'*/v0/firebase/auth/custom-tokens',
 	(
-		req: express.Request<unknown, unknown, FirebaseUserCustomTokenParams>,
+		req: express.Request<
+			unknown,
+			unknown,
+			Record<string, never>,
+			Record<string, never>
+		>,
 		res: express.Response<unknown, FirebaseUserCustomTokenResponse>,
 		next,
 	) => {
