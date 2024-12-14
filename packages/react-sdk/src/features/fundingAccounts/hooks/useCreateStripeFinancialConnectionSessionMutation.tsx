@@ -10,14 +10,14 @@ import { GeneralizedResponse } from 'ergonomic';
 
 export const useCreateStripeFinancialConnectionSessionMutation = (
 	options?: UseMutationOptions<
-		StripeFinancialConnectionSession,
+		GeneralizedResponse<StripeFinancialConnectionSession>,
 		GeneralizedResponse,
 		CreateStripeFinancialConnectionSessionParams
 	>,
 ) => {
 	const { user: firebaseUser } = useContext(AuthContext);
 	return useMutation<
-		StripeFinancialConnectionSession,
+		GeneralizedResponse<StripeFinancialConnectionSession>,
 		GeneralizedResponse,
 		CreateStripeFinancialConnectionSessionParams
 	>(
@@ -30,7 +30,9 @@ export const useCreateStripeFinancialConnectionSessionMutation = (
 					error,
 				);
 			},
-			onSuccess: (data: StripeFinancialConnectionSession) => {
+			onSuccess: (
+				data: GeneralizedResponse<StripeFinancialConnectionSession>,
+			) => {
 				console.log(
 					'CreateStripeFinancialConnectionSession operation successful',
 					data,

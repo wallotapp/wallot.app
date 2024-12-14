@@ -1,6 +1,7 @@
 import * as cors from 'cors';
 import * as express from 'express';
 import { statSync } from 'fs';
+import { GeneralizedResponse } from 'ergonomic';
 import {
 	addHealthRoutesToExpressApp,
 	initializeResLocalsWithGeneralizedResponseFields,
@@ -10,14 +11,19 @@ import {
 import {
 	User,
 	usersApi as apiResourceSpec,
-	CreateStripeFinancialConnectionSessionParams,
+	AlpacaAchRelationship,
+	CreateAlpacaAchRelationshipsParams,
 	StripeFinancialConnectionSession,
+	CreateStripeFinancialConnectionSessionParams,
 } from '@wallot/js';
 import serverVariablesLive from './serverVariables.live.json' assert { type: 'json' };
 import serverVariablesTest from './serverVariables.test.json' assert { type: 'json' };
 import { secrets } from './secrets.js';
 import { directoryPath } from './directoryPath.js';
-import { createStripeFinancialConnectionSessionFunction } from './app/index.js';
+import {
+	createAlpacaAchRelationshipFunction,
+	createStripeFinancialConnectionSessionFunction,
+} from './app/index.js';
 
 const { SECRET_CRED_DEPLOYMENT_ENVIRONMENT } = secrets;
 const serverVariables =
@@ -58,17 +64,31 @@ addHealthRoutesToExpressApp(app, {
 	mockApiResource,
 });
 
-// ---- Application Routes: Stripe Financial Connections ---- //
-app.options('*/v0/stripe-financial-connections/create-session', corsPolicy);
+// ---- Application Routes: Billing ---- //
+app.options('*/v0/alpaca/ach-relationships', corsPolicy);
 app.post(
-	'*/v0/stripe-financial-connections/create-session',
+	'*/v0/alpaca/ach-relationships',
+	(
+		req: express.Request<unknown, unknown, CreateAlpacaAchRelationshipsParams>,
+		res: express.Response<unknown, GeneralizedResponse<AlpacaAchRelationship>>,
+		next,
+	) => {
+		corsPolicy(req, res, createAlpacaAchRelationshipFunction(req, res, next));
+	},
+);
+app.options('*/v0/stripe/financial-connections/create-session', corsPolicy);
+app.post(
+	'*/v0/stripe/financial-connections/create-session',
 	(
 		req: express.Request<
 			unknown,
 			unknown,
 			CreateStripeFinancialConnectionSessionParams
 		>,
-		res: express.Response<unknown, StripeFinancialConnectionSession>,
+		res: express.Response<
+			unknown,
+			GeneralizedResponse<StripeFinancialConnectionSession>
+		>,
 		next,
 	) => {
 		corsPolicy(

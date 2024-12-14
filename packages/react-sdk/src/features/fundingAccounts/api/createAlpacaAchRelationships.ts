@@ -1,9 +1,9 @@
 import { User as FirebaseUser } from 'firebase/auth';
-import { handleKyError } from 'ergonomic';
+import { GeneralizedResponse, handleKyError } from 'ergonomic';
 import { getAuthenticatedKyInstance } from '@wallot/react/src/lib/ky';
 import {
 	CreateAlpacaAchRelationshipsParams,
-	AlpacaAchRelationships,
+	AlpacaAchRelationship,
 } from '@wallot/js';
 
 export const createAlpacaAchRelationships = async (
@@ -16,10 +16,10 @@ export const createAlpacaAchRelationships = async (
 		}
 
 		const data = await getAuthenticatedKyInstance(firebaseUser)
-			.post('v0/alpaca-ach-relationships', {
+			.post('v0/alpaca/ach-relationships', {
 				json: params,
 			})
-			.json<AlpacaAchRelationships>();
+			.json<GeneralizedResponse<AlpacaAchRelationship>>();
 		return data;
 	} catch (err) {
 		const kyErr = await handleKyError(err);

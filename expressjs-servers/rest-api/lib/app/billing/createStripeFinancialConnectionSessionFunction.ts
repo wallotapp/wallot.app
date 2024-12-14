@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { getGeneralizedError } from 'ergonomic';
+import { GeneralizedResponse, getGeneralizedError } from 'ergonomic';
 import {
 	CreateStripeFinancialConnectionSessionParams,
 	StripeFinancialConnectionSession,
@@ -12,7 +12,10 @@ export const createStripeFinancialConnectionSessionFunction =
 			unknown,
 			CreateStripeFinancialConnectionSessionParams
 		>,
-		res: express.Response<unknown, StripeFinancialConnectionSession>,
+		res: express.Response<
+			unknown,
+			GeneralizedResponse<StripeFinancialConnectionSession>
+		>,
 		next: express.NextFunction,
 	) =>
 	() => {

@@ -1,5 +1,5 @@
 import { User as FirebaseUser } from 'firebase/auth';
-import { handleKyError } from 'ergonomic';
+import { GeneralizedResponse, handleKyError } from 'ergonomic';
 import { getAuthenticatedKyInstance } from '@wallot/react/src/lib/ky';
 import {
 	CreateStripeFinancialConnectionSessionParams,
@@ -19,7 +19,7 @@ export const createStripeFinancialConnectionSession = async (
 			.post('v0/stripe-financial-connections/create-session', {
 				json: params,
 			})
-			.json<StripeFinancialConnectionSession>();
+			.json<GeneralizedResponse<StripeFinancialConnectionSession>>();
 		return data;
 	} catch (err) {
 		const kyErr = await handleKyError(err);
