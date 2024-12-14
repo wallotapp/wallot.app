@@ -58,7 +58,12 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 			console.error('order_id is required');
 			return '/';
 		}
-		const path = `/orders/${orderId}/confirm`;
+		const clientToken = queryParams.client_token;
+		const clientTokenQuery = clientToken ? `client_token=${clientToken}` : '';
+		const queries = [clientTokenQuery].filter(Boolean);
+		const path = `/orders/${orderId}/confirm${
+			queries.length ? `?${queries.join('&')}` : ''
+		}`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}

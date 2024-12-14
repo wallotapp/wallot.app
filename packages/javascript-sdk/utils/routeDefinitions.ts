@@ -27,6 +27,7 @@ export type HomeWebAppRouteQueryParams = {
 		step?: string | undefined;
 	};
 	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM': {
+		client_token?: string | undefined;
 		order_id: string | undefined;
 	};
 	'HOME_WEB_APP__/RECOMMENDATIONS/[RECOMMENDATION_ID]/DETAILS': {
