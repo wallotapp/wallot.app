@@ -1,11 +1,13 @@
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import {
 	PageStaticProps,
 	PageProps,
 	Page as PageComponent,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { SsoWebAppRouteQueryParams } from '@wallot/js/utils/routeDefinitions';
+import { SuspensePage } from '@wallot/react/src/components/SuspensePage';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -33,15 +35,21 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		routeId: ROUTE_RUNTIME_ID,
 	};
 
+	// ==== Effects ==== //
+	useEffect(
+		() =>
+			void (async () => {
+				// Wait 1 second
+				await new Promise((resolve) => setTimeout(resolve, 1000));
+				await router.replace('/register');
+			})(),
+		[],
+	);
+
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<p className='font-medium text-xl'>
-				Hello, and welcome to Wallot's SSO Web App! 🚀
-			</p>
-			<p className='font-light text-sm'>
-				Almost before we knew it, we had left the ground.
-			</p>
+			<SuspensePage />
 		</PageComponent>
 	);
 };
