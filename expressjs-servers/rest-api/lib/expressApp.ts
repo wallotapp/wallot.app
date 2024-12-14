@@ -24,6 +24,7 @@ import serverVariablesLive from './serverVariables.live.json' assert { type: 'js
 import serverVariablesTest from './serverVariables.test.json' assert { type: 'json' };
 import { secrets } from './secrets.js';
 import { directoryPath } from './directoryPath.js';
+import { createRouterFunction } from './utils/createRouterFunction.js';
 
 const { SECRET_CRED_DEPLOYMENT_ENVIRONMENT } = secrets;
 const serverVariables =
@@ -116,7 +117,7 @@ app.post(
 // ---- Application Routes: Firebase ---- //
 
 // Custom Tokens
-import { createFirebaseAuthCustomTokenFunction } from './app/firebase/auth/createFirebaseAuthCustomTokenFunction.js';
+import { createFirebaseAuthCustomToken } from './app/firebase/auth/createFirebaseAuthCustomToken.js';
 app.options('*/v0/firebase/auth/custom-tokens', corsPolicy);
 app.post(
 	'*/v0/firebase/auth/custom-tokens',
@@ -125,7 +126,11 @@ app.post(
 		res: express.Response<unknown, FirebaseUserCustomTokenResponse>,
 		next,
 	) => {
-		corsPolicy(req, res, createFirebaseAuthCustomTokenFunction(req, res, next));
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(createFirebaseAuthCustomToken)(req, res, next),
+		);
 	},
 );
 
