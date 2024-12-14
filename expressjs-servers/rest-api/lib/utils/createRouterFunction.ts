@@ -4,6 +4,7 @@ import { GeneralizedResponse } from 'ergonomic';
 import { getAuthHeaderBearerToken, getFirebaseAuth } from 'ergonomic-node';
 import { secrets } from '../secrets.js';
 import { handleRouterFunctionError } from './handleRouterFunctionError.js';
+import { log } from './log.js';
 
 /**
  * Creates an Express router function that handles asynchronous operations.
@@ -39,7 +40,7 @@ export const createRouterFunction = <TResponseData, TParams, TQuery>(
 						if (!firebaseUserJwt) throw new Error('No firebaseUserJwt');
 						firebaseUser = await auth.verifyIdToken(firebaseUserJwt);
 					} catch (_) {
-						console.error('No Firebase user found in request');
+						log('No Firebase user found in request', { type: 'error' });
 					}
 
 					// Extract the parameters from the request body
