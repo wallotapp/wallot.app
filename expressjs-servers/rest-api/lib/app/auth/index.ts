@@ -1,1 +1,1 @@
-export * from './registerNewUserFunction.js';
+export * from './createUserFunction.js';

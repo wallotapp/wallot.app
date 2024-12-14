@@ -26,7 +26,7 @@ import {
 	createAlpacaAchTransferFunction,
 	createAlpacaOrder,
 } from './app/alpaca/index.js';
-import { registerNewUserFunction } from './app/auth/index.js';
+import { createUserFunction } from './app/auth/index.js';
 import {
 	attachStripePaymentMethodFunction,
 	createStripeFinancialConnectionSessionFunction,
@@ -128,16 +128,16 @@ app.post(
 
 // ---- Application Routes: Auth ---- //
 
-// Register New User
-app.options('*/v0/auth/register-new-user', corsPolicy);
+// Users
+app.options('*/v0/auth/users', corsPolicy);
 app.post(
-	'*/v0/auth/register-new-user',
+	'*/v0/auth/users',
 	(
 		req: express.Request<unknown, unknown, unknown>,
 		res: express.Response<unknown, GeneralizedResponse<unknown>>,
 		next,
 	) => {
-		corsPolicy(req, res, registerNewUserFunction(req, res, next));
+		corsPolicy(req, res, createUserFunction(req, res, next));
 	},
 );
 

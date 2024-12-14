@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { GeneralizedResponse, getGeneralizedError } from 'ergonomic';
 
-export const registerNewUserFunction =
+export const createUserFunction =
 	(
 		_req: express.Request<unknown, unknown, unknown>,
 		res: express.Response<unknown, GeneralizedResponse<unknown>>,
