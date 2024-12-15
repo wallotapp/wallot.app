@@ -22,6 +22,7 @@ export const idPrefixByCollection = {
 	stripe_customer: 'strp_cus',
 	stripe_financial_connections_account: 'strp_fc_acct',
 	stripe_invoice: 'strp_inv',
+	stripe_payment_method: 'strp_pm',
 	transaction: 'tr',
 	user: 'usr',
 } as const;
@@ -48,6 +49,7 @@ export const apiYupHelpers = getApiResourceYupHelpers(
 		'stripe_customer',
 		'stripe_financial_connections_account',
 		'stripe_invoice',
+		'stripe_payment_method',
 		'transaction',
 		'user',
 	],

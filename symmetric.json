@@ -127,6 +127,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "stripe_payment_method",
+			"name_plural": "stripe_payment_methods",
+			"id_prefix": "strp_pm",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "tr",
 			"name_plural": "transactions",
 			"name_singular": "transaction",
