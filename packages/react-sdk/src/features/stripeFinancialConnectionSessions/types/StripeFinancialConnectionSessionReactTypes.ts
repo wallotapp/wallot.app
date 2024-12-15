@@ -1,0 +1,61 @@
+import { GeneralizedResponse } from 'ergonomic';
+import {
+	GeneralizedUseQueryKeyFn,
+	GeneralizedUseQueryOptionsFn,
+	GeneralizedUseQueryPageOptions,
+	GeneralizedUseQueryPageProps,
+	GeneralizedUseQueryPageObserver,
+	GeneralizedUseCreateDocumentsMutationOptions,
+	GeneralizedUseUpdateDocumentsMutationOptions,
+} from 'ergonomic-react/src/lib/tanstackQuery';
+import {
+	FirestoreDocumentCreateParams,
+	FirestoreDocumentUpdateParams,
+	GeneralizedFirestoreCollectionPage,
+} from 'ergonomic-react/src/features/data';
+import {
+	StripeFinancialConnectionSession,
+	CreateStripeFinancialConnectionSessionParams,
+	UpdateStripeFinancialConnectionSessionParams,
+} from '@wallot/js';
+
+export type StripeFinancialConnectionSessionPageQueryResponse =
+	GeneralizedFirestoreCollectionPage<StripeFinancialConnectionSession>;
+
+export type UseQueryStripeFinancialConnectionSessionPageQueryKeyFn =
+	GeneralizedUseQueryKeyFn<StripeFinancialConnectionSession>;
+
+export type UseQueryStripeFinancialConnectionSessionPageOptions =
+	GeneralizedUseQueryPageOptions<StripeFinancialConnectionSession>;
+
+export type UseQueryStripeFinancialConnectionSessionPageProps =
+	GeneralizedUseQueryPageProps<StripeFinancialConnectionSession>;
+
+export type UseQueryStripeFinancialConnectionSessionPageOptionsFn =
+	GeneralizedUseQueryOptionsFn<StripeFinancialConnectionSession>;
+
+export type UseQueryStripeFinancialConnectionSessionPageObserver =
+	GeneralizedUseQueryPageObserver<StripeFinancialConnectionSession>;
+
+export type UseCreateStripeFinancialConnectionSessionMutationOptions =
+	GeneralizedUseCreateDocumentsMutationOptions<
+		StripeFinancialConnectionSession,
+		CreateStripeFinancialConnectionSessionParams
+	>;
+export type CreateStripeFinancialConnectionSessionMutationData =
+	GeneralizedResponse<StripeFinancialConnectionSession>;
+export type CreateStripeFinancialConnectionSessionMutationError =
+	GeneralizedResponse<StripeFinancialConnectionSession>;
+export type CreateStripeFinancialConnectionSessionMutationParams =
+	FirestoreDocumentCreateParams<CreateStripeFinancialConnectionSessionParams>;
+
+export type UseUpdateStripeFinancialConnectionSessionMutationOptions =
+	GeneralizedUseUpdateDocumentsMutationOptions<
+		StripeFinancialConnectionSession,
+		UpdateStripeFinancialConnectionSessionParams
+	>;
+export type UpdateStripeFinancialConnectionSessionMutationData = unknown;
+export type UpdateStripeFinancialConnectionSessionMutationError =
+	GeneralizedResponse<StripeFinancialConnectionSession>;
+export type UpdateStripeFinancialConnectionSessionMutationParams =
+	FirestoreDocumentUpdateParams<UpdateStripeFinancialConnectionSessionParams>;

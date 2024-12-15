@@ -121,6 +121,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "stripe_financial_connection_session",
+			"name_plural": "stripe_financial_connection_sessions",
+			"id_prefix": "strp_fc_sn",
+			"visibility": "public"
+		},
+		{
 			"name_singular": "stripe_invoice",
 			"name_plural": "stripe_invoices",
 			"id_prefix": "strp_inv",
