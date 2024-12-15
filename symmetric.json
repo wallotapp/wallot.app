@@ -97,6 +97,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "news_report",
+			"name_plural": "news_reports",
+			"id_prefix": "rep",
+			"visibility": "public"
+		},
+		{
 			"name_singular": "open_ai_model",
 			"name_plural": "open_ai_models",
 			"id_prefix": "opai_mod",

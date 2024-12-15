@@ -20,6 +20,7 @@ import { useQueryInvoicePage } from '@wallot/react/src/features/invoices';
 import { useQueryLicensePage } from '@wallot/react/src/features/licenses';
 import { useQueryModelPage } from '@wallot/react/src/features/models';
 import { useQueryModelFamilyPage } from '@wallot/react/src/features/modelFamilies';
+import { useQueryNewsReportPage } from '@wallot/react/src/features/newsReports';
 import { useQueryOpenAiModelPage } from '@wallot/react/src/features/openAiModels';
 import { useQueryOpenAiModelFamilyPage } from '@wallot/react/src/features/openAiModelFamilies';
 import { useQueryOpenAiRecommendationPage } from '@wallot/react/src/features/openAiRecommendations';
@@ -61,6 +62,7 @@ const queryHookMap = {
 	license: useQueryLicensePage,
 	model: useQueryModelPage,
 	model_family: useQueryModelFamilyPage,
+	news_report: useQueryNewsReportPage,
 	open_ai_model: useQueryOpenAiModelPage,
 	open_ai_model_family: useQueryOpenAiModelFamilyPage,
 	open_ai_recommendation: useQueryOpenAiRecommendationPage,
