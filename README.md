@@ -161,7 +161,7 @@ erDiagram
   USER {
     string alpaca_account FK "nullable"
     string stripe_customer FK "min(1)"
-    string[] user_personas FK "min(1)"
+    string[] user_personas FK "nullable"
   }
 ```
 
