@@ -49,7 +49,6 @@ erDiagram
 	LICENSE ||--o{ INVOICE : "owns"
 	MODEL_FAMILY ||--o{ MODEL : "owns"
 	ORDER ||--o{ STOCK_ORDER : "owns"
-	STOCK_ORDER ||--|| STOCK : "owns"
 	USER ||--|| AUTH_CREDENTIAL : "owns"
 	USER ||--|| EQUITY_ACCOUNT : "owns"
 	USER ||--o{ ORDER : "owns"
@@ -59,8 +58,8 @@ erDiagram
 	%% Production Relationships
 	MODEL ||--o{ FORECAST : "produces"
 	MODEL ||--o{ RECOMMENDATION : "produces"
-	STRIPE_FINANCIAL_CONNECTION_SESSION ||--o{ STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "produces"
 	RECOMMENDATION }o--o{ STOCK_ORDER : "factors_into"
+	STRIPE_FINANCIAL_CONNECTION_SESSION ||--o{ STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "produces"
 
 	%% Similarity Relationships
 	MODEL_FAMILY }o--o{ USER_PERSONA : "caters_to"
@@ -68,8 +67,8 @@ erDiagram
 	USER ||--|{ USER_PERSONA : "fits"
 
 	%% Computation Relationships
-	POSITION ||--o{ STOCK_ORDER : "is_computed_as_the_result_of"
 	BANK_ACCOUNT ||--o{ ACH_TRANSFER : "is_computed_as_the_result_of"
+	POSITION ||--o{ STOCK_ORDER : "is_computed_as_the_result_of"
 	RECOMMENDATION }|--|{ FORECAST : "is_computed_as_the_result_of"
 
 	%% Prediction Relationships
@@ -79,8 +78,9 @@ erDiagram
 	INVOICE }|--|| PAYMENT_METHOD : "charges"
 
 	%% Proxy Relationships
-	POSITION ||--|| STOCK : "represents"
 	PAYMENT_METHOD ||--|| BANK_ACCOUNT : "represents"
+	POSITION ||--|| STOCK : "represents"
+	STOCK_ORDER ||--|| STOCK : "represents"
 ```
 
 ## User Experience:
