@@ -1,14 +1,10 @@
 import { User as FirebaseUser } from 'firebase/auth';
 import { GeneralizedResponse, handleKyError } from 'ergonomic';
 import { getAuthenticatedKyInstance } from '@wallot/react/src/lib/ky';
-import {
-	CreateStripeFinancialConnectionSessionParams,
-	StripeFinancialConnectionSession,
-} from '@wallot/js';
 
 export const createStripeFinancialConnectionSession = async (
 	firebaseUser: FirebaseUser | null,
-	params: CreateStripeFinancialConnectionSessionParams,
+	params: unknown,
 ) => {
 	try {
 		if (!firebaseUser) {
@@ -19,7 +15,7 @@ export const createStripeFinancialConnectionSession = async (
 			.post('v0/stripe-financial-connections/create-session', {
 				json: params,
 			})
-			.json<GeneralizedResponse<StripeFinancialConnectionSession>>();
+			.json<GeneralizedResponse<unknown>>();
 		return data;
 	} catch (err) {
 		const kyErr = await handleKyError(err);

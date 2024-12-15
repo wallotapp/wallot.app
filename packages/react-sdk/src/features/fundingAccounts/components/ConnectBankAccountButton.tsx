@@ -2,10 +2,6 @@ import { GeneralizedResponse } from 'ergonomic';
 import { Button } from 'ergonomic-react/src/components/ui/button';
 import { stripePromise } from 'ergonomic-react/src/lib/stripe';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
-import {
-	AlpacaAchRelationship,
-	StripeFinancialConnectionSession,
-} from '@wallot/js';
 import { useCreateAlpacaAchRelationshipMutation } from '@wallot/react/src/features/fundingAccounts/hooks/useCreateAlpacaAchRelationshipMutation';
 import { useCreateStripeFinancialConnectionSessionMutation } from '@wallot/react/src/features/fundingAccounts/hooks/useCreateStripeFinancialConnectionSessionMutation';
 import { useState } from 'react';
@@ -19,7 +15,7 @@ export const ConnectBankAccountButton = () => {
 
 	// Alpaca ACH relationships
 	const [alpacaAchRelationships, setAlpacaAchRelationships] = useState<
-		AlpacaAchRelationship[]
+		unknown[]
 	>([]);
 
 	const {
@@ -33,7 +29,7 @@ export const ConnectBankAccountButton = () => {
 				description: error,
 			});
 		},
-		onSuccess: ({ data }: GeneralizedResponse<AlpacaAchRelationship>) => {
+		onSuccess: ({ data }: GeneralizedResponse<unknown>) => {
 			setAlpacaAchRelationships(() => data);
 			toast({
 				title: 'Success',
@@ -54,10 +50,9 @@ export const ConnectBankAccountButton = () => {
 				description: error,
 			});
 		},
-		onSuccess: async ({
-			data,
-		}: GeneralizedResponse<StripeFinancialConnectionSession>) => {
-			const clientSecret = data[0]?.client_secret as string;
+		onSuccess: async ({ data }: GeneralizedResponse<unknown>) => {
+			const clientSecret = (data[0] as { client_secret: string } | undefined)
+				?.client_secret as string;
 			const stripe = await stripePromise;
 			if (!stripe) {
 				toast({

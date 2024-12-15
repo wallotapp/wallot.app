@@ -11,14 +11,7 @@ import {
 	logExpressInvocation,
 	sendExpressResponse,
 } from 'ergonomic-node';
-import {
-	User,
-	usersApi as apiResourceSpec,
-	AlpacaAchRelationship,
-	CreateAlpacaAchRelationshipParams,
-	StripeFinancialConnectionSession,
-	CreateStripeFinancialConnectionSessionParams,
-} from '@wallot/js';
+import { User, usersApi as apiResourceSpec } from '@wallot/js';
 import serverVariablesLive from './serverVariables.live.json' assert { type: 'json' };
 import serverVariablesTest from './serverVariables.test.json' assert { type: 'json' };
 import { secrets } from './secrets.js';
@@ -77,8 +70,8 @@ app.options('*/v0/alpaca/ach-relationships', corsPolicy);
 app.post(
 	'*/v0/alpaca/ach-relationships',
 	(
-		req: express.Request<unknown, unknown, CreateAlpacaAchRelationshipParams[]>,
-		res: express.Response<unknown, GeneralizedResponse<AlpacaAchRelationship>>,
+		req: express.Request<unknown, unknown, unknown>,
+		res: express.Response<unknown, GeneralizedResponse<unknown>>,
 		next,
 	) => {
 		corsPolicy(req, res, createAlpacaAchRelationship(req, res, next));
@@ -160,15 +153,8 @@ app.options('*/v0/stripe/financial-connection-sessions', corsPolicy);
 app.post(
 	'*/v0/stripe/financial-connection-sessions',
 	(
-		req: express.Request<
-			unknown,
-			unknown,
-			CreateStripeFinancialConnectionSessionParams
-		>,
-		res: express.Response<
-			unknown,
-			GeneralizedResponse<StripeFinancialConnectionSession>
-		>,
+		req: express.Request<unknown, unknown, unknown>,
+		res: express.Response<unknown, GeneralizedResponse<unknown>>,
 		next,
 	) => {
 		corsPolicy(
