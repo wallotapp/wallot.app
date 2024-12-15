@@ -24,6 +24,7 @@ import { useCreateStripeCustomerMutation } from '@wallot/react/src/features/stri
 import { useCreateStripeFinancialConnectionsAccountMutation } from '@wallot/react/src/features/stripeFinancialConnectionsAccounts';
 import { useCreateStripeInvoiceMutation } from '@wallot/react/src/features/stripeInvoices';
 import { useCreateStripePaymentMethodMutation } from '@wallot/react/src/features/stripePaymentMethods';
+import { useCreateStripeSubscriptionMutation } from '@wallot/react/src/features/stripeSubscriptions';
 import { useCreateTransactionMutation } from '@wallot/react/src/features/transactions';
 import { useCreateUserMutation } from '@wallot/react/src/features/users';
 
@@ -56,6 +57,7 @@ const createOperationMutationMap = {
 		useCreateStripeFinancialConnectionsAccountMutation,
 	stripe_invoice: useCreateStripeInvoiceMutation,
 	stripe_payment_method: useCreateStripePaymentMethodMutation,
+	stripe_subscription: useCreateStripeSubscriptionMutation,
 	transaction: useCreateTransactionMutation,
 	user: useCreateUserMutation,
 } as unknown as Record<WallotCollection, MutationHook>;

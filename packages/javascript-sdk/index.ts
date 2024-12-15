@@ -23,3 +23,4 @@ export * from './stripeCustomers/index.js';
 export * from './stripeFinancialConnectionsAccounts/index.js';
 export * from './stripeInvoices/index.js';
 export * from './stripePaymentMethods/index.js';
+export * from './stripeSubscriptions/index.js';

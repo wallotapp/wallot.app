@@ -22,6 +22,7 @@ import { stripeCustomersApi } from '../stripeCustomers/index.js';
 import { stripeFinancialConnectionsAccountsApi } from '../stripeFinancialConnectionsAccounts/index.js';
 import { stripeInvoicesApi } from '../stripeInvoices/index.js';
 import { stripePaymentMethodsApi } from '../stripePaymentMethods/index.js';
+import { stripeSubscriptionsApi } from '../stripeSubscriptions/index.js';
 import { transactionsApi } from '../transactions/index.js';
 import { usersApi } from '../users/index.js';
 
@@ -73,6 +74,8 @@ export const getApiResourceSpec = (
 			return stripeInvoicesApi as unknown as GeneralizedApiResourceSpec;
 		case 'stripe_payment_method':
 			return stripePaymentMethodsApi as unknown as GeneralizedApiResourceSpec;
+		case 'stripe_subscription':
+			return stripeSubscriptionsApi as unknown as GeneralizedApiResourceSpec;
 		case 'transaction':
 			return transactionsApi as unknown as GeneralizedApiResourceSpec;
 		case 'user':
