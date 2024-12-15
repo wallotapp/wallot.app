@@ -121,6 +121,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "stripe_invoice",
+			"name_plural": "stripe_invoices",
+			"id_prefix": "strp_inv",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "tr",
 			"name_plural": "transactions",
 			"name_singular": "transaction",
