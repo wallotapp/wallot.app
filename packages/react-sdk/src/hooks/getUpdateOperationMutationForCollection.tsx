@@ -31,6 +31,7 @@ import { useUpdateStripePaymentMethodMutation } from '@wallot/react/src/features
 import { useUpdateStripeSubscriptionMutation } from '@wallot/react/src/features/stripeSubscriptions';
 import { useUpdateTransactionMutation } from '@wallot/react/src/features/transactions';
 import { useUpdateUserMutation } from '@wallot/react/src/features/users';
+import { useUpdateUserPersonaMutation } from '@wallot/react/src/features/userPersonas';
 
 type MutationHook = (
 	options: UseMutationOptions<unknown, GeneralizedResponse>,
@@ -69,6 +70,7 @@ const updateOperationMutationMap = {
 	stripe_subscription: useUpdateStripeSubscriptionMutation,
 	transaction: useUpdateTransactionMutation,
 	user: useUpdateUserMutation,
+	user_persona: useUpdateUserPersonaMutation,
 } as unknown as Record<WallotCollection, MutationHook>;
 
 /**
