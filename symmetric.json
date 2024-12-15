@@ -67,12 +67,6 @@
 			"visibility": "public"
 		},
 		{
-			"id_prefix": "fn",
-			"name_plural": "funding_accounts",
-			"name_singular": "funding_account",
-			"visibility": "public"
-		},
-		{
 			"id_prefix": "inv",
 			"name_plural": "invoices",
 			"name_singular": "invoice",

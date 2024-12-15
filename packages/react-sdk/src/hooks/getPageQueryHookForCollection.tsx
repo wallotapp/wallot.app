@@ -15,7 +15,6 @@ import { useQueryAlphaVantageCompanyPage } from '@wallot/react/src/features/alph
 import { useQueryAuthCredentialPage } from '@wallot/react/src/features/authCredentials';
 import { useQueryEquityAccountPage } from '@wallot/react/src/features/equityAccounts';
 import { useQueryForecastPage } from '@wallot/react/src/features/forecasts';
-import { useQueryFundingAccountPage } from '@wallot/react/src/features/fundingAccounts';
 import { useQueryInvoicePage } from '@wallot/react/src/features/invoices';
 import { useQueryLicensePage } from '@wallot/react/src/features/licenses';
 import { useQueryModelPage } from '@wallot/react/src/features/models';
@@ -55,7 +54,6 @@ const queryHookMap = {
 	auth_credential: useQueryAuthCredentialPage,
 	equity_account: useQueryEquityAccountPage,
 	forecast: useQueryForecastPage,
-	funding_account: useQueryFundingAccountPage,
 	invoice: useQueryInvoicePage,
 	license: useQueryLicensePage,
 	model: useQueryModelPage,

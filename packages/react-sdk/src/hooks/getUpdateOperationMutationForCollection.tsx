@@ -13,7 +13,6 @@ import { useUpdateAlphaVantageCompanyMutation } from '@wallot/react/src/features
 import { useUpdateAuthCredentialMutation } from '@wallot/react/src/features/authCredentials';
 import { useUpdateEquityAccountMutation } from '@wallot/react/src/features/equityAccounts';
 import { useUpdateForecastMutation } from '@wallot/react/src/features/forecasts';
-import { useUpdateFundingAccountMutation } from '@wallot/react/src/features/fundingAccounts';
 import { useUpdateInvoiceMutation } from '@wallot/react/src/features/invoices';
 import { useUpdateLicenseMutation } from '@wallot/react/src/features/licenses';
 import { useUpdateModelMutation } from '@wallot/react/src/features/models';
@@ -53,7 +52,6 @@ const updateOperationMutationMap = {
 	auth_credential: useUpdateAuthCredentialMutation,
 	equity_account: useUpdateEquityAccountMutation,
 	forecast: useUpdateForecastMutation,
-	funding_account: useUpdateFundingAccountMutation,
 	invoice: useUpdateInvoiceMutation,
 	license: useUpdateLicenseMutation,
 	model: useUpdateModelMutation,

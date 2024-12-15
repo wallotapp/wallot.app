@@ -11,7 +11,6 @@ import { alphaVantageCompaniesApi } from '../alphaVantageCompanies/index.js';
 import { authCredentialsApi } from '../authCredentials/index.js';
 import { equityAccountsApi } from '../equityAccounts/index.js';
 import { forecastsApi } from '../forecasts/index.js';
-import { fundingAccountsApi } from '../fundingAccounts/index.js';
 import { invoicesApi } from '../invoices/index.js';
 import { licensesApi } from '../licenses/index.js';
 import { modelsApi } from '../models/index.js';
@@ -60,8 +59,6 @@ export const getApiResourceSpec = (
 			return equityAccountsApi as unknown as GeneralizedApiResourceSpec;
 		case 'forecast':
 			return forecastsApi as unknown as GeneralizedApiResourceSpec;
-		case 'funding_account':
-			return fundingAccountsApi as unknown as GeneralizedApiResourceSpec;
 		case 'invoice':
 			return invoicesApi as unknown as GeneralizedApiResourceSpec;
 		case 'license':

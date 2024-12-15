@@ -10,7 +10,6 @@ export * from './alphaVantageCompanies/index.js';
 export * from './authCredentials/index.js';
 export * from './equityAccounts/index.js';
 export * from './forecasts/index.js';
-export * from './fundingAccounts/index.js';
 export * from './invoices/index.js';
 export * from './licenses/index.js';
 export * from './models/index.js';
