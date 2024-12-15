@@ -1,0 +1,61 @@
+import { GeneralizedResponse } from 'ergonomic';
+import {
+	GeneralizedUseQueryKeyFn,
+	GeneralizedUseQueryOptionsFn,
+	GeneralizedUseQueryPageOptions,
+	GeneralizedUseQueryPageProps,
+	GeneralizedUseQueryPageObserver,
+	GeneralizedUseCreateDocumentsMutationOptions,
+	GeneralizedUseUpdateDocumentsMutationOptions,
+} from 'ergonomic-react/src/lib/tanstackQuery';
+import {
+	FirestoreDocumentCreateParams,
+	FirestoreDocumentUpdateParams,
+	GeneralizedFirestoreCollectionPage,
+} from 'ergonomic-react/src/features/data';
+import {
+	StripeFinancialConnectionsAccount,
+	CreateStripeFinancialConnectionsAccountParams,
+	UpdateStripeFinancialConnectionsAccountParams,
+} from '@wallot/js';
+
+export type StripeFinancialConnectionsAccountPageQueryResponse =
+	GeneralizedFirestoreCollectionPage<StripeFinancialConnectionsAccount>;
+
+export type UseQueryStripeFinancialConnectionsAccountPageQueryKeyFn =
+	GeneralizedUseQueryKeyFn<StripeFinancialConnectionsAccount>;
+
+export type UseQueryStripeFinancialConnectionsAccountPageOptions =
+	GeneralizedUseQueryPageOptions<StripeFinancialConnectionsAccount>;
+
+export type UseQueryStripeFinancialConnectionsAccountPageProps =
+	GeneralizedUseQueryPageProps<StripeFinancialConnectionsAccount>;
+
+export type UseQueryStripeFinancialConnectionsAccountPageOptionsFn =
+	GeneralizedUseQueryOptionsFn<StripeFinancialConnectionsAccount>;
+
+export type UseQueryStripeFinancialConnectionsAccountPageObserver =
+	GeneralizedUseQueryPageObserver<StripeFinancialConnectionsAccount>;
+
+export type UseCreateStripeFinancialConnectionsAccountMutationOptions =
+	GeneralizedUseCreateDocumentsMutationOptions<
+		StripeFinancialConnectionsAccount,
+		CreateStripeFinancialConnectionsAccountParams
+	>;
+export type CreateStripeFinancialConnectionsAccountMutationData =
+	GeneralizedResponse<StripeFinancialConnectionsAccount>;
+export type CreateStripeFinancialConnectionsAccountMutationError =
+	GeneralizedResponse<StripeFinancialConnectionsAccount>;
+export type CreateStripeFinancialConnectionsAccountMutationParams =
+	FirestoreDocumentCreateParams<CreateStripeFinancialConnectionsAccountParams>;
+
+export type UseUpdateStripeFinancialConnectionsAccountMutationOptions =
+	GeneralizedUseUpdateDocumentsMutationOptions<
+		StripeFinancialConnectionsAccount,
+		UpdateStripeFinancialConnectionsAccountParams
+	>;
+export type UpdateStripeFinancialConnectionsAccountMutationData = unknown;
+export type UpdateStripeFinancialConnectionsAccountMutationError =
+	GeneralizedResponse<StripeFinancialConnectionsAccount>;
+export type UpdateStripeFinancialConnectionsAccountMutationParams =
+	FirestoreDocumentUpdateParams<UpdateStripeFinancialConnectionsAccountParams>;

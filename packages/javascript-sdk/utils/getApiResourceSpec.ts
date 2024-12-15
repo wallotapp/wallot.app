@@ -19,6 +19,7 @@ import { positionsApi } from '../positions/index.js';
 import { recommendationsApi } from '../recommendations/index.js';
 import { stocksApi } from '../stocks/index.js';
 import { stripeCustomersApi } from '../stripeCustomers/index.js';
+import { stripeFinancialConnectionsAccountsApi } from '../stripeFinancialConnectionsAccounts/index.js';
 import { transactionsApi } from '../transactions/index.js';
 import { usersApi } from '../users/index.js';
 
@@ -64,6 +65,8 @@ export const getApiResourceSpec = (
 			return stocksApi as unknown as GeneralizedApiResourceSpec;
 		case 'stripe_customer':
 			return stripeCustomersApi as unknown as GeneralizedApiResourceSpec;
+		case 'stripe_financial_connections_account':
+			return stripeFinancialConnectionsAccountsApi as unknown as GeneralizedApiResourceSpec;
 		case 'transaction':
 			return transactionsApi as unknown as GeneralizedApiResourceSpec;
 		case 'user':

@@ -20,3 +20,4 @@ export * from './alpacaOrders/index.js';
 export * from './alpacaPositions/index.js';
 export * from './alphaVantageCompanies/index.js';
 export * from './stripeCustomers/index.js';
+export * from './stripeFinancialConnectionsAccounts/index.js';
