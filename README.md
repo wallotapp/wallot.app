@@ -68,11 +68,10 @@ erDiagram
 
 	%% Computation Relationships
 	BANK_ACCOUNT ||--o{ ACH_TRANSFER : "is_computed_as_the_result_of"
+	FORECAST }|--|{ NEWS_REPORT : "is_computed_as_the_result_of"
+	FORECAST }|--|{ STOCK_PRICE : "is_computed_as_the_result_of"
 	POSITION ||--o{ STOCK_ORDER : "is_computed_as_the_result_of"
 	RECOMMENDATION }|--|{ FORECAST : "is_computed_as_the_result_of"
-
-	%% Prediction Relationships
-	FORECAST }|--|| STOCK : "predicts"
 
 	%% Transaction Relationships
 	INVOICE }|--|| PAYMENT_METHOD : "charges"
@@ -82,6 +81,7 @@ erDiagram
 	PAYMENT_METHOD ||--|| BANK_ACCOUNT : "represents"
 	POSITION ||--|| STOCK : "represents"
 	STOCK_ORDER ||--|| STOCK : "represents"
+	STOCK_PRICE }|--|| STOCK : "represents"
 ```
 
 ## User Experience:
