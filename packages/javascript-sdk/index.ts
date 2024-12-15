@@ -8,6 +8,7 @@ export * from './alpacaOrders/index.js';
 export * from './alpacaPositions/index.js';
 export * from './alphaVantageCompanies/index.js';
 export * from './authCredentials/index.js';
+export * from './bankAccounts/index.js';
 export * from './equityAccounts/index.js';
 export * from './forecasts/index.js';
 export * from './invoices/index.js';
