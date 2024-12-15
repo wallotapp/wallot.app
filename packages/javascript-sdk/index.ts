@@ -32,3 +32,4 @@ export * from './stripeSubscriptions/index.js';
 export * from './users/index.js';
 export * from './userPersonas/index.js';
 export * from './stockOrders/index.js';
+export * from './stockPrices/index.js';

@@ -151,6 +151,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "stock_price",
+			"name_plural": "stock_prices",
+			"id_prefix": "stck_pr",
+			"visibility": "public"
+		},
+		{
 			"name_singular": "stripe_customer",
 			"name_plural": "stripe_customers",
 			"id_prefix": "strp_cus",
