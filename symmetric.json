@@ -1,6 +1,12 @@
 {
 	"features": [
 		{
+			"name_singular": "ach_transfer",
+			"name_plural": "ach_transfers",
+			"id_prefix": "ach_tf",
+			"visibility": "public"
+		},
+		{
 			"name_singular": "alpaca_account",
 			"name_plural": "alpaca_accounts",
 			"id_prefix": "alp_acct",

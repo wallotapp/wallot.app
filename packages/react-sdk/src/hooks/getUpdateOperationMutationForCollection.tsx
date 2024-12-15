@@ -2,6 +2,7 @@ import { UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
 import { GeneralizedResponse } from 'ergonomic';
 import { WallotCollection } from '@wallot/js';
 
+import { useUpdateAchTransferMutation } from '@wallot/react/src/features/achTransfers';
 import { useUpdateAlpacaAccountMutation } from '@wallot/react/src/features/alpacaAccounts';
 import { useUpdateAlpacaAchRelationshipMutation } from '@wallot/react/src/features/alpacaAchRelationships';
 import { useUpdateAlpacaAchTransferMutation } from '@wallot/react/src/features/alpacaAchTransfers';
@@ -39,6 +40,7 @@ type MutationHook = (
 
 // Map of collection IDs to their respective mutations
 const updateOperationMutationMap = {
+	ach_transfer: useUpdateAchTransferMutation,
 	alpaca_account: useUpdateAlpacaAccountMutation,
 	alpaca_ach_relationship: useUpdateAlpacaAchRelationshipMutation,
 	alpaca_ach_transfer: useUpdateAlpacaAchTransferMutation,

@@ -1,5 +1,6 @@
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 import { WallotCollection } from './WallotDatabaseTypes.js';
+import { achTransfersApi } from '../achTransfers/index.js';
 import { alpacaAccountsApi } from '../alpacaAccounts/index.js';
 import { alpacaAchRelationshipsApi } from '../alpacaAchRelationships/index.js';
 import { alpacaAchTransfersApi } from '../alpacaAchTransfers/index.js';
@@ -35,6 +36,8 @@ export const getApiResourceSpec = (
 	collectionId: WallotCollection,
 ): GeneralizedApiResourceSpec => {
 	switch (collectionId) {
+		case 'ach_transfer':
+			return achTransfersApi as unknown as GeneralizedApiResourceSpec;
 		case 'alpaca_account':
 			return alpacaAccountsApi as unknown as GeneralizedApiResourceSpec;
 		case 'alpaca_ach_relationship':

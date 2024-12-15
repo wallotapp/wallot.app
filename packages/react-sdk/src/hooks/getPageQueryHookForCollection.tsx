@@ -4,6 +4,7 @@ import { GeneralizedFirestoreCollectionPage } from 'ergonomic-react/src/features
 import { GeneralizedUseQueryPageProps } from 'ergonomic-react/src/lib/tanstackQuery';
 import { WallotCollection } from '@wallot/js';
 
+import { useQueryAchTransferPage } from '@wallot/react/src/features/achTransfers';
 import { useQueryAlpacaAccountPage } from '@wallot/react/src/features/alpacaAccounts';
 import { useQueryAlpacaAchRelationshipPage } from '@wallot/react/src/features/alpacaAchRelationships';
 import { useQueryAlpacaAchTransferPage } from '@wallot/react/src/features/alpacaAchTransfers';
@@ -41,6 +42,7 @@ type PageQueryHook = (
 
 // Map of collection IDs to their respective hooks
 const queryHookMap = {
+	ach_transfer: useQueryAchTransferPage,
 	alpaca_account: useQueryAlpacaAccountPage,
 	alpaca_ach_relationship: useQueryAlpacaAchRelationshipPage,
 	alpaca_ach_transfer: useQueryAlpacaAchTransferPage,
