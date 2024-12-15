@@ -18,3 +18,4 @@ export * from './alpacaAchRelationships/index.js';
 export * from './alpacaAchTransfers/index.js';
 export * from './alpacaOrders/index.js';
 export * from './alpacaPositions/index.js';
+export * from './alphaVantageCompanies/index.js';

@@ -37,6 +37,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "alpha_vantage_company",
+			"name_plural": "alpha_vantage_companies",
+			"id_prefix": "av_co",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "cred",
 			"name_plural": "auth_credentials",
 			"name_singular": "auth_credential",
