@@ -82,6 +82,87 @@ erDiagram
 	POSITION ||--|| STOCK : "represents"
 	STOCK_ORDER ||--|| STOCK : "represents"
 	STOCK_PRICE }|--|| STOCK : "represents"
+
+	%% Entity Definitions
+	ACH_TRANSFER {
+    string alpaca_ach_transfer FK "min(1)"
+    string bank_account FK "min(1)"
+  }
+  AUTH_CREDENTIAL {
+    string user FK "min(1)"
+  }
+  BANK_ACCOUNT {
+    string alpaca_ach_relationship FK "nullable"
+    string stripe_financial_connection_account FK "min(1)"
+  }
+  EQUITY_ACCOUNT {
+    string user FK "min(1)"
+  }
+  FORECAST {
+    string model FK "min(1)"
+    string[] news_reports FK "min(1)"
+    string[] stock_prices FK "min(1)"
+  }
+  INVOICE {
+    string stripe_invoice FK "min(1)"
+    string payment_method FK "min(1)"
+    string license FK "min(1)"
+  }
+  LICENSE {
+    string stripe_subscription FK "nullable"
+    string user FK "min(1)"
+  }
+  MODEL {
+    string open_ai_model FK "min(1)"
+    string model_family FK "min(1)"
+  }
+  MODEL_FAMILY {
+    string open_ai_model_family FK "min(1)"
+    string[] user_personas FK "min(1)"
+  }
+  ORDER {
+    string user FK "min(1)"
+    string bank_account FK "min(1)"
+  }
+  PAYMENT_METHOD {
+    string stripe_payment_method FK "nullable"
+    string user FK "min(1)"
+    string bank_account FK "min(1)"
+  }
+  POSITION {
+    string alpaca_position FK "min(1)"
+    string equity_account FK "min(1)"
+    string stock FK "min(1)"
+  }
+  RECOMMENDATION {
+    string open_ai_recommendation FK "min(1)"
+    string user FK "nullable"
+    string model FK "min(1)"
+    string[] user_personas FK "min(1)"
+    string[] forecasts FK "min(1)"
+  }
+  STOCK {
+    string alpaca_asset FK "min(1)"
+    string alpha_vantage_company FK "min(1)"
+  }
+  STOCK_ORDER {
+    string alpaca_order FK "nullable"
+    string order FK "min(1)"
+    string[] recommendations FK "nullable"
+    string position FK "min(1)"
+    string stock FK "min(1)"
+  }
+  STOCK_PRICE {
+    string stock FK "min(1)"
+  }
+  STRIPE_FINANCIAL_CONNECTION_ACCOUNT {
+    string stripe_financial_connection_session FK "min(1)"
+  }
+  USER {
+    string alpaca_account FK "nullable"
+    string stripe_customer FK "min(1)"
+    string[] user_personas FK "min(1)"
+  }
 ```
 
 ## User Experience:
