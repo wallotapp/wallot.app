@@ -31,6 +31,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "alpaca_position",
+			"name_plural": "alpaca_positions",
+			"id_prefix": "alp_pos",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "cred",
 			"name_plural": "auth_credentials",
 			"name_singular": "auth_credential",
