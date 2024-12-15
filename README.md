@@ -66,11 +66,11 @@ erDiagram
 	USER ||--|{ USER_PERSONA : "fits"
 
 	%% Computation Relationships
-	BANK_ACCOUNT ||--o{ ACH_TRANSFER : "is_computed_as_the_result_of"
-	FORECAST }|--|{ NEWS_REPORT : "is_computed_as_the_result_of"
-	FORECAST }|--|{ STOCK_PRICE : "is_computed_as_the_result_of"
-	POSITION ||--o{ STOCK_ORDER : "is_computed_as_the_result_of"
-	RECOMMENDATION }|--|{ FORECAST : "is_computed_as_the_result_of"
+	BANK_ACCOUNT ||--o{ ACH_TRANSFER : "derives_from_the_computation_of"
+	FORECAST }|--|{ NEWS_REPORT : "derives_from_the_computation_of"
+	FORECAST }|--|{ STOCK_PRICE : "derives_from_the_computation_of"
+	POSITION ||--o{ STOCK_ORDER : "derives_from_the_computation_of"
+	RECOMMENDATION }|--|{ FORECAST : "derives_from_the_computation_of"
 
 	%% Transaction Relationships
 	INVOICE }|--|| PAYMENT_METHOD : "charges"
