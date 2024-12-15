@@ -91,6 +91,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "open_ai_recommendation",
+			"name_plural": "open_ai_recommendations",
+			"id_prefix": "opai_rec",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "ord",
 			"name_plural": "orders",
 			"name_singular": "order",
