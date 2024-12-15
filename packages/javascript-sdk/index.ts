@@ -25,3 +25,4 @@ export * from './stripePaymentMethods/index.js';
 export * from './stripeSubscriptions/index.js';
 export * from './stripeFinancialConnectionAccounts/index.js';
 export * from './stripeFinancialConnectionSessions/index.js';
+export * from './openAiModels/index.js';

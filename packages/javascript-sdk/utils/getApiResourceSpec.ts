@@ -13,6 +13,7 @@ import { fundingAccountsApi } from '../fundingAccounts/index.js';
 import { invoicesApi } from '../invoices/index.js';
 import { licensesApi } from '../licenses/index.js';
 import { modelsApi } from '../models/index.js';
+import { openAiModelsApi } from '../openAiModels/index.js';
 import { ordersApi } from '../orders/index.js';
 import { paymentMethodsApi } from '../paymentMethods/index.js';
 import { positionsApi } from '../positions/index.js';
@@ -57,6 +58,8 @@ export const getApiResourceSpec = (
 			return licensesApi as unknown as GeneralizedApiResourceSpec;
 		case 'model':
 			return modelsApi as unknown as GeneralizedApiResourceSpec;
+		case 'open_ai_model':
+			return openAiModelsApi as unknown as GeneralizedApiResourceSpec;
 		case 'order':
 			return ordersApi as unknown as GeneralizedApiResourceSpec;
 		case 'payment_method':
