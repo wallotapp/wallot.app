@@ -3,6 +3,7 @@ import { GeneralizedResponse } from 'ergonomic';
 import { WallotCollection } from '@wallot/js';
 
 import { useCreateAlpacaAccountMutation } from '@wallot/react/src/features/alpacaAccounts';
+import { useCreateAlpacaAssetMutation } from '@wallot/react/src/features/alpacaAssets';
 import { useCreateAuthCredentialMutation } from '@wallot/react/src/features/authCredentials';
 import { useCreateForecastMutation } from '@wallot/react/src/features/forecasts';
 import { useCreateFundingAccountMutation } from '@wallot/react/src/features/fundingAccounts';
@@ -24,6 +25,7 @@ type MutationHook = (
 // Map of collection IDs to their respective mutations
 const createOperationMutationMap = {
 	alpaca_account: useCreateAlpacaAccountMutation,
+	alpaca_asset: useCreateAlpacaAssetMutation,
 	auth_credential: useCreateAuthCredentialMutation,
 	forecast: useCreateForecastMutation,
 	funding_account: useCreateFundingAccountMutation,

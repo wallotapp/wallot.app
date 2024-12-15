@@ -7,6 +7,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "alpaca_asset",
+			"name_plural": "alpaca_assets",
+			"id_prefix": "alp_ast",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "cred",
 			"name_plural": "auth_credentials",
 			"name_singular": "auth_credential",

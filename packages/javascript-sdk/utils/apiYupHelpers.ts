@@ -2,6 +2,7 @@ import { getApiResourceYupHelpers } from 'ergonomic';
 
 export const idPrefixByCollection = {
 	alpaca_account: 'alp_acct',
+	alpaca_asset: 'alp_ast',
 	auth_credential: 'cred',
 	forecast: 'fr',
 	funding_account: 'fn',
@@ -19,6 +20,7 @@ export const idPrefixByCollection = {
 export const apiYupHelpers = getApiResourceYupHelpers(
 	[
 		'alpaca_account',
+		'alpaca_asset',
 		'auth_credential',
 		'forecast',
 		'funding_account',

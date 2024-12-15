@@ -1,6 +1,7 @@
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 import { WallotCollection } from './WallotDatabaseTypes.js';
 import { alpacaAccountsApi } from '../alpacaAccounts/index.js';
+import { alpacaAssetsApi } from '../alpacaAssets/index.js';
 import { authCredentialsApi } from '../authCredentials/index.js';
 import { forecastsApi } from '../forecasts/index.js';
 import { fundingAccountsApi } from '../fundingAccounts/index.js';
@@ -21,6 +22,8 @@ export const getApiResourceSpec = (
 	switch (collectionId) {
 		case 'alpaca_account':
 			return alpacaAccountsApi as unknown as GeneralizedApiResourceSpec;
+		case 'alpaca_asset':
+			return alpacaAssetsApi as unknown as GeneralizedApiResourceSpec;
 		case 'auth_credential':
 			return authCredentialsApi as unknown as GeneralizedApiResourceSpec;
 		case 'forecast':
