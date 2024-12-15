@@ -26,248 +26,61 @@ bash expressjs-servers/rest-api/smoke-tests/test-health-endpoints.sh test primar
 
 ```mermaid
 erDiagram
-
-	USER ||--|| FUNDING_ACCOUNT : "has_one"
-	USER ||--|| STRIPE_CUSTOMER : "linked_to"
-	USER ||--|{ AUTH_CREDENTIAL : "has_many"
-	USER ||--|{ ORDER : "places"
-	USER ||--|{ POSITION : "holds"
-	USER ||--|{ PAYMENT_METHOD : "has"
-	USER ||--|{ TRANSACTION : "makes"
-	USER ||--|{ INVOICE : "receives"
-	USER ||--|| LICENSE : "has_one"
-	USER ||--|| ALPACA_ACCOUNT : "has_one"
-	USER {
-		string _id PK
-		string given_name
-		string email
-		datetime created_at
-		string status
-	}
-
-	AUTH_CREDENTIAL {
-		string _id PK
-		string user_id FK
-		string provider
-		string access_token
-		datetime created_at
-	}
-
-	FUNDING_ACCOUNT ||--|| STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "linked_from"
-	FUNDING_ACCOUNT ||--|| ALPACA_ACH_RELATIONSHIP : "mapped_to"
-	FUNDING_ACCOUNT {
-		string _id PK
-		string user_id FK
-		string nickname
-		string status
-		datetime created_at
-	}
-
-	MODEL ||--|{ FORECAST : "produces"
-	MODEL ||--|{ RECOMMENDATION : "generates"
-	MODEL {
-		string _id PK
-		string user_id FK
-		string name
-		string model_type
-		datetime created_at
-	}
-
-	FORECAST ||--|| STOCK : "for"
-	FORECAST {
-		string _id PK
-		string model_id FK
-		string stock_id FK
-		date forecast_date
-		double predicted_price
-	}
-
-	RECOMMENDATION ||--|| STOCK : "about"
-	RECOMMENDATION {
-		string _id PK
-		string model_id FK
-		string stock_id FK
-		string recommendation_type
-		datetime created_at
-	}
-
-	STOCK ||--|| ALPHA_VANTAGE_COMPANY : "info_from"
-	STOCK {
-		string _id PK
-		string symbol
-		string name
-		string exchange
-		string sector
-	}
-
-	ORDER ||--|| STOCK : "targets"
-	ORDER ||--|| ALPACA_ORDER : "mirrors"
-	ORDER {
-		string _id PK
-		string user_id FK
-		string stock_id FK
-		string order_type
-		double quantity
-		double price
-	}
-
-	POSITION ||--|| STOCK : "represents"
+	%% Mirror Relationships
+	ACH_TRANSFER ||--|| ALPACA_ACH_TRANSFER : "mirrors"
+	BANK_ACCOUNT ||--|| ALPACA_ACH_RELATIONSHIP : "mirrors"
+	BANK_ACCOUNT ||--|| STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "mirrors"
+	INVOICE ||--|| STRIPE_INVOICE : "mirrors"
+	MODEL ||--|| OPEN_AI_MODEL : "mirrors"
+	MODEL_FAMILY ||--|| OPEN_AI_MODEL_FAMILY : "mirrors"
+	LICENSE ||--|| STRIPE_SUBSCRIPTION : "mirrors"
+	PAYMENT_METHOD ||--|| STRIPE_PAYMENT_METHOD : "mirrors"
 	POSITION ||--|| ALPACA_POSITION : "mirrors"
-	POSITION {
-		string _id PK
-		string user_id FK
-		string stock_id FK
-		double quantity
-		double average_cost
-	}
+	RECOMMENDATION ||--|| OPEN_AI_RECOMMENDATION : "mirrors"
+	STOCK ||--|| ALPACA_ASSET : "mirrors"
+	STOCK ||--|| ALPHA_VANTAGE_COMPANY : "mirrors"
+	STOCK_ORDER ||--|| ALPACA_ORDER : "mirrors"
+	USER ||--|| ALPACA_ACCOUNT : "mirrors"
+	USER ||--|| STRIPE_CUSTOMER : "mirrors"
 
-	PAYMENT_METHOD ||--|| STRIPE_PAYMENT_METHOD : "backed_by"
-	PAYMENT_METHOD {
-		string _id PK
-		string user_id FK
-		string type
-		string status
-		datetime created_at
-	}
+	%% Ownership Relationships
+	EQUITY_ACCOUNT ||--o{ BANK_ACCOUNT : "owns"
+	EQUITY_ACCOUNT ||--o{ POSITION : "owns"
+	LICENSE ||--o{ INVOICE : "owns"
+	MODEL_FAMILY ||--o{ MODEL : "owns"
+	ORDER ||--o{ STOCK_ORDER : "owns"
+	STOCK_ORDER ||--|| STOCK : "owns"
+	USER ||--|| AUTH_CREDENTIAL : "owns"
+	USER ||--|| EQUITY_ACCOUNT : "owns"
+	USER ||--o{ ORDER : "owns"
+	USER ||--|| LICENSE : "owns"
+	USER ||--o{ PAYMENT_METHOD : "owns"
 
-	TRANSACTION {
-		string _id PK
-		string user_id FK
-		string type
-		double amount
-		datetime created_at
-	}
+	%% Production Relationships
+	MODEL ||--o{ FORECAST : "produces"
+	MODEL ||--o{ RECOMMENDATION : "produces"
+	STRIPE_FINANCIAL_CONNECTION_SESSION ||--o{ STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "produces"
+	RECOMMENDATION }o--o{ STOCK_ORDER : "factors_into"
 
-	INVOICE ||--|| STRIPE_INVOICE : "backed_by"
-	INVOICE {
-		string _id PK
-		string user_id FK
-		double amount_due
-		datetime created_at
-		string status
-	}
+	%% Similarity Relationships
+	MODEL_FAMILY }o--o{ USER_PERSONA : "caters_to"
+	RECOMMENDATION }o--o{ USER_PERSONA : "caters_to"
+	USER ||--|{ USER_PERSONA : "fits"
 
-	LICENSE ||--|| STRIPE_SUBSCRIPTION : "reflected_by"
-	LICENSE {
-		string _id PK
-		string user_id FK
-		string status
-		datetime valid_until
-	}
+	%% Computation Relationships
+	POSITION ||--o{ STOCK_ORDER : "is_computed_as_the_result_of"
+	BANK_ACCOUNT ||--o{ ACH_TRANSFER : "is_computed_as_the_result_of"
+	RECOMMENDATION }|--|{ FORECAST : "is_computed_as_the_result_of"
 
-	STRIPE_CUSTOMER ||--|{ STRIPE_FINANCIAL_CONNECTION_SESSION : "initiates"
-	STRIPE_CUSTOMER ||--|{ STRIPE_PAYMENT_METHOD : "owns"
-	STRIPE_CUSTOMER ||--|{ STRIPE_SUBSCRIPTION : "subscribes_to"
-	STRIPE_CUSTOMER ||--|{ STRIPE_INVOICE : "receives"
-	STRIPE_CUSTOMER {
-		string _id PK
-		string user_id FK
-		string email
-		string stripe_id
-		datetime created_at
-	}
+	%% Prediction Relationships
+	FORECAST }|--|| STOCK : "predicts"
 
-	STRIPE_FINANCIAL_CONNECTION_SESSION ||--|{ STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "yields"
-	STRIPE_FINANCIAL_CONNECTION_SESSION {
-		string _id PK
-		string stripe_customer_id FK
-		datetime created_at
-		string client_secret
-	}
+	%% Transaction Relationships
+	INVOICE }|--|| PAYMENT_METHOD : "charges"
 
-	STRIPE_FINANCIAL_CONNECTION_ACCOUNT {
-		string _id PK
-		string bank_name
-		string last4
-		string routing_number
-		datetime created_at
-	}
-
-	STRIPE_INVOICE {
-		string _id PK
-		string stripe_customer_id FK
-		double amount_due
-		string status
-		datetime created_at
-	}
-
-	STRIPE_PAYMENT_METHOD {
-		string _id PK
-		string stripe_customer_id FK
-		string type
-		string last4
-		datetime created_at
-	}
-
-	STRIPE_SUBSCRIPTION {
-		string _id PK
-		string stripe_customer_id FK
-		string status
-		datetime current_period_end
-	}
-
-	ALPACA_ACCOUNT ||--|{ ALPACA_ACH_RELATIONSHIP : "has"
-	ALPACA_ACCOUNT ||--|{ ALPACA_ACH_TRANSFER : "performs"
-	ALPACA_ACCOUNT ||--|{ ALPACA_ORDER : "submits"
-	ALPACA_ACCOUNT ||--|{ ALPACA_POSITION : "holds"
-	ALPACA_ACCOUNT {
-		string _id PK
-		string user_id FK
-		string status
-		double cash_balance
-		datetime created_at
-	}
-
-	ALPACA_ACH_RELATIONSHIP {
-		string _id PK
-		string alpaca_account_id FK
-		string bank_name
-		string account_number_last4
-		datetime created_at
-	}
-
-	ALPACA_ACH_TRANSFER {
-		string _id PK
-		string alpaca_account_id FK
-		double amount
-		string direction
-		datetime created_at
-	}
-
-	ALPACA_ASSET ||--|| STOCK : "corresponds_to"
-	ALPACA_ASSET {
-		string _id PK
-		string symbol
-		string name
-		string exchange
-	}
-
-	ALPACA_ORDER ||--|| ORDER : "mirrors"
-	ALPACA_ORDER {
-		string _id PK
-		string alpaca_account_id FK
-		string alpaca_asset_id FK
-		string side
-		double qty
-	}
-
-	ALPACA_POSITION ||--|| POSITION : "mirrors"
-	ALPACA_POSITION {
-		string _id PK
-		string alpaca_account_id FK
-		string alpaca_asset_id FK
-		double qty
-		double avg_entry_price
-	}
-
-	ALPHA_VANTAGE_COMPANY ||--|| STOCK : "describes"
-	ALPHA_VANTAGE_COMPANY {
-		string _id PK
-		string stock_id FK
-		string name
-		string industry
-		string description
-	}
+	%% Proxy Relationships
+	POSITION ||--|| STOCK : "represents"
+	PAYMENT_METHOD ||--|| BANK_ACCOUNT : "represents"
 ```
 
 ## User Experience:
