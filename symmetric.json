@@ -139,6 +139,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "stock_order",
+			"name_plural": "stock_orders",
+			"id_prefix": "stck_ord",
+			"visibility": "public"
+		},
+		{
 			"name_singular": "stripe_customer",
 			"name_plural": "stripe_customers",
 			"id_prefix": "strp_cus",

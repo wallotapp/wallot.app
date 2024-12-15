@@ -25,6 +25,7 @@ import { useUpdatePaymentMethodMutation } from '@wallot/react/src/features/payme
 import { useUpdatePositionMutation } from '@wallot/react/src/features/positions';
 import { useUpdateRecommendationMutation } from '@wallot/react/src/features/recommendations';
 import { useUpdateStockMutation } from '@wallot/react/src/features/stocks';
+import { useUpdateStockOrderMutation } from '@wallot/react/src/features/stockOrders';
 import { useUpdateStripeCustomerMutation } from '@wallot/react/src/features/stripeCustomers';
 import { useUpdateStripeFinancialConnectionAccountMutation } from '@wallot/react/src/features/stripeFinancialConnectionAccounts';
 import { useUpdateStripeFinancialConnectionSessionMutation } from '@wallot/react/src/features/stripeFinancialConnectionSessions';
@@ -63,6 +64,7 @@ const updateOperationMutationMap = {
 	position: useUpdatePositionMutation,
 	recommendation: useUpdateRecommendationMutation,
 	stock: useUpdateStockMutation,
+	stock_order: useUpdateStockOrderMutation,
 	stripe_customer: useUpdateStripeCustomerMutation,
 	stripe_financial_connection_account:
 		useUpdateStripeFinancialConnectionAccountMutation,
