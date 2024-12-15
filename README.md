@@ -44,16 +44,16 @@ erDiagram
 	USER ||--|| STRIPE_CUSTOMER : "mirrors"
 
 	%% Ownership Relationships
-	EQUITY_ACCOUNT ||--o{ BANK_ACCOUNT : "owns"
 	EQUITY_ACCOUNT ||--o{ POSITION : "owns"
 	LICENSE ||--o{ INVOICE : "owns"
 	MODEL_FAMILY ||--o{ MODEL : "owns"
 	ORDER ||--o{ STOCK_ORDER : "owns"
 	USER ||--|| AUTH_CREDENTIAL : "owns"
 	USER ||--|| EQUITY_ACCOUNT : "owns"
-	USER ||--o{ ORDER : "owns"
 	USER ||--|| LICENSE : "owns"
+	USER ||--o{ ORDER : "owns"
 	USER ||--o{ PAYMENT_METHOD : "owns"
+	USER |o--o{ RECOMMENDATION : "owns"
 
 	%% Production Relationships
 	MODEL ||--o{ FORECAST : "produces"
