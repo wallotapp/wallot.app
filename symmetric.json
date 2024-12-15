@@ -13,6 +13,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "alpaca_ach_transfer",
+			"name_plural": "alpaca_ach_transfers",
+			"id_prefix": "alp_ach_tf",
+			"visibility": "public"
+		},
+		{
 			"name_singular": "alpaca_asset",
 			"name_plural": "alpaca_assets",
 			"id_prefix": "alp_ast",

@@ -4,6 +4,7 @@ import { WallotCollection } from '@wallot/js';
 
 import { useUpdateAlpacaAccountMutation } from '@wallot/react/src/features/alpacaAccounts';
 import { useUpdateAlpacaAchRelationshipMutation } from '@wallot/react/src/features/alpacaAchRelationships';
+import { useUpdateAlpacaAchTransferMutation } from '@wallot/react/src/features/alpacaAchTransfers';
 import { useUpdateAlpacaAssetMutation } from '@wallot/react/src/features/alpacaAssets';
 import { useUpdateAuthCredentialMutation } from '@wallot/react/src/features/authCredentials';
 import { useUpdateForecastMutation } from '@wallot/react/src/features/forecasts';
@@ -27,6 +28,7 @@ type MutationHook = (
 const updateOperationMutationMap = {
 	alpaca_account: useUpdateAlpacaAccountMutation,
 	alpaca_ach_relationship: useUpdateAlpacaAchRelationshipMutation,
+	alpaca_ach_transfer: useUpdateAlpacaAchTransferMutation,
 	alpaca_asset: useUpdateAlpacaAssetMutation,
 	auth_credential: useUpdateAuthCredentialMutation,
 	forecast: useUpdateForecastMutation,

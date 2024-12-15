@@ -6,6 +6,7 @@ import { WallotCollection } from '@wallot/js';
 
 import { useQueryAlpacaAccountPage } from '@wallot/react/src/features/alpacaAccounts';
 import { useQueryAlpacaAchRelationshipPage } from '@wallot/react/src/features/alpacaAchRelationships';
+import { useQueryAlpacaAchTransferPage } from '@wallot/react/src/features/alpacaAchTransfers';
 import { useQueryAlpacaAssetPage } from '@wallot/react/src/features/alpacaAssets';
 import { useQueryAuthCredentialPage } from '@wallot/react/src/features/authCredentials';
 import { useQueryForecastPage } from '@wallot/react/src/features/forecasts';
@@ -29,6 +30,7 @@ type PageQueryHook = (
 const queryHookMap = {
 	alpaca_account: useQueryAlpacaAccountPage,
 	alpaca_ach_relationship: useQueryAlpacaAchRelationshipPage,
+	alpaca_ach_transfer: useQueryAlpacaAchTransferPage,
 	alpaca_asset: useQueryAlpacaAssetPage,
 	auth_credential: useQueryAuthCredentialPage,
 	forecast: useQueryForecastPage,
