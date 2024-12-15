@@ -20,8 +20,8 @@ This project is a REST API that provides a set of functions that can be used to 
 | Wallot   | createUser                             | ❌           | ❌          | ❌      |
 | Alpaca   | createAlpacaAccount                    | ❌           | ❌          | ❌      |
 | Alpaca   | createAlpacaAchRelationship            | ❌           | ❌          | ❌      |
-| Alpaca   | createAlpacaAchTransfer                | ❌           | ❌          | ❌      |
 | Alpaca   | createAlpacaOrder                      | ❌           | ❌          | ❌      |
+| Alpaca   | requestAlpacaAchTransfer               | ❌           | ❌          | ❌      |
 | Firebase | createFirebaseAuthCustomToken          | ✅           | ✅          | ✅      |
 | Stripe   | createStripeCustomer                   | ❌           | ❌          | ❌      |
 | Stripe   | attachStripePaymentMethod              | ❌           | ❌          | ❌      |

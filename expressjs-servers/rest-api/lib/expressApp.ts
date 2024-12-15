@@ -86,7 +86,7 @@ app.post(
 );
 
 // ACH Transfers
-import { createAlpacaAchTransfer } from './app/alpaca/achTransfers/createAlpacaAchTransfer.js';
+import { requestAlpacaAchTransfer } from './app/alpaca/achTransfers/requestAlpacaAchTransfer.js';
 app.options('*/v0/alpaca/ach-transfers', corsPolicy);
 app.post(
 	'*/v0/alpaca/ach-transfers',
@@ -95,7 +95,7 @@ app.post(
 		res: express.Response<unknown, GeneralizedResponse<unknown>>,
 		next,
 	) => {
-		corsPolicy(req, res, createAlpacaAchTransfer(req, res, next));
+		corsPolicy(req, res, requestAlpacaAchTransfer(req, res, next));
 	},
 );
 

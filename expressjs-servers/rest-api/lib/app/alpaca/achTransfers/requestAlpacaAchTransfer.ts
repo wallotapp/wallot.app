@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { GeneralizedResponse, getGeneralizedError } from 'ergonomic';
 
-export const createAlpacaAchTransfer =
+export const requestAlpacaAchTransfer =
 	(
 		_req: express.Request<unknown, unknown, unknown>,
 		res: express.Response<unknown, GeneralizedResponse<unknown>>,

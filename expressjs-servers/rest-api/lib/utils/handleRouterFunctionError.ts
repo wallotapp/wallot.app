@@ -1,8 +1,8 @@
 import * as express from 'express';
-import { getGeneralizedError } from 'ergonomic';
+import { GeneralizedResponse, getGeneralizedError } from 'ergonomic';
 
 export const handleRouterFunctionError = (
-	res: express.Response,
+	res: express.Response<unknown, GeneralizedResponse<unknown>>,
 	next: express.NextFunction,
 	err: unknown,
 ) => {
