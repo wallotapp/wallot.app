@@ -7,6 +7,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "alpaca_ach_relationship",
+			"name_plural": "alpaca_ach_relationships",
+			"id_prefix": "alp_ach_rel",
+			"visibility": "public"
+		},
+		{
 			"name_singular": "alpaca_asset",
 			"name_plural": "alpaca_assets",
 			"id_prefix": "alp_ast",

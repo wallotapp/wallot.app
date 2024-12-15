@@ -14,3 +14,4 @@ export * from './transactions/index.js';
 export * from './users/index.js';
 export * from './alpacaAccounts/index.js';
 export * from './alpacaAssets/index.js';
+export * from './alpacaAchRelationships/index.js';

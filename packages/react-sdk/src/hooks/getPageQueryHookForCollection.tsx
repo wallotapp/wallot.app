@@ -5,6 +5,7 @@ import { GeneralizedUseQueryPageProps } from 'ergonomic-react/src/lib/tanstackQu
 import { WallotCollection } from '@wallot/js';
 
 import { useQueryAlpacaAccountPage } from '@wallot/react/src/features/alpacaAccounts';
+import { useQueryAlpacaAchRelationshipPage } from '@wallot/react/src/features/alpacaAchRelationships';
 import { useQueryAlpacaAssetPage } from '@wallot/react/src/features/alpacaAssets';
 import { useQueryAuthCredentialPage } from '@wallot/react/src/features/authCredentials';
 import { useQueryForecastPage } from '@wallot/react/src/features/forecasts';
@@ -27,6 +28,7 @@ type PageQueryHook = (
 // Map of collection IDs to their respective hooks
 const queryHookMap = {
 	alpaca_account: useQueryAlpacaAccountPage,
+	alpaca_ach_relationship: useQueryAlpacaAchRelationshipPage,
 	alpaca_asset: useQueryAlpacaAssetPage,
 	auth_credential: useQueryAuthCredentialPage,
 	forecast: useQueryForecastPage,
