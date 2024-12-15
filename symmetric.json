@@ -115,6 +115,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "stripe_financial_connection_account",
+			"name_plural": "stripe_financial_connection_accounts",
+			"id_prefix": "strp_fc_acct",
+			"visibility": "public"
+		},
+		{
 			"name_singular": "stripe_invoice",
 			"name_plural": "stripe_invoices",
 			"id_prefix": "strp_inv",

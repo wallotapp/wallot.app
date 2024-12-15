@@ -23,6 +23,7 @@ import { useQueryPositionPage } from '@wallot/react/src/features/positions';
 import { useQueryRecommendationPage } from '@wallot/react/src/features/recommendations';
 import { useQueryStockPage } from '@wallot/react/src/features/stocks';
 import { useQueryStripeCustomerPage } from '@wallot/react/src/features/stripeCustomers';
+import { useQueryStripeFinancialConnectionAccountPage } from '@wallot/react/src/features/stripeFinancialConnectionAccounts';
 import { useQueryStripeInvoicePage } from '@wallot/react/src/features/stripeInvoices';
 import { useQueryStripePaymentMethodPage } from '@wallot/react/src/features/stripePaymentMethods';
 import { useQueryStripeSubscriptionPage } from '@wallot/react/src/features/stripeSubscriptions';
@@ -54,6 +55,8 @@ const queryHookMap = {
 	recommendation: useQueryRecommendationPage,
 	stock: useQueryStockPage,
 	stripe_customer: useQueryStripeCustomerPage,
+	stripe_financial_connection_account:
+		useQueryStripeFinancialConnectionAccountPage,
 	stripe_invoice: useQueryStripeInvoicePage,
 	stripe_payment_method: useQueryStripePaymentMethodPage,
 	stripe_subscription: useQueryStripeSubscriptionPage,

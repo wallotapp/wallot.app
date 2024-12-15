@@ -21,6 +21,7 @@ import { useUpdatePositionMutation } from '@wallot/react/src/features/positions'
 import { useUpdateRecommendationMutation } from '@wallot/react/src/features/recommendations';
 import { useUpdateStockMutation } from '@wallot/react/src/features/stocks';
 import { useUpdateStripeCustomerMutation } from '@wallot/react/src/features/stripeCustomers';
+import { useUpdateStripeFinancialConnectionAccountMutation } from '@wallot/react/src/features/stripeFinancialConnectionAccounts';
 import { useUpdateStripeInvoiceMutation } from '@wallot/react/src/features/stripeInvoices';
 import { useUpdateStripePaymentMethodMutation } from '@wallot/react/src/features/stripePaymentMethods';
 import { useUpdateStripeSubscriptionMutation } from '@wallot/react/src/features/stripeSubscriptions';
@@ -52,6 +53,8 @@ const updateOperationMutationMap = {
 	recommendation: useUpdateRecommendationMutation,
 	stock: useUpdateStockMutation,
 	stripe_customer: useUpdateStripeCustomerMutation,
+	stripe_financial_connection_account:
+		useUpdateStripeFinancialConnectionAccountMutation,
 	stripe_invoice: useUpdateStripeInvoiceMutation,
 	stripe_payment_method: useUpdateStripePaymentMethodMutation,
 	stripe_subscription: useUpdateStripeSubscriptionMutation,
