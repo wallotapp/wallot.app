@@ -13,6 +13,7 @@ import { fundingAccountsApi } from '../fundingAccounts/index.js';
 import { invoicesApi } from '../invoices/index.js';
 import { licensesApi } from '../licenses/index.js';
 import { modelsApi } from '../models/index.js';
+import { modelFamiliesApi } from '../modelFamilies/index.js';
 import { openAiModelsApi } from '../openAiModels/index.js';
 import { openAiModelFamiliesApi } from '../openAiModelFamilies/index.js';
 import { openAiRecommendationsApi } from '../openAiRecommendations/index.js';
@@ -61,6 +62,8 @@ export const getApiResourceSpec = (
 			return licensesApi as unknown as GeneralizedApiResourceSpec;
 		case 'model':
 			return modelsApi as unknown as GeneralizedApiResourceSpec;
+		case 'model_family':
+			return modelFamiliesApi as unknown as GeneralizedApiResourceSpec;
 		case 'open_ai_model':
 			return openAiModelsApi as unknown as GeneralizedApiResourceSpec;
 		case 'open_ai_model_family':

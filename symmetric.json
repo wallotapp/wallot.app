@@ -79,6 +79,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "model_family",
+			"name_plural": "model_families",
+			"id_prefix": "mod_fm",
+			"visibility": "public"
+		},
+		{
 			"name_singular": "open_ai_model",
 			"name_plural": "open_ai_models",
 			"id_prefix": "opai_mod",
