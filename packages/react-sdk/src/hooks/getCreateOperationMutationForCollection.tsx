@@ -16,6 +16,7 @@ import { useCreateInvoiceMutation } from '@wallot/react/src/features/invoices';
 import { useCreateLicenseMutation } from '@wallot/react/src/features/licenses';
 import { useCreateModelMutation } from '@wallot/react/src/features/models';
 import { useCreateOpenAiModelMutation } from '@wallot/react/src/features/openAiModels';
+import { useCreateOpenAiModelFamilyMutation } from '@wallot/react/src/features/openAiModelFamilies';
 import { useCreateOrderMutation } from '@wallot/react/src/features/orders';
 import { useCreatePaymentMethodMutation } from '@wallot/react/src/features/paymentMethods';
 import { useCreatePositionMutation } from '@wallot/react/src/features/positions';
@@ -50,6 +51,7 @@ const createOperationMutationMap = {
 	license: useCreateLicenseMutation,
 	model: useCreateModelMutation,
 	open_ai_model: useCreateOpenAiModelMutation,
+	open_ai_model_family: useCreateOpenAiModelFamilyMutation,
 	order: useCreateOrderMutation,
 	payment_method: useCreatePaymentMethodMutation,
 	position: useCreatePositionMutation,
