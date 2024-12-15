@@ -109,6 +109,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "stripe_customer",
+			"name_plural": "stripe_customers",
+			"id_prefix": "strp_cus",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "tr",
 			"name_plural": "transactions",
 			"name_singular": "transaction",

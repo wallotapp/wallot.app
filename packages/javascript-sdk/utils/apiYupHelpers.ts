@@ -19,6 +19,7 @@ export const idPrefixByCollection = {
 	position: 'pos',
 	recommendation: 'rec',
 	stock: 'stck',
+	stripe_customer: 'strp_cus',
 	transaction: 'tr',
 	user: 'usr',
 } as const;
@@ -42,6 +43,7 @@ export const apiYupHelpers = getApiResourceYupHelpers(
 		'position',
 		'recommendation',
 		'stock',
+		'stripe_customer',
 		'transaction',
 		'user',
 	],

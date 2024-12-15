@@ -20,6 +20,7 @@ import { useCreatePaymentMethodMutation } from '@wallot/react/src/features/payme
 import { useCreatePositionMutation } from '@wallot/react/src/features/positions';
 import { useCreateRecommendationMutation } from '@wallot/react/src/features/recommendations';
 import { useCreateStockMutation } from '@wallot/react/src/features/stocks';
+import { useCreateStripeCustomerMutation } from '@wallot/react/src/features/stripeCustomers';
 import { useCreateTransactionMutation } from '@wallot/react/src/features/transactions';
 import { useCreateUserMutation } from '@wallot/react/src/features/users';
 
@@ -47,6 +48,7 @@ const createOperationMutationMap = {
 	position: useCreatePositionMutation,
 	recommendation: useCreateRecommendationMutation,
 	stock: useCreateStockMutation,
+	stripe_customer: useCreateStripeCustomerMutation,
 	transaction: useCreateTransactionMutation,
 	user: useCreateUserMutation,
 } as unknown as Record<WallotCollection, MutationHook>;
