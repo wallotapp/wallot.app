@@ -32,7 +32,6 @@ import { useQueryStripeFinancialConnectionSessionPage } from '@wallot/react/src/
 import { useQueryStripeInvoicePage } from '@wallot/react/src/features/stripeInvoices';
 import { useQueryStripePaymentMethodPage } from '@wallot/react/src/features/stripePaymentMethods';
 import { useQueryStripeSubscriptionPage } from '@wallot/react/src/features/stripeSubscriptions';
-import { useQueryStripeTransactionPage } from '@wallot/react/src/features/stripeTransactions';
 import { useQueryTransactionPage } from '@wallot/react/src/features/transactions';
 import { useQueryUserPage } from '@wallot/react/src/features/users';
 import { useQueryUserPersonaPage } from '@wallot/react/src/features/userPersonas';
@@ -73,7 +72,6 @@ const queryHookMap = {
 	stripe_invoice: useQueryStripeInvoicePage,
 	stripe_payment_method: useQueryStripePaymentMethodPage,
 	stripe_subscription: useQueryStripeSubscriptionPage,
-	stripe_transaction: useQueryStripeTransactionPage,
 	transaction: useQueryTransactionPage,
 	user: useQueryUserPage,
 	user_persona: useQueryUserPersonaPage,

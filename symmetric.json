@@ -169,12 +169,6 @@
 			"visibility": "public"
 		},
 		{
-			"name_singular": "stripe_transaction",
-			"name_plural": "stripe_transactions",
-			"id_prefix": "strp_tr",
-			"visibility": "public"
-		},
-		{
 			"id_prefix": "tr",
 			"name_plural": "transactions",
 			"name_singular": "transaction",
