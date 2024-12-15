@@ -25,6 +25,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "alpaca_order",
+			"name_plural": "alpaca_orders",
+			"id_prefix": "alp_ord",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "cred",
 			"name_plural": "auth_credentials",
 			"name_singular": "auth_credential",
