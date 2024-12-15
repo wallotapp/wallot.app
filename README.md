@@ -45,7 +45,6 @@ erDiagram
 
 	%% Ownership Relationships
 	EQUITY_ACCOUNT ||--o{ POSITION : "owns"
-	LICENSE ||--o{ INVOICE : "owns"
 	MODEL_FAMILY ||--o{ MODEL : "owns"
 	ORDER ||--o{ STOCK_ORDER : "owns"
 	USER ||--|| AUTH_CREDENTIAL : "owns"
@@ -75,6 +74,7 @@ erDiagram
 
 	%% Transaction Relationships
 	INVOICE }|--|| PAYMENT_METHOD : "charges"
+	LICENSE ||--o{ INVOICE : "bills"
 	ORDER }|--|| BANK_ACCOUNT : "debits_or_credits"
 
 	%% Proxy Relationships
