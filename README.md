@@ -76,6 +76,7 @@ erDiagram
 
 	%% Transaction Relationships
 	INVOICE }|--|| PAYMENT_METHOD : "charges"
+	ORDER }|--|| BANK_ACCOUNT : "debits_or_credits"
 
 	%% Proxy Relationships
 	PAYMENT_METHOD ||--|| BANK_ACCOUNT : "represents"
