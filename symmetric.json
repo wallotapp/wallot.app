@@ -55,6 +55,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "equity_account",
+			"name_plural": "equity_accounts",
+			"id_prefix": "eq",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "fr",
 			"name_plural": "forecasts",
 			"name_singular": "forecast",
