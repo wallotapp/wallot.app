@@ -1,6 +1,12 @@
 {
 	"features": [
 		{
+			"name_singular": "alpaca_account",
+			"name_plural": "alpaca_accounts",
+			"id_prefix": "alp_acct",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "cred",
 			"name_plural": "auth_credentials",
 			"name_singular": "auth_credential",

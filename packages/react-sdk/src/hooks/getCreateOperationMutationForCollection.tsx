@@ -2,6 +2,7 @@ import { UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
 import { GeneralizedResponse } from 'ergonomic';
 import { WallotCollection } from '@wallot/js';
 
+import { useCreateAlpacaAccountMutation } from '@wallot/react/src/features/alpacaAccounts';
 import { useCreateAuthCredentialMutation } from '@wallot/react/src/features/authCredentials';
 import { useCreateForecastMutation } from '@wallot/react/src/features/forecasts';
 import { useCreateFundingAccountMutation } from '@wallot/react/src/features/fundingAccounts';
@@ -22,6 +23,7 @@ type MutationHook = (
 
 // Map of collection IDs to their respective mutations
 const createOperationMutationMap = {
+	alpaca_account: useCreateAlpacaAccountMutation,
 	auth_credential: useCreateAuthCredentialMutation,
 	forecast: useCreateForecastMutation,
 	funding_account: useCreateFundingAccountMutation,

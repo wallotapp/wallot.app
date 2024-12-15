@@ -1,9 +1,10 @@
 import { GeneralizedApiResource, GeneralizedResponse } from 'ergonomic';
 import { UseQueryResult } from '@tanstack/react-query';
-import { GeneralizedFirestoreCollectionPage } from 'ergonomic-react/src/features/data';
+import { GeneralizedFirestoreCollectionPage } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreCollectionPageQuery';
 import { GeneralizedUseQueryPageProps } from 'ergonomic-react/src/lib/tanstackQuery';
 import { WallotCollection } from '@wallot/js';
 
+import { useQueryAlpacaAccountPage } from '@wallot/react/src/features/alpacaAccounts';
 import { useQueryAuthCredentialPage } from '@wallot/react/src/features/authCredentials';
 import { useQueryForecastPage } from '@wallot/react/src/features/forecasts';
 import { useQueryFundingAccountPage } from '@wallot/react/src/features/fundingAccounts';
@@ -24,6 +25,7 @@ type PageQueryHook = (
 
 // Map of collection IDs to their respective hooks
 const queryHookMap = {
+	alpaca_account: useQueryAlpacaAccountPage,
 	auth_credential: useQueryAuthCredentialPage,
 	forecast: useQueryForecastPage,
 	funding_account: useQueryFundingAccountPage,
