@@ -30,6 +30,7 @@ import { useUpdateStripeFinancialConnectionSessionMutation } from '@wallot/react
 import { useUpdateStripeInvoiceMutation } from '@wallot/react/src/features/stripeInvoices';
 import { useUpdateStripePaymentMethodMutation } from '@wallot/react/src/features/stripePaymentMethods';
 import { useUpdateStripeSubscriptionMutation } from '@wallot/react/src/features/stripeSubscriptions';
+import { useUpdateStripeTransactionMutation } from '@wallot/react/src/features/stripeTransactions';
 import { useUpdateTransactionMutation } from '@wallot/react/src/features/transactions';
 import { useUpdateUserMutation } from '@wallot/react/src/features/users';
 import { useUpdateUserPersonaMutation } from '@wallot/react/src/features/userPersonas';
@@ -70,6 +71,7 @@ const updateOperationMutationMap = {
 	stripe_invoice: useUpdateStripeInvoiceMutation,
 	stripe_payment_method: useUpdateStripePaymentMethodMutation,
 	stripe_subscription: useUpdateStripeSubscriptionMutation,
+	stripe_transaction: useUpdateStripeTransactionMutation,
 	transaction: useUpdateTransactionMutation,
 	user: useUpdateUserMutation,
 	user_persona: useUpdateUserPersonaMutation,
