@@ -29,7 +29,6 @@ export const idPrefixByCollection = {
 	stripe_invoice: 'strp_inv',
 	stripe_payment_method: 'strp_pm',
 	stripe_subscription: 'strp_sub',
-	transaction: 'tr',
 	user: 'usr',
 	user_persona: 'usr_psa',
 } as const;
@@ -63,7 +62,6 @@ export const apiYupHelpers = getApiResourceYupHelpers(
 		'stripe_invoice',
 		'stripe_payment_method',
 		'stripe_subscription',
-		'transaction',
 		'user',
 		'user_persona',
 	],

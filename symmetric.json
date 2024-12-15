@@ -169,12 +169,6 @@
 			"visibility": "public"
 		},
 		{
-			"id_prefix": "tr",
-			"name_plural": "transactions",
-			"name_singular": "transaction",
-			"visibility": "public"
-		},
-		{
 			"id_prefix": "usr",
 			"name_plural": "users",
 			"name_singular": "user",
