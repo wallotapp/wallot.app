@@ -24,6 +24,7 @@ import { useCreateOpenAiModelMutation } from '@wallot/react/src/features/openAiM
 import { useCreateOpenAiModelFamilyMutation } from '@wallot/react/src/features/openAiModelFamilies';
 import { useCreateOpenAiRecommendationMutation } from '@wallot/react/src/features/openAiRecommendations';
 import { useCreateOrderMutation } from '@wallot/react/src/features/orders';
+import { useCreateParameterMutation } from '@wallot/react/src/features/parameters';
 import { useCreatePaymentMethodMutation } from '@wallot/react/src/features/paymentMethods';
 import { useCreatePositionMutation } from '@wallot/react/src/features/positions';
 import { useCreateRecommendationMutation } from '@wallot/react/src/features/recommendations';
@@ -67,6 +68,7 @@ const createOperationMutationMap = {
 	open_ai_model_family: useCreateOpenAiModelFamilyMutation,
 	open_ai_recommendation: useCreateOpenAiRecommendationMutation,
 	order: useCreateOrderMutation,
+	parameter: useCreateParameterMutation,
 	payment_method: useCreatePaymentMethodMutation,
 	position: useCreatePositionMutation,
 	recommendation: useCreateRecommendationMutation,

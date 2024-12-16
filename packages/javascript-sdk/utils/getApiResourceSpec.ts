@@ -22,6 +22,7 @@ import { openAiModelsApi } from '../openAiModels/index.js';
 import { openAiModelFamiliesApi } from '../openAiModelFamilies/index.js';
 import { openAiRecommendationsApi } from '../openAiRecommendations/index.js';
 import { ordersApi } from '../orders/index.js';
+import { parametersApi } from '../parameters/index.js';
 import { paymentMethodsApi } from '../paymentMethods/index.js';
 import { positionsApi } from '../positions/index.js';
 import { recommendationsApi } from '../recommendations/index.js';
@@ -85,6 +86,8 @@ export const getApiResourceSpec = (
 			return openAiRecommendationsApi as unknown as GeneralizedApiResourceSpec;
 		case 'order':
 			return ordersApi as unknown as GeneralizedApiResourceSpec;
+		case 'parameter':
+			return parametersApi as unknown as GeneralizedApiResourceSpec;
 		case 'payment_method':
 			return paymentMethodsApi as unknown as GeneralizedApiResourceSpec;
 		case 'position':

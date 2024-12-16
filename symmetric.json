@@ -133,6 +133,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "parameter",
+			"name_plural": "parameters",
+			"id_prefix": "param",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "pm",
 			"name_plural": "payment_methods",
 			"name_singular": "payment_method",

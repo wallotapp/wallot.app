@@ -35,3 +35,4 @@ export * from './stripePaymentMethods/index.js';
 export * from './stripeSubscriptions/index.js';
 export * from './users/index.js';
 export * from './userPersonas/index.js';
+export * from './parameters/index.js';
