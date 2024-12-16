@@ -60,6 +60,7 @@ erDiagram
 	MODEL ||--o{ RECOMMENDATION : "produces"
 	RECOMMENDATION }o--o{ STOCK_ORDER : "factors_into"
 	STRIPE_FINANCIAL_CONNECTION_SESSION ||--o{ STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "produces"
+	USER ||--o{ STRIPE_FINANCIAL_CONNECTION_SESSION : "produces"
 
 	%% Similarity Relationships
 	MODEL_FAMILY }o--o{ USER_PERSONA : "caters_to"

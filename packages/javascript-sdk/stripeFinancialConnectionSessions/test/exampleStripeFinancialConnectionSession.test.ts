@@ -11,6 +11,7 @@ describe('StripeFinancialConnectionSession', () => {
 				...apiResourceDefaultJson,
 				category: 'default',
 				name: 'My StripeFinancialConnectionSession',
+				user: '',
 			};
 		expect(exampleStripeFinancialConnectionSession).toEqual<
 			typeof exampleStripeFinancialConnectionSession
@@ -25,6 +26,7 @@ describe('StripeFinancialConnectionSession', () => {
 			_deleted: false,
 			description: '',
 			name: 'My StripeFinancialConnectionSession',
+			user: '',
 		});
 	});
 });
