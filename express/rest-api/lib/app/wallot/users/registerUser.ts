@@ -1,4 +1,14 @@
-import { RegisterUserParams, RegisterUserResponse } from '@wallot/js';
+import {
+	RegisterUserParams,
+	RegisterUserResponse,
+	stripeCustomersApi,
+	usersApi,
+	authCredentialsApi,
+	equityAccountsApi,
+	licensesApi,
+	ordersApi,
+	paymentMethodsApi,
+} from '@wallot/js';
 import { auth } from '../../../firebaseApp.js';
 
 export const registerUser = async ({
@@ -7,19 +17,19 @@ export const registerUser = async ({
 	username,
 }: RegisterUserParams): Promise<RegisterUserResponse> => {
 	// Construct Firestore document IDs in advance
-	const stripeCustomerId = 'TODO';
+	const stripeCustomerId = stripeCustomersApi.generateId();
 	stripeCustomerId;
-	const userId = 'TODO';
+	const userId = usersApi.generateId();
 	userId;
-	const authCredentialId = 'TODO';
+	const authCredentialId = authCredentialsApi.generateId();
 	authCredentialId;
-	const equityAccountId = 'TODO';
+	const equityAccountId = equityAccountsApi.generateId();
 	equityAccountId;
-	const licenseId = 'TODO';
+	const licenseId = licensesApi.generateId();
 	licenseId;
-	const orderId = 'TODO';
+	const orderId = ordersApi.generateId();
 	orderId;
-	const paymentMethodId = 'TODO';
+	const paymentMethodId = paymentMethodsApi.generateId();
 	paymentMethodId;
 
 	// Register a Firebase User
