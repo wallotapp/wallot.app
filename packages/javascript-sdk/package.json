@@ -4,7 +4,7 @@
 	"dependencies": {
 		"@google-cloud/storage": "^7.4.0",
 		"change-case": "^4.1.2",
-		"ergonomic": "^0.4.4",
+		"ergonomic": "^0.5.0",
 		"google-libphonenumber": "^3.2.31",
 		"ky-universal": "^0.12.0",
 		"luxon": "^2.3.2",
