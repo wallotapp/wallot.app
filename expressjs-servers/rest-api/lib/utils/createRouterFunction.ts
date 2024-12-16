@@ -7,7 +7,7 @@ import {
 } from 'ergonomic-node';
 import { auth } from '../firebaseApp.js';
 import { handleRouterFunctionError } from './handleRouterFunctionError.js';
-import { log } from './log.js';
+import { getGeneralizedError } from 'ergonomic';
 
 /**
  * Creates an Express router function that handles asynchronous operations.
@@ -16,6 +16,7 @@ import { log } from './log.js';
  * @template TParams - The type of the parameters.
  * @template TQuery - The type of the query parameters.
  * @param {function(TParams, TQuery, FirebaseUser | null): Promise<TResponseData[]>} fn - The asynchronous function to be executed.
+ * @param {{ requiresAuth: boolean }} [options={ requiresAuth: true }] - The options for the router function.
  * @returns An Express middleware function.
  */
 export const createRouterFunction = <TResponseData, TParams, TQuery>(
@@ -24,6 +25,7 @@ export const createRouterFunction = <TResponseData, TParams, TQuery>(
 		query: TQuery,
 		firebaseUser: FirebaseUser | null,
 	) => Promise<TResponseData>,
+	options: { requiresAuth: boolean } = { requiresAuth: true },
 ) => {
 	return (
 			req: express.Request<unknown, unknown, TParams, TQuery>,
@@ -43,7 +45,14 @@ export const createRouterFunction = <TResponseData, TParams, TQuery>(
 						if (!firebaseUserJwt) throw new Error('No firebaseUserJwt');
 						firebaseUser = await auth.verifyIdToken(firebaseUserJwt);
 					} catch (_) {
-						log('No Firebase user found in request', { type: 'error' });
+						const { requiresAuth } = options;
+						if (requiresAuth) {
+							res.locals.json = getGeneralizedError({
+								message: 'Unauthorized',
+								type: 'request.unauthorized',
+							});
+							return next();
+						}
 					}
 
 					// Extract the parameters from the request body
