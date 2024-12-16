@@ -40,6 +40,7 @@ erDiagram
 	STOCK ||--|| ALPACA_ASSET : "mirrors"
 	STOCK ||--|| ALPHA_VANTAGE_COMPANY : "mirrors"
 	STOCK_ORDER ||--|| ALPACA_ORDER : "mirrors"
+	STOCK_PRICE ||--|| ALPHA_VANTAGE_STOCK_PRICE : "mirrors"
 	USER ||--|| ALPACA_ACCOUNT : "mirrors"
 	USER ||--|| STRIPE_CUSTOMER : "mirrors"
 
@@ -153,6 +154,7 @@ erDiagram
     string stock FK "min(1)"
   }
   STOCK_PRICE {
+		string alpha_vantage_stock_price FK "min(1)"
     string stock FK "min(1)"
   }
   STRIPE_FINANCIAL_CONNECTION_ACCOUNT {
