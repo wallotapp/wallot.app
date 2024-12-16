@@ -1,14 +1,13 @@
 import * as express from 'express';
-import { GeneralizedResponse, getGeneralizedError } from 'ergonomic';
+import { GeneralizedResLocals } from 'ergonomic-node';
+import { getGeneralizedError } from 'ergonomic';
 
 export const handleRouterFunctionError = (
-	res: express.Response<unknown, GeneralizedResponse<unknown>>,
+	res: express.Response<unknown, GeneralizedResLocals>,
 	next: express.NextFunction,
 	err: unknown,
 ) => {
 	const message = (err as Error)?.message || 'Unknown error';
-	res.locals.errors = res.locals.errors?.length
-		? res.locals.errors
-		: [getGeneralizedError({ message })];
+	res.locals.json = getGeneralizedError({ message });
 	return next();
 };
