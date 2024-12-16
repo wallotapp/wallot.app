@@ -1,7 +1,10 @@
 import * as express from 'express';
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
-import { GeneralizedResponse } from 'ergonomic';
-import { getAuthHeaderBearerToken, getFirebaseAuth } from 'ergonomic-node';
+import {
+	GeneralizedResLocals,
+	getAuthHeaderBearerToken,
+	getFirebaseAuth,
+} from 'ergonomic-node';
 import { secrets } from '../secrets.js';
 import { handleRouterFunctionError } from './handleRouterFunctionError.js';
 import { log } from './log.js';
@@ -20,11 +23,11 @@ export const createRouterFunction = <TResponseData, TParams, TQuery>(
 		params: TParams,
 		query: TQuery,
 		firebaseUser: FirebaseUser | null,
-	) => Promise<TResponseData[]>,
+	) => Promise<TResponseData>,
 ) => {
 	return (
 			req: express.Request<unknown, unknown, TParams, TQuery>,
-			res: express.Response<unknown, GeneralizedResponse<TResponseData>>,
+			res: express.Response<unknown, GeneralizedResLocals<TResponseData>>,
 			next: express.NextFunction,
 		) =>
 		() => {
@@ -50,7 +53,7 @@ export const createRouterFunction = <TResponseData, TParams, TQuery>(
 					const query = req.query;
 
 					// Call the router function
-					res.locals.data = await fn(params, query, firebaseUser ?? null);
+					res.locals.json = await fn(params, query, firebaseUser ?? null);
 
 					// Proceed to the next middleware
 					return next();
