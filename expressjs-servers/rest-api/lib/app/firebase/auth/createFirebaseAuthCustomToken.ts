@@ -1,7 +1,6 @@
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { FirebaseUserCustomTokenResponse } from 'ergonomic';
-import { getFirebaseAuth } from 'ergonomic-node';
-import { secrets } from '../../../secrets.js';
+import { auth } from '../../../firebaseApp.js';
 
 /**
  * Creates a Firebase Auth custom token for a user.
@@ -24,9 +23,6 @@ export const createFirebaseAuthCustomToken = async (
 	firebaseUser: FirebaseUser | null,
 ): Promise<FirebaseUserCustomTokenResponse> => {
 	if (!firebaseUser) throw new Error('Unauthorized');
-
-	// Initialize Firebase Auth with the provided secrets
-	const auth = getFirebaseAuth(secrets);
 
 	// Create a custom token for the user
 	const customToken = await auth.createCustomToken(firebaseUser.uid);
