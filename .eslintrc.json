@@ -22,8 +22,8 @@
 		"tsconfigRootDir": ".",
 		"project": [
 			"./tsconfig.json",
-			"./expressjs-servers/*/tsconfig.json",
-			"./nextjs-web-apps/*/tsconfig.json",
+			"./express/*/tsconfig.json",
+			"./nextjs/*/tsconfig.json",
 			"./packages/*/tsconfig.json"
 		]
 	},
@@ -63,8 +63,8 @@
 				"alwaysTryTypes": true,
 				"project": [
 					"./tsconfig.json",
-					"./expressjs-servers/*/tsconfig.json",
-					"./nextjs-web-apps/*/tsconfig.json",
+					"./express/*/tsconfig.json",
+					"./nextjs/*/tsconfig.json",
 					"./packages/*/tsconfig.json"
 				]
 			}

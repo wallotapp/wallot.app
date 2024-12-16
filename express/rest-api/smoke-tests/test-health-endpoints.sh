@@ -11,7 +11,7 @@ if [[ -z "$DEPLOYMENT_ENVIRONMENT" || -z "$HOST_TYPE" ]]; then
 fi
 
 # Define the directory for the Express.js REST API
-rest_api_dir="./expressjs-servers/rest-api"
+rest_api_dir="./express/rest-api"
 
 # Define the mappings from host type to URLs for each environment
 declare -A live_origins=(

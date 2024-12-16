@@ -17,9 +17,9 @@
 ### REST API
 
 ```
-bash expressjs-servers/rest-api/smoke-tests/test-health-endpoints.sh test local
-bash expressjs-servers/rest-api/smoke-tests/test-health-endpoints.sh test cloud-functions
-bash expressjs-servers/rest-api/smoke-tests/test-health-endpoints.sh test primary
+bash express/rest-api/smoke-tests/test-health-endpoints.sh test local
+bash express/rest-api/smoke-tests/test-health-endpoints.sh test cloud-functions
+bash express/rest-api/smoke-tests/test-health-endpoints.sh test primary
 ```
 
 ## Architecture:

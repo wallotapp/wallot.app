@@ -1,6 +1,6 @@
 #!/bin/bash
 
 ## Open environment variables, if they are missing or empty (REST API)
-([ ! -s expressjs-servers/rest-api/.env ] && code expressjs-servers/rest-api/.env || true);
-([ ! -s expressjs-servers/rest-api/gmailApiServiceAccount.json ] && code expressjs-servers/rest-api/gmailApiServiceAccount.json || true);
+([ ! -s express/rest-api/.env ] && code express/rest-api/.env || true);
+([ ! -s express/rest-api/gmailApiServiceAccount.json ] && code express/rest-api/gmailApiServiceAccount.json || true);
 
