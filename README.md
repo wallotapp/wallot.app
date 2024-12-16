@@ -27,8 +27,8 @@ bash expressjs-servers/rest-api/smoke-tests/test-health-endpoints.sh test primar
 ```mermaid
 erDiagram
 	%% Mirror Relationships
-	ACH_TRANSFER ||--|| ALPACA_ACH_TRANSFER : "mirrors"
-	BANK_ACCOUNT ||--|| ALPACA_ACH_RELATIONSHIP : "mirrors"
+	ACH_TRANSFER ||--o| ALPACA_ACH_TRANSFER : "mirrors"
+	BANK_ACCOUNT ||--o| ALPACA_ACH_RELATIONSHIP : "mirrors"
 	BANK_ACCOUNT ||--|| STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "mirrors"
 	INVOICE ||--|| STRIPE_INVOICE : "mirrors"
 	MODEL ||--|| OPEN_AI_MODEL : "mirrors"

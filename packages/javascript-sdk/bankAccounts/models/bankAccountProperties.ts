@@ -29,10 +29,13 @@ const properties = {
 	_object: YupHelpers.constant(_object),
 	alpaca_ach_relationship: apiYupHelpers
 		.idRef(['alpaca_ach_relationship'])
+		.default(null)
+		.nullable()
 		.meta({ unique_key: true }),
 	category: BankAccountCategoryEnum.getDefinedSchema(),
 	stripe_financial_connection_account: apiYupHelpers
 		.idRef(['stripe_financial_connection_account'])
+		.min(1)
 		.meta({ unique_key: true }),
 } as const;
 type U = typeof properties;
