@@ -18,6 +18,8 @@ export type StockPriceCategory = keyof typeof StockPriceCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'alpha_vantage_stock_price',
+	'stock',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -26,8 +28,11 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
+	alpha_vantage_stock_price: apiYupHelpers
+		.idRef(['alpha_vantage_stock_price'])
+		.min(1),
 	category: StockPriceCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	stock: apiYupHelpers.idRef(['stock']).min(1),
 } as const;
 type U = typeof properties;
 

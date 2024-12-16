@@ -7,6 +7,8 @@ describe('StockPrice', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My StockPrice',
+			alpha_vantage_stock_price: '',
+			stock: '',
 		};
 		expect(exampleStockPrice).toEqual<typeof exampleStockPrice>({
 			_id: expect.any(String),
@@ -19,6 +21,8 @@ describe('StockPrice', () => {
 			_deleted: false,
 			description: '',
 			name: 'My StockPrice',
+			alpha_vantage_stock_price: '',
+			stock: '',
 		});
 	});
 });
