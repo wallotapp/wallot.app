@@ -1,23 +1,19 @@
-import * as express from 'express';
-import { GeneralizedResLocals } from 'ergonomic-node';
-import { handleRouterFunctionError } from '../../../utils/handleRouterFunctionError';
+import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
+import { RegisterUserParams, RegisterUserResponse } from '@wallot/js';
+import { auth } from '../../../firebaseApp.js';
 
-export const registerUser =
-	(
-		_req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResLocals>,
-		next: express.NextFunction,
-	) =>
-	() => {
-		return void (async () => {
-			try {
-				// Wait 1 second
-				await new Promise((resolve) => setTimeout(resolve, 2500));
-				// Response
-				res.locals.json = [];
-				return next();
-			} catch (err) {
-				return handleRouterFunctionError(res, next, err);
-			}
-		})();
-	};
+export const registerUser = async (
+	{ email, password, username }: RegisterUserParams,
+	_query: Record<string, never>,
+	_firebaseUser: FirebaseUser | null,
+): Promise<RegisterUserResponse> => {
+	email;
+	password;
+	username;
+	const firebaseUser = { uid: 'TODO' };
+
+	// Create a custom token for the user
+	const customToken = await auth.createCustomToken(firebaseUser.uid);
+
+	return { custom_token: customToken, redirect_url: 'TODO' };
+};

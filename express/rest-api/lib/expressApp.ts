@@ -9,7 +9,12 @@ import {
 	logExpressInvocation,
 	sendExpressResponse,
 } from 'ergonomic-node';
-import { User, usersApi as apiResourceSpec } from '@wallot/js';
+import {
+	RegisterUserParams,
+	RegisterUserResponse,
+	User,
+	usersApi as apiResourceSpec,
+} from '@wallot/js';
 import serverVariablesLive from './serverVariables.live.json' assert { type: 'json' };
 import serverVariablesTest from './serverVariables.test.json' assert { type: 'json' };
 import { secrets } from './secrets.js';
@@ -38,11 +43,27 @@ app.options('*/v0/users', corsPolicy);
 app.post(
 	'*/v0/users',
 	(
-		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResLocals>,
+		req: express.Request<
+			unknown,
+			unknown,
+			RegisterUserParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			RegisterUserResponse,
+			GeneralizedResLocals<RegisterUserResponse>
+		>,
 		next,
 	) => {
-		corsPolicy(req, res, registerUser(req, res, next));
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(registerUser, { requiresAuth: false })(
+				req,
+				res,
+				next,
+			),
+		);
 	},
 );
 
