@@ -29,7 +29,10 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: ModelFamilyCategoryEnum.getDefinedSchema(),
-	open_ai_model_family: apiYupHelpers.idRef(['open_ai_model_family']).min(1),
+	open_ai_model_family: apiYupHelpers
+		.idRef(['open_ai_model_family'])
+		.min(1)
+		.meta({ unique_key: true }),
 	parameters: apiYupHelpers.idRefs(['parameter']).min(1),
 } as const;
 type U = typeof properties;

@@ -29,7 +29,11 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
-	alpaca_order: apiYupHelpers.idRef(['alpaca_order']).default(null).nullable(),
+	alpaca_order: apiYupHelpers
+		.idRef(['alpaca_order'])
+		.default(null)
+		.nullable()
+		.meta({ unique_key: true }),
 	category: StockOrderCategoryEnum.getDefinedSchema(),
 	order: apiYupHelpers.idRef(['order']).min(1),
 	position: apiYupHelpers.idRef(['position']).min(1),

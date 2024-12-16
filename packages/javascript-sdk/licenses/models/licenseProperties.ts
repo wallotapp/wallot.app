@@ -31,8 +31,9 @@ const properties = {
 	stripe_subscription: apiYupHelpers
 		.idRef(['stripe_subscription'])
 		.default(null)
-		.nullable(),
-	user: apiYupHelpers.idRef(['user']).min(1),
+		.nullable()
+		.meta({ unique_key: true }),
+	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: true }),
 } as const;
 type U = typeof properties;
 

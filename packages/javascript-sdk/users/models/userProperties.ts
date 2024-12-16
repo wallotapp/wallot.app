@@ -30,10 +30,14 @@ const properties = {
 	alpaca_account: apiYupHelpers
 		.idRef(['alpaca_account'])
 		.default(null)
-		.nullable(),
+		.nullable()
+		.meta({ unique_key: true }),
 	category: UserCategoryEnum.getDefinedSchema(),
 	parameters: apiYupHelpers.idRefs(['parameter']).default(null).nullable(),
-	stripe_customer: apiYupHelpers.idRef(['stripe_customer']).min(1),
+	stripe_customer: apiYupHelpers
+		.idRef(['stripe_customer'])
+		.min(1)
+		.meta({ unique_key: true }),
 } as const;
 type U = typeof properties;
 

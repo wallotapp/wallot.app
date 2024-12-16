@@ -28,8 +28,14 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
-	alpaca_asset: apiYupHelpers.idRef(['alpaca_asset']).min(1),
-	alpha_vantage_company: apiYupHelpers.idRef(['alpha_vantage_company']).min(1),
+	alpaca_asset: apiYupHelpers
+		.idRef(['alpaca_asset'])
+		.min(1)
+		.meta({ unique_key: true }),
+	alpha_vantage_company: apiYupHelpers
+		.idRef(['alpha_vantage_company'])
+		.min(1)
+		.meta({ unique_key: true }),
 	category: StockCategoryEnum.getDefinedSchema(),
 } as const;
 type U = typeof properties;

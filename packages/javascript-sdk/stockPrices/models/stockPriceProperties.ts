@@ -30,7 +30,8 @@ const properties = {
 	_object: YupHelpers.constant(_object),
 	alpha_vantage_stock_price: apiYupHelpers
 		.idRef(['alpha_vantage_stock_price'])
-		.min(1),
+		.min(1)
+		.meta({ unique_key: true }),
 	category: StockPriceCategoryEnum.getDefinedSchema(),
 	stock: apiYupHelpers.idRef(['stock']).min(1),
 } as const;

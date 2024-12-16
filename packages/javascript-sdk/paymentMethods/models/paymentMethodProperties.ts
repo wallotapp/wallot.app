@@ -28,12 +28,16 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
-	bank_account: apiYupHelpers.idRef(['bank_account']).min(1),
+	bank_account: apiYupHelpers
+		.idRef(['bank_account'])
+		.min(1)
+		.meta({ unique_key: true }),
 	category: PaymentMethodCategoryEnum.getDefinedSchema(),
 	stripe_payment_method: apiYupHelpers
 		.idRef(['stripe_payment_method'])
 		.default(null)
-		.nullable(),
+		.nullable()
+		.meta({ unique_key: true }),
 	user: apiYupHelpers.idRef(['user']).min(1),
 } as const;
 type U = typeof properties;

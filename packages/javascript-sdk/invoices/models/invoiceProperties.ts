@@ -32,7 +32,10 @@ const properties = {
 	category: InvoiceCategoryEnum.getDefinedSchema(),
 	license: apiYupHelpers.idRef(['license']).min(1),
 	payment_method: apiYupHelpers.idRef(['payment_method']).min(1),
-	stripe_invoice: apiYupHelpers.idRef(['stripe_invoice']).min(1),
+	stripe_invoice: apiYupHelpers
+		.idRef(['stripe_invoice'])
+		.min(1)
+		.meta({ unique_key: true }),
 } as const;
 type U = typeof properties;
 

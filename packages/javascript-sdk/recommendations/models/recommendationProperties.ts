@@ -36,7 +36,8 @@ const properties = {
 	model: apiYupHelpers.idRef(['model']).min(1),
 	open_ai_recommendation: apiYupHelpers
 		.idRef(['open_ai_recommendation'])
-		.min(1),
+		.min(1)
+		.meta({ unique_key: true }),
 	parameters: apiYupHelpers.idRefs(['parameter']).min(1),
 	user: apiYupHelpers.idRef(['user']).default(null).nullable(),
 } as const;
