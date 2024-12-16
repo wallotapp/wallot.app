@@ -18,6 +18,8 @@ export type AchTransferCategory = keyof typeof AchTransferCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'alpaca_ach_transfer',
+	'bank_account',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -26,8 +28,9 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
+	alpaca_ach_transfer: apiYupHelpers.idRef(['alpaca_ach_transfer']),
+	bank_account: apiYupHelpers.idRef(['bank_account']),
 	category: AchTransferCategoryEnum.getDefinedSchema(),
-	// Add more properties here
 } as const;
 type U = typeof properties;
 

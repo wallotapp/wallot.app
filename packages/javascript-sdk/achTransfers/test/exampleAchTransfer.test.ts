@@ -7,6 +7,8 @@ describe('AchTransfer', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My AchTransfer',
+			alpaca_ach_transfer: '',
+			bank_account: '',
 		};
 		expect(exampleAchTransfer).toEqual<typeof exampleAchTransfer>({
 			_id: expect.any(String),
@@ -19,6 +21,8 @@ describe('AchTransfer', () => {
 			_deleted: false,
 			description: '',
 			name: 'My AchTransfer',
+			alpaca_ach_transfer: '',
+			bank_account: '',
 		});
 	});
 });
