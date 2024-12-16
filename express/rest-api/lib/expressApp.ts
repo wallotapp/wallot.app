@@ -10,6 +10,8 @@ import {
 	sendExpressResponse,
 } from 'ergonomic-node';
 import {
+	OnboardUserResponse,
+	OnboardUserParams,
 	RegisterUserParams,
 	RegisterUserResponse,
 	User,
@@ -37,8 +39,8 @@ app.post(
 	'*/v0/users',
 	(
 		req: express.Request<
-			unknown,
-			unknown,
+			Record<string, never>,
+			RegisterUserResponse,
 			RegisterUserParams,
 			Record<string, never>
 		>,
@@ -57,6 +59,27 @@ app.post(
 				next,
 			),
 		);
+	},
+);
+
+import { onboardUser } from './app/wallot/users/onboardUser.js';
+app.options('*/v0/users/:userId/onboard', corsPolicy);
+app.post(
+	'*/v0/users/:userId/onboard',
+	(
+		req: express.Request<
+			{ userId: string },
+			OnboardUserResponse,
+			OnboardUserParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			OnboardUserResponse,
+			GeneralizedResLocals<OnboardUserResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(req, res, createRouterFunction(onboardUser)(req, res, next));
 	},
 );
 
