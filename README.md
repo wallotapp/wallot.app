@@ -63,9 +63,9 @@ erDiagram
 	USER ||--o{ STRIPE_FINANCIAL_CONNECTION_SESSION : "produces"
 
 	%% Similarity Relationships
-	MODEL_FAMILY }o--o{ USER_PERSONA : "caters_to"
-	RECOMMENDATION }o--o{ USER_PERSONA : "caters_to"
-	USER ||--|{ USER_PERSONA : "fits"
+	MODEL_FAMILY }o--o{ PARAMETER : "caters_to"
+	RECOMMENDATION }o--o{ PARAMETER : "caters_to"
+	USER ||--|{ PARAMETER : "fits"
 
 	%% Computation Relationships
 	BANK_ACCOUNT ||--o{ ACH_TRANSFER : "derives_from_the_computation_of"
@@ -120,7 +120,7 @@ erDiagram
   }
   MODEL_FAMILY {
     string open_ai_model_family FK "min(1)"
-    string[] user_personas FK "min(1)"
+    string[] parameters FK "min(1)"
   }
   ORDER {
     string bank_account FK "min(1)"
@@ -140,8 +140,8 @@ erDiagram
     string[] forecasts FK "min(1)"
     string model FK "min(1)"
     string open_ai_recommendation FK "min(1)"
+    string[] parameters FK "min(1)"
     string user FK "nullable"
-    string[] user_personas FK "min(1)"
   }
   STOCK {
     string alpaca_asset FK "min(1)"
@@ -163,8 +163,8 @@ erDiagram
   }
   USER {
     string alpaca_account FK "nullable"
+    string[] parameters FK "nullable"
     string stripe_customer FK "min(1)"
-    string[] user_personas FK "nullable"
   }
 ```
 
