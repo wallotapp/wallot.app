@@ -7,6 +7,8 @@ describe('BankAccount', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My BankAccount',
+			alpaca_ach_relationship: '',
+			stripe_financial_connection_account: '',
 		};
 		expect(exampleBankAccount).toEqual<typeof exampleBankAccount>({
 			_id: expect.any(String),
@@ -19,6 +21,8 @@ describe('BankAccount', () => {
 			_deleted: false,
 			description: '',
 			name: 'My BankAccount',
+			alpaca_ach_relationship: '',
+			stripe_financial_connection_account: '',
 		});
 	});
 });

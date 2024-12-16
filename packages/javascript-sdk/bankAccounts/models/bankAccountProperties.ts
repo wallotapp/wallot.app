@@ -18,6 +18,7 @@ export type BankAccountCategory = keyof typeof BankAccountCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'stripe_financial_connection_account',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -26,8 +27,11 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
+	alpaca_ach_relationship: apiYupHelpers.idRef(['alpaca_ach_relationship']),
 	category: BankAccountCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	stripe_financial_connection_account: apiYupHelpers.idRef([
+		'stripe_financial_connection_account',
+	]),
 } as const;
 type U = typeof properties;
 
