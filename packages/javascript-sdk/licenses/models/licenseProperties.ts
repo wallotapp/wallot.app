@@ -18,6 +18,7 @@ export type LicenseCategory = keyof typeof LicenseCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'user',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -27,7 +28,11 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: LicenseCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	stripe_subscription: apiYupHelpers
+		.idRef(['stripe_subscription'])
+		.default(null)
+		.nullable(),
+	user: apiYupHelpers.idRef(['user']).min(1),
 } as const;
 type U = typeof properties;
 
