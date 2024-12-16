@@ -10,6 +10,7 @@ import { useCreateAlpacaAssetMutation } from '@wallot/react/src/features/alpacaA
 import { useCreateAlpacaOrderMutation } from '@wallot/react/src/features/alpacaOrders';
 import { useCreateAlpacaPositionMutation } from '@wallot/react/src/features/alpacaPositions';
 import { useCreateAlphaVantageCompanyMutation } from '@wallot/react/src/features/alphaVantageCompanies';
+import { useCreateAlphaVantageStockPriceMutation } from '@wallot/react/src/features/alphaVantageStockPrices';
 import { useCreateAuthCredentialMutation } from '@wallot/react/src/features/authCredentials';
 import { useCreateBankAccountMutation } from '@wallot/react/src/features/bankAccounts';
 import { useCreateEquityAccountMutation } from '@wallot/react/src/features/equityAccounts';
@@ -52,6 +53,7 @@ const createOperationMutationMap = {
 	alpaca_order: useCreateAlpacaOrderMutation,
 	alpaca_position: useCreateAlpacaPositionMutation,
 	alpha_vantage_company: useCreateAlphaVantageCompanyMutation,
+	alpha_vantage_stock_price: useCreateAlphaVantageStockPriceMutation,
 	auth_credential: useCreateAuthCredentialMutation,
 	bank_account: useCreateBankAccountMutation,
 	equity_account: useCreateEquityAccountMutation,

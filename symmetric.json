@@ -49,6 +49,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "alpha_vantage_stock_price",
+			"name_plural": "alpha_vantage_stock_prices",
+			"id_prefix": "av_stck_pr",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "cred",
 			"name_plural": "auth_credentials",
 			"name_singular": "auth_credential",
