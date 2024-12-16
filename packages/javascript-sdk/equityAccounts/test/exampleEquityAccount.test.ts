@@ -7,6 +7,7 @@ describe('EquityAccount', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My EquityAccount',
+			user: '',
 		};
 		expect(exampleEquityAccount).toEqual<typeof exampleEquityAccount>({
 			_id: expect.any(String),
@@ -19,6 +20,7 @@ describe('EquityAccount', () => {
 			_deleted: false,
 			description: '',
 			name: 'My EquityAccount',
+			user: '',
 		});
 	});
 });
