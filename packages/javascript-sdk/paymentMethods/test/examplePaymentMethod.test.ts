@@ -7,6 +7,9 @@ describe('PaymentMethod', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My PaymentMethod',
+			bank_account: '',
+			stripe_payment_method: '',
+			user: '',
 		};
 		expect(examplePaymentMethod).toEqual<typeof examplePaymentMethod>({
 			_id: expect.any(String),
@@ -19,6 +22,9 @@ describe('PaymentMethod', () => {
 			_deleted: false,
 			description: '',
 			name: 'My PaymentMethod',
+			bank_account: '',
+			stripe_payment_method: '',
+			user: '',
 		});
 	});
 });

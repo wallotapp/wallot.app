@@ -18,6 +18,8 @@ export type PaymentMethodCategory = keyof typeof PaymentMethodCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'bank_account',
+	'user',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -26,8 +28,13 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
+	bank_account: apiYupHelpers.idRef(['bank_account']).min(1),
 	category: PaymentMethodCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	stripe_payment_method: apiYupHelpers
+		.idRef(['stripe_payment_method'])
+		.default(null)
+		.nullable(),
+	user: apiYupHelpers.idRef(['user']).min(1),
 } as const;
 type U = typeof properties;
 
