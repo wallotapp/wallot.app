@@ -18,6 +18,9 @@ export type ForecastCategory = keyof typeof ForecastCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'model',
+	'news_reports',
+	'stock_prices',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -27,7 +30,9 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: ForecastCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	model: apiYupHelpers.idRef(['model']).min(1),
+	news_reports: apiYupHelpers.idRefs(['news_report']).min(1),
+	stock_prices: apiYupHelpers.idRefs(['stock_price']).min(1),
 } as const;
 type U = typeof properties;
 
