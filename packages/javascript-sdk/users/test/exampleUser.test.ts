@@ -10,6 +10,7 @@ describe('User', () => {
 			alpaca_account: '',
 			parameters: [],
 			stripe_customer: '',
+			username: '',
 		};
 		expect(exampleUser).toEqual<typeof exampleUser>({
 			_id: expect.any(String),
@@ -25,6 +26,7 @@ describe('User', () => {
 			alpaca_account: '',
 			parameters: [],
 			stripe_customer: '',
+			username: '',
 		});
 	});
 });

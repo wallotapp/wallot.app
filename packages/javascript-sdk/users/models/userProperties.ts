@@ -7,11 +7,13 @@ import {
 	YupHelpers,
 	getApiResourceSpec,
 	getEnum,
+	GeneralizedFieldTypeEnum,
 } from 'ergonomic';
 import {
 	apiYupHelpers,
 	idPrefixByCollection,
 } from '../../utils/apiYupHelpers.js';
+import { isUsername } from '../utils/username.js';
 
 export const UserCategoryEnum = getEnum(['default']);
 export type UserCategory = keyof typeof UserCategoryEnum.obj;
@@ -19,6 +21,7 @@ export type UserCategory = keyof typeof UserCategoryEnum.obj;
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
 	'stripe_customer',
+	'username',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -38,6 +41,14 @@ const properties = {
 		.idRef(['stripe_customer'])
 		.min(1)
 		.meta({ unique_key: true }),
+	username: yup
+		.string()
+		.test({
+			message: '${path} is not a valid username',
+			name: 'isUsername',
+			test: isUsername,
+		})
+		.meta({ type: GeneralizedFieldTypeEnum.obj.short_text, unique_key: true }),
 } as const;
 type U = typeof properties;
 
