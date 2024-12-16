@@ -1,4 +1,4 @@
-import { GeneralizedApiResource, GeneralizedResponse } from 'ergonomic';
+import { GeneralizedApiResource, GeneralizedError } from 'ergonomic';
 import { UseQueryResult } from '@tanstack/react-query';
 import { GeneralizedFirestoreCollectionPage } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreCollectionPageQuery';
 import { GeneralizedUseQueryPageProps } from 'ergonomic-react/src/lib/tanstackQuery';
@@ -43,7 +43,7 @@ import { useQueryUserPage } from '@wallot/react/src/features/users';
 
 type PageQueryHook = (
 	options: GeneralizedUseQueryPageProps<GeneralizedApiResource>,
-) => UseQueryResult<GeneralizedFirestoreCollectionPage, GeneralizedResponse>;
+) => UseQueryResult<GeneralizedFirestoreCollectionPage, GeneralizedError>;
 
 // Map of collection IDs to their respective hooks
 const queryHookMap = {

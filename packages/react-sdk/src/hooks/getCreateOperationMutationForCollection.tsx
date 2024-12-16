@@ -1,5 +1,5 @@
 import { UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import { WallotCollection } from '@wallot/js';
 
 import { useCreateAchTransferMutation } from '@wallot/react/src/features/achTransfers';
@@ -40,7 +40,7 @@ import { useCreateStripeSubscriptionMutation } from '@wallot/react/src/features/
 import { useCreateUserMutation } from '@wallot/react/src/features/users';
 
 type MutationHook = (
-	options: UseMutationOptions<unknown, GeneralizedResponse>,
+	options: UseMutationOptions<unknown, GeneralizedError>,
 ) => UseMutationResult;
 
 // Map of collection IDs to their respective mutations
