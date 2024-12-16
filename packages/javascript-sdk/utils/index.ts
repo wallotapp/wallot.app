@@ -14,3 +14,9 @@ export * from './getReferralsWebAppRoute.js';
 export * from './getSsoWebAppRoute.js';
 export * from './getStatusWebAppRoute.js';
 export * from './getSupportWebAppRoute.js';
+
+// Shared modules
+export * from './ageRange.js';
+export * from './capitalLevel.js';
+export * from './investingGoal.js';
+export * from './riskLevel.js';

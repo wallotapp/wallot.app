@@ -102,6 +102,7 @@ const mockApiResource: User = {
 	category: 'default',
 	name: 'My User',
 	alpaca_account: '...',
+	investing_goals: [],
 	parameters: [],
 	stripe_customer: '...',
 };
