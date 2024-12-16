@@ -13,16 +13,15 @@ auth;
 db;
 siteOriginByTarget;
 
-export const onboardUser = async ({
-	age_range,
-	capital_level,
-	investing_goals,
-	risk_level,
-}: OnboardUserParams): Promise<OnboardUserResponse> => {
+export const onboardUser = async (
+	{ age_range, capital_level, investing_goals, risk_level }: OnboardUserParams,
+	{ userId }: { userId: string },
+): Promise<OnboardUserResponse> => {
 	age_range;
 	capital_level;
 	investing_goals;
 	risk_level;
+	userId;
 	// Wait 1 second
 	await new Promise((resolve) => setTimeout(resolve, 2500));
 	const redirectUrl = 'TODO';
