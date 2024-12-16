@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,20 +42,14 @@ export type UseCreateAlpacaAccountMutationOptions =
 		AlpacaAccount,
 		CreateAlpacaAccountParams
 	>;
-export type CreateAlpacaAccountMutationData =
-	GeneralizedResponse<AlpacaAccount>;
-export type CreateAlpacaAccountMutationError =
-	GeneralizedResponse<AlpacaAccount>;
+export type CreateAlpacaAccountMutationData = AlpacaAccount[];
+export type CreateAlpacaAccountMutationError = GeneralizedError;
 export type CreateAlpacaAccountMutationParams =
 	FirestoreDocumentCreateParams<CreateAlpacaAccountParams>;
 
 export type UseUpdateAlpacaAccountMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		AlpacaAccount,
-		UpdateAlpacaAccountParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateAlpacaAccountParams>;
 export type UpdateAlpacaAccountMutationData = unknown;
-export type UpdateAlpacaAccountMutationError =
-	GeneralizedResponse<AlpacaAccount>;
+export type UpdateAlpacaAccountMutationError = GeneralizedError;
 export type UpdateAlpacaAccountMutationParams =
 	FirestoreDocumentUpdateParams<UpdateAlpacaAccountParams>;

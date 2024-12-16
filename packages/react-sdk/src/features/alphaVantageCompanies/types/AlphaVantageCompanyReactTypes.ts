@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,20 +42,14 @@ export type UseCreateAlphaVantageCompanyMutationOptions =
 		AlphaVantageCompany,
 		CreateAlphaVantageCompanyParams
 	>;
-export type CreateAlphaVantageCompanyMutationData =
-	GeneralizedResponse<AlphaVantageCompany>;
-export type CreateAlphaVantageCompanyMutationError =
-	GeneralizedResponse<AlphaVantageCompany>;
+export type CreateAlphaVantageCompanyMutationData = AlphaVantageCompany[];
+export type CreateAlphaVantageCompanyMutationError = GeneralizedError;
 export type CreateAlphaVantageCompanyMutationParams =
 	FirestoreDocumentCreateParams<CreateAlphaVantageCompanyParams>;
 
 export type UseUpdateAlphaVantageCompanyMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		AlphaVantageCompany,
-		UpdateAlphaVantageCompanyParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateAlphaVantageCompanyParams>;
 export type UpdateAlphaVantageCompanyMutationData = unknown;
-export type UpdateAlphaVantageCompanyMutationError =
-	GeneralizedResponse<AlphaVantageCompany>;
+export type UpdateAlphaVantageCompanyMutationError = GeneralizedError;
 export type UpdateAlphaVantageCompanyMutationParams =
 	FirestoreDocumentUpdateParams<UpdateAlphaVantageCompanyParams>;

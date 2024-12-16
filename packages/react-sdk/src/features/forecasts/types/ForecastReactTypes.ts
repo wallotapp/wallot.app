@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -37,14 +37,14 @@ export type UseQueryForecastPageObserver =
 
 export type UseCreateForecastMutationOptions =
 	GeneralizedUseCreateDocumentsMutationOptions<Forecast, CreateForecastParams>;
-export type CreateForecastMutationData = GeneralizedResponse<Forecast>;
-export type CreateForecastMutationError = GeneralizedResponse<Forecast>;
+export type CreateForecastMutationData = Forecast[];
+export type CreateForecastMutationError = GeneralizedError;
 export type CreateForecastMutationParams =
 	FirestoreDocumentCreateParams<CreateForecastParams>;
 
 export type UseUpdateForecastMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<Forecast, UpdateForecastParams>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateForecastParams>;
 export type UpdateForecastMutationData = unknown;
-export type UpdateForecastMutationError = GeneralizedResponse<Forecast>;
+export type UpdateForecastMutationError = GeneralizedError;
 export type UpdateForecastMutationParams =
 	FirestoreDocumentUpdateParams<UpdateForecastParams>;

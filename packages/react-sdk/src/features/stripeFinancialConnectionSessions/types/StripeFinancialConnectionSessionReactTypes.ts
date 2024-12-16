@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -43,19 +43,16 @@ export type UseCreateStripeFinancialConnectionSessionMutationOptions =
 		CreateStripeFinancialConnectionSessionParams
 	>;
 export type CreateStripeFinancialConnectionSessionMutationData =
-	GeneralizedResponse<StripeFinancialConnectionSession>;
+	StripeFinancialConnectionSession[];
 export type CreateStripeFinancialConnectionSessionMutationError =
-	GeneralizedResponse<StripeFinancialConnectionSession>;
+	GeneralizedError;
 export type CreateStripeFinancialConnectionSessionMutationParams =
 	FirestoreDocumentCreateParams<CreateStripeFinancialConnectionSessionParams>;
 
 export type UseUpdateStripeFinancialConnectionSessionMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		StripeFinancialConnectionSession,
-		UpdateStripeFinancialConnectionSessionParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateStripeFinancialConnectionSessionParams>;
 export type UpdateStripeFinancialConnectionSessionMutationData = unknown;
 export type UpdateStripeFinancialConnectionSessionMutationError =
-	GeneralizedResponse<StripeFinancialConnectionSession>;
+	GeneralizedError;
 export type UpdateStripeFinancialConnectionSessionMutationParams =
 	FirestoreDocumentUpdateParams<UpdateStripeFinancialConnectionSessionParams>;

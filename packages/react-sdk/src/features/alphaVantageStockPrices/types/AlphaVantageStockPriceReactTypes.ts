@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,20 +42,14 @@ export type UseCreateAlphaVantageStockPriceMutationOptions =
 		AlphaVantageStockPrice,
 		CreateAlphaVantageStockPriceParams
 	>;
-export type CreateAlphaVantageStockPriceMutationData =
-	GeneralizedResponse<AlphaVantageStockPrice>;
-export type CreateAlphaVantageStockPriceMutationError =
-	GeneralizedResponse<AlphaVantageStockPrice>;
+export type CreateAlphaVantageStockPriceMutationData = AlphaVantageStockPrice[];
+export type CreateAlphaVantageStockPriceMutationError = GeneralizedError;
 export type CreateAlphaVantageStockPriceMutationParams =
 	FirestoreDocumentCreateParams<CreateAlphaVantageStockPriceParams>;
 
 export type UseUpdateAlphaVantageStockPriceMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		AlphaVantageStockPrice,
-		UpdateAlphaVantageStockPriceParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateAlphaVantageStockPriceParams>;
 export type UpdateAlphaVantageStockPriceMutationData = unknown;
-export type UpdateAlphaVantageStockPriceMutationError =
-	GeneralizedResponse<AlphaVantageStockPrice>;
+export type UpdateAlphaVantageStockPriceMutationError = GeneralizedError;
 export type UpdateAlphaVantageStockPriceMutationParams =
 	FirestoreDocumentUpdateParams<UpdateAlphaVantageStockPriceParams>;

@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,20 +42,14 @@ export type UseCreatePaymentMethodMutationOptions =
 		PaymentMethod,
 		CreatePaymentMethodParams
 	>;
-export type CreatePaymentMethodMutationData =
-	GeneralizedResponse<PaymentMethod>;
-export type CreatePaymentMethodMutationError =
-	GeneralizedResponse<PaymentMethod>;
+export type CreatePaymentMethodMutationData = PaymentMethod[];
+export type CreatePaymentMethodMutationError = GeneralizedError;
 export type CreatePaymentMethodMutationParams =
 	FirestoreDocumentCreateParams<CreatePaymentMethodParams>;
 
 export type UseUpdatePaymentMethodMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		PaymentMethod,
-		UpdatePaymentMethodParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdatePaymentMethodParams>;
 export type UpdatePaymentMethodMutationData = unknown;
-export type UpdatePaymentMethodMutationError =
-	GeneralizedResponse<PaymentMethod>;
+export type UpdatePaymentMethodMutationError = GeneralizedError;
 export type UpdatePaymentMethodMutationParams =
 	FirestoreDocumentUpdateParams<UpdatePaymentMethodParams>;

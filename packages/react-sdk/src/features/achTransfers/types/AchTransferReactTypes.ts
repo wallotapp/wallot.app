@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,17 +42,14 @@ export type UseCreateAchTransferMutationOptions =
 		AchTransfer,
 		CreateAchTransferParams
 	>;
-export type CreateAchTransferMutationData = GeneralizedResponse<AchTransfer>;
-export type CreateAchTransferMutationError = GeneralizedResponse<AchTransfer>;
+export type CreateAchTransferMutationData = AchTransfer[];
+export type CreateAchTransferMutationError = GeneralizedError;
 export type CreateAchTransferMutationParams =
 	FirestoreDocumentCreateParams<CreateAchTransferParams>;
 
 export type UseUpdateAchTransferMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		AchTransfer,
-		UpdateAchTransferParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateAchTransferParams>;
 export type UpdateAchTransferMutationData = unknown;
-export type UpdateAchTransferMutationError = GeneralizedResponse<AchTransfer>;
+export type UpdateAchTransferMutationError = GeneralizedError;
 export type UpdateAchTransferMutationParams =
 	FirestoreDocumentUpdateParams<UpdateAchTransferParams>;

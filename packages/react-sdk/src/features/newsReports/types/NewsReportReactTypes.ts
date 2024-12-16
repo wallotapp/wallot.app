@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,17 +42,14 @@ export type UseCreateNewsReportMutationOptions =
 		NewsReport,
 		CreateNewsReportParams
 	>;
-export type CreateNewsReportMutationData = GeneralizedResponse<NewsReport>;
-export type CreateNewsReportMutationError = GeneralizedResponse<NewsReport>;
+export type CreateNewsReportMutationData = NewsReport[];
+export type CreateNewsReportMutationError = GeneralizedError;
 export type CreateNewsReportMutationParams =
 	FirestoreDocumentCreateParams<CreateNewsReportParams>;
 
 export type UseUpdateNewsReportMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		NewsReport,
-		UpdateNewsReportParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateNewsReportParams>;
 export type UpdateNewsReportMutationData = unknown;
-export type UpdateNewsReportMutationError = GeneralizedResponse<NewsReport>;
+export type UpdateNewsReportMutationError = GeneralizedError;
 export type UpdateNewsReportMutationParams =
 	FirestoreDocumentUpdateParams<UpdateNewsReportParams>;

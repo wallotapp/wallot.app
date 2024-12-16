@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,20 +42,14 @@ export type UseCreateOpenAiRecommendationMutationOptions =
 		OpenAiRecommendation,
 		CreateOpenAiRecommendationParams
 	>;
-export type CreateOpenAiRecommendationMutationData =
-	GeneralizedResponse<OpenAiRecommendation>;
-export type CreateOpenAiRecommendationMutationError =
-	GeneralizedResponse<OpenAiRecommendation>;
+export type CreateOpenAiRecommendationMutationData = OpenAiRecommendation[];
+export type CreateOpenAiRecommendationMutationError = GeneralizedError;
 export type CreateOpenAiRecommendationMutationParams =
 	FirestoreDocumentCreateParams<CreateOpenAiRecommendationParams>;
 
 export type UseUpdateOpenAiRecommendationMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		OpenAiRecommendation,
-		UpdateOpenAiRecommendationParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateOpenAiRecommendationParams>;
 export type UpdateOpenAiRecommendationMutationData = unknown;
-export type UpdateOpenAiRecommendationMutationError =
-	GeneralizedResponse<OpenAiRecommendation>;
+export type UpdateOpenAiRecommendationMutationError = GeneralizedError;
 export type UpdateOpenAiRecommendationMutationParams =
 	FirestoreDocumentUpdateParams<UpdateOpenAiRecommendationParams>;

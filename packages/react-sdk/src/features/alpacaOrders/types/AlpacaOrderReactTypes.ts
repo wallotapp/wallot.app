@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,17 +42,14 @@ export type UseCreateAlpacaOrderMutationOptions =
 		AlpacaOrder,
 		CreateAlpacaOrderParams
 	>;
-export type CreateAlpacaOrderMutationData = GeneralizedResponse<AlpacaOrder>;
-export type CreateAlpacaOrderMutationError = GeneralizedResponse<AlpacaOrder>;
+export type CreateAlpacaOrderMutationData = AlpacaOrder[];
+export type CreateAlpacaOrderMutationError = GeneralizedError;
 export type CreateAlpacaOrderMutationParams =
 	FirestoreDocumentCreateParams<CreateAlpacaOrderParams>;
 
 export type UseUpdateAlpacaOrderMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		AlpacaOrder,
-		UpdateAlpacaOrderParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateAlpacaOrderParams>;
 export type UpdateAlpacaOrderMutationData = unknown;
-export type UpdateAlpacaOrderMutationError = GeneralizedResponse<AlpacaOrder>;
+export type UpdateAlpacaOrderMutationError = GeneralizedError;
 export type UpdateAlpacaOrderMutationParams =
 	FirestoreDocumentUpdateParams<UpdateAlpacaOrderParams>;

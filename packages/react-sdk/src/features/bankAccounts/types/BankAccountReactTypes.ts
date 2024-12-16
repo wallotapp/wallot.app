@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,17 +42,14 @@ export type UseCreateBankAccountMutationOptions =
 		BankAccount,
 		CreateBankAccountParams
 	>;
-export type CreateBankAccountMutationData = GeneralizedResponse<BankAccount>;
-export type CreateBankAccountMutationError = GeneralizedResponse<BankAccount>;
+export type CreateBankAccountMutationData = BankAccount[];
+export type CreateBankAccountMutationError = GeneralizedError;
 export type CreateBankAccountMutationParams =
 	FirestoreDocumentCreateParams<CreateBankAccountParams>;
 
 export type UseUpdateBankAccountMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		BankAccount,
-		UpdateBankAccountParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateBankAccountParams>;
 export type UpdateBankAccountMutationData = unknown;
-export type UpdateBankAccountMutationError = GeneralizedResponse<BankAccount>;
+export type UpdateBankAccountMutationError = GeneralizedError;
 export type UpdateBankAccountMutationParams =
 	FirestoreDocumentUpdateParams<UpdateBankAccountParams>;

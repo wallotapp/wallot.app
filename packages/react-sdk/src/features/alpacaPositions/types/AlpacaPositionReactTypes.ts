@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,20 +42,14 @@ export type UseCreateAlpacaPositionMutationOptions =
 		AlpacaPosition,
 		CreateAlpacaPositionParams
 	>;
-export type CreateAlpacaPositionMutationData =
-	GeneralizedResponse<AlpacaPosition>;
-export type CreateAlpacaPositionMutationError =
-	GeneralizedResponse<AlpacaPosition>;
+export type CreateAlpacaPositionMutationData = AlpacaPosition[];
+export type CreateAlpacaPositionMutationError = GeneralizedError;
 export type CreateAlpacaPositionMutationParams =
 	FirestoreDocumentCreateParams<CreateAlpacaPositionParams>;
 
 export type UseUpdateAlpacaPositionMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		AlpacaPosition,
-		UpdateAlpacaPositionParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateAlpacaPositionParams>;
 export type UpdateAlpacaPositionMutationData = unknown;
-export type UpdateAlpacaPositionMutationError =
-	GeneralizedResponse<AlpacaPosition>;
+export type UpdateAlpacaPositionMutationError = GeneralizedError;
 export type UpdateAlpacaPositionMutationParams =
 	FirestoreDocumentUpdateParams<UpdateAlpacaPositionParams>;

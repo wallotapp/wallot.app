@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,20 +42,14 @@ export type UseCreateAuthCredentialMutationOptions =
 		AuthCredential,
 		CreateAuthCredentialParams
 	>;
-export type CreateAuthCredentialMutationData =
-	GeneralizedResponse<AuthCredential>;
-export type CreateAuthCredentialMutationError =
-	GeneralizedResponse<AuthCredential>;
+export type CreateAuthCredentialMutationData = AuthCredential[];
+export type CreateAuthCredentialMutationError = GeneralizedError;
 export type CreateAuthCredentialMutationParams =
 	FirestoreDocumentCreateParams<CreateAuthCredentialParams>;
 
 export type UseUpdateAuthCredentialMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		AuthCredential,
-		UpdateAuthCredentialParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateAuthCredentialParams>;
 export type UpdateAuthCredentialMutationData = unknown;
-export type UpdateAuthCredentialMutationError =
-	GeneralizedResponse<AuthCredential>;
+export type UpdateAuthCredentialMutationError = GeneralizedError;
 export type UpdateAuthCredentialMutationParams =
 	FirestoreDocumentUpdateParams<UpdateAuthCredentialParams>;

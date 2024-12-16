@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,17 +42,14 @@ export type UseCreateStockPriceMutationOptions =
 		StockPrice,
 		CreateStockPriceParams
 	>;
-export type CreateStockPriceMutationData = GeneralizedResponse<StockPrice>;
-export type CreateStockPriceMutationError = GeneralizedResponse<StockPrice>;
+export type CreateStockPriceMutationData = StockPrice[];
+export type CreateStockPriceMutationError = GeneralizedError;
 export type CreateStockPriceMutationParams =
 	FirestoreDocumentCreateParams<CreateStockPriceParams>;
 
 export type UseUpdateStockPriceMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		StockPrice,
-		UpdateStockPriceParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateStockPriceParams>;
 export type UpdateStockPriceMutationData = unknown;
-export type UpdateStockPriceMutationError = GeneralizedResponse<StockPrice>;
+export type UpdateStockPriceMutationError = GeneralizedError;
 export type UpdateStockPriceMutationParams =
 	FirestoreDocumentUpdateParams<UpdateStockPriceParams>;

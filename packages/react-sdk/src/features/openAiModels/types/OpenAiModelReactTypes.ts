@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,17 +42,14 @@ export type UseCreateOpenAiModelMutationOptions =
 		OpenAiModel,
 		CreateOpenAiModelParams
 	>;
-export type CreateOpenAiModelMutationData = GeneralizedResponse<OpenAiModel>;
-export type CreateOpenAiModelMutationError = GeneralizedResponse<OpenAiModel>;
+export type CreateOpenAiModelMutationData = OpenAiModel[];
+export type CreateOpenAiModelMutationError = GeneralizedError;
 export type CreateOpenAiModelMutationParams =
 	FirestoreDocumentCreateParams<CreateOpenAiModelParams>;
 
 export type UseUpdateOpenAiModelMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		OpenAiModel,
-		UpdateOpenAiModelParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateOpenAiModelParams>;
 export type UpdateOpenAiModelMutationData = unknown;
-export type UpdateOpenAiModelMutationError = GeneralizedResponse<OpenAiModel>;
+export type UpdateOpenAiModelMutationError = GeneralizedError;
 export type UpdateOpenAiModelMutationParams =
 	FirestoreDocumentUpdateParams<UpdateOpenAiModelParams>;

@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,20 +42,14 @@ export type UseCreateStripePaymentMethodMutationOptions =
 		StripePaymentMethod,
 		CreateStripePaymentMethodParams
 	>;
-export type CreateStripePaymentMethodMutationData =
-	GeneralizedResponse<StripePaymentMethod>;
-export type CreateStripePaymentMethodMutationError =
-	GeneralizedResponse<StripePaymentMethod>;
+export type CreateStripePaymentMethodMutationData = StripePaymentMethod[];
+export type CreateStripePaymentMethodMutationError = GeneralizedError;
 export type CreateStripePaymentMethodMutationParams =
 	FirestoreDocumentCreateParams<CreateStripePaymentMethodParams>;
 
 export type UseUpdateStripePaymentMethodMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		StripePaymentMethod,
-		UpdateStripePaymentMethodParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateStripePaymentMethodParams>;
 export type UpdateStripePaymentMethodMutationData = unknown;
-export type UpdateStripePaymentMethodMutationError =
-	GeneralizedResponse<StripePaymentMethod>;
+export type UpdateStripePaymentMethodMutationError = GeneralizedError;
 export type UpdateStripePaymentMethodMutationParams =
 	FirestoreDocumentUpdateParams<UpdateStripePaymentMethodParams>;

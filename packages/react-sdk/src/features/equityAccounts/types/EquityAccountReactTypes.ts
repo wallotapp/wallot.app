@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,20 +42,14 @@ export type UseCreateEquityAccountMutationOptions =
 		EquityAccount,
 		CreateEquityAccountParams
 	>;
-export type CreateEquityAccountMutationData =
-	GeneralizedResponse<EquityAccount>;
-export type CreateEquityAccountMutationError =
-	GeneralizedResponse<EquityAccount>;
+export type CreateEquityAccountMutationData = EquityAccount[];
+export type CreateEquityAccountMutationError = GeneralizedError;
 export type CreateEquityAccountMutationParams =
 	FirestoreDocumentCreateParams<CreateEquityAccountParams>;
 
 export type UseUpdateEquityAccountMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		EquityAccount,
-		UpdateEquityAccountParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateEquityAccountParams>;
 export type UpdateEquityAccountMutationData = unknown;
-export type UpdateEquityAccountMutationError =
-	GeneralizedResponse<EquityAccount>;
+export type UpdateEquityAccountMutationError = GeneralizedError;
 export type UpdateEquityAccountMutationParams =
 	FirestoreDocumentUpdateParams<UpdateEquityAccountParams>;

@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,20 +42,14 @@ export type UseCreateAlpacaAchTransferMutationOptions =
 		AlpacaAchTransfer,
 		CreateAlpacaAchTransferParams
 	>;
-export type CreateAlpacaAchTransferMutationData =
-	GeneralizedResponse<AlpacaAchTransfer>;
-export type CreateAlpacaAchTransferMutationError =
-	GeneralizedResponse<AlpacaAchTransfer>;
+export type CreateAlpacaAchTransferMutationData = AlpacaAchTransfer[];
+export type CreateAlpacaAchTransferMutationError = GeneralizedError;
 export type CreateAlpacaAchTransferMutationParams =
 	FirestoreDocumentCreateParams<CreateAlpacaAchTransferParams>;
 
 export type UseUpdateAlpacaAchTransferMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		AlpacaAchTransfer,
-		UpdateAlpacaAchTransferParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateAlpacaAchTransferParams>;
 export type UpdateAlpacaAchTransferMutationData = unknown;
-export type UpdateAlpacaAchTransferMutationError =
-	GeneralizedResponse<AlpacaAchTransfer>;
+export type UpdateAlpacaAchTransferMutationError = GeneralizedError;
 export type UpdateAlpacaAchTransferMutationParams =
 	FirestoreDocumentUpdateParams<UpdateAlpacaAchTransferParams>;
