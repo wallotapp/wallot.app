@@ -41,7 +41,7 @@ erDiagram
 	STOCK ||--|| ALPHA_VANTAGE_COMPANY : "mirrors"
 	STOCK_ORDER ||--|| ALPACA_ORDER : "mirrors"
 	STOCK_PRICE ||--|| ALPHA_VANTAGE_STOCK_PRICE : "mirrors"
-	USER ||--|| ALPACA_ACCOUNT : "mirrors"
+	USER ||--o| ALPACA_ACCOUNT : "mirrors"
 	USER ||--|| STRIPE_CUSTOMER : "mirrors"
 
 	%% Ownership Relationships
@@ -65,7 +65,7 @@ erDiagram
 	%% Similarity Relationships
 	MODEL_FAMILY }o--o{ PARAMETER : "caters_to"
 	RECOMMENDATION }o--o{ PARAMETER : "caters_to"
-	USER ||--|{ PARAMETER : "fits"
+	USER ||--o{ PARAMETER : "fits"
 
 	%% Computation Relationships
 	BANK_ACCOUNT ||--o{ ACH_TRANSFER : "derives_from_the_computation_of"
