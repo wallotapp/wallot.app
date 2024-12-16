@@ -18,6 +18,9 @@ export type InvoiceCategory = keyof typeof InvoiceCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'license',
+	'payment_method',
+	'stripe_invoice',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -27,7 +30,9 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: InvoiceCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	license: apiYupHelpers.idRef(['license']).min(1),
+	payment_method: apiYupHelpers.idRef(['payment_method']).min(1),
+	stripe_invoice: apiYupHelpers.idRef(['stripe_invoice']).min(1),
 } as const;
 type U = typeof properties;
 
