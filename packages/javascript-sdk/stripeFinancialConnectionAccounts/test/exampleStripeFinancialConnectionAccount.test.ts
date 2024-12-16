@@ -11,6 +11,7 @@ describe('StripeFinancialConnectionAccount', () => {
 				...apiResourceDefaultJson,
 				category: 'default',
 				name: 'My StripeFinancialConnectionAccount',
+				stripe_financial_connection_session: '',
 			};
 		expect(exampleStripeFinancialConnectionAccount).toEqual<
 			typeof exampleStripeFinancialConnectionAccount
@@ -25,6 +26,7 @@ describe('StripeFinancialConnectionAccount', () => {
 			_deleted: false,
 			description: '',
 			name: 'My StripeFinancialConnectionAccount',
+			stripe_financial_connection_session: '',
 		});
 	});
 });

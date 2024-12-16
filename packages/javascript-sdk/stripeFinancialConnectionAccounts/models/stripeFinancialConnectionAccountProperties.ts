@@ -21,6 +21,7 @@ export type StripeFinancialConnectionAccountCategory =
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'stripe_financial_connection_session',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -30,7 +31,9 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: StripeFinancialConnectionAccountCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	stripe_financial_connection_session: apiYupHelpers
+		.idRef(['stripe_financial_connection_session'])
+		.min(1),
 } as const;
 type U = typeof properties;
 
