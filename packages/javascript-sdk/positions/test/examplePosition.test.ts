@@ -7,6 +7,9 @@ describe('Position', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My Position',
+			alpaca_position: '',
+			equity_account: '',
+			stock: '',
 		};
 		expect(examplePosition).toEqual<typeof examplePosition>({
 			_id: expect.any(String),
@@ -19,6 +22,9 @@ describe('Position', () => {
 			_deleted: false,
 			description: '',
 			name: 'My Position',
+			alpaca_position: '',
+			equity_account: '',
+			stock: '',
 		});
 	});
 });
