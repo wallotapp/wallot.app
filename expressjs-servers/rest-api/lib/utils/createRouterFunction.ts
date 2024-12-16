@@ -1,6 +1,10 @@
 import * as express from 'express';
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
-import { GeneralizedResLocals, getAuthHeaderBearerToken } from 'ergonomic-node';
+import {
+	GeneralizedResLocals,
+	getAuthHeaderBearerToken,
+	isResLocalsJsonError,
+} from 'ergonomic-node';
 import { auth } from '../firebaseApp.js';
 import { handleRouterFunctionError } from './handleRouterFunctionError.js';
 import { log } from './log.js';
@@ -29,6 +33,9 @@ export const createRouterFunction = <TResponseData, TParams, TQuery>(
 		() => {
 			return void (async () => {
 				try {
+					// Skip if an error was already detected
+					if (isResLocalsJsonError(res.locals.json)) return;
+
 					// Get the Firebase user from the request
 					let firebaseUser: FirebaseUser | undefined;
 					try {
