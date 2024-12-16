@@ -7,6 +7,11 @@ describe('StockOrder', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My StockOrder',
+			alpaca_order: '',
+			order: '',
+			position: '',
+			recommendations: [],
+			stock: '',
 		};
 		expect(exampleStockOrder).toEqual<typeof exampleStockOrder>({
 			_id: expect.any(String),
@@ -19,6 +24,11 @@ describe('StockOrder', () => {
 			_deleted: false,
 			description: '',
 			name: 'My StockOrder',
+			alpaca_order: '',
+			order: '',
+			position: '',
+			recommendations: [],
+			stock: '',
 		});
 	});
 });

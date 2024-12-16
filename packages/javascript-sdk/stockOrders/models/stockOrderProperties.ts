@@ -18,6 +18,9 @@ export type StockOrderCategory = keyof typeof StockOrderCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'order',
+	'position',
+	'stock',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -26,8 +29,15 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
+	alpaca_order: apiYupHelpers.idRef(['alpaca_order']).default(null).nullable(),
 	category: StockOrderCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	order: apiYupHelpers.idRef(['order']).min(1),
+	position: apiYupHelpers.idRef(['position']).min(1),
+	recommendations: apiYupHelpers
+		.idRefs(['recommendation'])
+		.default(null)
+		.nullable(),
+	stock: apiYupHelpers.idRef(['stock']).min(1),
 } as const;
 type U = typeof properties;
 
