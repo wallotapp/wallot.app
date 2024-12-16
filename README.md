@@ -104,30 +104,30 @@ erDiagram
     string[] stock_prices FK "min(1)"
   }
   INVOICE {
-    string stripe_invoice FK "min(1)"
-    string payment_method FK "min(1)"
     string license FK "min(1)"
+    string payment_method FK "min(1)"
+    string stripe_invoice FK "min(1)"
   }
   LICENSE {
     string stripe_subscription FK "nullable"
     string user FK "min(1)"
   }
   MODEL {
-    string open_ai_model FK "min(1)"
     string model_family FK "min(1)"
+    string open_ai_model FK "min(1)"
   }
   MODEL_FAMILY {
     string open_ai_model_family FK "min(1)"
     string[] user_personas FK "min(1)"
   }
   ORDER {
-    string user FK "min(1)"
     string bank_account FK "min(1)"
+    string user FK "min(1)"
   }
   PAYMENT_METHOD {
+    string bank_account FK "min(1)"
     string stripe_payment_method FK "nullable"
     string user FK "min(1)"
-    string bank_account FK "min(1)"
   }
   POSITION {
     string alpaca_position FK "min(1)"
@@ -135,11 +135,11 @@ erDiagram
     string stock FK "min(1)"
   }
   RECOMMENDATION {
+    string[] forecasts FK "min(1)"
+    string model FK "min(1)"
     string open_ai_recommendation FK "min(1)"
     string user FK "nullable"
-    string model FK "min(1)"
     string[] user_personas FK "min(1)"
-    string[] forecasts FK "min(1)"
   }
   STOCK {
     string alpaca_asset FK "min(1)"
@@ -148,8 +148,8 @@ erDiagram
   STOCK_ORDER {
     string alpaca_order FK "nullable"
     string order FK "min(1)"
-    string[] recommendations FK "nullable"
     string position FK "min(1)"
+    string[] recommendations FK "nullable"
     string stock FK "min(1)"
   }
   STOCK_PRICE {
