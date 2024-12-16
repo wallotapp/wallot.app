@@ -60,64 +60,6 @@ app.post(
 	},
 );
 
-// ---- Application Routes: Alpaca ---- //
-
-// Accounts
-import { createAlpacaAccount } from './app/alpaca/accounts/createAlpacaAccount.js';
-app.options('*/v0/alpaca/accounts', corsPolicy);
-app.post(
-	'*/v0/alpaca/accounts',
-	(
-		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResLocals>,
-		next,
-	) => {
-		corsPolicy(req, res, createAlpacaAccount(req, res, next));
-	},
-);
-
-// ACH Relationships
-import { createAlpacaAchRelationship } from './app/alpaca/achRelationships/createAlpacaAchRelationship.js';
-app.options('*/v0/alpaca/ach-relationships', corsPolicy);
-app.post(
-	'*/v0/alpaca/ach-relationships',
-	(
-		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResLocals>,
-		next,
-	) => {
-		corsPolicy(req, res, createAlpacaAchRelationship(req, res, next));
-	},
-);
-
-// ACH Transfers
-import { requestAlpacaAchTransfer } from './app/alpaca/achTransfers/requestAlpacaAchTransfer.js';
-app.options('*/v0/alpaca/ach-transfers', corsPolicy);
-app.post(
-	'*/v0/alpaca/ach-transfers',
-	(
-		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResLocals>,
-		next,
-	) => {
-		corsPolicy(req, res, requestAlpacaAchTransfer(req, res, next));
-	},
-);
-
-// Orders
-import { createAlpacaOrder } from './app/alpaca/orders/createAlpacaOrder.js';
-app.options('*/v0/alpaca/orders', corsPolicy);
-app.post(
-	'*/v0/alpaca/orders',
-	(
-		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResLocals>,
-		next,
-	) => {
-		corsPolicy(req, res, createAlpacaOrder(req, res, next));
-	},
-);
-
 // ---- Application Routes: Firebase ---- //
 
 // Custom Tokens
@@ -143,54 +85,6 @@ app.post(
 			res,
 			createRouterFunction(createFirebaseAuthCustomToken)(req, res, next),
 		);
-	},
-);
-
-// ---- Application Routes: Stripe ---- //
-
-// Attach Payment Method
-import { attachStripePaymentMethod } from './app/stripe/paymentMethods/attachStripePaymentMethod.js';
-app.options('*/v0/stripe/attach-payment-method', corsPolicy);
-app.post(
-	'*/v0/stripe/attach-payment-method',
-	(
-		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResLocals>,
-		next,
-	) => {
-		corsPolicy(req, res, attachStripePaymentMethod(req, res, next));
-	},
-);
-
-// Financial Connection Sessions
-import { createStripeFinancialConnectionSession } from './app/stripe/financialConnections/createStripeFinancialConnectionSession.js';
-app.options('*/v0/stripe/financial-connection-sessions', corsPolicy);
-app.post(
-	'*/v0/stripe/financial-connection-sessions',
-	(
-		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResLocals>,
-		next,
-	) => {
-		corsPolicy(
-			req,
-			res,
-			createStripeFinancialConnectionSession(req, res, next),
-		);
-	},
-);
-
-// Subscriptions
-import { createStripeSubscription } from './app/stripe/subscriptions/createStripeSubscription.js';
-app.options('*/v0/stripe/subscriptions', corsPolicy);
-app.post(
-	'*/v0/stripe/subscriptions',
-	(
-		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResLocals>,
-		next,
-	) => {
-		corsPolicy(req, res, createStripeSubscription(req, res, next));
 	},
 );
 
