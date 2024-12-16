@@ -19,6 +19,10 @@ export type RecommendationCategory =
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'forecasts',
+	'model',
+	'open_ai_recommendation',
+	'user_personas',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -28,7 +32,13 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: RecommendationCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	forecasts: apiYupHelpers.idRefs(['forecast']).min(1),
+	model: apiYupHelpers.idRef(['model']).min(1),
+	open_ai_recommendation: apiYupHelpers
+		.idRef(['open_ai_recommendation'])
+		.min(1),
+	user: apiYupHelpers.idRef(['user']).default(null).nullable(),
+	user_personas: apiYupHelpers.idRefs(['user_persona']).min(1),
 } as const;
 type U = typeof properties;
 

@@ -7,6 +7,11 @@ describe('Recommendation', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My Recommendation',
+			forecasts: [],
+			model: '',
+			open_ai_recommendation: '',
+			user: '',
+			user_personas: [],
 		};
 		expect(exampleRecommendation).toEqual<typeof exampleRecommendation>({
 			_id: expect.any(String),
@@ -19,6 +24,11 @@ describe('Recommendation', () => {
 			_deleted: false,
 			description: '',
 			name: 'My Recommendation',
+			forecasts: [],
+			model: '',
+			open_ai_recommendation: '',
+			user: '',
+			user_personas: [],
 		});
 	});
 });
