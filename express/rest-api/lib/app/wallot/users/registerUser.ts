@@ -1,4 +1,3 @@
-// import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { RegisterUserParams, RegisterUserResponse } from '@wallot/js';
 import { auth } from '../../../firebaseApp.js';
 
@@ -7,6 +6,22 @@ export const registerUser = async ({
 	password,
 	username,
 }: RegisterUserParams): Promise<RegisterUserResponse> => {
+	// Construct Firestore document IDs in advance
+	const stripeCustomerId = 'TODO';
+	stripeCustomerId;
+	const userId = 'TODO';
+	userId;
+	const authCredentialId = 'TODO';
+	authCredentialId;
+	const equityAccountId = 'TODO';
+	equityAccountId;
+	const licenseId = 'TODO';
+	licenseId;
+	const orderId = 'TODO';
+	orderId;
+	const paymentMethodId = 'TODO';
+	paymentMethodId;
+
 	// Register a Firebase User
 	// Create a Stripe Customer
 	// Create a STRIPE_CUSTOMER Firestore document
