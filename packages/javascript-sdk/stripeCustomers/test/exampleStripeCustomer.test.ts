@@ -7,6 +7,7 @@ describe('StripeCustomer', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My StripeCustomer',
+			stripe_id: '...',
 		};
 		expect(exampleStripeCustomer).toEqual<typeof exampleStripeCustomer>({
 			_id: expect.any(String),
@@ -19,6 +20,7 @@ describe('StripeCustomer', () => {
 			_deleted: false,
 			description: '',
 			name: 'My StripeCustomer',
+			stripe_id: '...',
 		});
 	});
 });

@@ -19,6 +19,7 @@ export type StripeCustomerCategory =
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'stripe_id',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -28,7 +29,7 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: StripeCustomerCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	stripe_id: yup.string().required(),
 } as const;
 type U = typeof properties;
 
