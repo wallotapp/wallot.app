@@ -43,9 +43,9 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 	if (routeStaticId === 'HOME_WEB_APP__/GET_STARTED') {
 		const queryParams =
 			options.queryParams as HomeWebAppRouteQueryParams['HOME_WEB_APP__/GET_STARTED'];
-		const step = queryParams.step;
-		const stepQuery = step ? `step=${step}` : '';
-		const queries = [stepQuery].filter(Boolean);
+		const clientToken = queryParams.client_token;
+		const clientTokenQuery = clientToken ? `client_token=${clientToken}` : '';
+		const queries = [clientTokenQuery].filter(Boolean);
 		const path = `/get-started${queries.length ? `?${queries.join('&')}` : ''}`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
@@ -58,12 +58,7 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 			console.error('order_id is required');
 			return '/';
 		}
-		const clientToken = queryParams.client_token;
-		const clientTokenQuery = clientToken ? `client_token=${clientToken}` : '';
-		const queries = [clientTokenQuery].filter(Boolean);
-		const path = `/orders/${orderId}/confirm${
-			queries.length ? `?${queries.join('&')}` : ''
-		}`;
+		const path = `/orders/${orderId}/confirm`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
@@ -78,12 +73,7 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 			console.error('recommendation_id is required');
 			return '/';
 		}
-		const clientToken = queryParams.client_token;
-		const clientTokenQuery = clientToken ? `client_token=${clientToken}` : '';
-		const queries = [clientTokenQuery].filter(Boolean);
-		const path = `/recommendations/${recommendationId}/details${
-			queries.length ? `?${queries.join('&')}` : ''
-		}`;
+		const path = `/recommendations/${recommendationId}/details`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}

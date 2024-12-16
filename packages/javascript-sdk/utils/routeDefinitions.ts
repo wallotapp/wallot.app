@@ -24,14 +24,12 @@ export type HomeWebAppRouteQueryParams = {
 		//
 	};
 	'HOME_WEB_APP__/GET_STARTED': {
-		step?: string | undefined;
+		client_token?: string | undefined;
 	};
 	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM': {
-		client_token?: string | undefined;
 		order_id: string | undefined;
 	};
 	'HOME_WEB_APP__/RECOMMENDATIONS/[RECOMMENDATION_ID]/DETAILS': {
-		client_token?: string | undefined;
 		recommendation_id: string | undefined;
 	};
 };
