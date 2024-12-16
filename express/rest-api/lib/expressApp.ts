@@ -60,6 +60,35 @@ app.post(
 	},
 );
 
+import { onboardUser } from './app/wallot/users/onboardUser.js';
+app.options('*/v0/users/:user_id/onboard', corsPolicy);
+app.post(
+	'*/v0/users/:user_id/onboard',
+	(
+		req: express.Request<
+			unknown,
+			unknown,
+			RegisterUserParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			RegisterUserResponse,
+			GeneralizedResLocals<RegisterUserResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(registerUser, { requiresAuth: false })(
+				req,
+				res,
+				next,
+			),
+		);
+	},
+);
+
 // ---- Application Routes: Firebase ---- //
 
 // Custom Tokens

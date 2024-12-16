@@ -11,25 +11,24 @@ import { getGeneralizedError } from 'ergonomic';
 
 /**
  * Creates an Express router function that handles asynchronous operations.
- *
- * @template TResponseData - The type of the response data.
- * @template TParams - The type of the parameters.
- * @template TQuery - The type of the query parameters.
- * @param {function(TParams, TQuery, FirebaseUser | null): Promise<TResponseData[]>} fn - The asynchronous function to be executed.
- * @param {{ requiresAuth: boolean }} [options={ requiresAuth: true }] - The options for the router function.
- * @returns An Express middleware function.
  */
-export const createRouterFunction = <TResponseData, TParams, TQuery>(
+export const createRouterFunction = <
+	TParams,
+	TResponseBody,
+	TRequestBody,
+	TQuery,
+>(
 	fn: (
+		body: TRequestBody,
 		params: TParams,
 		query: TQuery,
 		firebaseUser: FirebaseUser | null,
-	) => Promise<TResponseData>,
+	) => Promise<TResponseBody>,
 	options: { requiresAuth: boolean } = { requiresAuth: true },
 ) => {
 	return (
-			req: express.Request<unknown, unknown, TParams, TQuery>,
-			res: express.Response<TResponseData, GeneralizedResLocals<TResponseData>>,
+			req: express.Request<TParams, TResponseBody, TRequestBody, TQuery>,
+			res: express.Response<TResponseBody, GeneralizedResLocals<TResponseBody>>,
 			next: express.NextFunction,
 		) =>
 		() => {
@@ -41,7 +40,9 @@ export const createRouterFunction = <TResponseData, TParams, TQuery>(
 					// Get the Firebase user from the request
 					let firebaseUser: FirebaseUser | undefined;
 					try {
-						const firebaseUserJwt = getAuthHeaderBearerToken(req);
+						const firebaseUserJwt = getAuthHeaderBearerToken(
+							req as express.Request,
+						);
 						if (!firebaseUserJwt) throw new Error('No firebaseUserJwt');
 						firebaseUser = await auth.verifyIdToken(firebaseUserJwt);
 					} catch (_) {
@@ -55,14 +56,17 @@ export const createRouterFunction = <TResponseData, TParams, TQuery>(
 						}
 					}
 
-					// Extract the parameters from the request body
-					const params = req.body;
+					// Extract the payload from the request body
+					const body = req.body;
+
+					// Extract the parameters from the request
+					const params = req.params;
 
 					// Extract the query parameters from the request
 					const query = req.query;
 
 					// Call the router function
-					res.locals.json = await fn(params, query, firebaseUser ?? null);
+					res.locals.json = await fn(body, params, query, firebaseUser ?? null);
 
 					// Proceed to the next middleware
 					return next();
