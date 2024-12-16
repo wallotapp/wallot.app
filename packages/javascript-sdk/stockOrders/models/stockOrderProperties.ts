@@ -34,13 +34,23 @@ const properties = {
 		.nullable()
 		.meta({ unique_key: true }),
 	category: StockOrderCategoryEnum.getDefinedSchema(),
-	order: apiYupHelpers.idRef(['order']).min(1),
-	position: apiYupHelpers.idRef(['position']).default(null).nullable(),
+	order: apiYupHelpers.idRef(['order']).min(1).meta({ unique_key: false }),
+	position: apiYupHelpers
+		.idRef(['position'])
+		.default(null)
+		.nullable()
+		.meta({ unique_key: false }),
 	recommendations: apiYupHelpers
 		.idRefs(['recommendation'])
 		.default(null)
 		.nullable(),
-	stock: apiYupHelpers.idRef(['stock']).min(1),
+	stock: apiYupHelpers
+		.idRef(['stock'])
+		.min(1)
+		.meta({
+			unique_by: ['order'],
+			unique_key: false,
+		}),
 } as const;
 type U = typeof properties;
 

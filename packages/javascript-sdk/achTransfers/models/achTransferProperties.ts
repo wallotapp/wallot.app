@@ -32,7 +32,10 @@ const properties = {
 		.default(null)
 		.nullable()
 		.meta({ unique_key: true }),
-	bank_account: apiYupHelpers.idRef(['bank_account']).min(1),
+	bank_account: apiYupHelpers
+		.idRef(['bank_account'])
+		.min(1)
+		.meta({ unique_key: false }),
 	category: AchTransferCategoryEnum.getDefinedSchema(),
 } as const;
 type U = typeof properties;

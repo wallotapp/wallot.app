@@ -30,8 +30,11 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: InvoiceCategoryEnum.getDefinedSchema(),
-	license: apiYupHelpers.idRef(['license']).min(1),
-	payment_method: apiYupHelpers.idRef(['payment_method']).min(1),
+	license: apiYupHelpers.idRef(['license']).min(1).meta({ unique_key: false }),
+	payment_method: apiYupHelpers
+		.idRef(['payment_method'])
+		.min(1)
+		.meta({ unique_key: false }),
 	stripe_invoice: apiYupHelpers
 		.idRef(['stripe_invoice'])
 		.min(1)

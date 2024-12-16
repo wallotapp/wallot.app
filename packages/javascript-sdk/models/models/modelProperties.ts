@@ -29,7 +29,10 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: ModelCategoryEnum.getDefinedSchema(),
-	model_family: apiYupHelpers.idRef(['model_family']).min(1),
+	model_family: apiYupHelpers
+		.idRef(['model_family'])
+		.min(1)
+		.meta({ unique_key: false }),
 	open_ai_model: apiYupHelpers
 		.idRef(['open_ai_model'])
 		.min(1)

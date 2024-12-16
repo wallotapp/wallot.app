@@ -33,13 +33,17 @@ const properties = {
 	_object: YupHelpers.constant(_object),
 	category: RecommendationCategoryEnum.getDefinedSchema(),
 	forecasts: apiYupHelpers.idRefs(['forecast']).min(1),
-	model: apiYupHelpers.idRef(['model']).min(1),
+	model: apiYupHelpers.idRef(['model']).min(1).meta({ unique_key: false }),
 	open_ai_recommendation: apiYupHelpers
 		.idRef(['open_ai_recommendation'])
 		.min(1)
 		.meta({ unique_key: true }),
 	parameters: apiYupHelpers.idRefs(['parameter']).min(1),
-	user: apiYupHelpers.idRef(['user']).default(null).nullable(),
+	user: apiYupHelpers
+		.idRef(['user'])
+		.default(null)
+		.nullable()
+		.meta({ unique_key: false }),
 } as const;
 type U = typeof properties;
 

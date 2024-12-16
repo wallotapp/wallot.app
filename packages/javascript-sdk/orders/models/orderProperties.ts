@@ -27,9 +27,13 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
-	bank_account: apiYupHelpers.idRef(['bank_account']).default(null).nullable(),
+	bank_account: apiYupHelpers
+		.idRef(['bank_account'])
+		.default(null)
+		.nullable()
+		.meta({ unique_key: false }),
 	category: OrderCategoryEnum.getDefinedSchema(),
-	user: apiYupHelpers.idRef(['user']).min(1),
+	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: false }),
 } as const;
 type U = typeof properties;
 

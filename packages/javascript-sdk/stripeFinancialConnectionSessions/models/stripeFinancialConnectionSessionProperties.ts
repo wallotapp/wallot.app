@@ -31,7 +31,7 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: StripeFinancialConnectionSessionCategoryEnum.getDefinedSchema(),
-	user: apiYupHelpers.idRef(['user']).min(1),
+	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: false }),
 } as const;
 type U = typeof properties;
 

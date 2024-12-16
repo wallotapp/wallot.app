@@ -33,7 +33,8 @@ const properties = {
 	category: StripeFinancialConnectionAccountCategoryEnum.getDefinedSchema(),
 	stripe_financial_connection_session: apiYupHelpers
 		.idRef(['stripe_financial_connection_session'])
-		.min(1),
+		.min(1)
+		.meta({ unique_key: false }),
 } as const;
 type U = typeof properties;
 

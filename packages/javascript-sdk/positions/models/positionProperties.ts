@@ -35,12 +35,16 @@ const properties = {
 		.nullable()
 		.meta({ unique_key: true }),
 	category: PositionCategoryEnum.getDefinedSchema(),
-	equity_account: apiYupHelpers.idRef(['equity_account']).min(1),
+	equity_account: apiYupHelpers
+		.idRef(['equity_account'])
+		.min(1)
+		.meta({ unique_key: false }),
 	stock: apiYupHelpers
 		.idRef(['stock'])
 		.min(1)
 		.meta({
 			unique_by: ['equity_account'],
+			unique_key: false,
 		}),
 } as const;
 type U = typeof properties;

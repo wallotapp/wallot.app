@@ -30,7 +30,7 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: ForecastCategoryEnum.getDefinedSchema(),
-	model: apiYupHelpers.idRef(['model']).min(1),
+	model: apiYupHelpers.idRef(['model']).min(1).meta({ unique_key: false }),
 	news_reports: apiYupHelpers.idRefs(['news_report']).min(1),
 	stock_prices: apiYupHelpers.idRefs(['stock_price']).min(1),
 } as const;
