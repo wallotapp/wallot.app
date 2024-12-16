@@ -40,9 +40,7 @@ export const createRouterFunction = <
 					// Get the Firebase user from the request
 					let firebaseUser: FirebaseUser | undefined;
 					try {
-						const firebaseUserJwt = getAuthHeaderBearerToken(
-							req as express.Request,
-						);
+						const firebaseUserJwt = getAuthHeaderBearerToken(req);
 						if (!firebaseUserJwt) throw new Error('No firebaseUserJwt');
 						firebaseUser = await auth.verifyIdToken(firebaseUserJwt);
 					} catch (_) {

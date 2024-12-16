@@ -12,12 +12,14 @@ import { auth } from '../../../services.js';
  * Learn more about custom tokens:
  * {@link https://firebase.google.com/docs/auth/admin/create-custom-tokens}
  *
+ * @param {Record<string, never>} _body None
  * @param {Record<string, never>} _params None
  * @param {Record<string, never>} _query None
  * @param {FirebaseUser | null} firebaseUser The Firebase user.
  * @returns {Promise<FirebaseUserCustomTokenResponse>} The custom token for the user.
  */
 export const createFirebaseAuthCustomToken = async (
+	_body: Record<string, never>,
 	_params: Record<string, never>,
 	_query: Record<string, never>,
 	firebaseUser: FirebaseUser | null,
