@@ -10,8 +10,8 @@ describe('Recommendation', () => {
 			forecasts: [],
 			model: '',
 			open_ai_recommendation: '',
+			parameters: [],
 			user: '',
-			user_personas: [],
 		};
 		expect(exampleRecommendation).toEqual<typeof exampleRecommendation>({
 			_id: expect.any(String),
@@ -27,8 +27,8 @@ describe('Recommendation', () => {
 			forecasts: [],
 			model: '',
 			open_ai_recommendation: '',
+			parameters: [],
 			user: '',
-			user_personas: [],
 		});
 	});
 });

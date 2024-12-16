@@ -8,8 +8,8 @@ describe('User', () => {
 			category: 'default',
 			name: 'My User',
 			alpaca_account: '',
+			parameters: [],
 			stripe_customer: '',
-			user_personas: [],
 		};
 		expect(exampleUser).toEqual<typeof exampleUser>({
 			_id: expect.any(String),
@@ -23,8 +23,8 @@ describe('User', () => {
 			description: '',
 			name: 'My User',
 			alpaca_account: '',
+			parameters: [],
 			stripe_customer: '',
-			user_personas: [],
 		});
 	});
 });

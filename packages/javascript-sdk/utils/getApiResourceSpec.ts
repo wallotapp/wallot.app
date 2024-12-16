@@ -36,7 +36,6 @@ import { stripeInvoicesApi } from '../stripeInvoices/index.js';
 import { stripePaymentMethodsApi } from '../stripePaymentMethods/index.js';
 import { stripeSubscriptionsApi } from '../stripeSubscriptions/index.js';
 import { usersApi } from '../users/index.js';
-import { userPersonasApi } from '../userPersonas/index.js';
 
 export const getApiResourceSpec = (
 	collectionId: WallotCollection,
@@ -114,8 +113,6 @@ export const getApiResourceSpec = (
 			return stripeSubscriptionsApi as unknown as GeneralizedApiResourceSpec;
 		case 'user':
 			return usersApi as unknown as GeneralizedApiResourceSpec;
-		case 'user_persona':
-			return userPersonasApi as unknown as GeneralizedApiResourceSpec;
 		default:
 			throw new Error(`Invalid collectionId: ${collectionId as string}`);
 	}

@@ -40,7 +40,6 @@ import { useQueryStripeInvoicePage } from '@wallot/react/src/features/stripeInvo
 import { useQueryStripePaymentMethodPage } from '@wallot/react/src/features/stripePaymentMethods';
 import { useQueryStripeSubscriptionPage } from '@wallot/react/src/features/stripeSubscriptions';
 import { useQueryUserPage } from '@wallot/react/src/features/users';
-import { useQueryUserPersonaPage } from '@wallot/react/src/features/userPersonas';
 
 type PageQueryHook = (
 	options: GeneralizedUseQueryPageProps<GeneralizedApiResource>,
@@ -86,7 +85,6 @@ const queryHookMap = {
 	stripe_payment_method: useQueryStripePaymentMethodPage,
 	stripe_subscription: useQueryStripeSubscriptionPage,
 	user: useQueryUserPage,
-	user_persona: useQueryUserPersonaPage,
 } as Record<WallotCollection, PageQueryHook>;
 
 const fallbackPageQueryHookForCollection = (() => ({

@@ -8,7 +8,7 @@ describe('ModelFamily', () => {
 			category: 'default',
 			name: 'My ModelFamily',
 			open_ai_model_family: '',
-			user_personas: [],
+			parameters: [],
 		};
 		expect(exampleModelFamily).toEqual<typeof exampleModelFamily>({
 			_id: expect.any(String),
@@ -22,7 +22,7 @@ describe('ModelFamily', () => {
 			description: '',
 			name: 'My ModelFamily',
 			open_ai_model_family: '',
-			user_personas: [],
+			parameters: [],
 		});
 	});
 });

@@ -32,11 +32,8 @@ const properties = {
 		.default(null)
 		.nullable(),
 	category: UserCategoryEnum.getDefinedSchema(),
+	parameters: apiYupHelpers.idRefs(['parameter']).default(null).nullable(),
 	stripe_customer: apiYupHelpers.idRef(['stripe_customer']).min(1),
-	user_personas: apiYupHelpers
-		.idRefs(['user_persona'])
-		.default(null)
-		.nullable(),
 } as const;
 type U = typeof properties;
 

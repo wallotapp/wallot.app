@@ -192,6 +192,9 @@ const mockApiResource: User = {
 	...apiResourceSpec.apiResourceDefaultJson,
 	category: 'default',
 	name: 'My User',
+	alpaca_account: '...',
+	parameters: [],
+	stripe_customer: '...',
 };
 
 // Add routes

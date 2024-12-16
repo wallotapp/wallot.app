@@ -215,12 +215,6 @@
 			"name_plural": "users",
 			"name_singular": "user",
 			"visibility": "public"
-		},
-		{
-			"name_singular": "user_persona",
-			"name_plural": "user_personas",
-			"id_prefix": "usr_psa",
-			"visibility": "public"
 		}
 	],
 	"platform": {

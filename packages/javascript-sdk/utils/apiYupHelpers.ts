@@ -37,7 +37,6 @@ export const idPrefixByCollection = {
 	stripe_payment_method: 'strp_pay',
 	stripe_subscription: 'strp_sub',
 	user: 'usr',
-	user_persona: 'usr_psa',
 } as const;
 export const apiYupHelpers = getApiResourceYupHelpers(
 	[
@@ -77,7 +76,6 @@ export const apiYupHelpers = getApiResourceYupHelpers(
 		'stripe_payment_method',
 		'stripe_subscription',
 		'user',
-		'user_persona',
 	],
 	idPrefixByCollection,
 );
