@@ -28,8 +28,8 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
-	alpaca_ach_transfer: apiYupHelpers.idRef(['alpaca_ach_transfer']),
-	bank_account: apiYupHelpers.idRef(['bank_account']),
+	alpaca_ach_transfer: apiYupHelpers.idRef(['alpaca_ach_transfer']).min(1),
+	bank_account: apiYupHelpers.idRef(['bank_account']).min(1),
 	category: AchTransferCategoryEnum.getDefinedSchema(),
 } as const;
 type U = typeof properties;

@@ -29,7 +29,7 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: AuthCredentialCategoryEnum.getDefinedSchema(),
-	user: apiYupHelpers.idRef(['user']),
+	user: apiYupHelpers.idRef(['user']).min(1),
 } as const;
 type U = typeof properties;
 
