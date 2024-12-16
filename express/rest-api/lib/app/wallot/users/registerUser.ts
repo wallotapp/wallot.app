@@ -1,12 +1,12 @@
-import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
+// import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { RegisterUserParams, RegisterUserResponse } from '@wallot/js';
 import { auth } from '../../../firebaseApp.js';
 
-export const registerUser = async (
-	{ email, password, username }: RegisterUserParams,
-	_query: Record<string, never>,
-	_firebaseUser: FirebaseUser | null,
-): Promise<RegisterUserResponse> => {
+export const registerUser = async ({
+	email,
+	password,
+	username,
+}: RegisterUserParams): Promise<RegisterUserResponse> => {
 	// Register a Firebase User
 	// Create a Stripe Customer
 	// Create a STRIPE_CUSTOMER Firestore document
@@ -18,7 +18,7 @@ export const registerUser = async (
 	// Create a PAYMENT_METHOD Firestore document
 	// Create a Firebase custom token (JWT)
 	// Construct the redirect URL using custom token
-	
+
 	email;
 	password;
 	username;
