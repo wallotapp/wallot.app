@@ -18,6 +18,7 @@ export type UserCategory = keyof typeof UserCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'stripe_customer',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -26,8 +27,16 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
+	alpaca_account: apiYupHelpers
+		.idRef(['alpaca_account'])
+		.default(null)
+		.nullable(),
 	category: UserCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	stripe_customer: apiYupHelpers.idRef(['stripe_customer']).min(1),
+	user_personas: apiYupHelpers
+		.idRefs(['user_persona'])
+		.default(null)
+		.nullable(),
 } as const;
 type U = typeof properties;
 

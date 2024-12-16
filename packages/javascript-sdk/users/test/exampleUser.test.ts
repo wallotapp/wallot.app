@@ -7,6 +7,9 @@ describe('User', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My User',
+			alpaca_account: '',
+			stripe_customer: '',
+			user_personas: [],
 		};
 		expect(exampleUser).toEqual<typeof exampleUser>({
 			_id: expect.any(String),
@@ -19,6 +22,9 @@ describe('User', () => {
 			_deleted: false,
 			description: '',
 			name: 'My User',
+			alpaca_account: '',
+			stripe_customer: '',
+			user_personas: [],
 		});
 	});
 });
