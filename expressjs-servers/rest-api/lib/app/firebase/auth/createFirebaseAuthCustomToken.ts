@@ -16,13 +16,13 @@ import { secrets } from '../../../secrets.js';
  * @param {Record<string, never>} _params None
  * @param {Record<string, never>} _query None
  * @param {FirebaseUser | null} firebaseUser The Firebase user.
- * @returns {Promise<FirebaseUserCustomTokenResponse['data']>} The custom token for the user.
+ * @returns {Promise<FirebaseUserCustomTokenResponse>} The custom token for the user.
  */
 export const createFirebaseAuthCustomToken = async (
 	_params: Record<string, never>,
 	_query: Record<string, never>,
 	firebaseUser: FirebaseUser | null,
-): Promise<FirebaseUserCustomTokenResponse['data']> => {
+): Promise<FirebaseUserCustomTokenResponse> => {
 	if (!firebaseUser) throw new Error('Unauthorized');
 
 	// Initialize Firebase Auth with the provided secrets
@@ -32,5 +32,5 @@ export const createFirebaseAuthCustomToken = async (
 	const customToken = await auth.createCustomToken(firebaseUser.uid);
 
 	// Store the custom token in the response locals
-	return [{ custom_token: customToken }];
+	return { custom_token: customToken };
 };

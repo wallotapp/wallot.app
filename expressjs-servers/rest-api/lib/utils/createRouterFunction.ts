@@ -27,7 +27,7 @@ export const createRouterFunction = <TResponseData, TParams, TQuery>(
 ) => {
 	return (
 			req: express.Request<unknown, unknown, TParams, TQuery>,
-			res: express.Response<unknown, GeneralizedResLocals<TResponseData>>,
+			res: express.Response<TResponseData, GeneralizedResLocals<TResponseData>>,
 			next: express.NextFunction,
 		) =>
 		() => {

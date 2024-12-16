@@ -1,11 +1,9 @@
 import * as cors from 'cors';
 import * as express from 'express';
 import { statSync } from 'fs';
+import { FirebaseUserCustomTokenResponse } from 'ergonomic';
 import {
-	GeneralizedResponse,
-	FirebaseUserCustomTokenResponse,
-} from 'ergonomic';
-import {
+	GeneralizedResLocals,
 	addHealthRoutesToExpressApp,
 	initializeResLocalsWithGeneralizedResponseFields,
 	logExpressInvocation,
@@ -120,7 +118,10 @@ app.post(
 			Record<string, never>,
 			Record<string, never>
 		>,
-		res: express.Response<unknown, FirebaseUserCustomTokenResponse>,
+		res: express.Response<
+			FirebaseUserCustomTokenResponse,
+			GeneralizedResLocals<FirebaseUserCustomTokenResponse>
+		>,
 		next,
 	) => {
 		corsPolicy(
