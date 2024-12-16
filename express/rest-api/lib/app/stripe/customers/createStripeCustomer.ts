@@ -1,23 +1,13 @@
-import * as express from 'express';
-import { GeneralizedResLocals } from 'ergonomic-node';
-import { handleRouterFunctionError } from '../../../utils/handleRouterFunctionError';
+import { RegisterUserParams } from '@wallot/js';
+import { stripe } from '../../../services.js';
 
-export const createStripeCustomer =
-	(
-		_req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResLocals>,
-		next: express.NextFunction,
-	) =>
-	() => {
-		return void (async () => {
-			try {
-				// Wait 1 second
-				await new Promise((resolve) => setTimeout(resolve, 2500));
-				// Response
-				res.locals.json = [];
-				return next();
-			} catch (err) {
-				return handleRouterFunctionError(res, next, err);
-			}
-		})();
-	};
+export const createStripeCustomer = ({
+	email,
+	metadata,
+	username,
+}: RegisterUserParams & { metadata: { _id: string; user_id: string } }) =>
+	stripe.customers.create({
+		email: email,
+		metadata,
+		name: username,
+	});
