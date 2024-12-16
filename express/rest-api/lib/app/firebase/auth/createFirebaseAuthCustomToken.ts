@@ -1,6 +1,6 @@
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { FirebaseUserCustomTokenResponse } from 'ergonomic';
-import { auth } from '../../../firebaseApp.js';
+import { auth } from '../../../services.js';
 
 /**
  * Creates a Firebase Auth custom token for a user.

@@ -9,7 +9,7 @@ import {
 	ordersApi,
 	paymentMethodsApi,
 } from '@wallot/js';
-import { auth } from '../../../firebaseApp.js';
+import { auth } from '../../../services.js';
 
 export const registerUser = async ({
 	email,

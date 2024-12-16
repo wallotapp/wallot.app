@@ -5,7 +5,7 @@ import {
 	getAuthHeaderBearerToken,
 	isResLocalsJsonError,
 } from 'ergonomic-node';
-import { auth } from '../firebaseApp.js';
+import { auth } from '../services.js';
 import { handleRouterFunctionError } from './handleRouterFunctionError.js';
 import { getGeneralizedError } from 'ergonomic';
 
