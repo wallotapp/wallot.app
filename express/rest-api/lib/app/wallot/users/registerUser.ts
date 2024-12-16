@@ -2,7 +2,7 @@ import * as express from 'express';
 import { GeneralizedResLocals } from 'ergonomic-node';
 import { handleRouterFunctionError } from '../../../utils/handleRouterFunctionError';
 
-export const createUser =
+export const registerUser =
 	(
 		_req: express.Request<unknown, unknown, unknown>,
 		res: express.Response<unknown, GeneralizedResLocals>,

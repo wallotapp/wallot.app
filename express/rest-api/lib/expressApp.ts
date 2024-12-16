@@ -33,7 +33,7 @@ app.use(initializeResLocalsWithGeneralizedResponseFields());
 // ---- Application Routes: Wallot ---- //
 
 // Users
-import { createUser } from './app/wallot/users/createUser.js';
+import { registerUser } from './app/wallot/users/registerUser.js';
 app.options('*/v0/users', corsPolicy);
 app.post(
 	'*/v0/users',
@@ -42,7 +42,7 @@ app.post(
 		res: express.Response<unknown, GeneralizedResLocals>,
 		next,
 	) => {
-		corsPolicy(req, res, createUser(req, res, next));
+		corsPolicy(req, res, registerUser(req, res, next));
 	},
 );
 
