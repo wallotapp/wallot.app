@@ -19,7 +19,6 @@ export type StockOrderCategory = keyof typeof StockOrderCategoryEnum.obj;
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
 	'order',
-	'position',
 	'stock',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
@@ -36,7 +35,7 @@ const properties = {
 		.meta({ unique_key: true }),
 	category: StockOrderCategoryEnum.getDefinedSchema(),
 	order: apiYupHelpers.idRef(['order']).min(1),
-	position: apiYupHelpers.idRef(['position']).min(1),
+	position: apiYupHelpers.idRef(['position']).default(null).nullable(),
 	recommendations: apiYupHelpers
 		.idRefs(['recommendation'])
 		.default(null)

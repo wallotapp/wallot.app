@@ -18,7 +18,6 @@ export type OrderCategory = keyof typeof OrderCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
-	'bank_account',
 	'user',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
@@ -28,7 +27,7 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
-	bank_account: apiYupHelpers.idRef(['bank_account']).min(1),
+	bank_account: apiYupHelpers.idRef(['bank_account']).default(null).nullable(),
 	category: OrderCategoryEnum.getDefinedSchema(),
 	user: apiYupHelpers.idRef(['user']).min(1),
 } as const;

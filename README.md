@@ -35,11 +35,11 @@ erDiagram
 	MODEL_FAMILY ||--|| OPEN_AI_MODEL_FAMILY : "mirrors"
 	LICENSE ||--|| STRIPE_SUBSCRIPTION : "mirrors"
 	PAYMENT_METHOD ||--|| STRIPE_PAYMENT_METHOD : "mirrors"
-	POSITION ||--|| ALPACA_POSITION : "mirrors"
+	POSITION ||--o| ALPACA_POSITION : "mirrors"
 	RECOMMENDATION ||--|| OPEN_AI_RECOMMENDATION : "mirrors"
 	STOCK ||--|| ALPACA_ASSET : "mirrors"
 	STOCK ||--|| ALPHA_VANTAGE_COMPANY : "mirrors"
-	STOCK_ORDER ||--|| ALPACA_ORDER : "mirrors"
+	STOCK_ORDER ||--o| ALPACA_ORDER : "mirrors"
 	STOCK_PRICE ||--|| ALPHA_VANTAGE_STOCK_PRICE : "mirrors"
 	USER ||--o| ALPACA_ACCOUNT : "mirrors"
 	USER ||--|| STRIPE_CUSTOMER : "mirrors"
@@ -71,13 +71,13 @@ erDiagram
 	BANK_ACCOUNT ||--o{ ACH_TRANSFER : "derives_from_the_computation_of"
 	FORECAST }|--|{ NEWS_REPORT : "derives_from_the_computation_of"
 	FORECAST }|--|{ STOCK_PRICE : "derives_from_the_computation_of"
-	POSITION ||--o{ STOCK_ORDER : "derives_from_the_computation_of"
+	POSITION |o--o{ STOCK_ORDER : "derives_from_the_computation_of"
 	RECOMMENDATION }|--|{ FORECAST : "derives_from_the_computation_of"
 
 	%% Transaction Relationships
 	INVOICE }|--|| PAYMENT_METHOD : "charges"
 	LICENSE ||--o{ INVOICE : "bills"
-	ORDER }|--|| BANK_ACCOUNT : "debits_or_credits"
+	ORDER }|--o| BANK_ACCOUNT : "debits_or_credits"
 
 	%% Proxy Relationships
 	PAYMENT_METHOD ||--|| BANK_ACCOUNT : "represents"

@@ -31,7 +31,8 @@ const properties = {
 	_object: YupHelpers.constant(_object),
 	alpaca_position: apiYupHelpers
 		.idRef(['alpaca_position'])
-		.min(1)
+		.default(null)
+		.nullable()
 		.meta({ unique_key: true }),
 	category: PositionCategoryEnum.getDefinedSchema(),
 	equity_account: apiYupHelpers.idRef(['equity_account']).min(1),
