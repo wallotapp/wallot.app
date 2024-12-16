@@ -15,6 +15,22 @@
 			"type": "shell"
 		},
 		{
+			"command": "npm run format",
+			"label": "Format the Project",
+			"options": {
+				"statusbar": {
+					"detail": "Formats the project using Prettier and Doctoc",
+					"label": "$(output) format"
+				}
+			},
+			"presentation": {
+				"group": "Formatter",
+				"reveal": "silent"
+			},
+			"problemMatcher": [],
+			"type": "shell"
+		},
+		{
 			"command": "npm run watch",
 			"label": "Start TypeScript Compiler",
 			"options": {
