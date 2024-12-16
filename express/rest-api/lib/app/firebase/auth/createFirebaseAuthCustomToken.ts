@@ -24,9 +24,6 @@ export const createFirebaseAuthCustomToken = async (
 ): Promise<FirebaseUserCustomTokenResponse> => {
 	if (!firebaseUser) throw new Error('Unauthorized');
 
-	// Create a custom token for the user
 	const customToken = await auth.createCustomToken(firebaseUser.uid);
-
-	// Store the custom token in the response locals
 	return { custom_token: customToken };
 };
