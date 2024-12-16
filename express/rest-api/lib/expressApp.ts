@@ -15,17 +15,10 @@ import {
 	User,
 	usersApi as apiResourceSpec,
 } from '@wallot/js';
-import serverVariablesLive from './serverVariables.live.json' assert { type: 'json' };
-import serverVariablesTest from './serverVariables.test.json' assert { type: 'json' };
 import { secrets } from './secrets.js';
+import { variables } from './variables.js';
 import { directoryPath } from './directoryPath.js';
 import { createRouterFunction } from './utils/createRouterFunction.js';
-
-const { SECRET_CRED_DEPLOYMENT_ENVIRONMENT } = secrets;
-const serverVariables =
-	SECRET_CRED_DEPLOYMENT_ENVIRONMENT === 'live'
-		? serverVariablesLive
-		: serverVariablesTest;
 
 // ---- Create Express App ---- //
 const corsPolicy = cors.default({ origin: true, optionsSuccessStatus: 200 });
@@ -222,7 +215,7 @@ const mockApiResource: User = {
 // Add routes
 addHealthRoutesToExpressApp(app, {
 	...secrets,
-	...serverVariables,
+	...variables,
 	apiResourceSpec,
 	corsPolicy,
 	gmailApiServiceAccountPath,
