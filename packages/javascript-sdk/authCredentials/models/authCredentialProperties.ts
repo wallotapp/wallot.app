@@ -19,6 +19,7 @@ export type AuthCredentialCategory =
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'emails',
 	'user',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
@@ -29,6 +30,7 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: AuthCredentialCategoryEnum.getDefinedSchema(),
+	emails: YupHelpers.array(YupHelpers.emailAddress()).defined().min(1),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: true }),
 } as const;
 type U = typeof properties;
