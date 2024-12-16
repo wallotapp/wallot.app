@@ -1,10 +1,11 @@
 import * as express from 'express';
-import { GeneralizedResponse, getGeneralizedError } from 'ergonomic';
+import { GeneralizedResLocals } from 'ergonomic-node';
+import { handleRouterFunctionError } from '../../../utils/handleRouterFunctionError';
 
 export const requestAlpacaAchTransfer =
 	(
 		_req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResponse<unknown>>,
+		res: express.Response<unknown, GeneralizedResLocals>,
 		next: express.NextFunction,
 	) =>
 	() => {
@@ -13,14 +14,10 @@ export const requestAlpacaAchTransfer =
 				// Wait 1 second
 				await new Promise((resolve) => setTimeout(resolve, 2500));
 				// Response
-				res.locals.data = [];
+				res.locals.json = [];
 				return next();
 			} catch (err) {
-				const message = (err as Error)?.message || 'Unknown error';
-				res.locals.errors = res.locals.errors?.length
-					? res.locals.errors
-					: [getGeneralizedError({ message })];
-				return next();
+				return handleRouterFunctionError(res, next, err);
 			}
 		})();
 	};

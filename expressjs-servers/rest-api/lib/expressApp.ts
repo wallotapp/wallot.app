@@ -41,7 +41,7 @@ app.post(
 	'*/v0/users',
 	(
 		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResponse<unknown>>,
+		res: express.Response<unknown, GeneralizedResLocals>,
 		next,
 	) => {
 		corsPolicy(req, res, createUser(req, res, next));
@@ -57,7 +57,7 @@ app.post(
 	'*/v0/alpaca/accounts',
 	(
 		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResponse<unknown>>,
+		res: express.Response<unknown, GeneralizedResLocals>,
 		next,
 	) => {
 		corsPolicy(req, res, createAlpacaAccount(req, res, next));
@@ -71,7 +71,7 @@ app.post(
 	'*/v0/alpaca/ach-relationships',
 	(
 		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResponse<unknown>>,
+		res: express.Response<unknown, GeneralizedResLocals>,
 		next,
 	) => {
 		corsPolicy(req, res, createAlpacaAchRelationship(req, res, next));
@@ -85,7 +85,7 @@ app.post(
 	'*/v0/alpaca/ach-transfers',
 	(
 		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResponse<unknown>>,
+		res: express.Response<unknown, GeneralizedResLocals>,
 		next,
 	) => {
 		corsPolicy(req, res, requestAlpacaAchTransfer(req, res, next));
@@ -99,7 +99,7 @@ app.post(
 	'*/v0/alpaca/orders',
 	(
 		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResponse<unknown>>,
+		res: express.Response<unknown, GeneralizedResLocals>,
 		next,
 	) => {
 		corsPolicy(req, res, createAlpacaOrder(req, res, next));
@@ -140,7 +140,7 @@ app.post(
 	'*/v0/stripe/attach-payment-method',
 	(
 		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResponse<unknown>>,
+		res: express.Response<unknown, GeneralizedResLocals>,
 		next,
 	) => {
 		corsPolicy(req, res, attachStripePaymentMethod(req, res, next));
@@ -154,7 +154,7 @@ app.post(
 	'*/v0/stripe/financial-connection-sessions',
 	(
 		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResponse<unknown>>,
+		res: express.Response<unknown, GeneralizedResLocals>,
 		next,
 	) => {
 		corsPolicy(
@@ -172,7 +172,7 @@ app.post(
 	'*/v0/stripe/subscriptions',
 	(
 		req: express.Request<unknown, unknown, unknown>,
-		res: express.Response<unknown, GeneralizedResponse<unknown>>,
+		res: express.Response<unknown, GeneralizedResLocals>,
 		next,
 	) => {
 		corsPolicy(req, res, createStripeSubscription(req, res, next));
