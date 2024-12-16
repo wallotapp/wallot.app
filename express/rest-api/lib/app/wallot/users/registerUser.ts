@@ -7,12 +7,22 @@ export const registerUser = async (
 	_query: Record<string, never>,
 	_firebaseUser: FirebaseUser | null,
 ): Promise<RegisterUserResponse> => {
+	// Register a Firebase User
+	// Create a Stripe Customer
+	// Create a STRIPE_CUSTOMER Firestore document
+	// Create a USER Firestore document
+	// Create an AUTH_CREDENTIAL Firestore document
+	// Create an EQUITY_ACCOUNT Firestore document
+	// Create a LICENSE Firestore document
+	// Create an ORDER Firestore document
+	// Create a PAYMENT_METHOD Firestore document
+	// Create a Firebase custom token (JWT)
+	// Construct the redirect URL using custom token
+	
 	email;
 	password;
 	username;
 	const firebaseUser = { uid: 'TODO' };
-
-	// Create a custom token for the user
 	const customToken = await auth.createCustomToken(firebaseUser.uid);
 
 	return { custom_token: customToken, redirect_url: 'TODO' };
