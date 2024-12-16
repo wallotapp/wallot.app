@@ -7,6 +7,7 @@ describe('AuthCredential', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My AuthCredential',
+			user: '',
 		};
 		expect(exampleAuthCredential).toEqual<typeof exampleAuthCredential>({
 			_id: expect.any(String),
@@ -19,6 +20,7 @@ describe('AuthCredential', () => {
 			_deleted: false,
 			description: '',
 			name: 'My AuthCredential',
+			user: '',
 		});
 	});
 });
