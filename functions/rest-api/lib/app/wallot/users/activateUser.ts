@@ -4,7 +4,6 @@ import {
 	ActivateUserResponse,
 	UpdateUserParams,
 	getHomeWebAppRoute,
-	getFirestoreCollectionPath,
 	ordersApi,
 	recommendationsApi,
 	usersApi,
@@ -15,7 +14,6 @@ import { locateCompatibleParameters } from '../parameters/locateCompatibleParame
 import { createRecommendationForUser } from '../recommendations/createRecommendationForUser.js';
 
 getHomeWebAppRoute;
-getFirestoreCollectionPath;
 auth;
 db;
 siteOriginByTarget;
@@ -29,17 +27,7 @@ export const activateUser = async (
 	}: ActivateUserParams,
 	{ userId }: { userId: string },
 ): Promise<ActivateUserResponse> => {
-	// Initialize Firestore collection names
-	const userCollectionName = getFirestoreCollectionPath(
-		usersApi.apiResourceCollectionId,
-	);
-	const ordersCollectionName = getFirestoreCollectionPath(
-		ordersApi.apiResourceCollectionId,
-	);
-	ordersCollectionName; // TODO
-	const recommendationsCollectionName = getFirestoreCollectionPath(
-		recommendationsApi.apiResourceCollectionId,
-	);
+	ordersApi.collectionId; // TODO
 
 	// Initialize a Firestore batch transaction
 	const batch = db.batch();
@@ -57,7 +45,10 @@ export const activateUser = async (
 	const updateUserParams: UpdateUserParams = {
 		parameters: compatibleParameterIds,
 	};
-	batch.update(db.collection(userCollectionName).doc(userId), updateUserParams);
+	batch.update(
+		db.collection(usersApi.collectionId).doc(userId),
+		updateUserParams,
+	);
 
 	// Create a RECOMMENDATION for USER
 	const recommendation = await createRecommendationForUser(
@@ -66,7 +57,7 @@ export const activateUser = async (
 		compatibleParameters,
 	);
 	batch.set(
-		db.collection(recommendationsCollectionName).doc(recommendation._id),
+		db.collection(recommendationsApi.collectionId).doc(recommendation._id),
 		recommendation,
 	);
 

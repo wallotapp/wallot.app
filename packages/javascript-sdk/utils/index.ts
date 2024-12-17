@@ -1,7 +1,6 @@
 // API
 export * from './apiYupHelpers.js';
 export * from './getApiResourceSpec.js';
-export * from './getFirestoreCollectionPath.js';
 export * from './WallotDatabaseTypes.js';
 
 // Routes

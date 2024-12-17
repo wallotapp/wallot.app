@@ -7,7 +7,6 @@ import {
 	equityAccountsApi,
 	licensesApi,
 	getHomeWebAppRoute,
-	getFirestoreCollectionPath,
 } from '@wallot/js';
 import { auth, db } from '../../../services.js';
 import { siteOriginByTarget } from '../../../variables.js';
@@ -18,23 +17,6 @@ export const registerUser = async ({
 	password,
 	username,
 }: RegisterUserParams): Promise<RegisterUserResponse> => {
-	// Initialize Firestore collection names
-	const stripeCustomerCollectionName = getFirestoreCollectionPath(
-		stripeCustomersApi.apiResourceCollectionId,
-	);
-	const userCollectionName = getFirestoreCollectionPath(
-		usersApi.apiResourceCollectionId,
-	);
-	const authCredentialCollectionName = getFirestoreCollectionPath(
-		authCredentialsApi.apiResourceCollectionId,
-	);
-	const equityAccountCollectionName = getFirestoreCollectionPath(
-		equityAccountsApi.apiResourceCollectionId,
-	);
-	const licenseCollectionName = getFirestoreCollectionPath(
-		licensesApi.apiResourceCollectionId,
-	);
-
 	// Initialize Firestore document IDs
 	const stripeCustomerDocId = stripeCustomersApi.generateId();
 	const userDocId = usersApi.generateId();
@@ -69,7 +51,7 @@ export const registerUser = async ({
 		},
 	});
 	batch.set(
-		db.collection(stripeCustomerCollectionName).doc(stripeCustomerDocId),
+		db.collection(stripeCustomersApi.collectionId).doc(stripeCustomerDocId),
 		stripeCustomerDoc,
 	);
 
@@ -83,7 +65,7 @@ export const registerUser = async ({
 			username,
 		},
 	});
-	batch.set(db.collection(userCollectionName).doc(userDocId), userDoc);
+	batch.set(db.collection(usersApi.collectionId).doc(userDocId), userDoc);
 
 	// Create an AUTH_CREDENTIAL Firestore document
 	const authCredentialDoc = authCredentialsApi.mergeCreateParams({
@@ -96,7 +78,7 @@ export const registerUser = async ({
 		},
 	});
 	batch.set(
-		db.collection(authCredentialCollectionName).doc(authCredentialDocId),
+		db.collection(authCredentialsApi.collectionId).doc(authCredentialDocId),
 		authCredentialDoc,
 	);
 
@@ -110,7 +92,7 @@ export const registerUser = async ({
 		},
 	});
 	batch.set(
-		db.collection(equityAccountCollectionName).doc(equityAccountDocId),
+		db.collection(equityAccountsApi.collectionId).doc(equityAccountDocId),
 		equityAccountDoc,
 	);
 
@@ -123,7 +105,10 @@ export const registerUser = async ({
 			user: userDocId,
 		},
 	});
-	batch.set(db.collection(licenseCollectionName).doc(licenseDocId), licenseDoc);
+	batch.set(
+		db.collection(licensesApi.collectionId).doc(licenseDocId),
+		licenseDoc,
+	);
 
 	// Commit the batch transaction
 	await batch.commit();
