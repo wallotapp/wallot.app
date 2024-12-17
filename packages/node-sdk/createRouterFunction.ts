@@ -15,8 +15,8 @@ import { getGeneralizedError } from 'ergonomic';
  * Creates an Express router function that handles asynchronous operations.
  */
 export const createRouterFunction =
-	<TParams, TResponseBody, TRequestBody, TQuery>(auth: Auth) =>
-	(
+	(auth: Auth) =>
+	<TParams, TResponseBody, TRequestBody, TQuery>(
 		fn: (
 			body: TRequestBody,
 			params: TParams,

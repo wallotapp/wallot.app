@@ -18,20 +18,20 @@
 		"strictPropertyInitialization": true,
 		// End -- Shared compiler options for the entire workspace
 
-		// Start -- Compiler options for ES6 modules
-		"module": "es6",
+		// Start -- Compiler options for ES6 modules (using esnext for the module option)
+		"module": "esnext",
 		"moduleResolution": "node",
 		"target": "es6",
-		// End -- Compiler options for ES6 modules
+		// End -- Compiler options for ES6 modules (using esnext for the module option)
 
-		// Start -- Compiler options for JavaScript SDKs
+		// Start -- Compiler options for Node SDKs
 		"baseUrl": ".",
 		"outDir": ".",
 		"paths": {
 			"*": ["node_modules", "../../node_modules"]
 		},
 		"rootDir": "."
-		// End -- Compiler options for JavaScript SDKs
+		// End -- Compiler options for Node SDKs
 	},
 	"exclude": ["**/*.js"],
 	"extends": "../../tsconfig.template-es6.json"
