@@ -5,7 +5,7 @@ export type ActivateUserParams = {
 		| 'age_range'
 		| 'capital_level'
 		| 'investing_goals'
-		| 'risk_level']: NonNullable<User[P]>;
+		| 'risk_preference']: NonNullable<User[P]>;
 };
 export type ActivateUserResponse = {
 	redirect_url: string;

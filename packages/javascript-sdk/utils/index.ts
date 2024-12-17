@@ -19,4 +19,4 @@ export * from './getSupportWebAppRoute.js';
 export * from './ageRange.js';
 export * from './capitalLevel.js';
 export * from './investingGoal.js';
-export * from './riskLevel.js';
+export * from './riskPreference.js';

@@ -20,7 +20,12 @@ db;
 siteOriginByTarget;
 
 export const activateUser = async (
-	{ age_range, capital_level, investing_goals, risk_level }: ActivateUserParams,
+	{
+		age_range,
+		capital_level,
+		investing_goals,
+		risk_preference,
+	}: ActivateUserParams,
 	{ userId }: { userId: string },
 ): Promise<ActivateUserResponse> => {
 	// Initialize Firestore collection names
@@ -39,7 +44,7 @@ export const activateUser = async (
 		age_range,
 		capital_level,
 		investing_goals,
-		risk_level,
+		risk_preference,
 	});
 
 	// Set USER.parameters as an array of the PARAMETER._id values
@@ -51,7 +56,7 @@ export const activateUser = async (
 
 	// Create a RECOMMENDATION for USER
 	const recommendation = await createRecommendationForUser(
-		{ age_range, capital_level, investing_goals, risk_level },
+		{ age_range, capital_level, investing_goals, risk_preference },
 		{ userId },
 		compatibleParameters,
 	);

@@ -17,7 +17,7 @@ import { isUsername } from '../utils/username.js';
 import { AgeRangeEnum } from '../../utils/ageRange.js'; // Select one
 import { CapitalLevelEnum } from '../../utils/capitalLevel.js'; // Select one
 import { InvestingGoalEnum } from '../../utils/investingGoal.js'; // Select many
-import { RiskLevelEnum } from '../../utils/riskLevel.js'; // Select one
+import { RiskPreferenceEnum } from '../../utils/riskPreference.js'; // Select one
 
 export const UserCategoryEnum = getEnum(['default']);
 export type UserCategory = keyof typeof UserCategoryEnum.obj;
@@ -44,7 +44,9 @@ const properties = {
 	category: UserCategoryEnum.getDefinedSchema(),
 	investing_goals: YupHelpers.array(InvestingGoalEnum.getDefinedSchema()),
 	parameters: apiYupHelpers.idRefs(['parameter']).default(null).nullable(),
-	risk_level: RiskLevelEnum.getDefinedSchema().default(null).nullable(),
+	risk_preference: RiskPreferenceEnum.getDefinedSchema()
+		.default(null)
+		.nullable(),
 	stripe_customer: apiYupHelpers
 		.idRef(['stripe_customer'])
 		.min(1)

@@ -12,7 +12,7 @@ describe('User', () => {
 			capital_level: '10000',
 			investing_goals: [],
 			parameters: [],
-			risk_level: 'low',
+			risk_preference: 'low',
 			stripe_customer: '',
 			username: '',
 		};
@@ -32,7 +32,7 @@ describe('User', () => {
 			capital_level: '10000',
 			investing_goals: [],
 			parameters: [],
-			risk_level: 'low',
+			risk_preference: 'low',
 			stripe_customer: '',
 			username: '',
 		});
