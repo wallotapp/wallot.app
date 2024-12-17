@@ -43,9 +43,7 @@ export const activateUser = async (
 	});
 
 	// Set USER.parameters as an array of the PARAMETER._id values
-	const compatibleParameterIds = compatibleParameters.map(
-		(parameter) => parameter._id,
-	);
+	const compatibleParameterIds = compatibleParameters.map(({ _id }) => _id);
 	const updateUserParams: UpdateUserParams = {
 		parameters: compatibleParameterIds,
 	};
