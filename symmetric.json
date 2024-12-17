@@ -256,6 +256,27 @@
 	"firebase_apps": {
 		"cloud_functions": [
 			{
+				"workspace_package_package_name": "@wallot/cloud-tasks",
+				"custom_environment_variables": [
+					"SECRET_CRED_ALPACA_BROKER_API_BASE_URL",
+					"SECRET_CRED_ALPACA_BROKER_API_KEY",
+					"SECRET_CRED_ALPACA_BROKER_API_SECRET",
+					"SECRET_CRED_ALPHA_VANTAGE_API_KEY",
+					"SECRET_CRED_OPENAI_API_KEY",
+					"SECRET_CRED_STRIPE_API_KEY",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_ID",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_MONTHLY_PRICE_ID"
+				],
+				"targets": [
+					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"17106\",\"project_id\":\"app-wallot-production\",\"deployment_environment\":\"live\",\"label\":\"cloud_tasks\"}",
+					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support-staging@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Staging Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"7106\",\"project_id\":\"app-wallot-staging\",\"deployment_environment\":\"test\",\"label\":\"cloud_tasks\"}"
+				],
+				"name": "Cloud Tasks",
+				"category": "cloud_task",
+				"workspace_package_relative_path": "functions/cloud-tasks",
+				"visibility": "public"
+			},
+			{
 				"workspace_package_package_name": "@wallot/cronjobs",
 				"custom_environment_variables": [
 					"SECRET_CRED_ALPACA_BROKER_API_BASE_URL",
@@ -272,7 +293,7 @@
 					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support-staging@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Staging Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"7104\",\"project_id\":\"app-wallot-staging\",\"deployment_environment\":\"test\",\"label\":\"cronjobs\"}"
 				],
 				"name": "Cronjobs",
-				"category": "cronjobs",
+				"category": "cronjob",
 				"workspace_package_relative_path": "functions/cronjobs",
 				"visibility": "public"
 			},
@@ -335,7 +356,7 @@
 					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support-staging@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Staging Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"7103\",\"project_id\":\"app-wallot-staging\",\"deployment_environment\":\"test\",\"label\":\"triggers\"}"
 				],
 				"name": "Triggers",
-				"category": "triggers",
+				"category": "trigger",
 				"workspace_package_relative_path": "functions/triggers",
 				"visibility": "public"
 			},
@@ -356,7 +377,7 @@
 					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support-staging@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Staging Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"7102\",\"project_id\":\"app-wallot-staging\",\"deployment_environment\":\"test\",\"label\":\"webhooks\"}"
 				],
 				"name": "Webhooks",
-				"category": "webhooks",
+				"category": "webhook",
 				"workspace_package_relative_path": "functions/webhooks",
 				"visibility": "public"
 			}

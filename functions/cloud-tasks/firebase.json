@@ -1,0 +1,8 @@
+{
+	"functions": [
+		{
+			"codebase": "cloud-tasks",
+			"source": "."
+		}
+	]
+}

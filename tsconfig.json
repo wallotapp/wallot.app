@@ -21,6 +21,7 @@
 	"files": [],
 	"include": [],
 	"references": [
+		{ "path": "functions/cloud-tasks/tsconfig.ref.json" },
 		{ "path": "functions/cronjobs/tsconfig.ref.json" },
 		{ "path": "functions/pubsub/tsconfig.ref.json" },
 		{ "path": "functions/rest-api/tsconfig.ref.json" },

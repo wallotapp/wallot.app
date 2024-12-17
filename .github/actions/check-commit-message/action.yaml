@@ -47,6 +47,12 @@ runs:
         else
           echo "DEPLOY_ALL_FUNCTIONS=false" >> $GITHUB_ENV
         fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:cloud-tasks\]'
+        then
+          echo "DEPLOY_CLOUD_TASKS=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_CLOUD_TASKS=false" >> $GITHUB_ENV
+        fi
         if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:cronjobs\]'
         then
           echo "DEPLOY_CRONJOBS=true" >> $GITHUB_ENV
