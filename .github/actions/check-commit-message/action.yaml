@@ -47,6 +47,12 @@ runs:
         else
           echo "DEPLOY_REST_API=false" >> $GITHUB_ENV
         fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:webhooks\]'
+        then
+          echo "DEPLOY_WEBHOOKS=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_WEBHOOKS=false" >> $GITHUB_ENV
+        fi
         if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:all\]'
         then
           echo "DEPLOY_ALL_WEB_APPS=true" >> $GITHUB_ENV

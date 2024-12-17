@@ -63,6 +63,22 @@
 			"type": "shell"
 		},
 		{
+			"command": "npm run dev-function --function_name=\"webhooks\"",
+			"label": "Run Webhooks Locally in Test Environment",
+			"options": {
+				"statusbar": {
+					"detail": "Run Webhooks Locally in Test Environment",
+					"label": "$(terminal) webhooks"
+				}
+			},
+			"presentation": {
+				"group": "Functions",
+				"reveal": "always"
+			},
+			"problemMatcher": [],
+			"type": "shell"
+		},
+		{
 			"command": "npm run dev-web-app --web_app_name=\"home-web-app\"",
 			"label": "Run Home Web App Locally in Test Environment",
 			"options": {

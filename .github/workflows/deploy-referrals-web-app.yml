@@ -1,4 +1,4 @@
-name: Deploy Referrals Web App to Firebase Hosting
+name: Deploy Referrals Web App
 
 'on':
   push:

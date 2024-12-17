@@ -1,4 +1,4 @@
-name: Deploy Knowledge Base Web App to Firebase Hosting
+name: Deploy Knowledge Base Web App
 
 'on':
   push:

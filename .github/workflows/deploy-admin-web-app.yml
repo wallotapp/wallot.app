@@ -1,4 +1,4 @@
-name: Deploy Admin Web App to Firebase Hosting
+name: Deploy Admin Web App
 
 'on':
   push:

@@ -1,4 +1,4 @@
-name: Deploy Home Web App to Firebase Hosting
+name: Deploy Home Web App
 
 'on':
   push:

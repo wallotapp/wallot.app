@@ -275,6 +275,27 @@
 				"category": "rest_api",
 				"workspace_package_relative_path": "functions/rest-api",
 				"visibility": "public"
+			},
+			{
+				"workspace_package_package_name": "@wallot/webhooks",
+				"custom_environment_variables": [
+					"SECRET_CRED_ALPACA_BROKER_API_BASE_URL",
+					"SECRET_CRED_ALPACA_BROKER_API_KEY",
+					"SECRET_CRED_ALPACA_BROKER_API_SECRET",
+					"SECRET_CRED_ALPHA_VANTAGE_API_KEY",
+					"SECRET_CRED_OPENAI_API_KEY",
+					"SECRET_CRED_STRIPE_API_KEY",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_ID",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_MONTHLY_PRICE_ID"
+				],
+				"targets": [
+					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"17102\",\"project_id\":\"app-wallot-production\",\"deployment_environment\":\"live\",\"label\":\"webhooks\"}",
+					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support-staging@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Staging Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"7102\",\"project_id\":\"app-wallot-staging\",\"deployment_environment\":\"test\",\"label\":\"webhooks\"}"
+				],
+				"name": "Webhooks",
+				"category": "webhooks",
+				"workspace_package_relative_path": "functions/webhooks",
+				"visibility": "public"
 			}
 		],
 		"hosting_sites": [

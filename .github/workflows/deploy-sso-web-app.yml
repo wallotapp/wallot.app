@@ -1,4 +1,4 @@
-name: Deploy SSO Web App to Firebase Hosting
+name: Deploy SSO Web App
 
 'on':
   push:

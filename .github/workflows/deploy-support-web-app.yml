@@ -1,4 +1,4 @@
-name: Deploy Support Web App to Firebase Hosting
+name: Deploy Support Web App
 
 'on':
   push:

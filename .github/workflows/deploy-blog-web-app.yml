@@ -1,4 +1,4 @@
-name: Deploy Blog Web App to Firebase Hosting
+name: Deploy Blog Web App
 
 'on':
   push:

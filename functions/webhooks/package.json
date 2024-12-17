@@ -68,5 +68,6 @@
 		"test": "echo 'No test script configured'"
 	},
 	"type": "module",
-	"types": "./lib"
+	"types": "./lib",
+	"version": "0.1.0"
 }

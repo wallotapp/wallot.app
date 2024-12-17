@@ -10,7 +10,7 @@ if [[ -z "$DEPLOYMENT_ENVIRONMENT" || -z "$HOST_TYPE" ]]; then
   exit 1
 fi
 
-# Define the directory for the Express.js REST API
+# Define the directory for the function
 function_dir="./functions/webhooks"
 
 # Define the mappings from host type to URLs for each environment
@@ -35,13 +35,13 @@ fi
 # Generate a timestamp in the desired format
 timestamp=$(date -u +"%Y%m%dT%H%M%SZ")
 
-echo "Starting REST API smoke tests for origin: $origin"
+echo "Starting function smoke tests for origin: $origin"
 
 # Define base directories for logs and create timestamped subdirectories for success and error responses
-success_log_dir="./logs/api-smoke-test-logs/$timestamp/success-requests"
+success_log_dir="./logs/function-smoke-test-logs/$timestamp/success-requests"
 mkdir -p "$success_log_dir"
 
-error_log_dir="./logs/api-smoke-test-logs/$timestamp/error-requests"
+error_log_dir="./logs/function-smoke-test-logs/$timestamp/error-requests"
 mkdir -p "$error_log_dir"
 
 # Read the Gmail Notifications secret token from .env file
@@ -51,7 +51,7 @@ gmail_notifications_token=$(grep 'SECRET_CRED_FIREBASE_ADMIN_SERVICE_ACCOUNT_PRI
 stripe_token=$(grep 'SECRET_CRED_FIREBASE_ADMIN_SERVICE_ACCOUNT_PRIVATE_KEY_ID' $function_dir/.env | cut -d '"' -f 2)
 
 # Define the platform name
-platform_name="Wallot"
+platform_name="Wallot Webhooks"
 
 # Read the Smoke Test recipient email from .env file
 smoke_test_recipient_email=$(grep 'SECRET_CRED_SMOKE_TEST_RECIPIENT_EMAIL' $function_dir/.env | cut -d '"' -f 2)

@@ -1,4 +1,4 @@
-name: Deploy Status Web App to Firebase Hosting
+name: Deploy Status Web App
 
 'on':
   push:
