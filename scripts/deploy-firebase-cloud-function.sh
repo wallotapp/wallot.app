@@ -23,7 +23,7 @@ docker run --rm \
     cd ~ &&
     npm install -g firebase-tools@13.0.2 &&
     cd - &&
-    cd express/${SERVER_NAME} &&
+    cd functions/${SERVER_NAME} &&
     npm i &&
     echo 'Deployment environment (live or test)' &&
     echo 'SECRET_CRED_DEPLOYMENT_ENVIRONMENT=\"${SECRET_CRED_DEPLOYMENT_ENVIRONMENT}\"' >> .env &&

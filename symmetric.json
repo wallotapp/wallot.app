@@ -273,7 +273,7 @@
 				],
 				"name": "REST API",
 				"category": "rest_api",
-				"workspace_package_relative_path": "express/rest-api",
+				"workspace_package_relative_path": "functions/rest-api",
 				"visibility": "public"
 			}
 		],

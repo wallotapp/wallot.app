@@ -21,9 +21,9 @@
 		"build-web-app": "cd ./nextjs/$npm_config_web_app_name && npm run build && cd -",
 		"ci": "echo 'ci is not implemented yet'",
 		"clean": "tsc --build ./tsconfig.json --clean",
-		"deploy-server": "cd ./express/$npm_config_server_name && npm run deploy && cd -",
+		"deploy-server": "cd ./functions/$npm_config_server_name && npm run deploy && cd -",
 		"deploy-web-app": "cd ./nextjs/$npm_config_web_app_name && npm run deploy && cd -",
-		"dev-server": "cd ./express/$npm_config_server_name && npm run dev",
+		"dev-server": "cd ./functions/$npm_config_server_name && npm run dev",
 		"dev-web-app": "cd ./nextjs/$npm_config_web_app_name && npm run dev",
 		"format": "doctoc . && prettier --write .",
 		"lint": "eslint . --ext .ts,.tsx",
@@ -35,7 +35,7 @@
 	},
 	"version": "0.1.0-rc.4",
 	"workspaces": [
-		"express/*",
+		"functions/*",
 		"nextjs/*",
 		"packages/*"
 	]

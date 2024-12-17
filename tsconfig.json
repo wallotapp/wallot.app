@@ -21,7 +21,7 @@
 	"files": [],
 	"include": [],
 	"references": [
-		{ "path": "express/rest-api/tsconfig.ref.json" },
+		{ "path": "functions/rest-api/tsconfig.ref.json" },
 		{ "path": "nextjs/home-web-app/tsconfig.ref.json" },
 		{ "path": "nextjs/admin-web-app/tsconfig.ref.json" },
 		{ "path": "nextjs/blog-web-app/tsconfig.ref.json" },

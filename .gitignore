@@ -140,11 +140,11 @@ commander-clis/**/*.ts.map
 commander-clis/**/*.d.ts
 
 # Express Output Directories
-express/**/dist
-express/**/out
-express/**/*.js.map
-express/**/*.ts.map
-express/**/*.d.ts
+functions/**/dist
+functions/**/out
+functions/**/*.js.map
+functions/**/*.ts.map
+functions/**/*.d.ts
 
 # Package Output Directories
 packages/**/dist
