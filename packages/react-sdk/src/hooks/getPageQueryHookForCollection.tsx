@@ -45,7 +45,7 @@ type PageQueryHook = (
 	options: GeneralizedUseQueryPageProps<GeneralizedApiResource>,
 ) => UseQueryResult<GeneralizedFirestoreCollectionPage, GeneralizedError>;
 
-// Map of collection IDs to their respective hooks
+// Map of resource names to their respective hooks
 const queryHookMap = {
 	ach_transfer: useQueryAchTransferPage,
 	alpaca_account: useQueryAlpacaAccountPage,
@@ -96,24 +96,24 @@ const fallbackPageQueryHookForCollection = (() => ({
 /**
  * Generalized function to return the appropriate hook
  *
- * @param collectionId
- * @returns The appropriate hook for the given collection ID
+ * @param resourceName
+ * @returns The appropriate hook for the given resource
  *
  * @example
- * const collectionId = '...'; // Assume a valid collection ID, for example passed as a prop
- * const hook = getPageQueryHookForCollection(collectionId);
+ * const resourceName = '...'; // Assume a valid resource name, for example passed as a prop
+ * const hook = getPageQueryHookForCollection(resourceName);
  * const { data, isLoading, error } = hook({ firestoreQueryOptions });
  */
 export const getPageQueryHookForCollection = (
-	collectionId: string | null,
+	resourceName: string | null,
 ): PageQueryHook => {
-	if (collectionId == null) {
+	if (resourceName == null) {
 		return fallbackPageQueryHookForCollection;
 	}
 
-	const hook = queryHookMap[collectionId as WallotResourceName];
+	const hook = queryHookMap[resourceName as WallotResourceName];
 	if (!hook) {
-		throw new Error(`No hook found for collection: ${collectionId}`);
+		throw new Error(`No hook found for resource: ${resourceName}`);
 	}
 	return hook;
 };

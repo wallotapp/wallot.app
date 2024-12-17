@@ -43,7 +43,7 @@ type MutationHook = (
 	options: UseMutationOptions<unknown, GeneralizedError>,
 ) => UseMutationResult;
 
-// Map of collection IDs to their respective mutations
+// Map of resource names to their respective mutations
 const updateOperationMutationMap = {
 	ach_transfer: useUpdateAchTransferMutation,
 	alpaca_account: useUpdateAlpacaAccountMutation,
@@ -88,12 +88,12 @@ const updateOperationMutationMap = {
 /**
  * Generalized function to return the appropriate update operation mutation
  *
- * @param collectionId
- * @returns The appropriate update operation mutation for the given collection ID
+ * @param resourceName
+ * @returns The appropriate update operation mutation for the given resource
  *
  * @example
- * const collectionId = '...'; // Assume a valid collection ID, for example passed as a prop
- * const mutation = getUpdateOperationMutationForCollection(collectionId);
+ * const resourceName = '...'; // Assume a valid resource name, for example passed as a prop
+ * const mutation = getUpdateOperationMutationForCollection(resourceName);
  * const { mutate, isLoading, error } = mutation({
  * 	onSuccess: () => { ... },
  * 	onError: () => { ... },
@@ -102,11 +102,11 @@ const updateOperationMutationMap = {
  */
 export function getUpdateOperationMutationForCollection<
 	TResourceName extends WallotResourceName,
->(collectionId: TResourceName): MutationHook {
-	const mutation = updateOperationMutationMap[collectionId];
+>(resourceName: TResourceName): MutationHook {
+	const mutation = updateOperationMutationMap[resourceName];
 	if (!mutation) {
 		throw new Error(
-			`No update operation mutation found for collection: ${collectionId}`,
+			`No update operation mutation found for resource: ${resourceName}`,
 		);
 	}
 	return mutation;
