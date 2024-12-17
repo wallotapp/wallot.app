@@ -12,5 +12,5 @@ export const locateCompatibleParameters = async ({
 	risk_preference;
 	// Wait 1 second
 	await new Promise((resolve) => setTimeout(resolve, 2500));
-	return [];
+	throw new Error('Not implemented');
 };
