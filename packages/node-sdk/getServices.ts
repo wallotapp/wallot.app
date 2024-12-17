@@ -6,9 +6,11 @@ import {
 } from 'ergonomic-node';
 import { SecretData } from './SecretDataTypes.js';
 import { getAlpacaBrokerApiClient } from './alpaca/index.js';
+import { getAlphaVantageClient } from './alphaVantage/index.js';
 
 export const getServices = (secrets: SecretData) => ({
-	alpacaBrokerApiClient: getAlpacaBrokerApiClient(secrets),
+	alpaca: { broker: getAlpacaBrokerApiClient(secrets) },
+	alphaVantage: getAlphaVantageClient(secrets),
 	auth: getFirebaseAuth(secrets),
 	bucket: getCloudStorageBucket(
 		secrets.SECRET_CRED_FIREBASE_ADMIN_STORAGE_BUCKET_NAME,
