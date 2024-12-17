@@ -18,13 +18,13 @@
 	"scripts": {
 		"authenticate-npm-cli": "echo \"//registry.npmjs.org/:_authToken=${NPM_TOKEN}\" >> $HOME/.npmrc && echo \"//registry.npmjs.org/:_authToken=${NPM_TOKEN}\" >> .npmrc",
 		"build": "tsc --build ./tsconfig.json",
-		"build-web-app": "cd ./nextjs/$npm_config_web_app_name && npm run build && cd -",
+		"build-web-app": "cd ./sites/$npm_config_web_app_name && npm run build && cd -",
 		"ci": "echo 'ci is not implemented yet'",
 		"clean": "tsc --build ./tsconfig.json --clean",
 		"deploy-server": "cd ./functions/$npm_config_server_name && npm run deploy && cd -",
-		"deploy-web-app": "cd ./nextjs/$npm_config_web_app_name && npm run deploy && cd -",
+		"deploy-web-app": "cd ./sites/$npm_config_web_app_name && npm run deploy && cd -",
 		"dev-server": "cd ./functions/$npm_config_server_name && npm run dev",
-		"dev-web-app": "cd ./nextjs/$npm_config_web_app_name && npm run dev",
+		"dev-web-app": "cd ./sites/$npm_config_web_app_name && npm run dev",
 		"format": "doctoc . && prettier --write .",
 		"lint": "eslint . --ext .ts,.tsx",
 		"prepare": "husky install && chmod +x .husky/*",
@@ -36,7 +36,7 @@
 	"version": "0.1.0-rc.4",
 	"workspaces": [
 		"functions/*",
-		"nextjs/*",
+		"sites/*",
 		"packages/*"
 	]
 }

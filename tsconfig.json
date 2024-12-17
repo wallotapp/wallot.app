@@ -22,14 +22,14 @@
 	"include": [],
 	"references": [
 		{ "path": "functions/rest-api/tsconfig.ref.json" },
-		{ "path": "nextjs/home-web-app/tsconfig.ref.json" },
-		{ "path": "nextjs/admin-web-app/tsconfig.ref.json" },
-		{ "path": "nextjs/blog-web-app/tsconfig.ref.json" },
-		{ "path": "nextjs/knowledge-base-web-app/tsconfig.ref.json" },
-		{ "path": "nextjs/referrals-web-app/tsconfig.ref.json" },
-		{ "path": "nextjs/sso-web-app/tsconfig.ref.json" },
-		{ "path": "nextjs/status-web-app/tsconfig.ref.json" },
-		{ "path": "nextjs/support-web-app/tsconfig.ref.json" },
+		{ "path": "sites/home-web-app/tsconfig.ref.json" },
+		{ "path": "sites/admin-web-app/tsconfig.ref.json" },
+		{ "path": "sites/blog-web-app/tsconfig.ref.json" },
+		{ "path": "sites/knowledge-base-web-app/tsconfig.ref.json" },
+		{ "path": "sites/referrals-web-app/tsconfig.ref.json" },
+		{ "path": "sites/sso-web-app/tsconfig.ref.json" },
+		{ "path": "sites/status-web-app/tsconfig.ref.json" },
+		{ "path": "sites/support-web-app/tsconfig.ref.json" },
 		{ "path": "packages/javascript-sdk/tsconfig.ref.json" },
 		{ "path": "packages/react-sdk/tsconfig.ref.json" }
 	]

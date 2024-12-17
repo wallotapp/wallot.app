@@ -23,7 +23,7 @@
 		"project": [
 			"./tsconfig.json",
 			"./functions/*/tsconfig.json",
-			"./nextjs/*/tsconfig.json",
+			"./sites/*/tsconfig.json",
 			"./packages/*/tsconfig.json"
 		]
 	},
@@ -64,7 +64,7 @@
 				"project": [
 					"./tsconfig.json",
 					"./functions/*/tsconfig.json",
-					"./nextjs/*/tsconfig.json",
+					"./sites/*/tsconfig.json",
 					"./packages/*/tsconfig.json"
 				]
 			}
