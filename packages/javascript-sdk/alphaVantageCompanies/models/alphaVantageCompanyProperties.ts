@@ -36,6 +36,7 @@ export const alphaVantageCompaniesApi = getApiResourceSpec<keyof U, U, T>({
 	createParamsRequiredFieldEnum,
 	idPrefix: idPrefixByCollection[_object],
 	properties,
+	resourcePlural: 'alpha_vantage_companies',
 } as const);
 export type AlphaVantageCompany = yup.InferType<
 	typeof alphaVantageCompaniesApi.apiResourceJsonSchema

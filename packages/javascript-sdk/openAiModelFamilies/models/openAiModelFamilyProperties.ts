@@ -36,6 +36,7 @@ export const openAiModelFamiliesApi = getApiResourceSpec<keyof U, U, T>({
 	createParamsRequiredFieldEnum,
 	idPrefix: idPrefixByCollection[_object],
 	properties,
+	resourcePlural: 'open_ai_model_families',
 } as const);
 export type OpenAiModelFamily = yup.InferType<
 	typeof openAiModelFamiliesApi.apiResourceJsonSchema
