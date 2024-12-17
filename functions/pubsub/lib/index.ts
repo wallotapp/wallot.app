@@ -1,4 +1,9 @@
-import * as firebaseFunctions from 'firebase-functions';
+import {
+	type CloudEvent,
+	// eslint-disable-next-line import/no-unresolved
+} from 'firebase-functions/v2';
+import { MessagePublishedData } from 'firebase-functions/v2/pubsub';
+import { firebaseFunctions } from 'ergonomic-node';
 
 /**
  * Cloud Function for handling image uploads
@@ -21,17 +26,32 @@ import * as firebaseFunctions from 'firebase-functions';
  * processImageAsynchronously('path/to/image.jpg').catch(console.error);
  * ```
  */
-export const processImage = firebaseFunctions.pubsub
-	.topic('image-uploads')
-	.onPublish(async (message) => {
-		console.log('Processing image upload...');
-		const data = message.json as { imagePath: string };
-		await resizeAndValidateImage(data.imagePath); // Custom image processing logic
-		console.log('Image processing completed.');
-	});
+export const processImage =
+	firebaseFunctions.pubsub.onMessagePublished<ResizeParams>(
+		'image-uploads',
+		resizeAndValidateImage,
+	);
 
-async function resizeAndValidateImage(imagePath: string) {
-	// Example logic for resizing and validating images
-	await new Promise((resolve) => setTimeout(resolve, 2500));
-	console.log(`Resizing and validating image at: ${imagePath}`);
+async function resizeAndValidateImage(
+	event: CloudEvent<MessagePublishedData<ResizeParams>>,
+) {
+	// Get the `imagePath` attribute of the PubSub message JSON body.
+	let imagePath: string | null = null;
+	try {
+		imagePath = event.data.message.json.imagePath;
+	} catch (e) {
+		console.error('PubSub message was not JSON', e);
+	}
+
+	if (imagePath) {
+		// Example logic for resizing and validating images
+		await new Promise((resolve) => setTimeout(resolve, 2500));
+		console.log(`Resizing and validating image at: ${imagePath}`);
+	} else {
+		console.error('PubSub message did not contain an `imagePath` attribute.');
+	}
 }
+
+type ResizeParams = {
+	imagePath: string;
+};
