@@ -13,7 +13,7 @@ export const getServices = (secrets: SecretData) => ({
 	alphaVantage: getAlphaVantageClient(secrets),
 	auth: getFirebaseAuth(secrets),
 	bucket: getCloudStorageBucket(
-		secrets.SECRET_CRED_FIREBASE_ADMIN_STORAGE_BUCKET_NAME,
+		secrets.SECRET_CRED_FIREBASE_PROJECT_STORAGE_BUCKET_NAME,
 	),
 	db: getFirestoreDB(secrets),
 	stripe: getStripeInstance(secrets),
