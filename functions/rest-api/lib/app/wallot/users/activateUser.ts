@@ -18,7 +18,6 @@ getHomeWebAppRoute;
 auth;
 db;
 siteOriginByTarget;
-ordersApi;
 
 export const activateUser = async (
 	{
@@ -67,6 +66,17 @@ export const activateUser = async (
 	);
 
 	// Create an ORDER for the USER
+	const orderDocId = ordersApi.generateId();
+	const orderDoc = ordersApi.mergeCreateParams({
+		createParams: {
+			_id: orderDocId,
+			category: 'default',
+			name: '',
+			user: userId,
+		},
+	});
+	batch.set(db.collection(ordersApi.collectionId).doc(orderDocId), orderDoc);
+
 	// Create STOCK_ORDERs using:
 	// 	- the symbols from RECOMMENDATION
 	// 	- recent STOCK_PRICEs
