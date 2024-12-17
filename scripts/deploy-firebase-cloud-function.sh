@@ -3,11 +3,11 @@
 # Exit on error
 set -e
 
-# Usage: ./deploy-firebase-cloud-function.sh <server_name>
-SERVER_NAME=$1
+# Usage: ./deploy-firebase-cloud-function.sh <function_name>
+FUNCTION_NAME=$1
 
-if [[ -z "$SERVER_NAME" ]]; then
-  echo "Usage: $0 <server_name>"
+if [[ -z "$FUNCTION_NAME" ]]; then
+  echo "Usage: $0 <function_name>"
   exit 1
 fi
 
@@ -23,7 +23,7 @@ docker run --rm \
     cd ~ &&
     npm install -g firebase-tools@13.0.2 &&
     cd - &&
-    cd functions/${SERVER_NAME} &&
+    cd functions/${FUNCTION_NAME} &&
     npm i &&
     echo 'Deployment environment (live or test)' &&
     echo 'SECRET_CRED_DEPLOYMENT_ENVIRONMENT=\"${SECRET_CRED_DEPLOYMENT_ENVIRONMENT}\"' >> .env &&
@@ -55,5 +55,5 @@ docker run --rm \
     echo 'SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_ID=\"${SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_ID}\"' >> .env &&
     echo 'SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_MONTHLY_PRICE_ID=\"${SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_MONTHLY_PRICE_ID}\"' >> .env &&
     cd - &&
-    npm run deploy-server --deployment_environment=${SECRET_CRED_DEPLOYMENT_ENVIRONMENT} --server_name=${SERVER_NAME}
+    npm run deploy-function --deployment_environment=${SECRET_CRED_DEPLOYMENT_ENVIRONMENT} --function_name=${FUNCTION_NAME}
   "

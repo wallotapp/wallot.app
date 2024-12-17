@@ -47,7 +47,7 @@
 			"type": "shell"
 		},
 		{
-			"command": "npm run dev-server --server_name=\"rest-api\"",
+			"command": "npm run dev-function --function_name=\"rest-api\"",
 			"label": "Run REST API Locally in Test Environment",
 			"options": {
 				"statusbar": {
@@ -56,7 +56,7 @@
 				}
 			},
 			"presentation": {
-				"group": "Express Servers",
+				"group": "Functions",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
@@ -72,7 +72,7 @@
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
@@ -88,7 +88,7 @@
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
@@ -104,7 +104,7 @@
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
@@ -120,7 +120,7 @@
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
@@ -136,7 +136,7 @@
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
@@ -152,7 +152,7 @@
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
@@ -168,7 +168,7 @@
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
@@ -184,7 +184,7 @@
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
