@@ -16,11 +16,12 @@
 		"@google-cloud/pubsub": "^4.9.0",
 		"@wallot/node": "^0.1.0-rc.0",
 		"cors": "^2.8.5",
-		"ergonomic-node": "^0.3.4",
+		"ergonomic-node": "^0.3.5",
 		"express": "^4.18.2",
 		"firebase-admin": "^11.10.1",
 		"firebase-functions": "^4.4.1",
 		"googleapis": "^134.0.0",
+		"google-auth-library": "^9.15.0",
 		"stripe": "^14.10.0"
 	},
 	"devDependencies": {
