@@ -11,18 +11,18 @@ if [[ -z "$DEPLOYMENT_ENVIRONMENT" || -z "$HOST_TYPE" ]]; then
 fi
 
 # Define the directory for the Express.js REST API
-function_dir="./functions/rest-api"
+function_dir="./functions/webhooks"
 
 # Define the mappings from host type to URLs for each environment
 declare -A live_origins=(
 	["local"]="http://localhost:17101"
-	["cloud-functions"]="https://us-central1-app-wallot-production.cloudfunctions.net/rest_api"
-	["primary"]="https://us-central1-app-wallot-production.cloudfunctions.net/rest_api"
+	["cloud-functions"]="https://us-central1-app-wallot-production.cloudfunctions.net/webhooks"
+	["primary"]="https://us-central1-app-wallot-production.cloudfunctions.net/webhooks"
 )
 declare -A test_origins=(
 	["local"]="http://localhost:7101"
-	["cloud-functions"]="https://us-central1-app-wallot-staging.cloudfunctions.net/rest_api"
-	["primary"]="https://us-central1-app-wallot-staging.cloudfunctions.net/rest_api"
+	["cloud-functions"]="https://us-central1-app-wallot-staging.cloudfunctions.net/webhooks"
+	["primary"]="https://us-central1-app-wallot-staging.cloudfunctions.net/webhooks"
 )
 
 # Assign the corresponding URL to the origin
