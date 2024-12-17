@@ -2,7 +2,7 @@ import { GeneralizedApiResource, GeneralizedError } from 'ergonomic';
 import { UseQueryResult } from '@tanstack/react-query';
 import { GeneralizedFirestoreCollectionPage } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreCollectionPageQuery';
 import { GeneralizedUseQueryPageProps } from 'ergonomic-react/src/lib/tanstackQuery';
-import { WallotCollection } from '@wallot/js';
+import { WallotResourceName } from '@wallot/js';
 
 import { useQueryAchTransferPage } from '@wallot/react/src/features/achTransfers';
 import { useQueryAlpacaAccountPage } from '@wallot/react/src/features/alpacaAccounts';
@@ -85,7 +85,7 @@ const queryHookMap = {
 	stripe_payment_method: useQueryStripePaymentMethodPage,
 	stripe_subscription: useQueryStripeSubscriptionPage,
 	user: useQueryUserPage,
-} as Record<WallotCollection, PageQueryHook>;
+} as Record<WallotResourceName, PageQueryHook>;
 
 const fallbackPageQueryHookForCollection = (() => ({
 	data: { documents: [] as GeneralizedApiResource[] },
@@ -111,7 +111,7 @@ export const getPageQueryHookForCollection = (
 		return fallbackPageQueryHookForCollection;
 	}
 
-	const hook = queryHookMap[collectionId as WallotCollection];
+	const hook = queryHookMap[collectionId as WallotResourceName];
 	if (!hook) {
 		throw new Error(`No hook found for collection: ${collectionId}`);
 	}

@@ -1,6 +1,6 @@
 import { UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
 import { GeneralizedError } from 'ergonomic';
-import { WallotCollection } from '@wallot/js';
+import { WallotResourceName } from '@wallot/js';
 
 import { useUpdateAchTransferMutation } from '@wallot/react/src/features/achTransfers';
 import { useUpdateAlpacaAccountMutation } from '@wallot/react/src/features/alpacaAccounts';
@@ -83,7 +83,7 @@ const updateOperationMutationMap = {
 	stripe_payment_method: useUpdateStripePaymentMethodMutation,
 	stripe_subscription: useUpdateStripeSubscriptionMutation,
 	user: useUpdateUserMutation,
-} as unknown as Record<WallotCollection, MutationHook>;
+} as unknown as Record<WallotResourceName, MutationHook>;
 
 /**
  * Generalized function to return the appropriate update operation mutation
@@ -101,7 +101,7 @@ const updateOperationMutationMap = {
  * });
  */
 export function getUpdateOperationMutationForCollection<
-	TCollection extends WallotCollection,
+	TCollection extends WallotResourceName,
 >(collectionId: TCollection): MutationHook {
 	const mutation = updateOperationMutationMap[collectionId];
 	if (!mutation) {
