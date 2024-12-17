@@ -10,16 +10,11 @@ import {
 	stockOrdersApi,
 	usersApi,
 } from '@wallot/js';
-import { auth, db } from '../../../services.js';
+import { db } from '../../../services.js';
 import { siteOriginByTarget } from '../../../variables.js';
 import { locateCompatibleParameters } from '../parameters/locateCompatibleParameters.js';
 import { createRecommendationForUser } from '../recommendations/createRecommendationForUser.js';
 import { createStockOrdersFromRecommendation } from '../stockOrders/createStockOrdersFromRecommendation.js';
-
-getHomeWebAppRoute;
-auth;
-db;
-siteOriginByTarget;
 
 export const activateUser = async (
 	{
@@ -98,5 +93,13 @@ export const activateUser = async (
 	});
 
 	// Construct the redirect URL using ORDER
-	return { redirect_url: 'TODO' };
+	const redirectUrl = getHomeWebAppRoute({
+		includeOrigin: true,
+		origin: siteOriginByTarget.HOME_WEB_APP,
+		queryParams: { order_id: orderDocId },
+		routeStaticId: 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM',
+	});
+
+	// Construct the redirect URL using ORDER
+	return { redirect_url: redirectUrl };
 };
