@@ -93,14 +93,14 @@ const updateOperationMutationMap = {
  *
  * @example
  * const resourceName = '...'; // Assume a valid resource name, for example passed as a prop
- * const mutation = getUpdateOperationMutationForCollection(resourceName);
+ * const mutation = getUpdateOperationMutationForResource(resourceName);
  * const { mutate, isLoading, error } = mutation({
  * 	onSuccess: () => { ... },
  * 	onError: () => { ... },
  * 	// Other options
  * });
  */
-export function getUpdateOperationMutationForCollection<
+export function getUpdateOperationMutationForResource<
 	TResourceName extends WallotResourceName,
 >(resourceName: TResourceName): MutationHook {
 	const mutation = updateOperationMutationMap[resourceName];

@@ -87,7 +87,7 @@ const queryHookMap = {
 	user: useQueryUserPage,
 } as Record<WallotResourceName, PageQueryHook>;
 
-const fallbackPageQueryHookForCollection = (() => ({
+const fallbackPageQueryHookForResource = (() => ({
 	data: { documents: [] as GeneralizedApiResource[] },
 	isLoading: false,
 	error: null,
@@ -101,14 +101,14 @@ const fallbackPageQueryHookForCollection = (() => ({
  *
  * @example
  * const resourceName = '...'; // Assume a valid resource name, for example passed as a prop
- * const hook = getPageQueryHookForCollection(resourceName);
+ * const hook = getPageQueryHookForResource(resourceName);
  * const { data, isLoading, error } = hook({ firestoreQueryOptions });
  */
-export const getPageQueryHookForCollection = (
+export const getPageQueryHookForResource = (
 	resourceName: string | null,
 ): PageQueryHook => {
 	if (resourceName == null) {
-		return fallbackPageQueryHookForCollection;
+		return fallbackPageQueryHookForResource;
 	}
 
 	const hook = queryHookMap[resourceName as WallotResourceName];
