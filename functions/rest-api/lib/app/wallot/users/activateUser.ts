@@ -92,6 +92,9 @@ export const activateUser = async (
 		);
 	});
 
+	// Commit the batch transaction
+	await batch.commit();
+
 	// Construct the redirect URL using ORDER
 	const redirectUrl = getHomeWebAppRoute({
 		includeOrigin: true,
