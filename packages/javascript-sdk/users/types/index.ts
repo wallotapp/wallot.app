@@ -1,2 +1,2 @@
-export * from './OnboardUserTypes.js';
+export * from './ActivateUserTypes.js';
 export * from './RegisterUserTypes.js';

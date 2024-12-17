@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-	OnboardUserParams,
-	OnboardUserResponse,
+	ActivateUserParams,
+	ActivateUserResponse,
 	UpdateUserParams,
 	getHomeWebAppRoute,
 	getFirestoreCollectionPath,
@@ -19,10 +19,10 @@ auth;
 db;
 siteOriginByTarget;
 
-export const onboardUser = async (
-	{ age_range, capital_level, investing_goals, risk_level }: OnboardUserParams,
+export const activateUser = async (
+	{ age_range, capital_level, investing_goals, risk_level }: ActivateUserParams,
 	{ userId }: { userId: string },
-): Promise<OnboardUserResponse> => {
+): Promise<ActivateUserResponse> => {
 	// Initialize Firestore collection names
 	const userCollectionName = getFirestoreCollectionPath(
 		usersApi.apiResourceCollectionId,

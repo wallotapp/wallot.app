@@ -1,11 +1,11 @@
-import { OnboardUserParams, Parameter } from '@wallot/js';
+import { ActivateUserParams, Parameter } from '@wallot/js';
 
 export const locateCompatibleParameters = async ({
 	age_range,
 	capital_level,
 	investing_goals,
 	risk_level,
-}: OnboardUserParams): Promise<Parameter[]> => {
+}: ActivateUserParams): Promise<Parameter[]> => {
 	age_range;
 	capital_level;
 	investing_goals;
