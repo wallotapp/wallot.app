@@ -1,10 +1,8 @@
-import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreDocumentWrite';
-import {
-	UpdateAlpacaPositionParams,
-	getFirestoreCollectionPath,
-} from '@wallot/js';
+import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data';
+import { UpdateAlpacaPositionParams, alpacaPositionsApi } from '@wallot/js';
+import { GeneralizedApiResourceSpec } from 'ergonomic';
 
 export const updateAlpacaPosition =
 	generalizedFirestoreDocumentUpdateOperation<UpdateAlpacaPositionParams>(
-		getFirestoreCollectionPath('alpaca_position'),
+		alpacaPositionsApi as unknown as GeneralizedApiResourceSpec,
 	);

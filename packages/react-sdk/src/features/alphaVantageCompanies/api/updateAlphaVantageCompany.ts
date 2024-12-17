@@ -1,10 +1,11 @@
-import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreDocumentWrite';
+import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data';
 import {
 	UpdateAlphaVantageCompanyParams,
-	getFirestoreCollectionPath,
+	alphaVantageCompaniesApi,
 } from '@wallot/js';
+import { GeneralizedApiResourceSpec } from 'ergonomic';
 
 export const updateAlphaVantageCompany =
 	generalizedFirestoreDocumentUpdateOperation<UpdateAlphaVantageCompanyParams>(
-		getFirestoreCollectionPath('alpha_vantage_company'),
+		alphaVantageCompaniesApi as unknown as GeneralizedApiResourceSpec,
 	);

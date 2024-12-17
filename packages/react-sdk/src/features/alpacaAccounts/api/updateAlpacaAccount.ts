@@ -1,10 +1,8 @@
-import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreDocumentWrite';
-import {
-	UpdateAlpacaAccountParams,
-	getFirestoreCollectionPath,
-} from '@wallot/js';
+import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data';
+import { UpdateAlpacaAccountParams, alpacaAccountsApi } from '@wallot/js';
+import { GeneralizedApiResourceSpec } from 'ergonomic';
 
 export const updateAlpacaAccount =
 	generalizedFirestoreDocumentUpdateOperation<UpdateAlpacaAccountParams>(
-		getFirestoreCollectionPath('alpaca_account'),
+		alpacaAccountsApi as unknown as GeneralizedApiResourceSpec,
 	);

@@ -1,10 +1,8 @@
-import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreDocumentWrite';
-import {
-	UpdateOpenAiModelParams,
-	getFirestoreCollectionPath,
-} from '@wallot/js';
+import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data';
+import { UpdateOpenAiModelParams, openAiModelsApi } from '@wallot/js';
+import { GeneralizedApiResourceSpec } from 'ergonomic';
 
 export const updateOpenAiModel =
 	generalizedFirestoreDocumentUpdateOperation<UpdateOpenAiModelParams>(
-		getFirestoreCollectionPath('open_ai_model'),
+		openAiModelsApi as unknown as GeneralizedApiResourceSpec,
 	);

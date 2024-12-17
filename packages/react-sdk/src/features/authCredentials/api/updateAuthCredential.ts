@@ -1,10 +1,8 @@
-import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreDocumentWrite';
-import {
-	UpdateAuthCredentialParams,
-	getFirestoreCollectionPath,
-} from '@wallot/js';
+import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data';
+import { UpdateAuthCredentialParams, authCredentialsApi } from '@wallot/js';
+import { GeneralizedApiResourceSpec } from 'ergonomic';
 
 export const updateAuthCredential =
 	generalizedFirestoreDocumentUpdateOperation<UpdateAuthCredentialParams>(
-		getFirestoreCollectionPath('auth_credential'),
+		authCredentialsApi as unknown as GeneralizedApiResourceSpec,
 	);

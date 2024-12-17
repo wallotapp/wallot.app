@@ -1,10 +1,8 @@
-import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreDocumentWrite';
-import {
-	UpdateModelFamilyParams,
-	getFirestoreCollectionPath,
-} from '@wallot/js';
+import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data';
+import { UpdateModelFamilyParams, modelFamiliesApi } from '@wallot/js';
+import { GeneralizedApiResourceSpec } from 'ergonomic';
 
 export const updateModelFamily =
 	generalizedFirestoreDocumentUpdateOperation<UpdateModelFamilyParams>(
-		getFirestoreCollectionPath('model_family'),
+		modelFamiliesApi as unknown as GeneralizedApiResourceSpec,
 	);

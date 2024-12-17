@@ -1,10 +1,8 @@
-import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreDocumentWrite';
-import {
-	UpdateStripeInvoiceParams,
-	getFirestoreCollectionPath,
-} from '@wallot/js';
+import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data';
+import { UpdateStripeInvoiceParams, stripeInvoicesApi } from '@wallot/js';
+import { GeneralizedApiResourceSpec } from 'ergonomic';
 
 export const updateStripeInvoice =
 	generalizedFirestoreDocumentUpdateOperation<UpdateStripeInvoiceParams>(
-		getFirestoreCollectionPath('stripe_invoice'),
+		stripeInvoicesApi as unknown as GeneralizedApiResourceSpec,
 	);

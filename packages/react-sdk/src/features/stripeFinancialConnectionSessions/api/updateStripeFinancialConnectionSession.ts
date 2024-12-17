@@ -1,10 +1,11 @@
-import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreDocumentWrite';
+import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data';
 import {
 	UpdateStripeFinancialConnectionSessionParams,
-	getFirestoreCollectionPath,
+	stripeFinancialConnectionSessionsApi,
 } from '@wallot/js';
+import { GeneralizedApiResourceSpec } from 'ergonomic';
 
 export const updateStripeFinancialConnectionSession =
 	generalizedFirestoreDocumentUpdateOperation<UpdateStripeFinancialConnectionSessionParams>(
-		getFirestoreCollectionPath('stripe_financial_connection_session'),
+		stripeFinancialConnectionSessionsApi as unknown as GeneralizedApiResourceSpec,
 	);

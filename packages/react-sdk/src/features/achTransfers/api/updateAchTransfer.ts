@@ -1,10 +1,8 @@
-import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreDocumentWrite';
-import {
-	UpdateAchTransferParams,
-	getFirestoreCollectionPath,
-} from '@wallot/js';
+import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data';
+import { UpdateAchTransferParams, achTransfersApi } from '@wallot/js';
+import { GeneralizedApiResourceSpec } from 'ergonomic';
 
 export const updateAchTransfer =
 	generalizedFirestoreDocumentUpdateOperation<UpdateAchTransferParams>(
-		getFirestoreCollectionPath('ach_transfer'),
+		achTransfersApi as unknown as GeneralizedApiResourceSpec,
 	);

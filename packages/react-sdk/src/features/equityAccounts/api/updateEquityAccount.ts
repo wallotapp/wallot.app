@@ -1,10 +1,8 @@
-import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreDocumentWrite';
-import {
-	UpdateEquityAccountParams,
-	getFirestoreCollectionPath,
-} from '@wallot/js';
+import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data';
+import { UpdateEquityAccountParams, equityAccountsApi } from '@wallot/js';
+import { GeneralizedApiResourceSpec } from 'ergonomic';
 
 export const updateEquityAccount =
 	generalizedFirestoreDocumentUpdateOperation<UpdateEquityAccountParams>(
-		getFirestoreCollectionPath('equity_account'),
+		equityAccountsApi as unknown as GeneralizedApiResourceSpec,
 	);

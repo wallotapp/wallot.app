@@ -1,7 +1,8 @@
-import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreDocumentWrite';
-import { UpdateOrderParams, getFirestoreCollectionPath } from '@wallot/js';
+import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data';
+import { UpdateOrderParams, ordersApi } from '@wallot/js';
+import { GeneralizedApiResourceSpec } from 'ergonomic';
 
 export const updateOrder =
 	generalizedFirestoreDocumentUpdateOperation<UpdateOrderParams>(
-		getFirestoreCollectionPath('order'),
+		ordersApi as unknown as GeneralizedApiResourceSpec,
 	);

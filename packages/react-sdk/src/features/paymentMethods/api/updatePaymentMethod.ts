@@ -1,10 +1,8 @@
-import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreDocumentWrite';
-import {
-	UpdatePaymentMethodParams,
-	getFirestoreCollectionPath,
-} from '@wallot/js';
+import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src/features/data';
+import { UpdatePaymentMethodParams, paymentMethodsApi } from '@wallot/js';
+import { GeneralizedApiResourceSpec } from 'ergonomic';
 
 export const updatePaymentMethod =
 	generalizedFirestoreDocumentUpdateOperation<UpdatePaymentMethodParams>(
-		getFirestoreCollectionPath('payment_method'),
+		paymentMethodsApi as unknown as GeneralizedApiResourceSpec,
 	);
