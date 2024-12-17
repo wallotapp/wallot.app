@@ -1,3 +1,4 @@
+import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
 	ActivateUserParams,
@@ -17,6 +18,7 @@ getHomeWebAppRoute;
 auth;
 db;
 siteOriginByTarget;
+ordersApi;
 
 export const activateUser = async (
 	{
@@ -25,9 +27,12 @@ export const activateUser = async (
 		investing_goals,
 		risk_preference,
 	}: ActivateUserParams,
-	{ userId }: { userId: string },
+	_params: Record<string, never>,
+	_query: Record<string, never>,
+	_firebaseUser: FirebaseUser | null,
+	userId: string | null,
 ): Promise<ActivateUserResponse> => {
-	ordersApi.collectionId; // TODO
+	if (!userId) throw new Error('Unauthorized');
 
 	// Initialize a Firestore batch transaction
 	const batch = db.batch();

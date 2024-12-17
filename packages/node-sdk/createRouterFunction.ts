@@ -4,7 +4,7 @@ import {
 	type DecodedIdToken as FirebaseUser,
 } from 'firebase-admin/auth';
 // eslint-disable-next-line import/no-unresolved
-import { type Firestore, } from 'firebase-admin/firestore';
+import { type Firestore } from 'firebase-admin/firestore';
 import {
 	GeneralizedResLocals,
 	getAuthHeaderBearerToken,
@@ -12,7 +12,7 @@ import {
 } from 'ergonomic-node';
 import { getGeneralizedError } from 'ergonomic';
 import { handleRouterFunctionError } from './handleRouterFunctionError.js';
-import { AuthCredential, authCredentialsApi } from '@wallot/js'
+import { AuthCredential, authCredentialsApi } from '@wallot/js';
 
 /**
  * Creates an Express router function that handles asynchronous operations.
@@ -69,13 +69,13 @@ export const createRouterFunction =
 								.doc(firebaseUser.uid)
 								.get();
 							if (authCredentialDoc.exists) {
-								const authCredentialData = authCredentialDoc.data() as AuthCredential;
+								const authCredentialData =
+									authCredentialDoc.data() as AuthCredential;
 								if (authCredentialData) {
 									userId = authCredentialData.user;
 								}
 							}
 						}
-						
 
 						// Extract the payload from the request body
 						const body = req.body;
@@ -92,7 +92,7 @@ export const createRouterFunction =
 							params,
 							query,
 							firebaseUser ?? null,
-							userId ?? null
+							userId ?? null,
 						);
 
 						// Proceed to the next middleware

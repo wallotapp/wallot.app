@@ -64,12 +64,12 @@ app.post(
 );
 
 import { activateUser } from './app/wallot/users/activateUser.js';
-app.options('*/v0/users/:userId/activate', corsPolicy);
+app.options('*/v0/users/activate', corsPolicy);
 app.post(
-	'*/v0/users/:userId/activate',
+	'*/v0/users/activate',
 	(
 		req: express.Request<
-			{ userId: string },
+			Record<string, never>,
 			ActivateUserResponse,
 			ActivateUserParams,
 			Record<string, never>
@@ -111,7 +111,11 @@ app.post(
 		corsPolicy(
 			req,
 			res,
-			createRouterFunction(auth, db)(createFirebaseAuthCustomToken)(req, res, next),
+			createRouterFunction(auth, db)(createFirebaseAuthCustomToken)(
+				req,
+				res,
+				next,
+			),
 		);
 	},
 );
