@@ -13,6 +13,7 @@ import { auth, db } from '../../../services.js';
 import { siteOriginByTarget } from '../../../variables.js';
 import { locateCompatibleParameters } from '../parameters/locateCompatibleParameters.js';
 import { createRecommendationForUser } from '../recommendations/createRecommendationForUser.js';
+import { createStockOrdersFromRecommendation } from '../stockOrders/createStockOrdersFromRecommendation.js';
 
 getHomeWebAppRoute;
 auth;
@@ -80,6 +81,11 @@ export const activateUser = async (
 	// Create STOCK_ORDERs using:
 	// 	- the symbols from RECOMMENDATION
 	// 	- recent STOCK_PRICEs
+	const stockOrders = createStockOrdersFromRecommendation(recommendation, {
+		orderId: orderDocId,
+		userId,
+	});
+
 	// Construct the redirect URL using ORDER
 	return { redirect_url: 'TODO' };
 };
