@@ -32,6 +32,7 @@
 		{ "path": "sites/status-web-app/tsconfig.ref.json" },
 		{ "path": "sites/support-web-app/tsconfig.ref.json" },
 		{ "path": "packages/javascript-sdk/tsconfig.ref.json" },
-		{ "path": "packages/react-sdk/tsconfig.ref.json" }
+		{ "path": "packages/react-sdk/tsconfig.ref.json" },
+		{ "path": "packages/node-sdk/tsconfig.ref.json" }
 	]
 }
