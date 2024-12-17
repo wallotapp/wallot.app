@@ -13,6 +13,7 @@
 		"validator": "^13.7.0",
 		"xstate": "^4.38.2",
 		"yup": "^0.32.11",
+		"@wallot/node": "^0.1.0-rc.0",
 		"cors": "^2.8.5",
 		"ergonomic-node": "^0.3.3",
 		"express": "^4.18.2",
