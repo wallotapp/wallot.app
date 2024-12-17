@@ -101,8 +101,8 @@ const createOperationMutationMap = {
  * });
  */
 export function getCreateOperationMutationForCollection<
-	TCollection extends WallotResourceName,
->(collectionId: TCollection): MutationHook {
+	TResourceName extends WallotResourceName,
+>(collectionId: TResourceName): MutationHook {
 	const mutation = createOperationMutationMap[collectionId];
 	if (!mutation) {
 		throw new Error(
