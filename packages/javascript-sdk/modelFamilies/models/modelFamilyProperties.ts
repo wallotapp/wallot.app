@@ -41,7 +41,7 @@ export const modelFamiliesApi = getApiResourceSpec<keyof U, U, T>({
 	createParamsRequiredFieldEnum,
 	idPrefix: idPrefixByResourceName[_object],
 	properties,
-	resourcePlural: 'model_families',
+	resourceNamePlural: 'model_families',
 } as const);
 export type ModelFamily = yup.InferType<
 	typeof modelFamiliesApi.apiResourceJsonSchema
