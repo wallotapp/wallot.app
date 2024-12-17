@@ -1,9 +1,9 @@
-import { Recommendation } from '@wallot/js';
+import { Recommendation, StockOrder } from '@wallot/js';
 
 export const createStockOrdersFromRecommendation = async (
 	recommendation: Recommendation,
 	{ orderId, userId }: { orderId: string; userId: string },
-): Promise<Recommendation> => {
+): Promise<StockOrder[]> => {
 	recommendation;
 	orderId;
 	userId;

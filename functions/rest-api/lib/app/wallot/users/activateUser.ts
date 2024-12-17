@@ -7,6 +7,7 @@ import {
 	getHomeWebAppRoute,
 	ordersApi,
 	recommendationsApi,
+	stockOrdersApi,
 	usersApi,
 } from '@wallot/js';
 import { auth, db } from '../../../services.js';
@@ -81,9 +82,19 @@ export const activateUser = async (
 	// Create STOCK_ORDERs using:
 	// 	- the symbols from RECOMMENDATION
 	// 	- recent STOCK_PRICEs
-	const stockOrders = createStockOrdersFromRecommendation(recommendation, {
-		orderId: orderDocId,
-		userId,
+	const stockOrders = await createStockOrdersFromRecommendation(
+		recommendation,
+		{
+			orderId: orderDocId,
+			userId,
+		},
+	);
+	stockOrders.forEach((stockOrder) => {
+		const stockOrderDocId = stockOrder._id;
+		batch.set(
+			db.collection(stockOrdersApi.collectionId).doc(stockOrderDocId),
+			stockOrder,
+		);
 	});
 
 	// Construct the redirect URL using ORDER
