@@ -1,8 +1,7 @@
-import { generalizedFirestoreDocumentCreateOperation } from 'ergonomic-react/src/features/data/utils/generalizedFirestoreDocumentWrite';
+import { generalizedFirestoreDocumentCreateOperation } from 'ergonomic-react/src/features/data';
 import {
 	CreateAlpacaOrderParams,
 	AlpacaOrder,
-	getFirestoreCollectionPath,
 	alpacaOrdersApi,
 } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
@@ -10,7 +9,4 @@ import { GeneralizedApiResourceSpec } from 'ergonomic';
 export const createAlpacaOrder = generalizedFirestoreDocumentCreateOperation<
 	CreateAlpacaOrderParams,
 	AlpacaOrder
->(
-	getFirestoreCollectionPath('alpaca_order'),
-	alpacaOrdersApi as unknown as GeneralizedApiResourceSpec,
-);
+>(alpacaOrdersApi as unknown as GeneralizedApiResourceSpec);
