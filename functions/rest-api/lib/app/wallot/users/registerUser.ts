@@ -6,7 +6,6 @@ import {
 	authCredentialsApi,
 	equityAccountsApi,
 	licensesApi,
-	ordersApi,
 	getHomeWebAppRoute,
 	getFirestoreCollectionPath,
 } from '@wallot/js';
@@ -35,9 +34,6 @@ export const registerUser = async ({
 	const licenseCollectionName = getFirestoreCollectionPath(
 		licensesApi.apiResourceCollectionId,
 	);
-	const orderCollectionName = getFirestoreCollectionPath(
-		ordersApi.apiResourceCollectionId,
-	);
 
 	// Initialize Firestore document IDs
 	const stripeCustomerDocId = stripeCustomersApi.generateId();
@@ -45,7 +41,6 @@ export const registerUser = async ({
 	const authCredentialDocId = authCredentialsApi.generateId();
 	const equityAccountDocId = equityAccountsApi.generateId();
 	const licenseDocId = licensesApi.generateId();
-	const orderDocId = ordersApi.generateId();
 
 	// Initialize a Firestore batch transaction
 	const batch = db.batch();
@@ -129,17 +124,6 @@ export const registerUser = async ({
 		},
 	});
 	batch.set(db.collection(licenseCollectionName).doc(licenseDocId), licenseDoc);
-
-	// Create an ORDER Firestore document
-	const orderDoc = ordersApi.mergeCreateParams({
-		createParams: {
-			_id: orderDocId,
-			category: 'default',
-			name: '',
-			user: userDocId,
-		},
-	});
-	batch.set(db.collection(orderCollectionName).doc(orderDocId), orderDoc);
 
 	// Commit the batch transaction
 	await batch.commit();
