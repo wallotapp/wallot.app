@@ -5,6 +5,7 @@ import {
 	UpdateUserParams,
 	getHomeWebAppRoute,
 	getFirestoreCollectionPath,
+	ordersApi,
 	recommendationsApi,
 	usersApi,
 } from '@wallot/js';
@@ -32,6 +33,10 @@ export const activateUser = async (
 	const userCollectionName = getFirestoreCollectionPath(
 		usersApi.apiResourceCollectionId,
 	);
+	const ordersCollectionName = getFirestoreCollectionPath(
+		ordersApi.apiResourceCollectionId,
+	);
+	ordersCollectionName; // TODO
 	const recommendationsCollectionName = getFirestoreCollectionPath(
 		recommendationsApi.apiResourceCollectionId,
 	);
@@ -65,8 +70,7 @@ export const activateUser = async (
 		recommendation,
 	);
 
-	// Locate the ORDER created in the `registerUser` function
-	// 	- There should only be *one* ORDER at this point.
+	// Create an ORDER for the USER
 	// Create STOCK_ORDERs using:
 	// 	- the symbols from RECOMMENDATION
 	// 	- recent STOCK_PRICEs
