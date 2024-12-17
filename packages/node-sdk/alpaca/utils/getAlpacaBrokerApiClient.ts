@@ -1,10 +1,5 @@
 import { default as ky } from 'ky';
-import { secrets } from '../../../secrets.js';
-const {
-	SECRET_CRED_ALPACA_BROKER_API_BASE_URL,
-	SECRET_CRED_ALPACA_BROKER_API_KEY,
-	SECRET_CRED_ALPACA_BROKER_API_SECRET,
-} = secrets;
+import { SecretData } from '../../SecretDataTypes.js';
 
 /**
  * Alpaca Broker API client.
@@ -20,11 +15,12 @@ const {
  *
  * Example Usage:
  * ```javascript
- * import alpacaBrokerApiClient from './alpacaBrokerApiClient';
+ * import getAlpacaBrokerApiClient from './getAlpacaBrokerApiClient.js';
+ * import { secrets } from './secrets.js';
  *
  * (async () => {
  *   try {
- *     const response = await alpacaBrokerApiClient.get('v1/accounts').json();
+ *     const response = await getAlpacaBrokerApiClient(secrets).get('v1/accounts').json();
  *     console.log(response);
  *   } catch (error) {
  *     console.error('Error fetching account info:', error);
@@ -32,16 +28,18 @@ const {
  * })();
  * ```
  *
- * @module alpacaBrokerApiClient
  */
-const alpacaBrokerApiClient = ky.create({
-	prefixUrl: SECRET_CRED_ALPACA_BROKER_API_BASE_URL,
-	headers: {
-		accept: 'application/json',
-		authorization: `Basic ${Buffer.from(
-			`${SECRET_CRED_ALPACA_BROKER_API_KEY}:${SECRET_CRED_ALPACA_BROKER_API_SECRET}`,
-		).toString('base64')}`,
-	},
-});
-
-export default alpacaBrokerApiClient;
+export const getAlpacaBrokerApiClient = ({
+	SECRET_CRED_ALPACA_BROKER_API_BASE_URL,
+	SECRET_CRED_ALPACA_BROKER_API_KEY,
+	SECRET_CRED_ALPACA_BROKER_API_SECRET,
+}: SecretData) =>
+	ky.create({
+		prefixUrl: SECRET_CRED_ALPACA_BROKER_API_BASE_URL,
+		headers: {
+			accept: 'application/json',
+			authorization: `Basic ${Buffer.from(
+				`${SECRET_CRED_ALPACA_BROKER_API_KEY}:${SECRET_CRED_ALPACA_BROKER_API_SECRET}`,
+			).toString('base64')}`,
+		},
+	});
