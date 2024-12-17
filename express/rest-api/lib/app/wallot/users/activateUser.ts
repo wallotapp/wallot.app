@@ -54,6 +54,7 @@ export const activateUser = async (
 	// Create a RECOMMENDATION for USER
 	const recommendation = await createRecommendationForUser(
 		{ age_range, capital_level, investing_goals, risk_level },
+		{ userId },
 		compatibleParameters,
 	);
 	batch.set(
