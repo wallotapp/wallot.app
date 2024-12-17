@@ -38,9 +38,9 @@ import { stripeSubscriptionsApi } from '../stripeSubscriptions/index.js';
 import { usersApi } from '../users/index.js';
 
 export const getApiResourceSpec = (
-	collectionId: WallotResourceName,
+	resourceName: WallotResourceName,
 ): GeneralizedApiResourceSpec => {
-	switch (collectionId) {
+	switch (resourceName) {
 		case 'ach_transfer':
 			return achTransfersApi as unknown as GeneralizedApiResourceSpec;
 		case 'alpaca_account':
@@ -114,6 +114,6 @@ export const getApiResourceSpec = (
 		case 'user':
 			return usersApi as unknown as GeneralizedApiResourceSpec;
 		default:
-			throw new Error(`Invalid collectionId: ${collectionId as string}`);
+			throw new Error(`Invalid resourceName: ${resourceName as string}`);
 	}
 };
