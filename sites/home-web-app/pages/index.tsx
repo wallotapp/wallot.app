@@ -38,7 +38,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const getStartedRoute = getHomeWebAppRoute({
 		includeOrigin: false,
 		origin: null,
-		queryParams: { step: '1' },
+		queryParams: { client_token: 'todo' },
 		routeStaticId: 'HOME_WEB_APP__/GET_STARTED',
 	});
 
