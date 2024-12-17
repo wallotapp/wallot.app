@@ -10,7 +10,7 @@ import {
 } from 'ergonomic';
 import {
 	apiYupHelpers,
-	idPrefixByCollection,
+	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 
 export const StripeFinancialConnectionSessionCategoryEnum = getEnum([
@@ -41,7 +41,7 @@ export const stripeFinancialConnectionSessionsApi = getApiResourceSpec<
 	T
 >({
 	createParamsRequiredFieldEnum,
-	idPrefix: idPrefixByCollection[_object],
+	idPrefix: idPrefixByResourceName[_object],
 	properties,
 } as const);
 export type StripeFinancialConnectionSession = yup.InferType<

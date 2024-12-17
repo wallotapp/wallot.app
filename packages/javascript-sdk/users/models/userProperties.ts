@@ -11,7 +11,7 @@ import {
 } from 'ergonomic';
 import {
 	apiYupHelpers,
-	idPrefixByCollection,
+	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 import { isUsername } from '../utils/username.js';
 import { AgeRangeEnum } from '../../utils/ageRange.js'; // Select one
@@ -64,7 +64,7 @@ type U = typeof properties;
 
 export const usersApi = getApiResourceSpec<keyof U, U, T>({
 	createParamsRequiredFieldEnum,
-	idPrefix: idPrefixByCollection[_object],
+	idPrefix: idPrefixByResourceName[_object],
 	properties,
 } as const);
 export type User = yup.InferType<typeof usersApi.apiResourceJsonSchema>;

@@ -1,6 +1,6 @@
 import { getApiResourceYupHelpers } from 'ergonomic';
 
-export const idPrefixByCollection = {
+export const idPrefixByResourceName = {
 	ach_transfer: 'ach_tf',
 	alpaca_account: 'alp_acct',
 	alpaca_ach_relationship: 'alp_ach_rel',
@@ -77,5 +77,5 @@ export const apiYupHelpers = getApiResourceYupHelpers(
 		'stripe_subscription',
 		'user',
 	],
-	idPrefixByCollection,
+	idPrefixByResourceName,
 );

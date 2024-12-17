@@ -10,7 +10,7 @@ import {
 } from 'ergonomic';
 import {
 	apiYupHelpers,
-	idPrefixByCollection,
+	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 
 export const OpenAiRecommendationCategoryEnum = getEnum(['default']);
@@ -34,7 +34,7 @@ type U = typeof properties;
 
 export const openAiRecommendationsApi = getApiResourceSpec<keyof U, U, T>({
 	createParamsRequiredFieldEnum,
-	idPrefix: idPrefixByCollection[_object],
+	idPrefix: idPrefixByResourceName[_object],
 	properties,
 } as const);
 export type OpenAiRecommendation = yup.InferType<

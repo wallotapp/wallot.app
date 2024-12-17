@@ -10,7 +10,7 @@ import {
 } from 'ergonomic';
 import {
 	apiYupHelpers,
-	idPrefixByCollection,
+	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 
 export const ForecastCategoryEnum = getEnum(['default']);
@@ -38,7 +38,7 @@ type U = typeof properties;
 
 export const forecastsApi = getApiResourceSpec<keyof U, U, T>({
 	createParamsRequiredFieldEnum,
-	idPrefix: idPrefixByCollection[_object],
+	idPrefix: idPrefixByResourceName[_object],
 	properties,
 } as const);
 export type Forecast = yup.InferType<typeof forecastsApi.apiResourceJsonSchema>;

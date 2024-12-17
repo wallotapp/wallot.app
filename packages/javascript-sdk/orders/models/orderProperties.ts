@@ -10,7 +10,7 @@ import {
 } from 'ergonomic';
 import {
 	apiYupHelpers,
-	idPrefixByCollection,
+	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 
 export const OrderCategoryEnum = getEnum(['default']);
@@ -39,7 +39,7 @@ type U = typeof properties;
 
 export const ordersApi = getApiResourceSpec<keyof U, U, T>({
 	createParamsRequiredFieldEnum,
-	idPrefix: idPrefixByCollection[_object],
+	idPrefix: idPrefixByResourceName[_object],
 	properties,
 } as const);
 export type Order = yup.InferType<typeof ordersApi.apiResourceJsonSchema>;

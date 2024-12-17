@@ -10,7 +10,7 @@ import {
 } from 'ergonomic';
 import {
 	apiYupHelpers,
-	idPrefixByCollection,
+	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 
 export const ModelFamilyCategoryEnum = getEnum(['default']);
@@ -39,7 +39,7 @@ type U = typeof properties;
 
 export const modelFamiliesApi = getApiResourceSpec<keyof U, U, T>({
 	createParamsRequiredFieldEnum,
-	idPrefix: idPrefixByCollection[_object],
+	idPrefix: idPrefixByResourceName[_object],
 	properties,
 	resourcePlural: 'model_families',
 } as const);
