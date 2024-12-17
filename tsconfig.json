@@ -21,7 +21,10 @@
 	"files": [],
 	"include": [],
 	"references": [
+		{ "path": "functions/cronjobs/tsconfig.ref.json" },
+		{ "path": "functions/pubsub/tsconfig.ref.json" },
 		{ "path": "functions/rest-api/tsconfig.ref.json" },
+		{ "path": "functions/triggers/tsconfig.ref.json" },
 		{ "path": "functions/webhooks/tsconfig.ref.json" },
 		{ "path": "sites/home-web-app/tsconfig.ref.json" },
 		{ "path": "sites/admin-web-app/tsconfig.ref.json" },

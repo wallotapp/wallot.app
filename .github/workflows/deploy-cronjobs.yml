@@ -1,4 +1,4 @@
-name: Deploy Webhooks
+name: Deploy Cronjobs
 
 'on':
   workflow_run:
@@ -8,7 +8,7 @@ name: Deploy Webhooks
       - completed
 
 jobs:
-  deploy-webhooks:
+  deploy-cronjobs:
     runs-on: ubuntu-latest
 
     environment:
@@ -59,10 +59,10 @@ jobs:
           commit_message: ${{ env.GIT_COMMIT_MESSAGE }}
 
       - name: Build Docker image
-        if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_WEBHOOKS == 'true')
+        if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_CRONJOBS == 'true')
         run: docker build -t monorepo-image .
 
-      - name: Deploy function:webhooks
-        if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_WEBHOOKS == 'true')
+      - name: Deploy function:cronjobs
+        if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_CRONJOBS == 'true')
         run: |
-          chmod +x ./scripts/deploy-firebase-cloud-function.sh && ./scripts/deploy-firebase-cloud-function.sh webhooks
+          chmod +x ./scripts/deploy-firebase-cloud-function.sh && ./scripts/deploy-firebase-cloud-function.sh cronjobs

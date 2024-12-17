@@ -1,0 +1,42 @@
+{
+	"SERVER_VAR_EXPRESS_PORT": 7105,
+	"SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_EMAIL": "support-staging@wallot.app",
+	"SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_NAME": "Wallot Staging Support",
+	"SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID": "support@wallot.app",
+	"SERVER_VAR_ORIGIN_HTTP": "http://localhost:7105",
+	"SERVER_VAR_ORIGIN_HTTPS": "https://us-central1-app-wallot-staging.cloudfunctions.net/pubsub",
+	"SERVER_VAR_SITE_ORIGIN_BY_PROTOCOL_BY_TARGET": {
+		"HOME_WEB_APP": {
+			"http": "http://localhost:7150",
+			"https": "https://app-wallot-staging.web.app"
+		},
+		"ADMIN_WEB_APP": {
+			"http": "http://localhost:7159",
+			"https": "https://app-wallot-admin-staging.web.app"
+		},
+		"BLOG_WEB_APP": {
+			"http": "http://localhost:7157",
+			"https": "https://app-wallot-blog-staging.web.app"
+		},
+		"KNOWLEDGE_BASE_WEB_APP": {
+			"http": "http://localhost:7152",
+			"https": "https://app-wallot-learn-staging.web.app"
+		},
+		"REFERRALS_WEB_APP": {
+			"http": "http://localhost:7153",
+			"https": "https://app-wallot-signup-staging.web.app"
+		},
+		"SSO_WEB_APP": {
+			"http": "http://localhost:7154",
+			"https": "https://app-wallot-sso-staging.web.app"
+		},
+		"STATUS_WEB_APP": {
+			"http": "http://localhost:7158",
+			"https": "https://app-wallot-status-staging.web.app"
+		},
+		"SUPPORT_WEB_APP": {
+			"http": "http://localhost:7151",
+			"https": "https://app-wallot-support-staging.web.app"
+		}
+	}
+}

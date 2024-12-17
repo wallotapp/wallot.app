@@ -2,7 +2,7 @@ name: Deploy REST API
 
 'on':
   workflow_run:
-    workflows: ['Publish JavaScript SDK']
+    workflows: ['Publish Node SDK']
     branches: ['master', 'staging']
     types:
       - completed

@@ -29,6 +29,12 @@ runs:
         else
           echo "PUBLISH_JAVASCRIPT_SDK=false" >> $GITHUB_ENV
         fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[publish package:node-sdk\]'
+        then
+          echo "PUBLISH_NODE_SDK=true" >> $GITHUB_ENV
+        else
+          echo "PUBLISH_NODE_SDK=false" >> $GITHUB_ENV
+        fi
         if echo '${{ inputs.commit_message }}' | grep -q '\[publish package:react-sdk\]'
         then
           echo "PUBLISH_REACT_SDK=true" >> $GITHUB_ENV
@@ -41,11 +47,29 @@ runs:
         else
           echo "DEPLOY_ALL_FUNCTIONS=false" >> $GITHUB_ENV
         fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:cronjobs\]'
+        then
+          echo "DEPLOY_CRONJOBS=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_CRONJOBS=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:pubsub\]'
+        then
+          echo "DEPLOY_PUBSUB=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_PUBSUB=false" >> $GITHUB_ENV
+        fi
         if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:rest-api\]'
         then
           echo "DEPLOY_REST_API=true" >> $GITHUB_ENV
         else
           echo "DEPLOY_REST_API=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:triggers\]'
+        then
+          echo "DEPLOY_TRIGGERS=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_TRIGGERS=false" >> $GITHUB_ENV
         fi
         if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:webhooks\]'
         then
