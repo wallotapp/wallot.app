@@ -30,6 +30,7 @@ import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { FiChevronRight } from 'react-icons/fi';
 import Link from 'next/link';
 import { GeneralizedFormFieldProps } from 'ergonomic-react/src/features/data/types/GeneralizedFormFieldProps';
+import { Keys } from 'ergonomic';
 
 type F<TFieldValues extends FieldValues> = Required<
 	Pick<
@@ -134,17 +135,17 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const formStatus =
 		formState.isSubmitting || isRegisterUserRunning ? 'running' : 'idle';
 	const isFormSubmitting = formStatus === 'running';
-	const fieldProps: F<RegisterUserParams>[] = [
-		{
-			control,
-			fieldErrors: formState.errors,
-			fieldKey: 'username' as const,
-			fieldSpec: registerUserSchemaFieldSpecByFieldKey['username'],
-			initialFormData,
-			isSubmitting: isFormSubmitting,
-			setError: (message) => setError('username', { message }),
-		},
-	];
+	const fieldProps: F<RegisterUserParams>[] = Keys(
+		registerUserSchemaFieldSpecByFieldKey,
+	).map((fieldKey) => ({
+		control,
+		fieldErrors: formState.errors,
+		fieldKey,
+		fieldSpec: registerUserSchemaFieldSpecByFieldKey[fieldKey],
+		initialFormData,
+		isSubmitting: isFormSubmitting,
+		setError: (message) => setError(fieldKey, { message }),
+	}));
 
 	// ==== Constants ==== //
 
