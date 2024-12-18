@@ -7,13 +7,12 @@ import {
 	YupHelpers,
 	getApiResourceSpec,
 	getEnum,
-	GeneralizedFieldTypeEnum,
 } from 'ergonomic';
 import {
 	apiYupHelpers,
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
-import { isUsername } from '../utils/username.js';
+import { usernameSchema } from '../utils/username.js';
 import { AgeRangeEnum } from '../../utils/ageRange.js'; // Select one
 import { CapitalLevelEnum } from '../../utils/capitalLevel.js'; // Select one
 import { InvestingGoalEnum } from '../../utils/investingGoal.js'; // Select many
@@ -55,15 +54,7 @@ const properties = {
 		.idRef(['stripe_customer'])
 		.min(1)
 		.meta({ unique_key: true }),
-	username: yup
-		.string()
-		.min(1)
-		.test({
-			message: '${path} is not a valid username',
-			name: 'isUsername',
-			test: isUsername,
-		})
-		.meta({ type: GeneralizedFieldTypeEnum.obj.short_text, unique_key: true }),
+	username: usernameSchema(),
 } as const;
 type U = typeof properties;
 
