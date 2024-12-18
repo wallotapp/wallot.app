@@ -30,6 +30,7 @@ import { FiChevronRight } from 'react-icons/fi';
 import Link from 'next/link';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
+import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -92,7 +93,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					reset();
 
 					// Set error
-					setError('email', {
+					setError('root', {
 						type: 'manual',
 						message: 'An error occurred. Please try again.',
 					});
@@ -233,6 +234,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 								isSubmitting={isFormSubmitting}
 							/>
 						</div>
+						{Boolean(formState.errors['root']?.message) && (
+							<div className='mt-4'>
+								<LiteFormFieldError
+									fieldErrorMessage={formState.errors['root']?.message ?? ''}
+								/>
+							</div>
+						)}
 						<div className='text-center mt-5 mx-auto'>
 							<p className='text-gray-400 text-sm'>
 								By clicking continue, you agree to our{' '}
