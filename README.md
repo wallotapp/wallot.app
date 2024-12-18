@@ -28,6 +28,10 @@ bash functions/rest-api/smoke-tests/test-health-endpoints.sh test primary
 erDiagram
 	%% Mirror Relationships
 	ACH_TRANSFER ||--o| ALPACA_ACH_TRANSFER : "mirrors"
+	ASSET ||--|| ALPACA_ASSET : "mirrors"
+	ASSET ||--|| ALPHA_VANTAGE_COMPANY : "mirrors"
+	ASSET_ORDER ||--o| ALPACA_ORDER : "mirrors"
+	ASSET_PRICE ||--|| ALPHA_VANTAGE_STOCK_PRICE : "mirrors"
 	BANK_ACCOUNT ||--o| ALPACA_ACH_RELATIONSHIP : "mirrors"
 	BANK_ACCOUNT ||--|| STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "mirrors"
 	INVOICE ||--|| STRIPE_INVOICE : "mirrors"
@@ -37,17 +41,13 @@ erDiagram
 	PAYMENT_METHOD ||--|| STRIPE_PAYMENT_METHOD : "mirrors"
 	POSITION ||--o| ALPACA_POSITION : "mirrors"
 	RECOMMENDATION ||--|| OPEN_AI_RECOMMENDATION : "mirrors"
-	STOCK ||--|| ALPACA_ASSET : "mirrors"
-	STOCK ||--|| ALPHA_VANTAGE_COMPANY : "mirrors"
-	STOCK_ORDER ||--o| ALPACA_ORDER : "mirrors"
-	STOCK_PRICE ||--|| ALPHA_VANTAGE_STOCK_PRICE : "mirrors"
 	USER ||--o| ALPACA_ACCOUNT : "mirrors"
 	USER ||--|| STRIPE_CUSTOMER : "mirrors"
 
 	%% Ownership Relationships
 	EQUITY_ACCOUNT ||--o{ POSITION : "owns"
 	MODEL_FAMILY ||--o{ MODEL : "owns"
-	ORDER ||--o{ STOCK_ORDER : "owns"
+	ORDER ||--o{ ASSET_ORDER : "owns"
 	USER ||--|| AUTH_CREDENTIAL : "owns"
 	USER ||--|| EQUITY_ACCOUNT : "owns"
 	USER ||--|| LICENSE : "owns"
@@ -58,7 +58,7 @@ erDiagram
 	%% Production Relationships
 	MODEL ||--o{ FORECAST : "produces"
 	MODEL ||--o{ RECOMMENDATION : "produces"
-	RECOMMENDATION }o--o{ STOCK_ORDER : "factors_into"
+	RECOMMENDATION }o--o{ ASSET_ORDER : "factors_into"
 	STRIPE_FINANCIAL_CONNECTION_SESSION ||--o{ STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "produces"
 	USER ||--o{ STRIPE_FINANCIAL_CONNECTION_SESSION : "produces"
 
@@ -70,8 +70,8 @@ erDiagram
 	%% Computation Relationships
 	BANK_ACCOUNT ||--o{ ACH_TRANSFER : "derives_from_the_computation_of"
 	FORECAST }|--|{ NEWS_REPORT : "derives_from_the_computation_of"
-	FORECAST }|--|{ STOCK_PRICE : "derives_from_the_computation_of"
-	POSITION |o--o{ STOCK_ORDER : "derives_from_the_computation_of"
+	FORECAST }|--|{ ASSET_PRICE : "derives_from_the_computation_of"
+	POSITION |o--o{ ASSET_ORDER : "derives_from_the_computation_of"
 	RECOMMENDATION }|--|{ FORECAST : "derives_from_the_computation_of"
 
 	%% Transaction Relationships
@@ -81,9 +81,9 @@ erDiagram
 
 	%% Proxy Relationships
 	PAYMENT_METHOD ||--|| BANK_ACCOUNT : "represents"
-	POSITION ||--|| STOCK : "represents"
-	STOCK_ORDER ||--|| STOCK : "represents"
-	STOCK_PRICE }|--|| STOCK : "represents"
+	POSITION ||--|| ASSET : "represents"
+	ASSET_ORDER ||--|| ASSET : "represents"
+	ASSET_PRICE }|--|| ASSET : "represents"
 
 	%% Entity Definitions
 	ACH_TRANSFER {
@@ -143,18 +143,18 @@ erDiagram
     string[] parameters FK "min(1)"
     string user FK "nullable"
   }
-  STOCK {
+  ASSET {
     string alpaca_asset FK "min(1)"
     string alpha_vantage_company FK "min(1)"
   }
-  STOCK_ORDER {
+  ASSET_ORDER {
     string alpaca_order FK "nullable"
     string order FK "min(1)"
     string position FK "min(1)"
     string[] recommendations FK "nullable"
     string stock FK "min(1)"
   }
-  STOCK_PRICE {
+  ASSET_PRICE {
 		string alpha_vantage_stock_price FK "min(1)"
     string stock FK "min(1)"
   }

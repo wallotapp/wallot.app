@@ -74,9 +74,9 @@ export const activateUser = async (
 	});
 	batch.set(db.collection(ordersApi.collectionId).doc(orderDocId), orderDoc);
 
-	// Create STOCK_ORDERs using:
+	// Create ASSET_ORDERs using:
 	// 	- the symbols from RECOMMENDATION
-	// 	- recent STOCK_PRICEs
+	// 	- recent ASSET_PRICEs
 	const stockOrders = await createStockOrdersFromRecommendation(
 		recommendation,
 		{
