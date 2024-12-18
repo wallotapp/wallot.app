@@ -8,6 +8,7 @@ import {
 	licensesApi,
 	getHomeWebAppRoute,
 } from '@wallot/js';
+import { FunctionResponse } from '@wallot/node';
 import { auth, db } from '../../../services.js';
 import { siteOriginByTarget } from '../../../variables.js';
 import { createStripeCustomer } from '../../stripe/customers/createStripeCustomer.js';
@@ -16,7 +17,7 @@ export const registerUser = async ({
 	email,
 	password,
 	username,
-}: RegisterUserParams): Promise<RegisterUserResponse> => {
+}: RegisterUserParams): Promise<FunctionResponse<RegisterUserResponse>> => {
 	// Initialize Firestore document IDs
 	const stripeCustomerDocId = stripeCustomersApi.generateId();
 	const userDocId = usersApi.generateId();
@@ -124,5 +125,13 @@ export const registerUser = async ({
 		routeStaticId: 'HOME_WEB_APP__/GET_STARTED',
 	});
 
-	return { custom_token: customToken, redirect_url: redirectUrl };
+	// Construct the post-response callback
+	const onFinished = async () => {
+		return Promise.resolve();
+	};
+
+	return {
+		json: { custom_token: customToken, redirect_url: redirectUrl },
+		onFinished,
+	};
 };
