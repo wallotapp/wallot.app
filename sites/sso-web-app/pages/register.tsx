@@ -154,6 +154,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		fieldErrors: formState.errors,
 		fieldKey,
 		fieldSpec: registerUserSchemaFieldSpecByFieldKey[fieldKey],
+		hideRequiredIndicator: true,
 		initialFormData,
 		isSubmitting: isFormSubmitting,
 		operation: 'create',
