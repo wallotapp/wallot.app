@@ -134,6 +134,17 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const formStatus =
 		formState.isSubmitting || isRegisterUserRunning ? 'running' : 'idle';
 	const isFormSubmitting = formStatus === 'running';
+	const fieldProps: F<RegisterUserParams>[] = [
+		{
+			control,
+			fieldErrors: formState.errors,
+			fieldKey: 'username' as const,
+			fieldSpec: registerUserSchemaFieldSpecByFieldKey['username'],
+			initialFormData,
+			isSubmitting: isFormSubmitting,
+			setError: (message) => setError('username', { message }),
+		},
+	];
 
 	// ==== Constants ==== //
 
@@ -157,20 +168,6 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		});
 		registerUser(data);
 	};
-
-	const registerUserFieldProps: F<RegisterUserParams>[] = [
-		{
-			control,
-			fieldErrors: formState.errors,
-			fieldKey: 'username' as const,
-			fieldSpec: registerUserSchemaFieldSpecByFieldKey[
-				'username'
-			],
-			initialFormData,
-			isSubmitting: isFormSubmitting,
-			setError: (message) => setError('username', { message }),
-		},
-	];
 
 	// ==== Render ==== //
 	return (
@@ -207,7 +204,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 				>
 					<form onSubmit={handleSubmit(onSubmit) as () => void}>
 						<div>
-							{registerUserFieldProps.map(() => (
+							{fieldProps.map(() => (
 								<div />
 							))}
 						</div>
