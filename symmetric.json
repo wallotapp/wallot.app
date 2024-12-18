@@ -61,6 +61,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "asset_order",
+			"name_plural": "asset_orders",
+			"id_prefix": "ast_ord",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "cred",
 			"name_plural": "auth_credentials",
 			"name_singular": "auth_credential",

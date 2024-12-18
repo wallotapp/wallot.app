@@ -10,6 +10,7 @@ import { alpacaPositionsApi } from '../alpacaPositions/index.js';
 import { alphaVantageCompaniesApi } from '../alphaVantageCompanies/index.js';
 import { alphaVantageStockPricesApi } from '../alphaVantageStockPrices/index.js';
 import { assetsApi } from '../assets/index.js';
+import { assetOrdersApi } from '../assetOrders/index.js';
 import { authCredentialsApi } from '../authCredentials/index.js';
 import { bankAccountsApi } from '../bankAccounts/index.js';
 import { equityAccountsApi } from '../equityAccounts/index.js';
@@ -59,6 +60,8 @@ export const getApiResourceSpec = (
 			return alphaVantageStockPricesApi as unknown as GeneralizedApiResourceSpec;
 		case 'asset':
 			return assetsApi as unknown as GeneralizedApiResourceSpec;
+		case 'asset_order':
+			return assetOrdersApi as unknown as GeneralizedApiResourceSpec;
 		case 'auth_credential':
 			return authCredentialsApi as unknown as GeneralizedApiResourceSpec;
 		case 'bank_account':

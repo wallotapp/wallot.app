@@ -9,6 +9,7 @@ export * from './alpacaPositions/index.js';
 export * from './alphaVantageCompanies/index.js';
 export * from './alphaVantageStockPrices/index.js';
 export * from './assets/index.js';
+export * from './assetOrders/index.js';
 export * from './authCredentials/index.js';
 export * from './bankAccounts/index.js';
 export * from './equityAccounts/index.js';
