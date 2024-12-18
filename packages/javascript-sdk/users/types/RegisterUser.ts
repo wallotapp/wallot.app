@@ -3,13 +3,13 @@ import { GeneralizedFieldTypeEnum, YupHelpers } from 'ergonomic';
 import { usernameSchema } from '../utils/username.js';
 import { passwordSchema } from '../utils/password.js';
 
-export const registerUserSchema = yup.object().shape({
+export const registerUserSchema = yup.object({
 	email: YupHelpers.emailAddress().required(),
 	password: passwordSchema()
 		.required()
 		.meta({ type: GeneralizedFieldTypeEnum.obj.sensitive_text }),
 	username: usernameSchema().required(),
-});
+} as const);
 
 export type RegisterUserParams = yup.InferType<typeof registerUserSchema>;
 export type RegisterUserResponse = {
