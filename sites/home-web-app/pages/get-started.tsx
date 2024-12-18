@@ -11,8 +11,7 @@ import {
 	// getHomeWebAppRoute,
 	// passwordRules,
 	activateUserSchema,
-	// activateUserSchemaFieldSpecByFieldKey,
-	// usernameRules,
+	activateUserSchemaFieldSpecByFieldKey,
 } from '@wallot/js';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { useForm } from 'react-hook-form';
@@ -46,7 +45,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// Form
 	const initialFormData = activateUserSchema.getDefault() as ActivateUserParams;
 	const {
-		// control,
+		control,
 		formState,
 		handleSubmit,
 		reset,
@@ -99,7 +98,67 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const formStatus =
 		formState.isSubmitting || isActivateUserRunning ? 'running' : 'idle';
 	const isFormSubmitting = formStatus === 'running';
-	const fields: LiteFormFieldProps<ActivateUserParams>[] = [];
+	const fields: LiteFormFieldProps<ActivateUserParams>[] = [
+		{
+			fieldKey: 'age_range' as const,
+			renderTooltipContent: () => (
+				<div>
+					<ul className='text-xs list-disc list-inside'>
+						{([] as string[]).map((rule) => (
+							<li key={rule}>{rule}</li>
+						))}
+					</ul>
+				</div>
+			),
+		},
+		{
+			fieldKey: 'capital_level' as const,
+			renderTooltipContent: () => (
+				<div>
+					<ul className='text-xs list-disc list-inside'>
+						{([] as string[]).map((rule) => (
+							<li key={rule}>{rule}</li>
+						))}
+					</ul>
+				</div>
+			),
+		},
+		{
+			fieldKey: 'investing_goals' as const,
+			renderTooltipContent: () => (
+				<div>
+					<ul className='text-xs list-disc list-inside'>
+						{([] as string[]).map((rule) => (
+							<li key={rule}>{rule}</li>
+						))}
+					</ul>
+				</div>
+			),
+		},
+		{
+			fieldKey: 'risk_preference' as const,
+			renderTooltipContent: () => (
+				<div>
+					<ul className='text-xs list-disc list-inside'>
+						{([] as string[]).map((rule) => (
+							<li key={rule}>{rule}</li>
+						))}
+					</ul>
+				</div>
+			),
+		},
+	].map(({ fieldKey, renderTooltipContent }) => ({
+		control,
+		fieldErrors: formState.errors,
+		fieldKey,
+		fieldSpec: activateUserSchemaFieldSpecByFieldKey[fieldKey],
+		hideRequiredIndicator: true,
+		initialFormData,
+		isSubmitting: isFormSubmitting,
+		operation: 'create',
+		renderTooltipContent,
+		setError: (message) => setError(fieldKey, { message }),
+	}));
 
 	// ==== Constants ==== //
 
