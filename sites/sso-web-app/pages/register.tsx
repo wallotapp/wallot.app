@@ -39,6 +39,25 @@ const registerUserFieldProps = [
 	},
 ];
 
+const getFieldPresentation = (fieldErrorMessage: string) =>
+	fieldErrorMessage === '' ? 'normal' : 'error';
+export const FormFieldError: React.FC<{
+	className?: string;
+	fieldErrorMessage: string;
+}> = ({ className = '', fieldErrorMessage }) => {
+	const fieldPresentation = getFieldPresentation(fieldErrorMessage);
+
+	if (fieldPresentation === 'normal') return null;
+
+	return (
+		<div className={className}>
+			<p className='font-semibold text-red-700 text-xs'>
+				{fieldErrorMessage.toString()}
+			</p>
+		</div>
+	);
+};
+
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
 
@@ -157,6 +176,9 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							<div>
 								{registerUserFieldProps.map(
 									({ fieldKey, label, placeholder }) => {
+										const fieldErrorMessage = formState.errors[fieldKey]
+											? formState.errors[fieldKey].message ?? ''
+											: '';
 										return (
 											<div className='mt-2' key={fieldKey}>
 												<div>
@@ -168,6 +190,12 @@ const Page: NextPage<PageStaticProps> = (props) => {
 														type='text'
 														placeholder={placeholder}
 														{...register(fieldKey)}
+													/>
+												</div>
+												<div>
+													<FormFieldError
+														className='my-1'
+														fieldErrorMessage={fieldErrorMessage}
 													/>
 												</div>
 											</div>
