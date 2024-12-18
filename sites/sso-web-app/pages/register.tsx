@@ -40,6 +40,7 @@ type F<TFieldValues extends FieldValues> = Required<
 		| 'fieldSpec'
 		| 'initialFormData'
 		| 'isSubmitting'
+		| 'operation'
 		| 'setError'
 	>
 >;
@@ -143,6 +144,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		fieldSpec: registerUserSchemaFieldSpecByFieldKey[fieldKey],
 		initialFormData,
 		isSubmitting: isFormSubmitting,
+		operation: 'create',
 		setError: (message) => setError(fieldKey, { message }),
 	}));
 
