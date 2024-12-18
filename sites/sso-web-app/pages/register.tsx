@@ -18,6 +18,7 @@ import { useForm } from 'react-hook-form';
 import { Input } from 'ergonomic-react/src/components/ui/input';
 import { Label } from 'ergonomic-react/src/components/ui/label';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
+import { GeneralizedFormFieldError } from 'ergonomic-react/src/features/data/components/GeneralizedFormFieldError';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { PlatformLogo } from 'ergonomic-react/src/components/brand/PlatformLogo';
 import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
@@ -45,25 +46,6 @@ const registerUserFieldProps = [
 		placeholder: '************',
 	},
 ];
-
-const getFieldPresentation = (fieldErrorMessage: string) =>
-	fieldErrorMessage === '' ? 'normal' : 'error';
-export const FormFieldError: React.FC<{
-	className?: string;
-	fieldErrorMessage: string;
-}> = ({ className = '', fieldErrorMessage }) => {
-	const fieldPresentation = getFieldPresentation(fieldErrorMessage);
-
-	if (fieldPresentation === 'normal') return null;
-
-	return (
-		<div className={className}>
-			<p className='font-semibold text-red-700 text-xs'>
-				{fieldErrorMessage.toString()}
-			</p>
-		</div>
-	);
-};
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -232,7 +214,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 												/>
 											</div>
 											<div>
-												<FormFieldError
+												<GeneralizedFormFieldError
 													className='my-1'
 													fieldErrorMessage={fieldErrorMessage}
 												/>
