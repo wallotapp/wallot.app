@@ -66,23 +66,23 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					title: 'Error',
 					description: message,
 				});
-        setError('root', {
-          type: 'manual',
-          message: 'An error occurred. Please try again.',
-        });
+				setError('root', {
+					type: 'manual',
+					message: 'An error occurred. Please try again.',
+				});
 
-        // Reset form
-        reset();
+				// Reset form
+				reset();
 			},
 			onSuccess: async ({ redirect_url: redirectUrl }) => {
-        // Show success toast
-        toast({
-          title: 'Success',
-          description: 'Personalizing your experience...',
-        });
+				// Show success toast
+				toast({
+					title: 'Success',
+					description: 'Personalizing your experience...',
+				});
 
-        // Redirect to next page
-        await router.push(redirectUrl);
+				// Redirect to next page
+				await router.push(redirectUrl);
 			},
 		});
 
@@ -118,7 +118,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const onSubmit = (data: ActivateUserParams) => {
 		console.log('Activating user with following data:', data);
 		toast({
-			title: 'Activating your account...',
+			title: 'Saving your preferences',
 			description: 'This may take a few moments.',
 		});
 		activateUser(data);
