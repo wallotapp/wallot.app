@@ -67,14 +67,11 @@ const properties = {
 } as const;
 type U = typeof properties;
 
-export const usersApi = {
-	...getApiResourceSpec<keyof U, U, T>({
-		createParamsRequiredFieldEnum,
-		idPrefix: idPrefixByResourceName[_object],
-		properties,
-	} as const),
+export const usersApi = getApiResourceSpec<keyof U, U, T>({
+	createParamsRequiredFieldEnum,
+	idPrefix: idPrefixByResourceName[_object],
 	properties,
-};
+} as const);
 export type User = yup.InferType<typeof usersApi.apiResourceJsonSchema>;
 export type CreateUserParams = CreateParams<User, T>;
 export type UpdateUserParams = UpdateParams<User>;
