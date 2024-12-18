@@ -16,6 +16,8 @@ import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { useForm } from 'react-hook-form';
 import { Input } from 'ergonomic-react/src/components/ui/input';
 import { Label } from 'ergonomic-react/src/components/ui/label';
+import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
+import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useRegisterUserMutation } from '@wallot/react/src/features/users';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 
@@ -46,10 +48,17 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// Toaster
 	const { toast } = useToast();
 
+	// Form Resolver
+	const resolver = useYupValidationResolver(
+		registerUserSchema,
+		defaultGeneralizedFormDataTransformationOptions,
+	);
+
 	// Form
 	const { formState, handleSubmit, register, reset, setError } =
 		useForm<RegisterUserParams>({
 			defaultValues: registerUserSchema.getDefault(),
+			resolver,
 			shouldUnregister: false,
 		});
 
