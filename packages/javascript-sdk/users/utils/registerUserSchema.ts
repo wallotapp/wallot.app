@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import { GeneralizedFieldTypeEnum, YupHelpers } from 'ergonomic';
-import { usernameSchema } from '../utils/username.js';
-import { passwordSchema } from '../utils/password.js';
+import { usernameSchema } from './username.js';
+import { passwordSchema } from './password.js';
 
 export const registerUserSchema = yup.object({
 	email: YupHelpers.emailAddress().required(),
