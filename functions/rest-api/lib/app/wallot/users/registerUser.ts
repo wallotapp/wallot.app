@@ -13,6 +13,7 @@ import { auth, db } from '../../../services.js';
 import { siteOriginByTarget } from '../../../variables.js';
 import { createStripeCustomer } from '../../stripe/customers/createStripeCustomer.js';
 import { sendUserWelcomeEmail } from './sendUserWelcomeEmail.js';
+import { scheduleOnboardingReminderEmailsForUser } from './scheduleOnboardingReminderEmailsForUser.js';
 
 export const registerUser = async ({
 	email,
@@ -130,6 +131,9 @@ export const registerUser = async ({
 	const onFinished = async () => {
 		// Send welcome email to USER
 		await sendUserWelcomeEmail({ email, username });
+
+		// Schedule onboarding reminder emails for USER
+		await scheduleOnboardingReminderEmailsForUser({ email, username });
 	};
 
 	return {
