@@ -11,8 +11,9 @@ import {
 	isResLocalsJsonError,
 } from 'ergonomic-node';
 import { getGeneralizedError } from 'ergonomic';
-import { handleRouterFunctionError } from './handleRouterFunctionError.js';
 import { AuthCredential, authCredentialsApi } from '@wallot/js';
+import { handleRouterFunctionError } from './handleRouterFunctionError.js';
+import { FunctionResponse } from './FunctionResponse.js';
 
 /**
  * Creates an Express router function that handles asynchronous operations.
@@ -26,7 +27,7 @@ export const createRouterFunction =
 			query: TQuery,
 			firebaseUser: FirebaseUser | null,
 			userId: string | null,
-		) => Promise<{ json: TResponseBody; onFinished?: () => Promise<void> }>,
+		) => Promise<FunctionResponse<TResponseBody>>,
 		options: { requiresAuth: boolean } = { requiresAuth: true },
 	) => {
 		return (
@@ -94,10 +95,10 @@ export const createRouterFunction =
 							firebaseUser ?? null,
 							userId ?? null,
 						);
-						
+
 						// Set the response body in res.locals.json
 						res.locals.json = json;
-						
+
 						// Queue the onFinished function to be called after the response is sent
 						res.on('finish', async () => {
 							try {
