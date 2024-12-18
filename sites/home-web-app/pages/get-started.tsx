@@ -1,19 +1,17 @@
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { signInWithCustomToken } from 'firebase/auth';
-import { firebaseAuthInstance as auth } from 'ergonomic-react/src/lib/firebase';
 import {
 	PageStaticProps,
 	PageProps,
 	Page as PageComponent,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import {
-	RegisterUserParams,
+	ActivateUserParams,
 	HomeWebAppRouteQueryParams,
 	// getHomeWebAppRoute,
 	// passwordRules,
-	registerUserSchema,
-	// registerUserSchemaFieldSpecByFieldKey,
+	activateUserSchema,
+	// activateUserSchemaFieldSpecByFieldKey,
 	// usernameRules,
 } from '@wallot/js';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
@@ -23,11 +21,12 @@ import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { PlatformLogo } from 'ergonomic-react/src/components/brand/PlatformLogo';
 import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
-import { useRegisterUserMutation } from '@wallot/react/src/features/users';
+import { useActivateUserMutation } from '@wallot/react/src/features/users';
 import { OnboardingCard } from '@wallot/react/src/components/OnboardingCard';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
+import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -40,27 +39,27 @@ const Page: NextPage<PageStaticProps> = (props) => {
 
 	// Form Resolver
 	const resolver = useYupValidationResolver(
-		registerUserSchema,
+		activateUserSchema,
 		defaultGeneralizedFormDataTransformationOptions,
 	);
 
 	// Form
-	const initialFormData = registerUserSchema.getDefault();
+	const initialFormData = activateUserSchema.getDefault() as ActivateUserParams;
 	const {
 		// control,
 		formState,
 		handleSubmit,
 		reset,
 		setError,
-	} = useForm<RegisterUserParams>({
+	} = useForm<ActivateUserParams>({
 		defaultValues: initialFormData,
 		resolver,
 		shouldUnregister: false,
 	});
 
 	// Mutation
-	const { mutate: registerUser, isLoading: isRegisterUserRunning } =
-		useRegisterUserMutation({
+	const { mutate: activateUser, isLoading: isActivateUserRunning } =
+		useActivateUserMutation({
 			onError: ({ error: { message } }) => {
 				// Show the error message
 				toast({
@@ -68,14 +67,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					description: message,
 				});
 			},
-			onSuccess: async ({
-				custom_token: customToken,
-				redirect_url: redirectUrl,
-			}) => {
+			onSuccess: async ({ redirect_url: redirectUrl }) => {
 				try {
-					// Log in user
-					await signInWithCustomToken(auth, customToken);
-
 					// Show success toast
 					toast({
 						title: 'Success',
@@ -95,7 +88,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					reset();
 
 					// Set error
-					setError('email', {
+					setError('root', {
 						type: 'manual',
 						message: 'An error occurred. Please try again.',
 					});
@@ -114,9 +107,9 @@ const Page: NextPage<PageStaticProps> = (props) => {
 
 	// Form
 	const formStatus =
-		formState.isSubmitting || isRegisterUserRunning ? 'running' : 'idle';
+		formState.isSubmitting || isActivateUserRunning ? 'running' : 'idle';
 	const isFormSubmitting = formStatus === 'running';
-	const fields: LiteFormFieldProps<RegisterUserParams>[] = [];
+	const fields: LiteFormFieldProps<ActivateUserParams>[] = [];
 
 	// ==== Constants ==== //
 
@@ -132,13 +125,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Functions ==== //
 
 	// Form Submit Handler
-	const onSubmit = (data: RegisterUserParams) => {
+	const onSubmit = (data: ActivateUserParams) => {
 		console.log('Activating user with following data:', data);
 		toast({
 			title: 'Activating your account...',
 			description: 'This may take a few moments.',
 		});
-		registerUser(data);
+		activateUser(data);
 	};
 
 	// ==== Render ==== //
@@ -187,9 +180,16 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							<SubmitButton
 								className='w-full'
 								isSubmitting={isFormSubmitting}
-                text='Activate Account'
+								text='Activate Account'
 							/>
 						</div>
+						{Boolean(formState.errors['root']?.message) && (
+							<div className='mt-4'>
+								<LiteFormFieldError
+									fieldErrorMessage={formState.errors['root']?.message ?? ''}
+								/>
+							</div>
+						)}
 					</form>
 				</OnboardingCard>
 			</div>
