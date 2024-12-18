@@ -15,13 +15,6 @@ export const registerUserSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
 );
 
 export type RegisterUserParams = yup.InferType<typeof registerUserSchema>;
-/**
- * Response from registering a user
- * 
- * The custom token is used to authenticate the user
- * 
- * The redirect URL is where the user should be redirected to after registering
- */
 export type RegisterUserResponse = {
 	custom_token: string;
 	redirect_url: string;
