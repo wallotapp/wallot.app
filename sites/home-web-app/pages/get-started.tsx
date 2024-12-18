@@ -8,8 +8,6 @@ import {
 import {
 	ActivateUserParams,
 	HomeWebAppRouteQueryParams,
-	// getHomeWebAppRoute,
-	// passwordRules,
 	activateUserSchema,
 	activateUserSchemaFieldSpecByFieldKey,
 } from '@wallot/js';
@@ -44,17 +42,12 @@ const Page: NextPage<PageStaticProps> = (props) => {
 
 	// Form
 	const initialFormData = activateUserSchema.getDefault() as ActivateUserParams;
-	const {
-		control,
-		formState,
-		handleSubmit,
-		reset,
-		setError,
-	} = useForm<ActivateUserParams>({
-		defaultValues: initialFormData,
-		resolver,
-		shouldUnregister: false,
-	});
+	const { control, formState, handleSubmit, reset, setError } =
+		useForm<ActivateUserParams>({
+			defaultValues: initialFormData,
+			resolver,
+			shouldUnregister: false,
+		});
 
 	// Mutation
 	const { mutate: activateUser, isLoading: isActivateUserRunning } =
