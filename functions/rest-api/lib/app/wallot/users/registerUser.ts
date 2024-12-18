@@ -13,7 +13,7 @@ import { auth, db } from '../../../services.js';
 import { siteOriginByTarget } from '../../../variables.js';
 import { createStripeCustomer } from '../../stripe/customers/createStripeCustomer.js';
 import { sendUserWelcomeEmail } from './sendUserWelcomeEmail.js';
-import { scheduleOnboardingReminderEmailsForUser } from './scheduleOnboardingReminderEmailsForUser.js';
+import { scheduleActivationReminderEmailsForUser } from './scheduleActivationReminderEmailsForUser.js';
 
 export const registerUser = async ({
 	email,
@@ -133,7 +133,7 @@ export const registerUser = async ({
 		await sendUserWelcomeEmail({ email, username });
 
 		// Schedule onboarding reminder emails for USER
-		await scheduleOnboardingReminderEmailsForUser({ email, username });
+		await scheduleActivationReminderEmailsForUser({ email, username });
 	};
 
 	return {
