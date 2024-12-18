@@ -16,40 +16,8 @@ import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { useForm } from 'react-hook-form';
 import { Input } from 'ergonomic-react/src/components/ui/input';
 import { Label } from 'ergonomic-react/src/components/ui/label';
-import { Button } from 'ergonomic-react/src/components/ui/button';
-import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { useRegisterUserMutation } from '@wallot/react/src/features/users';
-
-const SubmitButton = ({
-	isSubmitting,
-	text = 'Continue',
-	type = 'submit',
-}: {
-	isSubmitting: boolean;
-	text?: string;
-	type?: 'submit' | 'button';
-}) => {
-	return (
-		<Button disabled={isSubmitting} type={type}>
-			<div>
-				{isSubmitting ? (
-					<>
-						<div className='flex items-center justify-center space-x-2 min-w-16'>
-							<div
-								className={cn(
-									'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
-									'border-t-[#7F43D7] border-r-[#7F43D7] border-b-[#7F43D7]',
-								)}
-							></div>
-						</div>
-					</>
-				) : (
-					<p>{text}</p>
-				)}
-			</div>
-		</Button>
-	);
-};
+import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
