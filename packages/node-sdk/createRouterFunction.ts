@@ -14,12 +14,14 @@ import { getGeneralizedError } from 'ergonomic';
 import { AuthCredential, authCredentialsApi } from '@wallot/js';
 import { handleRouterFunctionError } from './handleRouterFunctionError.js';
 import { FunctionResponse } from './FunctionResponse.js';
+import { SecretData } from './SecretDataTypes.js';
+import { log } from './log.js';
 
 /**
  * Creates an Express router function that handles asynchronous operations.
  */
 export const createRouterFunction =
-	(auth: Auth, db: Firestore) =>
+	(auth: Auth, db: Firestore, secrets: SecretData) =>
 	<TParams, TResponseBody, TRequestBody, TQuery>(
 		fn: (
 			body: TRequestBody,
@@ -104,7 +106,14 @@ export const createRouterFunction =
 							try {
 								await onFinished();
 							} catch (err) {
-								console.error('Error in onFinished:', err);
+								const errorMessage = (err as Error)?.message || 'Unknown error';
+								log(secrets.SECRET_CRED_SERVER_PROTOCOL)(
+									'Error in onFinished: ' +
+										(secrets.SECRET_CRED_SERVER_PROTOCOL === 'http'
+											? (err as Error)
+											: errorMessage),
+									{ type: 'error' },
+								);
 							}
 						});
 

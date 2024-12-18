@@ -54,7 +54,7 @@ app.post(
 		corsPolicy(
 			req,
 			res,
-			createRouterFunction(auth, db)(registerUser, { requiresAuth: false })(
+			createRouterFunction(auth, db, secrets)(registerUser, { requiresAuth: false })(
 				req,
 				res,
 				next,
@@ -83,7 +83,7 @@ app.post(
 		corsPolicy(
 			req,
 			res,
-			createRouterFunction(auth, db)(activateUser)(req, res, next),
+			createRouterFunction(auth, db, secrets)(activateUser)(req, res, next),
 		);
 	},
 );
@@ -111,7 +111,7 @@ app.post(
 		corsPolicy(
 			req,
 			res,
-			createRouterFunction(auth, db)(createFirebaseAuthCustomToken)(
+			createRouterFunction(auth, db, secrets)(createFirebaseAuthCustomToken)(
 				req,
 				res,
 				next,
