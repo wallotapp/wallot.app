@@ -97,6 +97,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "identity_verification_document",
+			"name_plural": "identity_verification_documents",
+			"id_prefix": "id_ver",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "inv",
 			"name_plural": "invoices",
 			"name_singular": "invoice",

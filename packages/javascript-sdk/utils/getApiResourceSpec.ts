@@ -16,6 +16,7 @@ import { authCredentialsApi } from '../authCredentials/index.js';
 import { bankAccountsApi } from '../bankAccounts/index.js';
 import { equityAccountsApi } from '../equityAccounts/index.js';
 import { forecastsApi } from '../forecasts/index.js';
+import { identityVerificationDocumentsApi } from '../identityVerificationDocuments/index.js';
 import { invoicesApi } from '../invoices/index.js';
 import { licensesApi } from '../licenses/index.js';
 import { modelsApi } from '../models/index.js';
@@ -73,6 +74,8 @@ export const getApiResourceSpec = (
 			return equityAccountsApi as unknown as GeneralizedApiResourceSpec;
 		case 'forecast':
 			return forecastsApi as unknown as GeneralizedApiResourceSpec;
+		case 'identity_verification_document':
+			return identityVerificationDocumentsApi as unknown as GeneralizedApiResourceSpec;
 		case 'invoice':
 			return invoicesApi as unknown as GeneralizedApiResourceSpec;
 		case 'license':
