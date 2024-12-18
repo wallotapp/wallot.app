@@ -29,7 +29,7 @@ const scheduleAlpacaAccountStatusChecks = async (userId: string) => {
 			// If it finishes at 11:04 AM, everything is fine.
 			// If it’s still running at 11:05 AM, Cloud Tasks will assume the attempt failed and will initiate a retry if configured.
 			dispatchDeadlineSeconds: 60 * 5, // <= 5 minutes
-			// The ID of the task. This is useful for ensuring that the task is only enqueued 
+			// The ID of the task. This is useful for ensuring that the task is only enqueued
 			// once and for retrieving the task later.
 			id: taskId,
 			// How long to wait before the task is first delivered to the target service after it has been enqueued
