@@ -26,7 +26,7 @@ export const createRouterFunction =
 			query: TQuery,
 			firebaseUser: FirebaseUser | null,
 			userId: string | null,
-		) => Promise<TResponseBody>,
+		) => Promise<{ json: TResponseBody; onFinished?: () => Promise<void> }>,
 		options: { requiresAuth: boolean } = { requiresAuth: true },
 	) => {
 		return (
@@ -87,13 +87,25 @@ export const createRouterFunction =
 						const query = req.query;
 
 						// Call the router function
-						res.locals.json = await fn(
+						const { json, onFinished = () => Promise.resolve() } = await fn(
 							body,
 							params,
 							query,
 							firebaseUser ?? null,
 							userId ?? null,
 						);
+						
+						// Set the response body in res.locals.json
+						res.locals.json = json;
+						
+						// Queue the onFinished function to be called after the response is sent
+						res.on('finish', async () => {
+							try {
+								await onFinished();
+							} catch (err) {
+								console.error('Error in onFinished:', err);
+							}
+						});
 
 						// Proceed to the next middleware
 						return next();
