@@ -13,8 +13,8 @@ import { FunctionResponse } from '@wallot/node';
 import { auth, db } from '../../../services.js';
 import { siteOriginByTarget } from '../../../variables.js';
 import { createStripeCustomer } from '../../stripe/customers/createStripeCustomer.js';
-import { sendUserWelcomeEmail } from './sendUserWelcomeEmail.js';
-import { scheduleActivationReminderEmailsForUser } from './scheduleActivationReminderEmailsForUser.js';
+import { sendWelcomeEmail } from './sendWelcomeEmail.js';
+import { scheduleActivationReminderEmails } from './scheduleActivationReminderEmails.js';
 
 export const registerUser = async ({
 	email,
@@ -133,10 +133,10 @@ export const registerUser = async ({
 	// Construct the post-response callback
 	const onFinished = async () => {
 		// Send welcome email to USER
-		await sendUserWelcomeEmail({ email, username });
+		await sendWelcomeEmail({ email, username });
 
 		// Schedule onboarding reminder emails for USER
-		await scheduleActivationReminderEmailsForUser({
+		await scheduleActivationReminderEmails({
 			activationReminderTaskId,
 			email,
 			username,
