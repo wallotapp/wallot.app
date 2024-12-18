@@ -28,7 +28,7 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: IdentityVerificationDocumentCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: false }),
 } as const;
 type U = typeof properties;
 

@@ -10,6 +10,7 @@ describe('IdentityVerificationDocument', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My IdentityVerificationDocument',
+			user: '',
 		};
 		expect(exampleIdentityVerificationDocument).toEqual<
 			typeof exampleIdentityVerificationDocument
@@ -24,6 +25,7 @@ describe('IdentityVerificationDocument', () => {
 			_deleted: false,
 			description: '',
 			name: 'My IdentityVerificationDocument',
+			user: '',
 		});
 	});
 });

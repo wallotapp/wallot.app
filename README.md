@@ -50,6 +50,7 @@ erDiagram
 	ORDER ||--o{ ASSET_ORDER : "owns"
 	USER ||--|| AUTH_CREDENTIAL : "owns"
 	USER ||--|| EQUITY_ACCOUNT : "owns"
+	USER ||--o{ IDENTITY_VERIFICATION_DOCUMENT : "owns"
 	USER ||--|| LICENSE : "owns"
 	USER ||--o{ ORDER : "owns"
 	USER ||--o{ PAYMENT_METHOD : "owns"
