@@ -109,7 +109,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const _ = query;
 	_;
 
-	// Login Route
+	// Login Route <= Fix this
 	const loginRoute = getSsoWebAppRoute({
 		routeStaticId: 'SSO_WEB_APP__/INDEX',
 		origin: null,
@@ -221,7 +221,10 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					<form onSubmit={handleSubmit(onSubmit) as () => void}>
 						<div>
 							{fields.map((fieldProps) => (
-								<LiteFormFieldContainer key={fieldProps.fieldKey} {...fieldProps} />
+								<LiteFormFieldContainer
+									key={fieldProps.fieldKey}
+									{...fieldProps}
+								/>
 							))}
 						</div>
 						<div className='mt-4 text-right w-full'>
