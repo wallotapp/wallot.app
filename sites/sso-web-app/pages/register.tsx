@@ -19,6 +19,24 @@ import { Label } from 'ergonomic-react/src/components/ui/label';
 import { useRegisterUserMutation } from '@wallot/react/src/features/users';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 
+const registerUserFieldProps = [
+	{
+		fieldKey: 'username' as const,
+		label: 'Username',
+		placeholder: 'e.g. my_username',
+	},
+	{
+		fieldKey: 'email' as const,
+		label: 'Email address',
+		placeholder: 'e.g. me@example.com',
+	},
+	{
+		fieldKey: 'password' as const,
+		label: 'Password',
+		placeholder: '************',
+	},
+];
+
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
 
@@ -128,14 +146,25 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					<div className='mt-4'>
 						<form onSubmit={handleSubmit(onSubmit) as () => void}>
 							<div>
-								<Label>
-									<p>Email address</p>
-								</Label>
-								<Input
-									placeholder='Email address'
-									type='text'
-									{...register('email', { required: true })}
-								/>
+								{registerUserFieldProps.map(
+									({ fieldKey, label, placeholder }) => {
+										return (
+											<div className='mt-2' key={fieldKey}>
+												<div>
+													<Label className='text-xs'>{label}</Label>
+												</div>
+												<div>
+													<Input
+														className='h-8 text-xs'
+														type='text'
+														placeholder={placeholder}
+														{...register(fieldKey)}
+													/>
+												</div>
+											</div>
+										);
+									},
+								)}
 							</div>
 							<div className='mt-4 text-right'>
 								<SubmitButton isSubmitting={isFormSubmitting} />
