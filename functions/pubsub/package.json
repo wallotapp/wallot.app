@@ -3,7 +3,7 @@
 		"@google-cloud/storage": "^7.4.0",
 		"@wallot/js": "0.1.0-rc.4",
 		"change-case": "^4.1.2",
-		"ergonomic": "^0.5.5",
+		"ergonomic": "^0.5.7",
 		"google-libphonenumber": "^3.2.31",
 		"ky-universal": "^0.12.0",
 		"luxon": "^2.3.2",
