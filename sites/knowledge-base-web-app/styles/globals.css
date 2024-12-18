@@ -9,7 +9,7 @@ body,
 }
 
 @layer base {
-:root {
+	:root {
 		--background: 216 2% 98%; /* Soft blue-white sheen */
 		--foreground: 222.2 47.4% 11.2%;
 

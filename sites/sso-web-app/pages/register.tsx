@@ -194,7 +194,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</div>
 					)}
 				</div>
-				<div className='max-w-2xl'>
+				<div
+					className={cn(
+						'bg-white border border-gray-200 rounded-md shadow-lg flex flex-col items-center justify-evenly pt-24 pb-14 px-8 mx-auto relative',
+						'w-full',
+						'md:w-[28rem]',
+					)}
+				>
 					<div>
 						<p className='text-2xl font-bold'>Create your account</p>
 					</div>

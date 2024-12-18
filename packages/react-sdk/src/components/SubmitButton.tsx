@@ -30,9 +30,7 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
 						</div>
 					</>
 				) : (
-					<p className={cn('text-base font-medium', textClassName)}>
-						{text}
-					</p>
+					<p className={cn('text-base font-medium', textClassName)}>{text}</p>
 				)}
 			</div>
 		</Button>
