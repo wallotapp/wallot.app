@@ -15,6 +15,7 @@ import { useQueryAlphaVantageCompanyPage } from '@wallot/react/src/features/alph
 import { useQueryAlphaVantageStockPricePage } from '@wallot/react/src/features/alphaVantageStockPrices';
 import { useQueryAssetPage } from '@wallot/react/src/features/assets';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
+import { useQueryAssetPricePage } from '@wallot/react/src/features/assetPrices';
 import { useQueryAuthCredentialPage } from '@wallot/react/src/features/authCredentials';
 import { useQueryBankAccountPage } from '@wallot/react/src/features/bankAccounts';
 import { useQueryEquityAccountPage } from '@wallot/react/src/features/equityAccounts';
@@ -57,6 +58,7 @@ const queryHookMap = {
 	alpha_vantage_stock_price: useQueryAlphaVantageStockPricePage,
 	asset: useQueryAssetPage,
 	asset_order: useQueryAssetOrderPage,
+	asset_price: useQueryAssetPricePage,
 	auth_credential: useQueryAuthCredentialPage,
 	bank_account: useQueryBankAccountPage,
 	equity_account: useQueryEquityAccountPage,

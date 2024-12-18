@@ -13,6 +13,7 @@ import { useCreateAlphaVantageCompanyMutation } from '@wallot/react/src/features
 import { useCreateAlphaVantageStockPriceMutation } from '@wallot/react/src/features/alphaVantageStockPrices';
 import { useCreateAssetMutation } from '@wallot/react/src/features/assets';
 import { useCreateAssetOrderMutation } from '@wallot/react/src/features/assetOrders';
+import { useCreateAssetPriceMutation } from '@wallot/react/src/features/assetPrices';
 import { useCreateAuthCredentialMutation } from '@wallot/react/src/features/authCredentials';
 import { useCreateBankAccountMutation } from '@wallot/react/src/features/bankAccounts';
 import { useCreateEquityAccountMutation } from '@wallot/react/src/features/equityAccounts';
@@ -55,6 +56,7 @@ const createOperationMutationMap = {
 	alpha_vantage_stock_price: useCreateAlphaVantageStockPriceMutation,
 	asset: useCreateAssetMutation,
 	asset_order: useCreateAssetOrderMutation,
+	asset_price: useCreateAssetPriceMutation,
 	auth_credential: useCreateAuthCredentialMutation,
 	bank_account: useCreateBankAccountMutation,
 	equity_account: useCreateEquityAccountMutation,

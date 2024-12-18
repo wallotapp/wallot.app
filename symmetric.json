@@ -67,6 +67,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "asset_price",
+			"name_plural": "asset_prices",
+			"id_prefix": "ast_pr",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "cred",
 			"name_plural": "auth_credentials",
 			"name_singular": "auth_credential",
