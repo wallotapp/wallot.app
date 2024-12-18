@@ -2,7 +2,6 @@ import * as yup from 'yup';
 import {
 	GeneralizedApiResourceCreateParamsRequiredFieldEnum,
 	GeneralizedApiResourceProperties,
-	GeneralizedFieldTypeEnum,
 	CreateParams,
 	UpdateParams,
 	YupHelpers,
@@ -55,9 +54,7 @@ const properties = {
 		.idRef(['stripe_customer'])
 		.min(1)
 		.meta({ unique_key: true }),
-	username: usernameSchema()
-		.defined()
-		.meta({ type: GeneralizedFieldTypeEnum.obj.short_text, unique_key: true }),
+	username: usernameSchema().defined().meta({ unique_key: true }),
 } as const;
 type U = typeof properties;
 
