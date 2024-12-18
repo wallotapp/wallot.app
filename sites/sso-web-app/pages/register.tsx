@@ -2,7 +2,6 @@ import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { signInWithCustomToken } from 'firebase/auth';
 import { firebaseAuthInstance as auth } from 'ergonomic-react/src/lib/firebase';
-import { GeneralizedFieldSpec } from 'ergonomic';
 import {
 	PageStaticProps,
 	PageProps,
@@ -32,7 +31,7 @@ import { FiChevronRight } from 'react-icons/fi';
 import Link from 'next/link';
 import { GeneralizedFormFieldProps } from 'ergonomic-react/src/features/data/types/GeneralizedFormFieldProps';
 
-type F<TFieldValues extends FieldValues = FieldValues> = Required<
+type F<TFieldValues extends FieldValues> = Required<
 	Pick<
 		GeneralizedFormFieldProps<TFieldValues, string>,
 		| 'control'
@@ -166,7 +165,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			fieldKey: 'username' as const,
 			fieldSpec: registerUserSchemaFieldSpecByFieldKey[
 				'username'
-			] as GeneralizedFieldSpec,
+			],
 			initialFormData,
 			isSubmitting: isFormSubmitting,
 			setError: (message) => setError('username', { message }),
