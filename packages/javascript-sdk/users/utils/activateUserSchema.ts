@@ -3,10 +3,10 @@ import { Keys, getFieldSpecByFieldKey } from 'ergonomic';
 import { usersApi } from '../models/userProperties.js';
 
 export const activateUserProperties = {
-	age_range: usersApi.properties.age_range.required(),
-	capital_level: usersApi.properties.capital_level.required(),
-	investing_goals: usersApi.properties.investing_goals.required(),
-	risk_preference: usersApi.properties.risk_preference.required(),
+	age_range: usersApi.properties.age_range.defined().required(),
+	capital_level: usersApi.properties.capital_level.defined().required(),
+	investing_goals: usersApi.properties.investing_goals.defined().required(),
+	risk_preference: usersApi.properties.risk_preference.defined().required(),
 } as const;
 export const activateUserSchema = yup.object(activateUserProperties);
 export const activateUserSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
