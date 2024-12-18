@@ -7,9 +7,9 @@ describe('Forecast', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My Forecast',
+			asset_prices: [],
 			model: '',
 			news_reports: [],
-			stock_prices: [],
 		};
 		expect(exampleForecast).toEqual<typeof exampleForecast>({
 			_id: expect.any(String),
@@ -22,9 +22,9 @@ describe('Forecast', () => {
 			_deleted: false,
 			description: '',
 			name: 'My Forecast',
+			asset_prices: [],
 			model: '',
 			news_reports: [],
-			stock_prices: [],
 		});
 	});
 });

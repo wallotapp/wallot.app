@@ -19,8 +19,8 @@ export type PositionCategory = keyof typeof PositionCategoryEnum.obj;
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
 	'alpaca_position',
+	'asset',
 	'equity_account',
-	'stock',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -34,18 +34,18 @@ const properties = {
 		.default(null)
 		.nullable()
 		.meta({ unique_key: true }),
-	category: PositionCategoryEnum.getDefinedSchema(),
-	equity_account: apiYupHelpers
-		.idRef(['equity_account'])
-		.min(1)
-		.meta({ unique_key: false }),
-	stock: apiYupHelpers
-		.idRef(['stock'])
+	asset: apiYupHelpers
+		.idRef(['asset'])
 		.min(1)
 		.meta({
 			unique_by: ['equity_account'],
 			unique_key: false,
 		}),
+	category: PositionCategoryEnum.getDefinedSchema(),
+	equity_account: apiYupHelpers
+		.idRef(['equity_account'])
+		.min(1)
+		.meta({ unique_key: false }),
 } as const;
 type U = typeof properties;
 

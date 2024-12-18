@@ -4,17 +4,17 @@ import {
 	ActivateUserParams,
 	ActivateUserResponse,
 	UpdateUserParams,
+	assetOrdersApi,
 	getHomeWebAppRoute,
 	ordersApi,
 	recommendationsApi,
-	stockOrdersApi,
 	usersApi,
 } from '@wallot/js';
 import { db } from '../../../services.js';
 import { siteOriginByTarget } from '../../../variables.js';
 import { locateCompatibleParameters } from '../parameters/locateCompatibleParameters.js';
+import { createAssetOrdersFromRecommendation } from '../assetOrders/createAssetOrdersFromRecommendation.js';
 import { createRecommendationForUser } from '../recommendations/createRecommendationForUser.js';
-import { createStockOrdersFromRecommendation } from '../stockOrders/createStockOrdersFromRecommendation.js';
 
 export const activateUser = async (
 	{
@@ -77,18 +77,18 @@ export const activateUser = async (
 	// Create ASSET_ORDERs using:
 	// 	- the symbols from RECOMMENDATION
 	// 	- recent ASSET_PRICEs
-	const stockOrders = await createStockOrdersFromRecommendation(
+	const assetOrders = await createAssetOrdersFromRecommendation(
 		recommendation,
 		{
 			orderId: orderDocId,
 			userId,
 		},
 	);
-	stockOrders.forEach((stockOrder) => {
-		const stockOrderDocId = stockOrder._id;
+	assetOrders.forEach((assetOrder) => {
+		const assetOrderDocId = assetOrder._id;
 		batch.set(
-			db.collection(stockOrdersApi.collectionId).doc(stockOrderDocId),
-			stockOrder,
+			db.collection(assetOrdersApi.collectionId).doc(assetOrderDocId),
+			assetOrder,
 		);
 	});
 

@@ -90,6 +90,21 @@ erDiagram
     string alpaca_ach_transfer FK "min(1)"
     string bank_account FK "min(1)"
   }
+  ASSET {
+    string alpaca_asset FK "min(1)"
+    string alpha_vantage_company FK "min(1)"
+  }
+  ASSET_ORDER {
+    string alpaca_order FK "nullable"
+    string asset FK "min(1)"
+    string order FK "min(1)"
+    string position FK "min(1)"
+    string[] recommendations FK "nullable"
+  }
+  ASSET_PRICE {
+    string asset FK "min(1)"
+		string alpha_vantage_stock_price FK "min(1)"
+  }
   AUTH_CREDENTIAL {
     string user FK "min(1)"
   }
@@ -101,9 +116,9 @@ erDiagram
     string user FK "min(1)"
   }
   FORECAST {
+    string[] asset_prices FK "min(1)"
     string model FK "min(1)"
     string[] news_reports FK "min(1)"
-    string[] stock_prices FK "min(1)"
   }
   INVOICE {
     string license FK "min(1)"
@@ -133,8 +148,8 @@ erDiagram
   }
   POSITION {
     string alpaca_position FK "min(1)"
+    string asset FK "min(1)"
     string equity_account FK "min(1)"
-    string stock FK "min(1)"
   }
   RECOMMENDATION {
     string[] forecasts FK "min(1)"
@@ -142,21 +157,6 @@ erDiagram
     string open_ai_recommendation FK "min(1)"
     string[] parameters FK "min(1)"
     string user FK "nullable"
-  }
-  ASSET {
-    string alpaca_asset FK "min(1)"
-    string alpha_vantage_company FK "min(1)"
-  }
-  ASSET_ORDER {
-    string alpaca_order FK "nullable"
-    string order FK "min(1)"
-    string position FK "min(1)"
-    string[] recommendations FK "nullable"
-    string stock FK "min(1)"
-  }
-  ASSET_PRICE {
-		string alpha_vantage_stock_price FK "min(1)"
-    string stock FK "min(1)"
   }
   STRIPE_FINANCIAL_CONNECTION_ACCOUNT {
     string stripe_financial_connection_session FK "min(1)"

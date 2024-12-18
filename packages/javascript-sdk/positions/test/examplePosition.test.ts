@@ -8,8 +8,8 @@ describe('Position', () => {
 			category: 'default',
 			name: 'My Position',
 			alpaca_position: '',
+			asset: '',
 			equity_account: '',
-			stock: '',
 		};
 		expect(examplePosition).toEqual<typeof examplePosition>({
 			_id: expect.any(String),
@@ -23,8 +23,8 @@ describe('Position', () => {
 			description: '',
 			name: 'My Position',
 			alpaca_position: '',
+			asset: '',
 			equity_account: '',
-			stock: '',
 		});
 	});
 });
