@@ -9,6 +9,7 @@ import { alpacaOrdersApi } from '../alpacaOrders/index.js';
 import { alpacaPositionsApi } from '../alpacaPositions/index.js';
 import { alphaVantageCompaniesApi } from '../alphaVantageCompanies/index.js';
 import { alphaVantageStockPricesApi } from '../alphaVantageStockPrices/index.js';
+import { assetsApi } from '../assets/index.js';
 import { authCredentialsApi } from '../authCredentials/index.js';
 import { bankAccountsApi } from '../bankAccounts/index.js';
 import { equityAccountsApi } from '../equityAccounts/index.js';
@@ -26,9 +27,6 @@ import { parametersApi } from '../parameters/index.js';
 import { paymentMethodsApi } from '../paymentMethods/index.js';
 import { positionsApi } from '../positions/index.js';
 import { recommendationsApi } from '../recommendations/index.js';
-import { stocksApi } from '../stocks/index.js';
-import { stockOrdersApi } from '../stockOrders/index.js';
-import { stockPricesApi } from '../stockPrices/index.js';
 import { stripeCustomersApi } from '../stripeCustomers/index.js';
 import { stripeFinancialConnectionAccountsApi } from '../stripeFinancialConnectionAccounts/index.js';
 import { stripeFinancialConnectionSessionsApi } from '../stripeFinancialConnectionSessions/index.js';
@@ -59,6 +57,8 @@ export const getApiResourceSpec = (
 			return alphaVantageCompaniesApi as unknown as GeneralizedApiResourceSpec;
 		case 'alpha_vantage_stock_price':
 			return alphaVantageStockPricesApi as unknown as GeneralizedApiResourceSpec;
+		case 'asset':
+			return assetsApi as unknown as GeneralizedApiResourceSpec;
 		case 'auth_credential':
 			return authCredentialsApi as unknown as GeneralizedApiResourceSpec;
 		case 'bank_account':
@@ -93,12 +93,6 @@ export const getApiResourceSpec = (
 			return positionsApi as unknown as GeneralizedApiResourceSpec;
 		case 'recommendation':
 			return recommendationsApi as unknown as GeneralizedApiResourceSpec;
-		case 'stock':
-			return stocksApi as unknown as GeneralizedApiResourceSpec;
-		case 'stock_order':
-			return stockOrdersApi as unknown as GeneralizedApiResourceSpec;
-		case 'stock_price':
-			return stockPricesApi as unknown as GeneralizedApiResourceSpec;
 		case 'stripe_customer':
 			return stripeCustomersApi as unknown as GeneralizedApiResourceSpec;
 		case 'stripe_financial_connection_account':

@@ -11,6 +11,7 @@ import { useCreateAlpacaOrderMutation } from '@wallot/react/src/features/alpacaO
 import { useCreateAlpacaPositionMutation } from '@wallot/react/src/features/alpacaPositions';
 import { useCreateAlphaVantageCompanyMutation } from '@wallot/react/src/features/alphaVantageCompanies';
 import { useCreateAlphaVantageStockPriceMutation } from '@wallot/react/src/features/alphaVantageStockPrices';
+import { useCreateAssetMutation } from '@wallot/react/src/features/assets';
 import { useCreateAuthCredentialMutation } from '@wallot/react/src/features/authCredentials';
 import { useCreateBankAccountMutation } from '@wallot/react/src/features/bankAccounts';
 import { useCreateEquityAccountMutation } from '@wallot/react/src/features/equityAccounts';
@@ -28,9 +29,6 @@ import { useCreateParameterMutation } from '@wallot/react/src/features/parameter
 import { useCreatePaymentMethodMutation } from '@wallot/react/src/features/paymentMethods';
 import { useCreatePositionMutation } from '@wallot/react/src/features/positions';
 import { useCreateRecommendationMutation } from '@wallot/react/src/features/recommendations';
-import { useCreateStockMutation } from '@wallot/react/src/features/stocks';
-import { useCreateStockOrderMutation } from '@wallot/react/src/features/stockOrders';
-import { useCreateStockPriceMutation } from '@wallot/react/src/features/stockPrices';
 import { useCreateStripeCustomerMutation } from '@wallot/react/src/features/stripeCustomers';
 import { useCreateStripeFinancialConnectionAccountMutation } from '@wallot/react/src/features/stripeFinancialConnectionAccounts';
 import { useCreateStripeFinancialConnectionSessionMutation } from '@wallot/react/src/features/stripeFinancialConnectionSessions';
@@ -54,6 +52,7 @@ const createOperationMutationMap = {
 	alpaca_position: useCreateAlpacaPositionMutation,
 	alpha_vantage_company: useCreateAlphaVantageCompanyMutation,
 	alpha_vantage_stock_price: useCreateAlphaVantageStockPriceMutation,
+	asset: useCreateAssetMutation,
 	auth_credential: useCreateAuthCredentialMutation,
 	bank_account: useCreateBankAccountMutation,
 	equity_account: useCreateEquityAccountMutation,
@@ -71,9 +70,6 @@ const createOperationMutationMap = {
 	payment_method: useCreatePaymentMethodMutation,
 	position: useCreatePositionMutation,
 	recommendation: useCreateRecommendationMutation,
-	stock: useCreateStockMutation,
-	stock_order: useCreateStockOrderMutation,
-	stock_price: useCreateStockPriceMutation,
 	stripe_customer: useCreateStripeCustomerMutation,
 	stripe_financial_connection_account:
 		useCreateStripeFinancialConnectionAccountMutation,

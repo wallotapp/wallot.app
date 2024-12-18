@@ -55,6 +55,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "asset",
+			"name_plural": "assets",
+			"id_prefix": "ast",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "cred",
 			"name_plural": "auth_credentials",
 			"name_singular": "auth_credential",

@@ -11,6 +11,7 @@ import { useUpdateAlpacaOrderMutation } from '@wallot/react/src/features/alpacaO
 import { useUpdateAlpacaPositionMutation } from '@wallot/react/src/features/alpacaPositions';
 import { useUpdateAlphaVantageCompanyMutation } from '@wallot/react/src/features/alphaVantageCompanies';
 import { useUpdateAlphaVantageStockPriceMutation } from '@wallot/react/src/features/alphaVantageStockPrices';
+import { useUpdateAssetMutation } from '@wallot/react/src/features/assets';
 import { useUpdateAuthCredentialMutation } from '@wallot/react/src/features/authCredentials';
 import { useUpdateBankAccountMutation } from '@wallot/react/src/features/bankAccounts';
 import { useUpdateEquityAccountMutation } from '@wallot/react/src/features/equityAccounts';
@@ -28,9 +29,6 @@ import { useUpdateParameterMutation } from '@wallot/react/src/features/parameter
 import { useUpdatePaymentMethodMutation } from '@wallot/react/src/features/paymentMethods';
 import { useUpdatePositionMutation } from '@wallot/react/src/features/positions';
 import { useUpdateRecommendationMutation } from '@wallot/react/src/features/recommendations';
-import { useUpdateStockMutation } from '@wallot/react/src/features/stocks';
-import { useUpdateStockOrderMutation } from '@wallot/react/src/features/stockOrders';
-import { useUpdateStockPriceMutation } from '@wallot/react/src/features/stockPrices';
 import { useUpdateStripeCustomerMutation } from '@wallot/react/src/features/stripeCustomers';
 import { useUpdateStripeFinancialConnectionAccountMutation } from '@wallot/react/src/features/stripeFinancialConnectionAccounts';
 import { useUpdateStripeFinancialConnectionSessionMutation } from '@wallot/react/src/features/stripeFinancialConnectionSessions';
@@ -54,6 +52,7 @@ const updateOperationMutationMap = {
 	alpaca_position: useUpdateAlpacaPositionMutation,
 	alpha_vantage_company: useUpdateAlphaVantageCompanyMutation,
 	alpha_vantage_stock_price: useUpdateAlphaVantageStockPriceMutation,
+	asset: useUpdateAssetMutation,
 	auth_credential: useUpdateAuthCredentialMutation,
 	bank_account: useUpdateBankAccountMutation,
 	equity_account: useUpdateEquityAccountMutation,
@@ -71,9 +70,6 @@ const updateOperationMutationMap = {
 	payment_method: useUpdatePaymentMethodMutation,
 	position: useUpdatePositionMutation,
 	recommendation: useUpdateRecommendationMutation,
-	stock: useUpdateStockMutation,
-	stock_order: useUpdateStockOrderMutation,
-	stock_price: useUpdateStockPriceMutation,
 	stripe_customer: useUpdateStripeCustomerMutation,
 	stripe_financial_connection_account:
 		useUpdateStripeFinancialConnectionAccountMutation,

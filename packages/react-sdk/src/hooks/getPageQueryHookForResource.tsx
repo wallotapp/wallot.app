@@ -13,6 +13,7 @@ import { useQueryAlpacaOrderPage } from '@wallot/react/src/features/alpacaOrders
 import { useQueryAlpacaPositionPage } from '@wallot/react/src/features/alpacaPositions';
 import { useQueryAlphaVantageCompanyPage } from '@wallot/react/src/features/alphaVantageCompanies';
 import { useQueryAlphaVantageStockPricePage } from '@wallot/react/src/features/alphaVantageStockPrices';
+import { useQueryAssetPage } from '@wallot/react/src/features/assets';
 import { useQueryAuthCredentialPage } from '@wallot/react/src/features/authCredentials';
 import { useQueryBankAccountPage } from '@wallot/react/src/features/bankAccounts';
 import { useQueryEquityAccountPage } from '@wallot/react/src/features/equityAccounts';
@@ -30,9 +31,6 @@ import { useQueryParameterPage } from '@wallot/react/src/features/parameters';
 import { useQueryPaymentMethodPage } from '@wallot/react/src/features/paymentMethods';
 import { useQueryPositionPage } from '@wallot/react/src/features/positions';
 import { useQueryRecommendationPage } from '@wallot/react/src/features/recommendations';
-import { useQueryStockPage } from '@wallot/react/src/features/stocks';
-import { useQueryStockOrderPage } from '@wallot/react/src/features/stockOrders';
-import { useQueryStockPricePage } from '@wallot/react/src/features/stockPrices';
 import { useQueryStripeCustomerPage } from '@wallot/react/src/features/stripeCustomers';
 import { useQueryStripeFinancialConnectionAccountPage } from '@wallot/react/src/features/stripeFinancialConnectionAccounts';
 import { useQueryStripeFinancialConnectionSessionPage } from '@wallot/react/src/features/stripeFinancialConnectionSessions';
@@ -56,6 +54,7 @@ const queryHookMap = {
 	alpaca_position: useQueryAlpacaPositionPage,
 	alpha_vantage_company: useQueryAlphaVantageCompanyPage,
 	alpha_vantage_stock_price: useQueryAlphaVantageStockPricePage,
+	asset: useQueryAssetPage,
 	auth_credential: useQueryAuthCredentialPage,
 	bank_account: useQueryBankAccountPage,
 	equity_account: useQueryEquityAccountPage,
@@ -73,9 +72,6 @@ const queryHookMap = {
 	payment_method: useQueryPaymentMethodPage,
 	position: useQueryPositionPage,
 	recommendation: useQueryRecommendationPage,
-	stock: useQueryStockPage,
-	stock_order: useQueryStockOrderPage,
-	stock_price: useQueryStockPricePage,
 	stripe_customer: useQueryStripeCustomerPage,
 	stripe_financial_connection_account:
 		useQueryStripeFinancialConnectionAccountPage,
