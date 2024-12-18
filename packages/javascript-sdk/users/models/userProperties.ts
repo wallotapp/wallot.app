@@ -24,6 +24,7 @@ export type UserCategory = keyof typeof UserCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'activation_reminder_task_id',
 	'stripe_customer',
 	'username',
 ] as const);
@@ -34,6 +35,9 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
+	activation_reminder_task_id: yup.string().min(1).meta({
+		unique_key: true,
+	}),
 	age_range: AgeRangeEnum.getOptionalSchema().default(null).nullable(),
 	alpaca_account: apiYupHelpers
 		.idRef(['alpaca_account'])

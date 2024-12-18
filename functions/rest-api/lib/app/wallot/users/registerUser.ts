@@ -1,3 +1,4 @@
+import { v4 } from 'uuid';
 import {
 	RegisterUserParams,
 	RegisterUserResponse,
@@ -59,9 +60,11 @@ export const registerUser = async ({
 	);
 
 	// Create a USER Firestore document
+	const activationReminderTaskId = v4();
 	const userDoc = usersApi.mergeCreateParams({
 		createParams: {
 			_id: userDocId,
+			activation_reminder_task_id: activationReminderTaskId,
 			category: 'default',
 			name: '',
 			stripe_customer: stripeCustomerDocId,
@@ -133,7 +136,11 @@ export const registerUser = async ({
 		await sendUserWelcomeEmail({ email, username });
 
 		// Schedule onboarding reminder emails for USER
-		await scheduleActivationReminderEmailsForUser({ email, username });
+		await scheduleActivationReminderEmailsForUser({
+			activationReminderTaskId,
+			email,
+			username,
+		});
 	};
 
 	return {
