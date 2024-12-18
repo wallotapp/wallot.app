@@ -57,6 +57,7 @@ const properties = {
 		.meta({ unique_key: true }),
 	username: yup
 		.string()
+		.min(1)
 		.test({
 			message: '${path} is not a valid username',
 			name: 'isUsername',
@@ -66,11 +67,14 @@ const properties = {
 } as const;
 type U = typeof properties;
 
-export const usersApi = getApiResourceSpec<keyof U, U, T>({
-	createParamsRequiredFieldEnum,
-	idPrefix: idPrefixByResourceName[_object],
+export const usersApi = {
+	...getApiResourceSpec<keyof U, U, T>({
+		createParamsRequiredFieldEnum,
+		idPrefix: idPrefixByResourceName[_object],
+		properties,
+	} as const),
 	properties,
-} as const);
+};
 export type User = yup.InferType<typeof usersApi.apiResourceJsonSchema>;
 export type CreateUserParams = CreateParams<User, T>;
 export type UpdateUserParams = UpdateParams<User>;
