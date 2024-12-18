@@ -29,6 +29,7 @@ import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { FiChevronRight } from 'react-icons/fi';
 import Link from 'next/link';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
+import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -120,7 +121,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const formStatus =
 		formState.isSubmitting || isRegisterUserRunning ? 'running' : 'idle';
 	const isFormSubmitting = formStatus === 'running';
-	const fieldProps: LiteFormFieldProps<RegisterUserParams>[] = [
+	const fields: LiteFormFieldProps<RegisterUserParams>[] = [
 		{
 			fieldKey: 'username' as const,
 			renderTooltipContent: () => (
@@ -218,8 +219,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 				>
 					<form onSubmit={handleSubmit(onSubmit) as () => void}>
 						<div>
-							{fieldProps.map(() => (
-								<div />
+							{fields.map((fieldProps) => (
+								<LiteFormFieldContainer key={fieldProps.fieldKey} {...fieldProps} />
 							))}
 						</div>
 						<div className='mt-4 text-right w-full'>
