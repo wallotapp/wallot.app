@@ -135,7 +135,7 @@ export const registerUser = async ({
 		// Send welcome email to USER
 		await sendWelcomeEmail({ email, username });
 
-		// Schedule onboarding reminder emails for USER
+		// Schedule activation reminder emails for USER
 		await scheduleActivationReminderEmails({
 			activationReminderTaskId,
 			email,
