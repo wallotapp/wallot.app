@@ -10,6 +10,7 @@ import {
 import {
 	RegisterUserParams,
 	SsoWebAppRouteQueryParams,
+	getSsoWebAppRoute,
 	registerUserSchema,
 } from '@wallot/js';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
@@ -23,6 +24,8 @@ import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useRegisterUserMutation } from '@wallot/react/src/features/users';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
+import { FiChevronRight } from 'react-icons/fi';
+import Link from 'next/link';
 
 const registerUserFieldProps = [
 	{
@@ -201,23 +204,35 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						'md:w-[28rem]',
 					)}
 				>
-					<div>
-						<p className='text-2xl font-bold'>Create your account</p>
+					<div className='absolute top-12 flex justify-center mb-8 space-x-5'>
+						<div className='w-16 h-2 rounded-md bg-brand'></div>
+						<div className='w-16 h-2 rounded-md bg-gray-200'></div>
 					</div>
-					<div className='mt-4'>
+					<div className='text-center max-w-[75%] mx-auto'>
+						<div className=''>
+							<p className='font-semibold text-xl'>Welcome to the community</p>
+						</div>
+						<div className='mt-1 text-center'>
+							<p className='text-gray-400 text-base'>
+								Enter a username, email and password to create a free account
+							</p>
+						</div>
+					</div>
+
+					<div className={cn('mt-4 w-full', 'md:w-80')}>
 						<form onSubmit={handleSubmit(onSubmit) as () => void}>
 							<div>
 								{registerUserFieldProps.map(
-									({ fieldKey, label, placeholder }) => {
+									({ fieldKey, label, placeholder }, idx) => {
 										const fieldErrorMessage = formState.errors[fieldKey]
 											? formState.errors[fieldKey].message ?? ''
 											: '';
 										return (
-											<div className='mt-2' key={fieldKey}>
+											<div className={cn(idx && 'mt-2.5')} key={fieldKey}>
 												<div>
-													<Label className='text-xs'>{label}</Label>
+													<Label className='text-base'>{label}</Label>
 												</div>
-												<div>
+												<div className='mt-0.5'>
 													<Input
 														className='h-8 text-xs'
 														type='text'
@@ -236,10 +251,58 @@ const Page: NextPage<PageStaticProps> = (props) => {
 									},
 								)}
 							</div>
-							<div className='mt-4 text-right'>
-								<SubmitButton isSubmitting={isFormSubmitting} />
+							<div className='mt-4 text-right w-full'>
+								<SubmitButton
+									className='w-full'
+									isSubmitting={isFormSubmitting}
+								/>
+							</div>
+							<div className='text-center mt-5 mx-auto'>
+								<p className='text-gray-400 text-sm'>
+									By clicking continue, you agree to our{' '}
+									<Link
+										href='https://wallot.app/terms'
+										rel='noopener noreferrer'
+										target='_blank'
+									>
+										<span className='underline'>Terms of Service</span>
+									</Link>{' '}
+									and{' '}
+									<Link
+										href='https://wallot.app/privacy'
+										rel='noopener noreferrer'
+										target='_blank'
+									>
+										<span className='underline'>Privacy Policy</span>
+									</Link>
+								</p>
 							</div>
 						</form>
+					</div>
+				</div>
+				<div className='flex flex-col items-center justify-center w-fit py-16 px-8 mx-auto'>
+					<div>
+						<Link
+							href={getSsoWebAppRoute({
+								routeStaticId: 'SSO_WEB_APP__/INDEX',
+								origin: null,
+								includeOrigin: false,
+								queryParams: {},
+							})}
+						>
+							<div
+								className={cn(
+									'flex items-center space-x-0.5 cursor-pointer',
+									'text-gray-600',
+									'text-base',
+								)}
+							>
+								<p className='font-medium text-base text-brand-light'>
+									Have an account? Login
+								</p>
+								<FiChevronRight className='mt-0.5 stroke-[3px] text-brand-light' />
+							</div>
+						</Link>
 					</div>
 				</div>
 			</div>

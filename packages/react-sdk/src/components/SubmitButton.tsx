@@ -24,7 +24,7 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
 							<div
 								className={cn(
 									'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
-									'border-t-[#7F43D7] border-r-[#7F43D7] border-b-[#7F43D7]',
+									'border-t-brand border-r-brand border-b-brand',
 								)}
 							></div>
 						</div>
