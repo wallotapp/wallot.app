@@ -12,6 +12,7 @@ import { FunctionResponse } from '@wallot/node';
 import { auth, db } from '../../../services.js';
 import { siteOriginByTarget } from '../../../variables.js';
 import { createStripeCustomer } from '../../stripe/customers/createStripeCustomer.js';
+import { sendUserWelcomeEmail } from './sendUserWelcomeEmail.js';
 
 export const registerUser = async ({
 	email,
@@ -127,7 +128,8 @@ export const registerUser = async ({
 
 	// Construct the post-response callback
 	const onFinished = async () => {
-		return Promise.resolve();
+		// Send welcome email to USER
+		await sendUserWelcomeEmail({ email, username });
 	};
 
 	return {
