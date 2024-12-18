@@ -26,6 +26,7 @@ import { useRegisterUserMutation } from '@wallot/react/src/features/users';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { FiChevronRight } from 'react-icons/fi';
 import Link from 'next/link';
+import { BaseComponentWithChildren } from 'ergonomic-react/src/types/BaseComponentTypes';
 
 const registerUserFieldProps = [
 	{
@@ -60,6 +61,48 @@ export const FormFieldError: React.FC<{
 			<p className='font-semibold text-red-700 text-xs'>
 				{fieldErrorMessage.toString()}
 			</p>
+		</div>
+	);
+};
+
+type OnboardingCardProps = BaseComponentWithChildren & {
+	step: 0 | 1;
+	subtitle: string;
+	title: string;
+};
+const OnboardingCard: React.FC<OnboardingCardProps> = ({
+	children,
+	step,
+	subtitle,
+	title,
+}) => {
+	return (
+		<div
+			className={cn(
+				'bg-white border border-gray-200 rounded-md shadow-lg flex flex-col items-center justify-evenly pt-24 pb-14 px-8 mx-auto relative',
+				'w-full',
+				'md:w-[28rem]',
+			)}
+		>
+			<div className='absolute top-12 flex justify-center mb-8 space-x-5'>
+				<div className='w-16 h-2 rounded-md bg-brand'></div>
+				<div
+					className={cn(
+						'w-16 h-2 rounded-md',
+						step === 0 ? 'bg-gray-200' : 'bg-brand',
+					)}
+				></div>
+			</div>
+			<div className='text-center max-w-[75%] mx-auto'>
+				<div className=''>
+					<p className='font-semibold text-xl'>{title}</p>
+				</div>
+				<div className='mt-1 text-center'>
+					<p className='text-gray-400 text-base'>{subtitle}</p>
+				</div>
+			</div>
+
+			<div className={cn('mt-4 w-full', 'md:w-80')}>{children}</div>
 		</div>
 	);
 };
@@ -197,89 +240,70 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</div>
 					)}
 				</div>
-				<div
-					className={cn(
-						'bg-white border border-gray-200 rounded-md shadow-lg flex flex-col items-center justify-evenly pt-24 pb-14 px-8 mx-auto relative',
-						'w-full',
-						'md:w-[28rem]',
-					)}
+				<OnboardingCard
+					step={0}
+					subtitle='Enter a username, email and password to create a free account'
+					title='Welcome to the community'
 				>
-					<div className='absolute top-12 flex justify-center mb-8 space-x-5'>
-						<div className='w-16 h-2 rounded-md bg-brand'></div>
-						<div className='w-16 h-2 rounded-md bg-gray-200'></div>
-					</div>
-					<div className='text-center max-w-[75%] mx-auto'>
-						<div className=''>
-							<p className='font-semibold text-xl'>Welcome to the community</p>
+					<form onSubmit={handleSubmit(onSubmit) as () => void}>
+						<div>
+							{registerUserFieldProps.map(
+								({ fieldKey, label, placeholder }, idx) => {
+									const fieldErrorMessage = formState.errors[fieldKey]
+										? formState.errors[fieldKey].message ?? ''
+										: '';
+									return (
+										<div className={cn(idx && 'mt-2.5')} key={fieldKey}>
+											<div>
+												<Label className='text-base'>{label}</Label>
+											</div>
+											<div className='mt-0.5'>
+												<Input
+													className='h-8 text-xs'
+													type='text'
+													placeholder={placeholder}
+													{...register(fieldKey)}
+												/>
+											</div>
+											<div>
+												<FormFieldError
+													className='my-1'
+													fieldErrorMessage={fieldErrorMessage}
+												/>
+											</div>
+										</div>
+									);
+								},
+							)}
 						</div>
-						<div className='mt-1 text-center'>
-							<p className='text-gray-400 text-base'>
-								Enter a username, email and password to create a free account
+						<div className='mt-4 text-right w-full'>
+							<SubmitButton
+								className='w-full'
+								isSubmitting={isFormSubmitting}
+							/>
+						</div>
+						<div className='text-center mt-5 mx-auto'>
+							<p className='text-gray-400 text-sm'>
+								By clicking continue, you agree to our{' '}
+								<Link
+									href='https://wallot.app/terms'
+									rel='noopener noreferrer'
+									target='_blank'
+								>
+									<span className='underline'>Terms of Service</span>
+								</Link>{' '}
+								and{' '}
+								<Link
+									href='https://wallot.app/privacy'
+									rel='noopener noreferrer'
+									target='_blank'
+								>
+									<span className='underline'>Privacy Policy</span>
+								</Link>
 							</p>
 						</div>
-					</div>
-
-					<div className={cn('mt-4 w-full', 'md:w-80')}>
-						<form onSubmit={handleSubmit(onSubmit) as () => void}>
-							<div>
-								{registerUserFieldProps.map(
-									({ fieldKey, label, placeholder }, idx) => {
-										const fieldErrorMessage = formState.errors[fieldKey]
-											? formState.errors[fieldKey].message ?? ''
-											: '';
-										return (
-											<div className={cn(idx && 'mt-2.5')} key={fieldKey}>
-												<div>
-													<Label className='text-base'>{label}</Label>
-												</div>
-												<div className='mt-0.5'>
-													<Input
-														className='h-8 text-xs'
-														type='text'
-														placeholder={placeholder}
-														{...register(fieldKey)}
-													/>
-												</div>
-												<div>
-													<FormFieldError
-														className='my-1'
-														fieldErrorMessage={fieldErrorMessage}
-													/>
-												</div>
-											</div>
-										);
-									},
-								)}
-							</div>
-							<div className='mt-4 text-right w-full'>
-								<SubmitButton
-									className='w-full'
-									isSubmitting={isFormSubmitting}
-								/>
-							</div>
-							<div className='text-center mt-5 mx-auto'>
-								<p className='text-gray-400 text-sm'>
-									By clicking continue, you agree to our{' '}
-									<Link
-										href='https://wallot.app/terms'
-										rel='noopener noreferrer'
-										target='_blank'
-									>
-										<span className='underline'>Terms of Service</span>
-									</Link>{' '}
-									and{' '}
-									<Link
-										href='https://wallot.app/privacy'
-										rel='noopener noreferrer'
-										target='_blank'
-									>
-										<span className='underline'>Privacy Policy</span>
-									</Link>
-								</p>
-							</div>
-						</form>
-					</div>
-				</div>
+					</form>
+				</OnboardingCard>
 				<div className='flex flex-col items-center justify-center w-fit py-16 px-8 mx-auto'>
 					<div>
 						<Link
