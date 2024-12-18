@@ -24,7 +24,7 @@ export const useCreateOpenAiModelFamilyMutation = (
 			onSuccess: (data: CreateOpenAiModelFamilyMutationData) => {
 				console.log('Create operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

@@ -21,6 +21,6 @@ export const useUpdateModelFamilyMutation = (
 		onSuccess: (data: UpdateModelFamilyMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

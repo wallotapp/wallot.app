@@ -21,6 +21,6 @@ export const useUpdateParameterMutation = (
 		onSuccess: (data: UpdateParameterMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

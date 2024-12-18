@@ -24,7 +24,7 @@ export const useUpdateAuthCredentialMutation = (
 			onSuccess: (data: UpdateAuthCredentialMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

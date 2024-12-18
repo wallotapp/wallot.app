@@ -24,7 +24,7 @@ export const useUpdateAlpacaAchRelationshipMutation = (
 			onSuccess: (data: UpdateAlpacaAchRelationshipMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

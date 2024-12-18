@@ -24,7 +24,7 @@ export const useUpdateAlpacaPositionMutation = (
 			onSuccess: (data: UpdateAlpacaPositionMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

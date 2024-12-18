@@ -24,7 +24,7 @@ export const useUpdateOpenAiRecommendationMutation = (
 			onSuccess: (data: UpdateOpenAiRecommendationMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

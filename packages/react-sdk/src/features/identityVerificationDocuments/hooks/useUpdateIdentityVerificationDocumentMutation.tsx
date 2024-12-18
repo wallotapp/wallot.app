@@ -24,7 +24,7 @@ export const useUpdateIdentityVerificationDocumentMutation = (
 			onSuccess: (data: UpdateIdentityVerificationDocumentMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

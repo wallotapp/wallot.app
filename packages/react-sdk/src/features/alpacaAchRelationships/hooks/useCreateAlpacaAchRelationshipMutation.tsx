@@ -24,7 +24,7 @@ export const useCreateAlpacaAchRelationshipMutation = (
 			onSuccess: (data: CreateAlpacaAchRelationshipMutationData) => {
 				console.log('Create operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

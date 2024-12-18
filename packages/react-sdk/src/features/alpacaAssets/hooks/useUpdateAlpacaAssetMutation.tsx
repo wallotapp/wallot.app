@@ -21,6 +21,6 @@ export const useUpdateAlpacaAssetMutation = (
 		onSuccess: (data: UpdateAlpacaAssetMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

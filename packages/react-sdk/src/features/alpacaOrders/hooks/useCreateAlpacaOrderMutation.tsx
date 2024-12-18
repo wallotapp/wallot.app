@@ -21,6 +21,6 @@ export const useCreateAlpacaOrderMutation = (
 		onSuccess: (data: CreateAlpacaOrderMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

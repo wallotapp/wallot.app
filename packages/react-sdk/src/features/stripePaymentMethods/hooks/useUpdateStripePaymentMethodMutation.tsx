@@ -24,7 +24,7 @@ export const useUpdateStripePaymentMethodMutation = (
 			onSuccess: (data: UpdateStripePaymentMethodMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

@@ -21,6 +21,6 @@ export const useCreateLicenseMutation = (
 		onSuccess: (data: CreateLicenseMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

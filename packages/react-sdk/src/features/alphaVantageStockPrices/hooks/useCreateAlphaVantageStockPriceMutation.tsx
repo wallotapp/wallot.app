@@ -24,7 +24,7 @@ export const useCreateAlphaVantageStockPriceMutation = (
 			onSuccess: (data: CreateAlphaVantageStockPriceMutationData) => {
 				console.log('Create operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

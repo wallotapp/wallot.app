@@ -24,7 +24,7 @@ export const useCreateAlpacaAchTransferMutation = (
 			onSuccess: (data: CreateAlpacaAchTransferMutationData) => {
 				console.log('Create operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

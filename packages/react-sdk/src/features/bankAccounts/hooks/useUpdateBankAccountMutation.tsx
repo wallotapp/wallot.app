@@ -21,6 +21,6 @@ export const useUpdateBankAccountMutation = (
 		onSuccess: (data: UpdateBankAccountMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

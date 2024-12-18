@@ -24,7 +24,7 @@ export const useCreateAlphaVantageCompanyMutation = (
 			onSuccess: (data: CreateAlphaVantageCompanyMutationData) => {
 				console.log('Create operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

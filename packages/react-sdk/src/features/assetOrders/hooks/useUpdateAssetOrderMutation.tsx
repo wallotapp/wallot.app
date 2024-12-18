@@ -21,6 +21,6 @@ export const useUpdateAssetOrderMutation = (
 		onSuccess: (data: UpdateAssetOrderMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

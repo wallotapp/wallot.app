@@ -23,7 +23,7 @@ export const useUpdateStripeInvoiceMutation = (
 			onSuccess: (data: UpdateStripeInvoiceMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

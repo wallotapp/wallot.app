@@ -21,6 +21,6 @@ export const useUpdateAlpacaOrderMutation = (
 		onSuccess: (data: UpdateAlpacaOrderMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

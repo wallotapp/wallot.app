@@ -21,6 +21,6 @@ export const useCreateAssetPriceMutation = (
 		onSuccess: (data: CreateAssetPriceMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

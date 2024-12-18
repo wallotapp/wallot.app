@@ -24,7 +24,7 @@ export const useUpdateStripeSubscriptionMutation = (
 			onSuccess: (data: UpdateStripeSubscriptionMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

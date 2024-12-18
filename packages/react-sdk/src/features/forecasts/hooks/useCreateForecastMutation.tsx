@@ -21,6 +21,6 @@ export const useCreateForecastMutation = (
 		onSuccess: (data: CreateForecastMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

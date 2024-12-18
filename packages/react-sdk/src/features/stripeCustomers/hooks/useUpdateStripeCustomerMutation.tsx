@@ -24,7 +24,7 @@ export const useUpdateStripeCustomerMutation = (
 			onSuccess: (data: UpdateStripeCustomerMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

@@ -24,7 +24,7 @@ export const useUpdateAlphaVantageStockPriceMutation = (
 			onSuccess: (data: UpdateAlphaVantageStockPriceMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

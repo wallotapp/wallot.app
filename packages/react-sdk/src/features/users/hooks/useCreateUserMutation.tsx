@@ -21,6 +21,6 @@ export const useCreateUserMutation = (
 		onSuccess: (data: CreateUserMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

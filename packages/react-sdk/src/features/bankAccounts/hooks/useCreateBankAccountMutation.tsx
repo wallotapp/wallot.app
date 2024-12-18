@@ -21,6 +21,6 @@ export const useCreateBankAccountMutation = (
 		onSuccess: (data: CreateBankAccountMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

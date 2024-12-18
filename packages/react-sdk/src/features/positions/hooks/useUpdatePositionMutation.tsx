@@ -21,6 +21,6 @@ export const useUpdatePositionMutation = (
 		onSuccess: (data: UpdatePositionMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

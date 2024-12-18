@@ -21,6 +21,6 @@ export const useCreateAssetMutation = (
 		onSuccess: (data: CreateAssetMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

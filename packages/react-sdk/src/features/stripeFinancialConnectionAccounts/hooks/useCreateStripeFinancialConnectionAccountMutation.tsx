@@ -24,7 +24,7 @@ export const useCreateStripeFinancialConnectionAccountMutation = (
 			onSuccess: (data: CreateStripeFinancialConnectionAccountMutationData) => {
 				console.log('Create operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

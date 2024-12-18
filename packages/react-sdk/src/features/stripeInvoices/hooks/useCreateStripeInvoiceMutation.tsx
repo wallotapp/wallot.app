@@ -23,7 +23,7 @@ export const useCreateStripeInvoiceMutation = (
 			onSuccess: (data: CreateStripeInvoiceMutationData) => {
 				console.log('Create operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

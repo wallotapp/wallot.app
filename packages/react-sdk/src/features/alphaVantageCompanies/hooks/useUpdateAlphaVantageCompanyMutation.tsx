@@ -24,7 +24,7 @@ export const useUpdateAlphaVantageCompanyMutation = (
 			onSuccess: (data: UpdateAlphaVantageCompanyMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

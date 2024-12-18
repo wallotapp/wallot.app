@@ -21,6 +21,6 @@ export const useUpdateUserMutation = (
 		onSuccess: (data: UpdateUserMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

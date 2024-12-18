@@ -23,7 +23,7 @@ export const useCreateEquityAccountMutation = (
 			onSuccess: (data: CreateEquityAccountMutationData) => {
 				console.log('Create operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

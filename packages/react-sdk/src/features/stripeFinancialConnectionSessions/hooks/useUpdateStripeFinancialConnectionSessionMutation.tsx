@@ -24,7 +24,7 @@ export const useUpdateStripeFinancialConnectionSessionMutation = (
 			onSuccess: (data: UpdateStripeFinancialConnectionSessionMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

@@ -24,7 +24,7 @@ export const useCreateAlpacaPositionMutation = (
 			onSuccess: (data: CreateAlpacaPositionMutationData) => {
 				console.log('Create operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

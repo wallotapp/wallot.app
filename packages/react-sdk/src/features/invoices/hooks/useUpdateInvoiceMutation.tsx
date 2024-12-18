@@ -21,6 +21,6 @@ export const useUpdateInvoiceMutation = (
 		onSuccess: (data: UpdateInvoiceMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

@@ -24,7 +24,7 @@ export const useCreateIdentityVerificationDocumentMutation = (
 			onSuccess: (data: CreateIdentityVerificationDocumentMutationData) => {
 				console.log('Create operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

@@ -21,6 +21,6 @@ export const useUpdateAssetMutation = (
 		onSuccess: (data: UpdateAssetMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

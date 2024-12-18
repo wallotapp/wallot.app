@@ -21,6 +21,6 @@ export const useUpdateAssetPriceMutation = (
 		onSuccess: (data: UpdateAssetPriceMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

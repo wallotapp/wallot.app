@@ -21,6 +21,6 @@ export const useCreateModelFamilyMutation = (
 		onSuccess: (data: CreateModelFamilyMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

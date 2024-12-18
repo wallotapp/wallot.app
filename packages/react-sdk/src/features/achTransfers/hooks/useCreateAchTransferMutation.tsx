@@ -21,6 +21,6 @@ export const useCreateAchTransferMutation = (
 		onSuccess: (data: CreateAchTransferMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

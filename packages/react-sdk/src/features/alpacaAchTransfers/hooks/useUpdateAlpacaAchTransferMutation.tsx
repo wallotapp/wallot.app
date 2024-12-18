@@ -24,7 +24,7 @@ export const useUpdateAlpacaAchTransferMutation = (
 			onSuccess: (data: UpdateAlpacaAchTransferMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

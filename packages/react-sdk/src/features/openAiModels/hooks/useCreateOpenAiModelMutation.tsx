@@ -21,6 +21,6 @@ export const useCreateOpenAiModelMutation = (
 		onSuccess: (data: CreateOpenAiModelMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

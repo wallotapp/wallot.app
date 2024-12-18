@@ -24,7 +24,7 @@ export const useCreateStripePaymentMethodMutation = (
 			onSuccess: (data: CreateStripePaymentMethodMutationData) => {
 				console.log('Create operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

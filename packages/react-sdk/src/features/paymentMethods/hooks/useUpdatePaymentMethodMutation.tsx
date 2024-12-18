@@ -23,7 +23,7 @@ export const useUpdatePaymentMethodMutation = (
 			onSuccess: (data: UpdatePaymentMethodMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

@@ -21,6 +21,6 @@ export const useCreateNewsReportMutation = (
 		onSuccess: (data: CreateNewsReportMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

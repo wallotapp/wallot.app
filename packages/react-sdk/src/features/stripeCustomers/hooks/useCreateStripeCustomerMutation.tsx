@@ -24,7 +24,7 @@ export const useCreateStripeCustomerMutation = (
 			onSuccess: (data: CreateStripeCustomerMutationData) => {
 				console.log('Create operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

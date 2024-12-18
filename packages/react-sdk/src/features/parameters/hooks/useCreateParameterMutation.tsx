@@ -21,6 +21,6 @@ export const useCreateParameterMutation = (
 		onSuccess: (data: CreateParameterMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

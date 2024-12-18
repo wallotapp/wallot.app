@@ -23,7 +23,7 @@ export const useUpdateAlpacaAccountMutation = (
 			onSuccess: (data: UpdateAlpacaAccountMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

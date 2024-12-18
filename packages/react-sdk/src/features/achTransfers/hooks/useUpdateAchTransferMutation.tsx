@@ -21,6 +21,6 @@ export const useUpdateAchTransferMutation = (
 		onSuccess: (data: UpdateAchTransferMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };
