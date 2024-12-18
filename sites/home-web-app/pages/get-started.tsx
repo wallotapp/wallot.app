@@ -170,7 +170,6 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							<SubmitButton
 								className='w-full'
 								isSubmitting={isFormSubmitting}
-								text='Activate Account'
 							/>
 						</div>
 						{Boolean(formState.errors['root']?.message) && (
