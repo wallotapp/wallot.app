@@ -211,6 +211,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 													type='text'
 													placeholder={placeholder}
 													{...register(fieldKey)}
+													disabled={isFormSubmitting}
 												/>
 											</div>
 											<div>
