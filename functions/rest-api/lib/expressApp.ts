@@ -54,11 +54,11 @@ app.post(
 		corsPolicy(
 			req,
 			res,
-			createRouterFunction(auth, db, secrets)(registerUser, { requiresAuth: false })(
-				req,
-				res,
-				next,
-			),
+			createRouterFunction(
+				auth,
+				db,
+				secrets,
+			)(registerUser, { requiresAuth: false })(req, res, next),
 		);
 	},
 );
