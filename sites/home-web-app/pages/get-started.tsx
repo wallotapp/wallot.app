@@ -66,33 +66,23 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					title: 'Error',
 					description: message,
 				});
+        setError('root', {
+          type: 'manual',
+          message: 'An error occurred. Please try again.',
+        });
+
+        // Reset form
+        reset();
 			},
 			onSuccess: async ({ redirect_url: redirectUrl }) => {
-				try {
-					// Show success toast
-					toast({
-						title: 'Success',
-						description: 'Your account has been created.',
-					});
+        // Show success toast
+        toast({
+          title: 'Success',
+          description: 'Personalizing your experience...',
+        });
 
-					// Redirect to next page
-					await router.push(redirectUrl);
-				} catch (err) {
-					console.error('Error:', err);
-					toast({
-						title: 'Error',
-						description: 'An error occurred. Please try again.',
-					});
-
-					// Reset form
-					reset();
-
-					// Set error
-					setError('root', {
-						type: 'manual',
-						message: 'An error occurred. Please try again.',
-					});
-				}
+        // Redirect to next page
+        await router.push(redirectUrl);
 			},
 		});
 
