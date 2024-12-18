@@ -1,5 +1,6 @@
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { FirebaseUserCustomTokenResponse } from 'ergonomic';
+import { FunctionResponse } from '@wallot/node';
 import { auth } from '../../../services.js';
 
 /**
@@ -16,16 +17,16 @@ import { auth } from '../../../services.js';
  * @param {Record<string, never>} _params None
  * @param {Record<string, never>} _query None
  * @param {FirebaseUser | null} firebaseUser The Firebase user.
- * @returns {Promise<FirebaseUserCustomTokenResponse>} The custom token for the user.
+ * @returns {Promise<FunctionResponse<FirebaseUserCustomTokenResponse>>} The custom token for the user.
  */
 export const createFirebaseAuthCustomToken = async (
 	_body: Record<string, never>,
 	_params: Record<string, never>,
 	_query: Record<string, never>,
 	firebaseUser: FirebaseUser | null,
-): Promise<FirebaseUserCustomTokenResponse> => {
+): Promise<FunctionResponse<FirebaseUserCustomTokenResponse>> => {
 	if (!firebaseUser) throw new Error('Unauthorized');
 
 	const customToken = await auth.createCustomToken(firebaseUser.uid);
-	return { custom_token: customToken };
+	return { json: { custom_token: customToken } };
 };

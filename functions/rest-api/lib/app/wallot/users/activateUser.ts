@@ -10,6 +10,7 @@ import {
 	recommendationsApi,
 	usersApi,
 } from '@wallot/js';
+import { FunctionResponse } from '@wallot/node';
 import { db } from '../../../services.js';
 import { siteOriginByTarget } from '../../../variables.js';
 import { locateCompatibleParameters } from '../parameters/locateCompatibleParameters.js';
@@ -27,7 +28,7 @@ export const activateUser = async (
 	_query: Record<string, never>,
 	_firebaseUser: FirebaseUser | null,
 	userId: string | null,
-): Promise<ActivateUserResponse> => {
+): Promise<FunctionResponse<ActivateUserResponse>> => {
 	if (!userId) throw new Error('Unauthorized');
 
 	// Initialize a Firestore batch transaction
@@ -103,6 +104,11 @@ export const activateUser = async (
 		routeStaticId: 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM',
 	});
 
+	// Construct the post-response callback
+	const onFinished = async () => {
+		return Promise.resolve();
+	};
+
 	// Construct the redirect URL using ORDER
-	return { redirect_url: redirectUrl };
+	return { json: { redirect_url: redirectUrl }, onFinished };
 };
