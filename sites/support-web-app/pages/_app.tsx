@@ -18,7 +18,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 		<AuthProvider>
 			<RouteStateProvider>
 				<QueryClientProvider client={queryClient}>
-					<ThemeProvider disableTransitionOnChange attribute='class'>
+					<ThemeProvider
+						attribute='class'
+						defaultTheme='light'
+						disableTransitionOnChange
+					>
 						<Elements stripe={stripePromise} options={undefined}>
 							<>
 								<InitializeGoogleAnalytics />
