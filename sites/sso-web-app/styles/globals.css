@@ -10,16 +10,16 @@ body,
 
 @layer base {
 	:root {
-		--background: 210 50% 97%; /* Soft blue-white sheen */
+		--background: 216 2% 98%; /* Soft blue-white sheen */
 		--foreground: 222.2 47.4% 11.2%;
 
 		--muted: 210 40% 94%; /* Slightly more contrast for muted backgrounds */
 		--muted-foreground: 215.4 16.3% 46.9%;
 
-		--popover: 210 50% 97%;
+		--popover: 216 2% 98%;
 		--popover-foreground: 222.2 47.4% 11.2%;
 
-		--card: 210 50% 97%;
+		--card: 216 2% 98%;
 		--card-foreground: 222.2 47.4% 11.2%;
 
 		--border: 213 30% 90%; /* Softer borders that complement the new background */
