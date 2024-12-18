@@ -1,5 +1,7 @@
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { signInWithCustomToken } from 'firebase/auth';
+import { firebaseAuthInstance as auth } from 'ergonomic-react/src/lib/firebase';
 import {
 	PageStaticProps,
 	PageProps,
@@ -8,7 +10,6 @@ import {
 import {
 	RegisterUserParams,
 	SsoWebAppRouteQueryParams,
-	getHomeWebAppRoute,
 	registerUserSchema,
 } from '@wallot/js';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
@@ -17,7 +18,38 @@ import { Input } from 'ergonomic-react/src/components/ui/input';
 import { Label } from 'ergonomic-react/src/components/ui/label';
 import { Button } from 'ergonomic-react/src/components/ui/button';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
-import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
+import { useRegisterUserMutation } from '@wallot/react/src/features/users';
+
+const SubmitButton = ({
+	isSubmitting,
+	text = 'Continue',
+	type = 'submit',
+}: {
+	isSubmitting: boolean;
+	text?: string;
+	type?: 'submit' | 'button';
+}) => {
+	return (
+		<Button disabled={isSubmitting} type={type}>
+			<div>
+				{isSubmitting ? (
+					<>
+						<div className='flex items-center justify-center space-x-2 min-w-16'>
+							<div
+								className={cn(
+									'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
+									'border-t-[#7F43D7] border-r-[#7F43D7] border-b-[#7F43D7]',
+								)}
+							></div>
+						</div>
+					</>
+				) : (
+					<p>{text}</p>
+				)}
+			</div>
+		</Button>
+	);
+};
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -28,18 +60,57 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// Toaster
 	const { toast } = useToast();
 
-	// Site origins
-	const siteOriginByTarget = useSiteOriginByTarget();
-
 	// Form
-	const {
-		formState: { isSubmitting },
-		handleSubmit,
-		register,
-	} = useForm<RegisterUserParams>({
-		defaultValues: registerUserSchema.getDefault(),
-		shouldUnregister: false,
-	});
+	const { formState, handleSubmit, register, reset, setError } =
+		useForm<RegisterUserParams>({
+			defaultValues: registerUserSchema.getDefault(),
+			shouldUnregister: false,
+		});
+
+	// Mutation
+	const { mutate: registerUser, isLoading: isRegisterUserRunning } =
+		useRegisterUserMutation({
+			onError: ({ error: { message } }) => {
+				// Show the error message
+				toast({
+					title: 'Error',
+					description: message,
+				});
+			},
+			onSuccess: async ({
+				custom_token: customToken,
+				redirect_url: redirectUrl,
+			}) => {
+				try {
+					// Log in user
+					await signInWithCustomToken(auth, customToken);
+
+					// Show success toast
+					toast({
+						title: 'Success',
+						description: 'Your account has been created.',
+					});
+
+					// Redirect to next page
+					await router.push(redirectUrl);
+				} catch (err) {
+					console.error('Error:', err);
+					toast({
+						title: 'Error',
+						description: 'An error occurred. Please try again.',
+					});
+
+					// Reset form
+					reset();
+
+					// Set error
+					setError('email', {
+						type: 'manual',
+						message: 'An error occurred. Please try again.',
+					});
+				}
+			},
+		});
 
 	// ==== Constants ==== //
 
@@ -49,6 +120,11 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// Router Query Param Values
 	const _ = query;
 	_;
+
+	// Form
+	const formStatus =
+		formState.isSubmitting || isRegisterUserRunning ? 'running' : 'idle';
+	const isFormSubmitting = formStatus === 'running';
 
 	// ==== Constants ==== //
 
@@ -60,26 +136,17 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		...props,
 		routeId: ROUTE_RUNTIME_ID,
 	};
-	
+
 	// ==== Functions ==== //
-	
+
 	// Form Submit Handler
-	const onSubmit = async (data: RegisterUserParams) => {
+	const onSubmit = (data: RegisterUserParams) => {
+		console.log('Registering user with following data:', data);
 		toast({
-			title: 'Creating your Wallot account...',
-			description: 'This may take a few seconds.',
+			title: 'Creating your account...',
+			description: 'This may take a few moments.',
 		});
-		// Wait 1 second
-		await new Promise((resolve) => setTimeout(resolve, 2500));
-		console.log('Registering user with following data data:', data);
-		const clientToken = 'mock_tk_123';
-		const redirectUrl = getHomeWebAppRoute({
-			includeOrigin: true,
-			origin: siteOriginByTarget.HOME_WEB_APP,
-			queryParams: { client_token: clientToken },
-			routeStaticId: 'HOME_WEB_APP__/GET_STARTED',
-		});
-		await router.push(redirectUrl);
+		registerUser(data);
 	};
 
 	// ==== Render ==== //
@@ -103,24 +170,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 								/>
 							</div>
 							<div className='mt-4 text-right'>
-								<Button disabled={isSubmitting} type='submit'>
-									<div>
-										{isSubmitting ? (
-											<>
-												<div className='flex items-center justify-center space-x-2 min-w-16'>
-													<div
-														className={cn(
-															'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
-															'border-t-[#7F43D7] border-r-[#7F43D7] border-b-[#7F43D7]',
-														)}
-													></div>
-												</div>
-											</>
-										) : (
-											<p>Continue</p>
-										)}
-									</div>
-								</Button>
+								<SubmitButton isSubmitting={isFormSubmitting} />
 							</div>
 						</form>
 					</div>
