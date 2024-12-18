@@ -133,10 +133,12 @@ const mockApiResource: User = {
 	...apiResourceSpec.apiResourceDefaultJson,
 	category: 'default',
 	name: 'My User',
+	activation_reminder_task_id: '...',
 	alpaca_account: '...',
 	investing_goals: [],
 	parameters: [],
 	stripe_customer: '...',
+	username: '...',
 };
 
 // Add routes
