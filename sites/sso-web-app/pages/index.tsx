@@ -6,7 +6,7 @@ import {
 	PageProps,
 	Page as PageComponent,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { SsoWebAppRouteQueryParams } from '@wallot/js/utils/routeDefinitions';
+import { SsoWebAppRouteQueryParams, getSsoWebAppRoute } from '@wallot/js';
 import { SuspensePage } from '@wallot/react/src/components/SuspensePage';
 
 const Page: NextPage<PageStaticProps> = (props) => {
@@ -41,7 +41,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			void (async () => {
 				// Wait 1 second
 				await new Promise((resolve) => setTimeout(resolve, 1000));
-				await router.replace('/register');
+				const registerRoute = getSsoWebAppRoute({
+					includeOrigin: false,
+					origin: null,
+					queryParams: {},
+					routeStaticId: 'SSO_WEB_APP__/REGISTER',
+				});
+				await router.replace(registerRoute);
 			})(),
 		[],
 	);

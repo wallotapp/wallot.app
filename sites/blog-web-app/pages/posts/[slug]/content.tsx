@@ -5,7 +5,7 @@ import {
 	PageStaticProps,
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { BlogWebAppRouteQueryParams } from '@wallot/js/utils/routeDefinitions';
+import { BlogWebAppRouteQueryParams } from '@wallot/js';
 
 // ==== Static Page Props ==== //
 

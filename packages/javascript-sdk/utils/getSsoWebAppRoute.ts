@@ -20,17 +20,12 @@ export const getSsoWebAppRoute = <T extends SsoWebAppRouteStaticId>(
 		return '/';
 	}
 	if (routeStaticId === 'SSO_WEB_APP__/INDEX') {
-		const path = `/`;
+		const path = '/';
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
 	if (routeStaticId === 'SSO_WEB_APP__/REGISTER') {
-		const queryParams =
-			options.queryParams as SsoWebAppRouteQueryParams['SSO_WEB_APP__/REGISTER'];
-		const dest = queryParams.dest;
-		const destQuery = dest ? `dest=${encodeURIComponent(dest)}` : '';
-		const queries = [destQuery].filter(Boolean);
-		const path = `/register${queries.length ? `?${queries.join('&')}` : ''}`;
+		const path = '/register';
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}

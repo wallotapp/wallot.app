@@ -5,7 +5,7 @@ import {
 	PageProps,
 	Page as PageComponent,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { KnowledgeBaseWebAppRouteQueryParams } from '@wallot/js/utils/routeDefinitions';
+import { KnowledgeBaseWebAppRouteQueryParams } from '@wallot/js';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
