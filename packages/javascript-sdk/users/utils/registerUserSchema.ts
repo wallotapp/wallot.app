@@ -1,13 +1,18 @@
 import * as yup from 'yup';
-import { YupHelpers } from 'ergonomic';
+import { Keys, YupHelpers, getFieldSpecByFieldKey } from 'ergonomic';
 import { usernameSchema } from './username.js';
 import { passwordSchema } from './password.js';
 
-export const registerUserSchema = yup.object({
+export const registerUserProperties = {
 	email: YupHelpers.emailAddress().required(),
 	password: passwordSchema().required(),
 	username: usernameSchema().required(),
-} as const);
+} as const;
+export const registerUserSchema = yup.object(registerUserProperties);
+export const registerUserSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
+	registerUserSchema,
+	Keys(registerUserProperties),
+);
 
 export type RegisterUserParams = yup.InferType<typeof registerUserSchema>;
 export type RegisterUserResponse = {

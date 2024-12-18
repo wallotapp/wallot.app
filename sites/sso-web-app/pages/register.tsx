@@ -2,6 +2,7 @@ import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { signInWithCustomToken } from 'firebase/auth';
 import { firebaseAuthInstance as auth } from 'ergonomic-react/src/lib/firebase';
+import { GeneralizedFieldSpec } from 'ergonomic';
 import {
 	PageStaticProps,
 	PageProps,
@@ -12,13 +13,14 @@ import {
 	SsoWebAppRouteQueryParams,
 	getSsoWebAppRoute,
 	registerUserSchema,
+	registerUserSchemaFieldSpecByFieldKey,
 } from '@wallot/js';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
-import { useForm } from 'react-hook-form';
-import { Input } from 'ergonomic-react/src/components/ui/input';
-import { Label } from 'ergonomic-react/src/components/ui/label';
+import { FieldValues, useForm } from 'react-hook-form';
+// import { Input } from 'ergonomic-react/src/components/ui/input';
+// import { Label } from 'ergonomic-react/src/components/ui/label';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
-import { GeneralizedFormFieldError } from 'ergonomic-react/src/features/data/components/GeneralizedFormFieldError';
+// import { GeneralizedFormFieldError } from 'ergonomic-react/src/features/data/components/GeneralizedFormFieldError';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { PlatformLogo } from 'ergonomic-react/src/components/brand/PlatformLogo';
 import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
@@ -28,24 +30,20 @@ import { OnboardingCard } from '@wallot/react/src/components/OnboardingCard';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { FiChevronRight } from 'react-icons/fi';
 import Link from 'next/link';
+import { GeneralizedFormFieldProps } from 'ergonomic-react/src/features/data/types/GeneralizedFormFieldProps';
 
-const registerUserFieldProps = [
-	{
-		fieldKey: 'username' as const,
-		label: 'Username',
-		placeholder: 'e.g. my_username',
-	},
-	{
-		fieldKey: 'email' as const,
-		label: 'Email address',
-		placeholder: 'e.g. me@example.com',
-	},
-	{
-		fieldKey: 'password' as const,
-		label: 'Password',
-		placeholder: '************',
-	},
-];
+type F<TFieldValues extends FieldValues = FieldValues> = Required<
+	Pick<
+		GeneralizedFormFieldProps<TFieldValues, string>,
+		| 'control'
+		| 'fieldErrors'
+		| 'fieldKey'
+		| 'fieldSpec'
+		| 'initialFormData'
+		| 'isSubmitting'
+		| 'setError'
+	>
+>;
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -63,9 +61,10 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	);
 
 	// Form
-	const { formState, handleSubmit, register, reset, setError } =
+	const initialFormData = registerUserSchema.getDefault();
+	const { control, formState, handleSubmit, reset, setError } =
 		useForm<RegisterUserParams>({
-			defaultValues: registerUserSchema.getDefault(),
+			defaultValues: initialFormData,
 			resolver,
 			shouldUnregister: false,
 		});
@@ -160,6 +159,20 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		registerUser(data);
 	};
 
+	const registerUserFieldProps: F<RegisterUserParams>[] = [
+		{
+			control,
+			fieldErrors: formState.errors,
+			fieldKey: 'username' as const,
+			fieldSpec: registerUserSchemaFieldSpecByFieldKey[
+				'username'
+			] as GeneralizedFieldSpec,
+			initialFormData,
+			isSubmitting: isFormSubmitting,
+			setError: (message) => setError('username', { message }),
+		},
+	];
+
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
@@ -195,35 +208,9 @@ const Page: NextPage<PageStaticProps> = (props) => {
 				>
 					<form onSubmit={handleSubmit(onSubmit) as () => void}>
 						<div>
-							{registerUserFieldProps.map(
-								({ fieldKey, label, placeholder }, idx) => {
-									const fieldErrorMessage = formState.errors[fieldKey]
-										? formState.errors[fieldKey].message ?? ''
-										: '';
-									return (
-										<div className={cn(idx && 'mt-2.5')} key={fieldKey}>
-											<div>
-												<Label className='text-base'>{label}</Label>
-											</div>
-											<div className='mt-0.5'>
-												<Input
-													className='h-8 text-xs'
-													type='text'
-													placeholder={placeholder}
-													{...register(fieldKey)}
-													disabled={isFormSubmitting}
-												/>
-											</div>
-											<div>
-												<GeneralizedFormFieldError
-													className='my-1'
-													fieldErrorMessage={fieldErrorMessage}
-												/>
-											</div>
-										</div>
-									);
-								},
-							)}
+							{registerUserFieldProps.map(() => (
+								<div />
+							))}
 						</div>
 						<div className='mt-4 text-right w-full'>
 							<SubmitButton
