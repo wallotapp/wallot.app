@@ -121,7 +121,7 @@ export type SsoWebAppRouteQueryParams = {
 		//
 	};
 	'SSO_WEB_APP__/REGISTER': {
-		//
+		dest?: string | undefined;
 	};
 };
 
