@@ -21,6 +21,24 @@ export const registerUser = async ({
 	password,
 	username,
 }: RegisterUserParams): Promise<FunctionResponse<RegisterUserResponse>> => {
+	// Check that the username is unique
+	const usernameDoc = await db
+		.collection(usersApi.collectionId)
+		.where('username', '==', username)
+		.get();
+	if (!usernameDoc.empty) {
+		throw new Error('Username already exists');
+	}
+
+	// Check that the email is not already registered
+	const emailDoc = await db
+		.collection(authCredentialsApi.collectionId)
+		.where('emails', 'array-contains', email)
+		.get();
+	if (!emailDoc.empty) {
+		throw new Error('Email already registered');
+	}
+
 	// Initialize Firestore document IDs
 	const stripeCustomerDocId = stripeCustomersApi.generateId();
 	const userDocId = usersApi.generateId();
