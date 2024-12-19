@@ -17,7 +17,7 @@ import { locateCompatibleParameters } from '../parameters/locateCompatibleParame
 import { createAssetOrdersFromRecommendation } from '../assetOrders/createAssetOrdersFromRecommendation.js';
 import { createRecommendationForUser } from '../recommendations/createRecommendationForUser.js';
 import { cancelActivationReminderEmails } from './cancelActivationReminderEmails.js';
-import { placeUserInEmailCohort } from './placeUserInEmailCohort.js';
+import { placeUserInEmailCohorts } from './placeUserInEmailCohorts.js';
 import { scheduleOrderCompletionReminderEmail } from './scheduleOrderCompletionReminderEmail.js';
 import { scheduleWeek1RetentionEmail } from './scheduleWeek1RetentionEmail.js';
 
@@ -113,8 +113,8 @@ export const activateUser = async (
 		// Cancel activation reminder emails for USER (if any are remaining)
 		await cancelActivationReminderEmails({ userId });
 
-		// Place USER in email cohort/s best fit for her PARAMETERs
-		await placeUserInEmailCohort({ userId });
+		// Place USER in email cohorts best fit for her PARAMETERs
+		await placeUserInEmailCohorts({ userId });
 
 		// Schedule order completion reminder email for USER
 		await scheduleOrderCompletionReminderEmail({ userId });
