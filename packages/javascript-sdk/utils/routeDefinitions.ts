@@ -5,7 +5,9 @@ export const HomeWebAppRouteStaticIdEnum = getEnum([
 	'HOME_WEB_APP__/ASSETS',
 	'HOME_WEB_APP__/INDEX',
 	'HOME_WEB_APP__/GET_STARTED',
-	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM',
+	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/ASSETS',
+	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CART',
+	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CHECKOUT',
 ]);
 export type HomeWebAppRouteStaticId = EnumMember<
 	typeof HomeWebAppRouteStaticIdEnum
@@ -21,7 +23,15 @@ export type HomeWebAppRouteQueryParams = {
 	'HOME_WEB_APP__/GET_STARTED': {
 		client_token?: string | undefined;
 	};
-	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM': {
+	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/ASSETS': {
+		client_token?: string | undefined;
+		order_id: string | undefined;
+	};
+	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CART': {
+		client_token?: string | undefined;
+		order_id: string | undefined;
+	};
+	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CHECKOUT': {
 		client_token?: string | undefined;
 		order_id: string | undefined;
 	};
