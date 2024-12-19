@@ -1,5 +1,4 @@
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
 	ActivateUserParams,
 	ActivateUserResponse,
