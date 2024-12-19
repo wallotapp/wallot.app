@@ -16,8 +16,7 @@ import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { useForm } from 'react-hook-form';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
-import { PlatformLogo } from 'ergonomic-react/src/components/brand/PlatformLogo';
-import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
+
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useActivateUserMutation } from '@wallot/react/src/features/users';
 import { OnboardingCard } from '@wallot/react/src/components/OnboardingCard';
@@ -173,30 +172,6 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	return (
 		<PageComponent {...pageProps}>
 			<div className={cn('min-h-screen relative', 'px-8 pt-24', 'pb-16')}>
-				<div className='mb-10 flex items-center justify-center'>
-					{OPEN_GRAPH_CONFIG.siteBrandLogoDarkMode &&
-						OPEN_GRAPH_CONFIG.siteBrandLogoLightMode && (
-							<PlatformLogo
-								height={380}
-								size='xl'
-								srcMap={{
-									dark: OPEN_GRAPH_CONFIG.siteBrandLogoDarkMode,
-									light: OPEN_GRAPH_CONFIG.siteBrandLogoLightMode,
-								}}
-								width={2048}
-							/>
-						)}
-					{!(
-						OPEN_GRAPH_CONFIG.siteBrandLogoDarkMode &&
-						OPEN_GRAPH_CONFIG.siteBrandLogoLightMode
-					) && (
-						<div>
-							<p className={cn('text-2xl font-bold', 'lg:text-3xl')}>
-								{OPEN_GRAPH_CONFIG.siteName}
-							</p>
-						</div>
-					)}
-				</div>
 				<OnboardingCard
 					step={1}
 					subtitle='This helps our AI personalize your portfolio recommendations'
