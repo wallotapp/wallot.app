@@ -7,6 +7,11 @@ describe('AssetOrder', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My AssetOrder',
+			alpaca_order: '',
+			asset: '',
+			order: '',
+			position: '',
+			recommendations: [],
 		};
 		expect(exampleAssetOrder).toEqual<typeof exampleAssetOrder>({
 			_id: expect.any(String),
@@ -19,6 +24,11 @@ describe('AssetOrder', () => {
 			_deleted: false,
 			description: '',
 			name: 'My AssetOrder',
+			alpaca_order: '',
+			asset: '',
+			order: '',
+			position: '',
+			recommendations: [],
 		});
 	});
 });

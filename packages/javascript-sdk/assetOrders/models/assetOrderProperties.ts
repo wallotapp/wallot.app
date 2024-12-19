@@ -18,6 +18,8 @@ export type AssetOrderCategory = keyof typeof AssetOrderCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'asset',
+	'order',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -26,8 +28,29 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
+	alpaca_order: apiYupHelpers
+		.idRef(['alpaca_order'])
+		.default(null)
+		.nullable()
+		.meta({ unique_key: true }),
+	asset: apiYupHelpers
+		.idRef(['asset'])
+		.min(1)
+		.meta({
+			unique_by: ['order'],
+			unique_key: false,
+		}),
 	category: AssetOrderCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	order: apiYupHelpers.idRef(['order']).min(1).meta({ unique_key: false }),
+	position: apiYupHelpers
+		.idRef(['position'])
+		.default(null)
+		.nullable()
+		.meta({ unique_key: false }),
+	recommendations: apiYupHelpers
+		.idRefs(['recommendation'])
+		.default(null)
+		.nullable(),
 } as const;
 type U = typeof properties;
 
