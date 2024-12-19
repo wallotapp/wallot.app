@@ -6,7 +6,10 @@ export const activateUserProperties = {
 	age_range: usersApi.properties.age_range.defined().required(),
 	capital_level: usersApi.properties.capital_level.defined().required(),
 	investing_goals: usersApi.properties.investing_goals.defined().required(),
-	risk_preference: usersApi.properties.risk_preference.defined().required(),
+	risk_preference: usersApi.properties.risk_preference
+		.defined()
+		.required()
+		.default('medium'),
 } as const;
 export const activateUserSchema = yup.object(activateUserProperties);
 export const activateUserSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
