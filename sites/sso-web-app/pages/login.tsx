@@ -27,12 +27,22 @@ import { OnboardingCard } from '@wallot/react/src/components/OnboardingCard';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { FiChevronRight } from 'react-icons/fi';
 import Link from 'next/link';
+import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
+import { useGuestRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useGuestRouteRedirect';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
+
+	// Site origins
+	const siteOriginByTarget = useSiteOriginByTarget();
+
+	// Auth
+	useGuestRouteRedirect({
+		welcomeSiteOrigin: siteOriginByTarget.HOME_WEB_APP,
+	});
 
 	// Router
 	const router = useRouter();
