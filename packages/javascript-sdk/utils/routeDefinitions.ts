@@ -3,11 +3,9 @@ import { getEnum, EnumMember } from 'ergonomic';
 // Home Web App
 export const HomeWebAppRouteStaticIdEnum = getEnum([
 	'HOME_WEB_APP__/ASSETS',
-	'HOME_WEB_APP__/CONFIRM_FINANCIAL_CONNECTION',
 	'HOME_WEB_APP__/INDEX',
 	'HOME_WEB_APP__/GET_STARTED',
 	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM',
-	'HOME_WEB_APP__/RECOMMENDATIONS/[RECOMMENDATION_ID]/DETAILS',
 ]);
 export type HomeWebAppRouteStaticId = EnumMember<
 	typeof HomeWebAppRouteStaticIdEnum
@@ -17,9 +15,6 @@ export type HomeWebAppRouteQueryParams = {
 	'HOME_WEB_APP__/ASSETS': {
 		//
 	};
-	'HOME_WEB_APP__/CONFIRM_FINANCIAL_CONNECTION': {
-		dest?: string | undefined;
-	};
 	'HOME_WEB_APP__/INDEX': {
 		//
 	};
@@ -28,9 +23,6 @@ export type HomeWebAppRouteQueryParams = {
 	};
 	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM': {
 		order_id: string | undefined;
-	};
-	'HOME_WEB_APP__/RECOMMENDATIONS/[RECOMMENDATION_ID]/DETAILS': {
-		recommendation_id: string | undefined;
 	};
 };
 
@@ -109,6 +101,8 @@ export type ReferralsWebAppRouteQueryParams = {
 // SSO Web App
 export const SsoWebAppRouteStaticIdEnum = getEnum([
 	'SSO_WEB_APP__/INDEX',
+	'SSO_WEB_APP__/LOGIN',
+	'SSO_WEB_APP__/LOGOUT',
 	'SSO_WEB_APP__/REGISTER',
 ]);
 export type SsoWebAppRouteStaticId = EnumMember<
@@ -117,6 +111,12 @@ export type SsoWebAppRouteStaticId = EnumMember<
 
 export type SsoWebAppRouteQueryParams = {
 	'SSO_WEB_APP__/INDEX': {
+		//
+	};
+	'SSO_WEB_APP__/LOGIN': {
+		dest?: string | undefined;
+	};
+	'SSO_WEB_APP__/LOGOUT': {
 		//
 	};
 	'SSO_WEB_APP__/REGISTER': {
