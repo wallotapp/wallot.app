@@ -155,7 +155,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<div className={cn('min-h-screen relative', 'px-8 pt-24')}>
+			<div className={cn('min-h-screen relative', 'px-8 pt-24', 'pb-16')}>
 				<div className='mb-10 flex items-center justify-center'>
 					{OPEN_GRAPH_CONFIG.siteBrandLogoDarkMode &&
 						OPEN_GRAPH_CONFIG.siteBrandLogoLightMode && (
