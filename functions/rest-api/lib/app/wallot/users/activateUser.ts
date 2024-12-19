@@ -56,7 +56,7 @@ export const activateUser = async (
 		updateUserParams,
 	);
 
-	// Create a RECOMMENDATION for USER
+	// Create a custom RECOMMENDATION for USER
 	const recommendation = await createRecommendationForUser(
 		{ age_range, capital_level, investing_goals, risk_preference },
 		{ userId },
@@ -115,10 +115,10 @@ export const activateUser = async (
 
 		// Place USER in email cohort/s best fit for her PARAMETERs
 		await placeUserInEmailCohort({ userId });
-    
+
 		// Schedule order completion reminder email for USER
 		await scheduleOrderCompletionReminderEmail({ userId });
-    
+
 		// Schedule week-1 retention email for USER
 		await scheduleWeek1RetentionEmail({ userId });
 	};
