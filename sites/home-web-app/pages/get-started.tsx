@@ -182,7 +182,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 				</div>
 				<OnboardingCard
 					step={1}
-					subtitle='This helps our AI personalize your investing recommendations'
+					subtitle='This helps our AI personalize your portfolio recommendations'
 					title="Let's get to know each other"
 				>
 					<form onSubmit={handleSubmit(onSubmit) as () => void}>
