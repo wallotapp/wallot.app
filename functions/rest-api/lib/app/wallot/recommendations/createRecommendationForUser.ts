@@ -14,14 +14,20 @@ export const createRecommendationForUser = async (
 	{ userId }: { userId: string },
 	compatibleParameters: Parameter[],
 ): Promise<Recommendation> => {
-	// Locate best MODEL_FAMILY for PARAMETERs
-	const bestModelFamily = await locateBestModelFamiliesForParameterSet({
+	// Locate best MODEL_FAMILYs for PARAMETERs
+	const bestModelFamilies = await locateBestModelFamiliesForParameterSet({
 		age_range,
 		capital_level,
 		investing_goals,
 		risk_preference,
 		compatibleParameters,
 	});
+
+	// Select the first MODEL_FAMILY
+	if (bestModelFamilies.length === 0) {
+		throw new Error('No model families found');
+	}
+	const bestModelFamily = bestModelFamilies[0];
 
 	// Locate latest MODEL in MODEL_FAMILY
 	const latestModel = await locateLatestModelInModelFamily({
