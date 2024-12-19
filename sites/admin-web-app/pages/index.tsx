@@ -5,7 +5,13 @@ import {
 	PageProps,
 	Page as PageComponent,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { AdminWebAppRouteQueryParams } from '@wallot/js';
+import {
+	AdminWebAppRouteQueryParams,
+	getAdminWebAppRoute,
+	getApiResourceSpec,
+	idPrefixByResourceName,
+} from '@wallot/js';
+import { GeneralizedAdminIndexPage } from 'ergonomic-react/src/features/data/components/GeneralizedAdminIndexPage';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -36,12 +42,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<p className='font-medium text-xl'>
-				Hello, and welcome to Wallot's Admin Web App! 🚀
-			</p>
-			<p className='font-light text-sm'>
-				Almost before we knew it, we had left the ground.
-			</p>
+			<GeneralizedAdminIndexPage
+				getAdminWebAppRoute={
+					getAdminWebAppRoute as (options: unknown) => string
+				}
+				getApiResourceSpec={getApiResourceSpec}
+				idPrefixByResourceName={idPrefixByResourceName}
+			/>
 		</PageComponent>
 	);
 };
