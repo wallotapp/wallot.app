@@ -13,15 +13,16 @@ export type HomeWebAppRouteStaticId = EnumMember<
 
 export type HomeWebAppRouteQueryParams = {
 	'HOME_WEB_APP__/ASSETS': {
-		//
+		client_token?: string | undefined;
 	};
 	'HOME_WEB_APP__/INDEX': {
-		//
+		client_token?: string | undefined;
 	};
 	'HOME_WEB_APP__/GET_STARTED': {
 		client_token?: string | undefined;
 	};
 	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM': {
+		client_token?: string | undefined;
 		order_id: string | undefined;
 	};
 };
