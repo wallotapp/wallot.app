@@ -25,7 +25,7 @@ const ROUTE_STATIC_ID = 'ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/ALL' as const;
 // Route Static Props
 const ROUTE_STATIC_PROPS: PageStaticProps = {
 	routeStaticId: ROUTE_STATIC_ID,
-	title: 'Edit',
+	title: 'View All',
 };
 
 // Route Query Params Type
