@@ -47,6 +47,7 @@ export const createRecommendationForUser = async (
 		risk_preference,
 		userId,
 		compatibleParameters,
+		latestModel,
 		forecasts,
 	});
 
