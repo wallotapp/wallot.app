@@ -37,6 +37,7 @@ const mockApiResource: User = {
 	investing_goals: [],
 	parameters: [],
 	stripe_customer: '...',
+	username: '',
 };
 
 // Add routes
