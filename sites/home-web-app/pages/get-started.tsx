@@ -10,6 +10,7 @@ import {
 	HomeWebAppRouteQueryParams,
 	activateUserSchema,
 	activateUserSchemaFieldSpecByFieldKey,
+	getSsoWebAppRoute,
 } from '@wallot/js';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { useForm } from 'react-hook-form';
@@ -21,12 +22,28 @@ import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react
 import { useActivateUserMutation } from '@wallot/react/src/features/users';
 import { OnboardingCard } from '@wallot/react/src/components/OnboardingCard';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
+import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
+import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
+
+	// Site origins
+	const siteOriginByTarget = useSiteOriginByTarget();
+
+	// Auth
+	useAuthenticatedRouteRedirect({
+		authSiteOrigin: siteOriginByTarget.SSO_WEB_APP,
+		loginRoutePath: getSsoWebAppRoute({
+			includeOrigin: false,
+			origin: null,
+			queryParams: {},
+			routeStaticId: 'SSO_WEB_APP__/REGISTER',
+		}),
+	});
 
 	// Router
 	const router = useRouter();
