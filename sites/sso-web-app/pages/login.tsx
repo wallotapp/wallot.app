@@ -1,19 +1,20 @@
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { signInWithCustomToken } from 'firebase/auth';
 import { firebaseAuthInstance as auth } from 'ergonomic-react/src/lib/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import {
 	PageStaticProps,
 	PageProps,
 	Page as PageComponent,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import {
-	// RegisterUserParams,
+	LoginUserParams,
 	SsoWebAppRouteQueryParams,
 	getSsoWebAppRoute,
 	passwordRules,
-	// registerUserSchema,
-	// registerUserSchemaFieldSpecByFieldKey,
+	loginUserSchema,
+	loginUserSchemaFieldSpecByFieldKey,
+	getHomeWebAppRoute,
 } from '@wallot/js';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { useForm } from 'react-hook-form';
@@ -22,7 +23,6 @@ import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { PlatformLogo } from 'ergonomic-react/src/components/brand/PlatformLogo';
 import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
-// import { useRegisterUserMutation } from '@wallot/react/src/features/users';
 import { OnboardingCard } from '@wallot/react/src/components/OnboardingCard';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { FiChevronRight } from 'react-icons/fi';
@@ -32,8 +32,14 @@ import { useGuestRouteRedirect } from 'ergonomic-react/src/features/authenticati
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
+import { createFirebaseAuthCustomToken } from '@wallot/react/src/features/users/api/createFirebaseAuthCustomToken';
+import { GeneralizedError } from 'ergonomic';
+import { useState } from 'react';
 
 const Page: NextPage<PageStaticProps> = (props) => {
+	// ==== State ==== //
+	const [isLoginUserRunning, setIsLoginUserRunning] = useState(false);
+
 	// ==== Hooks ==== //
 
 	// Site origins
@@ -52,69 +58,17 @@ const Page: NextPage<PageStaticProps> = (props) => {
 
 	// Form Resolver
 	const resolver = useYupValidationResolver(
-		registerUserSchema,
+		loginUserSchema,
 		defaultGeneralizedFormDataTransformationOptions,
 	);
 
 	// Form
-	const initialFormData = registerUserSchema.getDefault();
+	const initialFormData = loginUserSchema.getDefault();
 	const { control, formState, handleSubmit, reset, setError } =
-		useForm<RegisterUserParams>({
+		useForm<LoginUserParams>({
 			defaultValues: initialFormData,
 			resolver,
 			shouldUnregister: false,
-		});
-
-	// Mutation
-	const { mutate: registerUser, isLoading: isRegisterUserRunning } =
-		useRegisterUserMutation({
-			onError: ({ error: { message } }) => {
-				// Show the error message
-				toast({
-					title: 'Error',
-					description: message,
-				});
-				setError('root', {
-					type: 'manual',
-					message: 'An error occurred. Please try again.',
-				});
-
-				// Reset form
-				reset();
-			},
-			onSuccess: async ({
-				custom_token: customToken,
-				redirect_url: redirectUrl,
-			}) => {
-				try {
-					// Log in user
-					await signInWithCustomToken(auth, customToken);
-
-					// Show success toast
-					toast({
-						title: 'Success',
-						description: 'Your account has been created.',
-					});
-
-					// Redirect to next page
-					await router.push(redirectUrl);
-				} catch (err) {
-					console.error('Error:', err);
-					toast({
-						title: 'Error',
-						description: 'An error occurred. Please try again.',
-					});
-
-					// Reset form
-					reset();
-
-					// Set error
-					setError('root', {
-						type: 'manual',
-						message: 'An error occurred. Please try again.',
-					});
-				}
-			},
 		});
 
 	// ==== Constants ==== //
@@ -135,9 +89,9 @@ const Page: NextPage<PageStaticProps> = (props) => {
 
 	// Form
 	const formStatus =
-		formState.isSubmitting || isRegisterUserRunning ? 'running' : 'idle';
+		formState.isSubmitting || isLoginUserRunning ? 'running' : 'idle';
 	const isFormSubmitting = formStatus === 'running';
-	const fields: LiteFormFieldProps<RegisterUserParams>[] = [
+	const fields: LiteFormFieldProps<LoginUserParams>[] = [
 		{
 			fieldKey: 'email' as const,
 		},
@@ -157,7 +111,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		control,
 		fieldErrors: formState.errors,
 		fieldKey,
-		fieldSpec: registerUserSchemaFieldSpecByFieldKey[fieldKey],
+		fieldSpec: loginUserSchemaFieldSpecByFieldKey[fieldKey],
 		hideRequiredIndicator: true,
 		initialFormData,
 		isSubmitting: isFormSubmitting,
@@ -180,14 +134,65 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Functions ==== //
 
 	// Form Submit Handler
-	const onSubmit = (data: RegisterUserParams) => {
-		console.log('Signing user in with following data:', data);
-		toast({
-			title: 'Signing in...',
-			description: 'This may take a few moments.',
-		});
-		registerUser(data);
-	};
+	const onSubmit = (data: LoginUserParams) =>
+		void (async () => {
+			console.log('Signing user in with following data:', data);
+			toast({
+				title: 'Signing in...',
+				description: 'This may take a few moments.',
+			});
+			try {
+				setIsLoginUserRunning(true);
+
+				const { password, email } = data;
+				localStorage.setItem('pause_firebase_auth_redirects', 'true');
+				const { user: firebaseUser } = await signInWithEmailAndPassword(
+					auth,
+					email,
+					password,
+				);
+				const { custom_token: clientToken } =
+					await createFirebaseAuthCustomToken(firebaseUser, {});
+				const defaultDestination = getHomeWebAppRoute({
+					routeStaticId: 'HOME_WEB_APP__/INDEX',
+					origin: siteOriginByTarget.HOME_WEB_APP,
+					includeOrigin: true,
+					queryParams: { client_token: clientToken },
+				});
+				const decodedDest = decodeURIComponent(dest ?? '');
+				const hasQueryParams = decodedDest.includes('?');
+				const destination = dest
+					? `${decodeURIComponent(dest)}${
+							hasQueryParams ? '&' : '?'
+					  }client_token=${clientToken}`
+					: defaultDestination;
+
+				await router.push(destination);
+				return;
+			} catch (err) {
+				// Show the error message
+				const message =
+					(err as GeneralizedError)?.error?.message ??
+					'An error occurred. Please try again.';
+				toast({
+					title: 'Error',
+					description: message,
+				});
+				setError('root', {
+					type: 'manual',
+					message: 'An error occurred. Please try again.',
+				});
+
+				// Reset form
+				reset();
+
+				// Log to console
+				console.error('Error:', err);
+			} finally {
+				localStorage.removeItem('pause_firebase_auth_redirects');
+				setIsLoginUserRunning(false);
+			}
+		})();
 
 	// ==== Render ==== //
 	return (
