@@ -37,19 +37,37 @@ const properties = {
 	activation_reminder_task_id: yup.string().min(1).meta({
 		unique_key: true,
 	}),
-	age_range: AgeRangeEnum.getOptionalSchema().default(null).nullable(),
+	age_range: AgeRangeEnum.getOptionalSchema()
+		.default(null)
+		.nullable()
+		.meta({
+			label_message_user_text:
+				'Enter your age range, which will help us tailor your investment horizon',
+		}),
 	alpaca_account: apiYupHelpers
 		.idRef(['alpaca_account'])
 		.default(null)
 		.nullable()
 		.meta({ unique_key: true }),
-	capital_level: CapitalLevelEnum.getDefinedSchema().default(null).nullable(),
+	capital_level: CapitalLevelEnum.getDefinedSchema()
+		.default(null)
+		.nullable()
+		.label('Capital')
+		.meta({
+			label_message_user_text: 'Enter the amount you would like to invest',
+		}),
 	category: UserCategoryEnum.getDefinedSchema(),
-	investing_goals: YupHelpers.array(InvestingGoalEnum.getDefinedSchema()),
+	investing_goals: YupHelpers.array(InvestingGoalEnum.getDefinedSchema()).meta({
+		label_message_user_text:
+			'Tell us about your investment goals, for example, retirement or saving for a house',
+	}),
 	parameters: apiYupHelpers.idRefs(['parameter']).default(null).nullable(),
 	risk_preference: RiskPreferenceEnum.getDefinedSchema()
 		.default(null)
-		.nullable(),
+		.nullable()
+		.meta({
+			label_message_user_text: 'Select a risk level you are comfortable with',
+		}),
 	stripe_customer: apiYupHelpers
 		.idRef(['stripe_customer'])
 		.min(1)
