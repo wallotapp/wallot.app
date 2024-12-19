@@ -6,8 +6,16 @@
 			"public": "out",
 			"rewrites": [
 				{
-					"source": "/posts/**/content",
-					"destination": "/posts/[slug]/content.html"
+					"source": "/resource/**/all",
+					"destination": "/resource/[resource_name]/all.html"
+				},
+				{
+					"source": "/resource/**/create",
+					"destination": "/resource/[resource_name]/create.html"
+				},
+				{
+					"source": "/resource/**/**/edit",
+					"destination": "/resource/[resource_name]/[document_id]/edit.html"
 				}
 			],
 			"site": "app-wallot-admin-production"
@@ -18,8 +26,16 @@
 			"public": "out",
 			"rewrites": [
 				{
-					"source": "/posts/**/content",
-					"destination": "/posts/[slug]/content.html"
+					"source": "/resource/**/all",
+					"destination": "/resource/[resource_name]/all.html"
+				},
+				{
+					"source": "/resource/**/create",
+					"destination": "/resource/[resource_name]/create.html"
+				},
+				{
+					"source": "/resource/**/**/edit",
+					"destination": "/resource/[resource_name]/[document_id]/edit.html"
 				}
 			],
 			"site": "app-wallot-admin-staging"
