@@ -7,6 +7,8 @@ describe('Asset', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My Asset',
+			alpaca_asset: '',
+			alpha_vantage_company: '',
 		};
 		expect(exampleAsset).toEqual<typeof exampleAsset>({
 			_id: expect.any(String),
@@ -19,6 +21,8 @@ describe('Asset', () => {
 			_deleted: false,
 			description: '',
 			name: 'My Asset',
+			alpaca_asset: '',
+			alpha_vantage_company: '',
 		});
 	});
 });
