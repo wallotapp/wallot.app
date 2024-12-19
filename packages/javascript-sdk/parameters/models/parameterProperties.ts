@@ -13,11 +13,17 @@ import {
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 
-export const ParameterCategoryEnum = getEnum(['default']);
+export const ParameterCategoryEnum = getEnum([
+	'age_range',
+	'capital_level',
+	'investment_goal',
+	'risk_preference',
+]);
 export type ParameterCategory = keyof typeof ParameterCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'values',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -27,7 +33,7 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: ParameterCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	values: YupHelpers.array(yup.string().defined()).defined().min(1),
 } as const;
 type U = typeof properties;
 
