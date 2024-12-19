@@ -8,12 +8,12 @@ import {
 	Page as PageComponent,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import {
-	RegisterUserParams,
+	// RegisterUserParams,
 	SsoWebAppRouteQueryParams,
 	getSsoWebAppRoute,
 	passwordRules,
-	registerUserSchema,
-	registerUserSchemaFieldSpecByFieldKey,
+	// registerUserSchema,
+	// registerUserSchemaFieldSpecByFieldKey,
 } from '@wallot/js';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { useForm } from 'react-hook-form';
@@ -22,7 +22,7 @@ import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { PlatformLogo } from 'ergonomic-react/src/components/brand/PlatformLogo';
 import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
-import { useRegisterUserMutation } from '@wallot/react/src/features/users';
+// import { useRegisterUserMutation } from '@wallot/react/src/features/users';
 import { OnboardingCard } from '@wallot/react/src/components/OnboardingCard';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { FiChevronRight } from 'react-icons/fi';
