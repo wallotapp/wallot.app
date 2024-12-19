@@ -9,12 +9,29 @@ import {
 	AdminWebAppRouteQueryParams,
 	getAdminWebAppRoute,
 	getApiResourceSpec,
+	getSsoWebAppRoute,
 	idPrefixByResourceName,
 } from '@wallot/js';
+import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
+import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { GeneralizedAdminIndexPage } from 'ergonomic-react/src/features/data/components/GeneralizedAdminIndexPage';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
+
+	// Site origins
+	const siteOriginByTarget = useSiteOriginByTarget();
+
+	// Auth
+	useAuthenticatedRouteRedirect({
+		authSiteOrigin: siteOriginByTarget.SSO_WEB_APP,
+		loginRoutePath: getSsoWebAppRoute({
+			includeOrigin: false,
+			origin: null,
+			queryParams: {},
+			routeStaticId: 'SSO_WEB_APP__/LOGIN',
+		}),
+	});
 
 	// Router
 	const router = useRouter();

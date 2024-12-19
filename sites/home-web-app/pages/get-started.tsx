@@ -16,7 +16,6 @@ import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { useForm } from 'react-hook-form';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
-
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useActivateUserMutation } from '@wallot/react/src/features/users';
 import { OnboardingCard } from '@wallot/react/src/components/OnboardingCard';
