@@ -112,7 +112,7 @@ export type SsoWebAppRouteStaticId = EnumMember<
 
 export type SsoWebAppRouteQueryParams = {
 	'SSO_WEB_APP__/INDEX': {
-		//
+		dest?: string | undefined;
 	};
 	'SSO_WEB_APP__/LOGIN': {
 		dest?: string | undefined;

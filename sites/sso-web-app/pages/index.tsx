@@ -21,8 +21,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const query: RouteQueryParams = router?.query ?? {};
 
 	// Router Query Param Values
-	const _ = query;
-	typeof _;
+	const { dest } = query;
 
 	// ==== Constants ==== //
 
@@ -44,7 +43,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 				const registerRoute = getSsoWebAppRoute({
 					includeOrigin: false,
 					origin: null,
-					queryParams: {},
+					queryParams: { dest },
 					routeStaticId: 'SSO_WEB_APP__/REGISTER',
 				});
 				await router.replace(registerRoute);
