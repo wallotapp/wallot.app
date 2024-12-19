@@ -23,18 +23,6 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
-	if (routeStaticId === 'HOME_WEB_APP__/CONFIRM_FINANCIAL_CONNECTION') {
-		const queryParams =
-			options.queryParams as HomeWebAppRouteQueryParams['HOME_WEB_APP__/CONFIRM_FINANCIAL_CONNECTION'];
-		const dest = queryParams.dest;
-		const destQuery = dest ? `dest=${encodeURIComponent(dest)}` : '';
-		const queries = [destQuery].filter(Boolean);
-		const path = `/confirm-financial-connection${
-			queries.length ? `?${queries.join('&')}` : ''
-		}`;
-		if (includeOrigin) return `${origin as string}${path}`;
-		return path;
-	}
 	if (routeStaticId === 'HOME_WEB_APP__/INDEX') {
 		const path = `/`;
 		if (includeOrigin) return `${origin as string}${path}`;
@@ -59,21 +47,6 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 			return '/';
 		}
 		const path = `/orders/${orderId}/confirm`;
-		if (includeOrigin) return `${origin as string}${path}`;
-		return path;
-	}
-	if (
-		routeStaticId ===
-		'HOME_WEB_APP__/RECOMMENDATIONS/[RECOMMENDATION_ID]/DETAILS'
-	) {
-		const queryParams =
-			options.queryParams as HomeWebAppRouteQueryParams['HOME_WEB_APP__/RECOMMENDATIONS/[RECOMMENDATION_ID]/DETAILS'];
-		const recommendationId = queryParams.recommendation_id;
-		if (!recommendationId) {
-			console.error('recommendation_id is required');
-			return '/';
-		}
-		const path = `/recommendations/${recommendationId}/details`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
