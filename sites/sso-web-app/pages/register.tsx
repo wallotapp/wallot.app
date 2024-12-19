@@ -114,15 +114,14 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const query: RouteQueryParams = router?.query ?? {};
 
 	// Router Query Param Values
-	const _ = query;
-	_;
+	const { dest } = query;
 
-	// Login Route <= Fix this
+	// Login Route
 	const loginRoute = getSsoWebAppRoute({
-		routeStaticId: 'SSO_WEB_APP__/INDEX',
+		routeStaticId: 'SSO_WEB_APP__/LOGIN',
 		origin: null,
 		includeOrigin: false,
-		queryParams: {},
+		queryParams: { dest },
 	});
 
 	// Form
