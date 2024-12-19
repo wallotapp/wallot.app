@@ -417,7 +417,9 @@
 					"{\"label\":\"app-wallot-admin-staging\",\"local_development_port\":\"7159\",\"public_url\":\"https://app-wallot-admin-staging.web.app\",\"firebase_config_api_key\":\"AIzaSyAWoWzRH01lGIx2jLx5sWPFDdfKsTSNaDc\",\"firebase_config_app_id\":\"1:721995107731:web:b979e23afefb4a5764ac66\",\"firebase_config_auth_domain\":\"app-wallot-staging.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-FC1D4P4C57\",\"firebase_config_messaging_sender_id\":\"721995107731\",\"firebase_config_project_id\":\"app-wallot-staging\",\"firebase_config_storage_bucket\":\"app-wallot-staging.firebasestorage.app\",\"deployment_environment\":\"test\"}"
 				],
 				"rewrites": [
-					"{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"
+					"{\"source\":\"/resource/**/all\",\"destination\":\"/resource/[resource_name]/all.html\"}",
+					"{\"source\":\"/resource/**/create\",\"destination\":\"/resource/[resource_name]/create.html\"}",
+					"{\"source\":\"/resource/**/**/edit\",\"destination\":\"/resource/[resource_name]/[document_id]/edit.html\"}"
 				],
 				"category": "default",
 				"visibility": "public"
