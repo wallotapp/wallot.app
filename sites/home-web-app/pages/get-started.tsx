@@ -41,7 +41,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			includeOrigin: false,
 			origin: null,
 			queryParams: {},
-			routeStaticId: 'SSO_WEB_APP__/REGISTER',
+			routeStaticId: 'SSO_WEB_APP__/LOGIN',
 		}),
 	});
 
