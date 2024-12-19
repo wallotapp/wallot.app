@@ -1,13 +1,13 @@
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import {
 	PageStaticProps,
 	PageProps,
 	Page as PageComponent,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { HomeWebAppRouteQueryParams, getHomeWebAppRoute } from '@wallot/js';
-import Link from 'next/link';
-import { Button } from 'ergonomic-react/src/components/ui/button';
+import { SuspensePage } from '@wallot/react/src/components/SuspensePage';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -35,30 +35,27 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		routeId: ROUTE_RUNTIME_ID,
 	};
 
-	const getStartedRoute = getHomeWebAppRoute({
-		includeOrigin: false,
-		origin: null,
-		queryParams: { client_token: 'todo' },
-		routeStaticId: 'HOME_WEB_APP__/GET_STARTED',
-	});
+	// ==== Effects ==== //
+	useEffect(
+		() =>
+			void (async () => {
+				// Wait 1 second
+				await new Promise((resolve) => setTimeout(resolve, 1000));
+				const getStartedRoute = getHomeWebAppRoute({
+					includeOrigin: false,
+					origin: null,
+					queryParams: {},
+					routeStaticId: 'HOME_WEB_APP__/GET_STARTED',
+				});
+				await router.replace(getStartedRoute);
+			})(),
+		[],
+	);
 
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<div className='p-8'>
-				<div className='max-w-2xl'>
-					<div>
-						<p className='text-2xl font-bold'>Welcome to Wallot</p>
-					</div>
-					<div className='mt-4'>
-						<Link href={getStartedRoute}>
-							<Button>
-								<p>Get started</p>
-							</Button>
-						</Link>
-					</div>
-				</div>
-			</div>
+			<SuspensePage />
 		</PageComponent>
 	);
 };
