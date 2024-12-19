@@ -1,6 +1,6 @@
 import { ActivateUserParams, Parameter, Recommendation } from '@wallot/js';
 import { locateRecentForecastsProducedByModel } from '../forecasts/locateRecentForecastsProducedByModel.js';
-import { locateBestModelFamilyForParameterSet } from '../models/locateBestModelFamilyForParameterSet.js';
+import { locateBestModelFamiliesForParameterSet } from '../models/locateBestModelFamiliesForParameterSet.js';
 import { locateLatestModelInModelFamily } from '../models/locateLatestModelInModelFamily.js';
 import { promptGptForCustomRecommendation } from './promptGptForCustomRecommendation.js';
 
@@ -15,7 +15,7 @@ export const createRecommendationForUser = async (
 	compatibleParameters: Parameter[],
 ): Promise<Recommendation> => {
 	// Locate best MODEL_FAMILY for PARAMETERs
-	const bestModelFamily = await locateBestModelFamilyForParameterSet({
+	const bestModelFamily = await locateBestModelFamiliesForParameterSet({
 		age_range,
 		capital_level,
 		investing_goals,
