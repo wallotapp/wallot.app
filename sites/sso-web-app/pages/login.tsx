@@ -162,7 +162,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 				const decodedDest = decodeURIComponent(dest ?? '');
 				const hasQueryParams = decodedDest.includes('?');
 				const destination = dest
-					? `${decodeURIComponent(dest)}${
+					? `${decodedDest}${
 							hasQueryParams ? '&' : '?'
 					  }client_token=${clientToken}`
 					: defaultDestination;
