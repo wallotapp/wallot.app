@@ -54,7 +54,7 @@ erDiagram
 	USER ||--|| LICENSE : "owns"
 	USER ||--o{ ORDER : "owns"
 	USER ||--o{ PAYMENT_METHOD : "owns"
-	USER |o--o{ RECOMMENDATION : "owns"
+	USER ||--o{ RECOMMENDATION : "owns"
 
 	%% Production Relationships
 	MODEL ||--o{ FORECAST : "produces"
