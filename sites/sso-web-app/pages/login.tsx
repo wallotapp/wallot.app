@@ -208,7 +208,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					)}
 				</div>
 				<OnboardingCard
-					step={0}
+					step={null}
 					subtitle='Enter your email and password to login'
 					title='Welcome back'
 				>
