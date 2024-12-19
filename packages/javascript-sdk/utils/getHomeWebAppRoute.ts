@@ -48,9 +48,15 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
-	if (routeStaticId === 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM') {
-		const queryParams =
-			options.queryParams as HomeWebAppRouteQueryParams['HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM'];
+	if (
+		routeStaticId === 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/ASSETS' ||
+		routeStaticId === 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CART' ||
+		routeStaticId === 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CHECKOUT'
+	) {
+		const queryParams = options.queryParams as
+			| HomeWebAppRouteQueryParams['HOME_WEB_APP__/ORDERS/[ORDER_ID]/ASSETS']
+			| HomeWebAppRouteQueryParams['HOME_WEB_APP__/ORDERS/[ORDER_ID]/CART']
+			| HomeWebAppRouteQueryParams['HOME_WEB_APP__/ORDERS/[ORDER_ID]/CHECKOUT'];
 		const orderId = queryParams.order_id;
 		if (!orderId) {
 			console.error('order_id is required');
@@ -59,9 +65,13 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 		const clientToken = queryParams.client_token;
 		const clientTokenQuery = clientToken ? `client_token=${clientToken}` : '';
 		const queries = [clientTokenQuery].filter(Boolean);
-		const path = `/orders/${orderId}/confirm${
-			queries.length ? `?${queries.join('&')}` : ''
-		}`;
+		const path = `/orders/${orderId}/${
+			routeStaticId === 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/ASSETS'
+				? 'assets'
+				: routeStaticId === 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CART'
+				? 'cart'
+				: 'checkout'
+		}${queries.length ? `?${queries.join('&')}` : ''}`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
