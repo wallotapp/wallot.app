@@ -1,8 +1,9 @@
+import { Recommendation } from '@wallot/js';
+
 export type PromptGptForCustomRecommendationParams = unknown;
-export type PromptGptForCustomRecommendationResponse = unknown;
 export const promptGptForCustomRecommendation = async (
 	params: PromptGptForCustomRecommendationParams,
-): Promise<PromptGptForCustomRecommendationResponse> => {
+): Promise<Recommendation> => {
 	params;
 	// Wait 1 second
 	await new Promise((resolve) => setTimeout(resolve, 2500));

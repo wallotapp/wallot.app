@@ -34,7 +34,7 @@ export const createRecommendationForUser = async (
 	});
 
 	// Generate custom RECOMMENDATION for USER from FORECASTs and PARAMETERs
-	const customRecommendation = (await promptGptForCustomRecommendation({
+	const customRecommendation = await promptGptForCustomRecommendation({
 		age_range,
 		capital_level,
 		investing_goals,
@@ -42,7 +42,7 @@ export const createRecommendationForUser = async (
 		userId,
 		compatibleParameters,
 		forecasts,
-	})) as Recommendation;
+	});
 
 	return customRecommendation;
 };
