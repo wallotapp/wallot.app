@@ -23,8 +23,8 @@ import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useRegisterUserMutation } from '@wallot/react/src/features/users';
 import { OnboardingCard } from '@wallot/react/src/components/OnboardingCard';
+import { ChangeAuthenticationRoute } from '@wallot/react/src/components/ChangeAuthenticationRoute';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
-import { FiChevronRight } from 'react-icons/fi';
 import Link from 'next/link';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { useGuestRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useGuestRouteRedirect';
@@ -253,23 +253,10 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</div>
 					</form>
 				</OnboardingCard>
-				<div className='flex flex-col items-center justify-center w-fit py-16 px-8 mx-auto'>
-					<div>
-						<Link href={loginRoute}>
-							<div
-								className={cn(
-									'flex items-center space-x-0.5 cursor-pointer',
-									'text-base',
-								)}
-							>
-								<p className='font-medium text-base text-brand-light'>
-									Have an account? Login
-								</p>
-								<FiChevronRight className='mt-0.5 stroke-[3px] text-brand-light' />
-							</div>
-						</Link>
-					</div>
-				</div>
+				<ChangeAuthenticationRoute
+					oppositeRoute={loginRoute}
+					text='Have an account? Login'
+				/>
 			</div>
 		</PageComponent>
 	);
