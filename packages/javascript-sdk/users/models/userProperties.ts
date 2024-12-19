@@ -45,8 +45,7 @@ const properties = {
 	}),
 	age_range: AgeRangeEnum.getOptionalSchema().default(null).nullable().meta({
 		label_by_enum_option: AgeRangeEnum.obj,
-		label_message_user_text:
-			'Enter your age range, which will help us tailor your investment horizon',
+		label_message_user_text: 'Select your age range',
 	}),
 	alpaca_account: apiYupHelpers
 		.idRef(['alpaca_account'])
@@ -67,7 +66,7 @@ const properties = {
 	category: UserCategoryEnum.getDefinedSchema(),
 	investing_goals: YupHelpers.array(InvestingGoalEnum.getDefinedSchema()).meta({
 		label_message_user_text:
-			'Tell us about your investment goals, for example, retirement or saving for a house',
+			'Tell us a bit about your goals, for example, retirement or purchasing a home',
 		type: GeneralizedFieldTypeEnum.obj.select_many,
 	}),
 	parameters: apiYupHelpers.idRefs(['parameter']).default(null).nullable(),

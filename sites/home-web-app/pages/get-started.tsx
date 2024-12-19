@@ -113,8 +113,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			fieldKey: 'age_range' as const,
 			renderTooltipContent: () => (
 				<div>
-					This helps us recommend stocks with an appropriate horizon for
-					liquidation and identify volatility tolerance
+					This helps us identify stocks with appropriate liquidation horizons
+					and volatility levels
 				</div>
 			),
 		},
