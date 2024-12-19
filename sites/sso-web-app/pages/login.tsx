@@ -24,7 +24,7 @@ import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react
 import { OnboardingCard } from '@wallot/react/src/components/OnboardingCard';
 import { ChangeAuthenticationRoute } from '@wallot/react/src/components/ChangeAuthenticationRoute';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
-import Link from 'next/link';
+import { AuthenticationLegalNotice } from '@wallot/react/src/components/AuthenticationLegalNotice';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { useGuestRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useGuestRouteRedirect';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
@@ -223,26 +223,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 								/>
 							</div>
 						)}
-						<div className='text-center mt-5 mx-auto'>
-							<p className='text-gray-400 text-sm'>
-								By clicking continue, you agree to our{' '}
-								<Link
-									href='https://wallot.app/terms'
-									rel='noopener noreferrer'
-									target='_blank'
-								>
-									<span className='underline'>Terms of Service</span>
-								</Link>{' '}
-								and{' '}
-								<Link
-									href='https://wallot.app/privacy'
-									rel='noopener noreferrer'
-									target='_blank'
-								>
-									<span className='underline'>Privacy Policy</span>
-								</Link>
-							</p>
-						</div>
+						<AuthenticationLegalNotice />
 					</form>
 				</OnboardingCard>
 				<ChangeAuthenticationRoute
