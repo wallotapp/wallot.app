@@ -1,8 +1,9 @@
+import { Model } from '@wallot/js';
+
 export type LocateLatestModelInModelFamilyParams = unknown;
-export type LocateLatestModelInModelFamilyResponse = unknown;
 export const locateLatestModelInModelFamily = async (
 	params: LocateLatestModelInModelFamilyParams,
-): Promise<LocateLatestModelInModelFamilyResponse> => {
+): Promise<Model> => {
 	params;
 	// Wait 1 second
 	await new Promise((resolve) => setTimeout(resolve, 2500));
