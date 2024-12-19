@@ -104,7 +104,7 @@ export const activateUser = async (
 		includeOrigin: true,
 		origin: siteOriginByTarget.HOME_WEB_APP,
 		queryParams: { order_id: orderDocId },
-		routeStaticId: 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM',
+		routeStaticId: 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/ASSETS',
 	});
 
 	// Construct the post-response callback
