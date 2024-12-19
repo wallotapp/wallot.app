@@ -7,6 +7,7 @@ import {
 	YupHelpers,
 	getApiResourceSpec,
 	getEnum,
+	GeneralizedFieldTypeEnum,
 } from 'ergonomic';
 import {
 	apiYupHelpers,
@@ -29,7 +30,10 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: StripeCustomerCategoryEnum.getDefinedSchema(),
-	stripe_id: yup.string().required(),
+	stripe_id: yup.string().required().meta({
+		unique_key: true,
+		type: GeneralizedFieldTypeEnum.obj.short_text,
+	}),
 } as const;
 type U = typeof properties;
 
