@@ -19,12 +19,22 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 		return '/';
 	}
 	if (routeStaticId === 'HOME_WEB_APP__/ASSETS') {
-		const path = `/assets`;
+		const queryParams =
+			options.queryParams as HomeWebAppRouteQueryParams['HOME_WEB_APP__/ASSETS'];
+		const clientToken = queryParams.client_token;
+		const clientTokenQuery = clientToken ? `client_token=${clientToken}` : '';
+		const queries = [clientTokenQuery].filter(Boolean);
+		const path = `/assets${queries.length ? `?${queries.join('&')}` : ''}`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
 	if (routeStaticId === 'HOME_WEB_APP__/INDEX') {
-		const path = `/`;
+		const queryParams =
+			options.queryParams as HomeWebAppRouteQueryParams['HOME_WEB_APP__/INDEX'];
+		const clientToken = queryParams.client_token;
+		const clientTokenQuery = clientToken ? `client_token=${clientToken}` : '';
+		const queries = [clientTokenQuery].filter(Boolean);
+		const path = `/${queries.length ? `?${queries.join('&')}` : ''}`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
@@ -46,7 +56,12 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 			console.error('order_id is required');
 			return '/';
 		}
-		const path = `/orders/${orderId}/confirm`;
+		const clientToken = queryParams.client_token;
+		const clientTokenQuery = clientToken ? `client_token=${clientToken}` : '';
+		const queries = [clientTokenQuery].filter(Boolean);
+		const path = `/orders/${orderId}/confirm${
+			queries.length ? `?${queries.join('&')}` : ''
+		}`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
