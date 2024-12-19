@@ -42,6 +42,7 @@ const properties = {
 	_object: YupHelpers.constant(_object),
 	activation_reminder_task_id: yup.string().min(1).meta({
 		unique_key: true,
+		type: GeneralizedFieldTypeEnum.obj.short_text,
 	}),
 	age_range: AgeRangeEnum.getOptionalSchema().default(null).nullable().meta({
 		label_by_enum_option: AgeRangeEnum.obj,
