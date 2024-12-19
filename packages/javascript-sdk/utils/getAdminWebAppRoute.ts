@@ -14,31 +14,59 @@ export type GetAdminWebAppRouteOptions<T extends AdminWebAppRouteStaticId> = {
 export const getAdminWebAppRoute = <T extends AdminWebAppRouteStaticId>(
 	options: GetAdminWebAppRouteOptions<T>,
 ) => {
-	const { includeOrigin = false, origin } = options;
-	if (options.routeStaticId === 'ADMIN_WEB_APP__/INDEX') {
+	const { includeOrigin = false, origin, routeStaticId } = options;
+	if (includeOrigin && !origin) {
+		console.error('Origin is required');
+		return '/';
+	}
+
+	const queries: string[] = [];
+
+	if (routeStaticId === 'ADMIN_WEB_APP__/INDEX') {
 		const path = `/`;
-		if (includeOrigin) {
-			if (!origin) {
-				console.error('Origin is required');
-				return '/';
-			}
-			return `${origin}${path}`;
-		}
+		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
-	if (options.routeStaticId === 'ADMIN_WEB_APP__/POSTS/[SLUG]/CONTENT') {
-		const queryParams =
-			options.queryParams as AdminWebAppRouteQueryParams['ADMIN_WEB_APP__/POSTS/[SLUG]/CONTENT'];
-		const slug = queryParams.slug;
-		const path = `/posts/${slug}/content`;
-		if (includeOrigin) {
-			if (!origin) {
-				console.error('Origin is required');
-				return '/';
-			}
-			return `${origin}${path}`;
+
+	if (
+		routeStaticId === 'ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/ALL' ||
+		routeStaticId === 'ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/CREATE'
+	) {
+		const resourceRouteQueryParams = options.queryParams as
+			| AdminWebAppRouteQueryParams['ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/ALL']
+			| AdminWebAppRouteQueryParams['ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/CREATE'];
+		const resourceName = resourceRouteQueryParams.resource_name;
+		if (!resourceName) {
+			console.error('resource_name is required');
+			return '/';
 		}
+		const path = `/resources/${resourceName}${
+			routeStaticId === 'ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/CREATE'
+				? '/create'
+				: '/all'
+		}${queries.length ? `?${queries.join('&')}` : ''}`;
+		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
+
+	if (
+		routeStaticId ===
+		'ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT'
+	) {
+		const resourceRouteQueryParams =
+			options.queryParams as AdminWebAppRouteQueryParams['ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT'];
+		const resourceName = resourceRouteQueryParams.resource_name;
+		const documentId = resourceRouteQueryParams.document_id;
+		if (!resourceName || !documentId) {
+			console.error('resource_name and document_id are required');
+			return '/';
+		}
+		const path = `/resources/${resourceName}/${documentId}/edit${
+			queries.length ? `?${queries.join('&')}` : ''
+		}`;
+		if (includeOrigin) return `${origin as string}${path}`;
+		return path;
+	}
+
 	throw new Error('Invalid routeStaticId');
 };
