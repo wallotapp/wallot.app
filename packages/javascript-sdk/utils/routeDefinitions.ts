@@ -46,7 +46,9 @@ export type HomeWebAppRouteQueryParams = {
 // Admin Web App
 export const AdminWebAppRouteStaticIdEnum = getEnum([
 	'ADMIN_WEB_APP__/INDEX',
-	'ADMIN_WEB_APP__/POSTS/[SLUG]/CONTENT',
+	'ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/ALL',
+	'ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/CREATE',
+	'ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT',
 ]);
 export type AdminWebAppRouteStaticId = EnumMember<
 	typeof AdminWebAppRouteStaticIdEnum
@@ -56,8 +58,15 @@ export type AdminWebAppRouteQueryParams = {
 	'ADMIN_WEB_APP__/INDEX': {
 		//
 	};
-	'ADMIN_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string | undefined;
+	'ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/ALL': {
+		resource_name: string | undefined;
+	};
+	'ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/CREATE': {
+		resource_name: string | undefined;
+	};
+	'ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT': {
+		document_id: string | undefined;
+		resource_name: string | undefined;
 	};
 };
 
