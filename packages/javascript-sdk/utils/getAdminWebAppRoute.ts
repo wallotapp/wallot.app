@@ -40,7 +40,7 @@ export const getAdminWebAppRoute = <T extends AdminWebAppRouteStaticId>(
 			console.error('resource_name is required');
 			return '/';
 		}
-		const path = `/resources/${resourceName}${
+		const path = `/resource/${resourceName}${
 			routeStaticId === 'ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/CREATE'
 				? '/create'
 				: '/all'
@@ -61,7 +61,7 @@ export const getAdminWebAppRoute = <T extends AdminWebAppRouteStaticId>(
 			console.error('resource_name and document_id are required');
 			return '/';
 		}
-		const path = `/resources/${resourceName}/${documentId}/edit${
+		const path = `/resource/${resourceName}/${documentId}/edit${
 			queries.length ? `?${queries.join('&')}` : ''
 		}`;
 		if (includeOrigin) return `${origin as string}${path}`;
