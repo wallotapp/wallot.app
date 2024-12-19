@@ -120,8 +120,9 @@ export const createRouterFunction =
 						// Proceed to the next middleware
 						return next();
 					} catch (err) {
-						return handleRouterFunctionError(res, next, err);
+						handleRouterFunctionError(res, err);
+						return next();
 					}
-				});
+				})();
 			};
 	};
