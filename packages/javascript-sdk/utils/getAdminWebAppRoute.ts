@@ -29,19 +29,19 @@ export const getAdminWebAppRoute = <T extends AdminWebAppRouteStaticId>(
 	}
 
 	if (
-		routeStaticId === 'ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/ALL' ||
-		routeStaticId === 'ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/CREATE'
+		routeStaticId === 'ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/ALL' ||
+		routeStaticId === 'ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/CREATE'
 	) {
 		const resourceRouteQueryParams = options.queryParams as
-			| AdminWebAppRouteQueryParams['ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/ALL']
-			| AdminWebAppRouteQueryParams['ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/CREATE'];
+			| AdminWebAppRouteQueryParams['ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/ALL']
+			| AdminWebAppRouteQueryParams['ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/CREATE'];
 		const resourceName = resourceRouteQueryParams.resource_name;
 		if (!resourceName) {
 			console.error('resource_name is required');
 			return '/';
 		}
 		const path = `/resources/${resourceName}${
-			routeStaticId === 'ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/CREATE'
+			routeStaticId === 'ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/CREATE'
 				? '/create'
 				: '/all'
 		}${queries.length ? `?${queries.join('&')}` : ''}`;
@@ -51,10 +51,10 @@ export const getAdminWebAppRoute = <T extends AdminWebAppRouteStaticId>(
 
 	if (
 		routeStaticId ===
-		'ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT'
+		'ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT'
 	) {
 		const resourceRouteQueryParams =
-			options.queryParams as AdminWebAppRouteQueryParams['ADMIN_WEB_APP__/RESOURCES/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT'];
+			options.queryParams as AdminWebAppRouteQueryParams['ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT'];
 		const resourceName = resourceRouteQueryParams.resource_name;
 		const documentId = resourceRouteQueryParams.document_id;
 		if (!resourceName || !documentId) {
