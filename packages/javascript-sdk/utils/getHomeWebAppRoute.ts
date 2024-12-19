@@ -24,16 +24,32 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
 	const queries = [clientTokenQuery].filter(Boolean);
 
 	if (
-		routeStaticId === 'HOME_WEB_APP__/ASSETS' ||
+		routeStaticId === 'HOME_WEB_APP__/ASSETS/[ASSET_ID]/CONGRATULATIONS' ||
+		routeStaticId === 'HOME_WEB_APP__/ASSETS/[ASSET_ID]/TRACK'
+	) {
+		const assetRouteQueryParams = options.queryParams as
+			| HomeWebAppRouteQueryParams['HOME_WEB_APP__/ASSETS/[ASSET_ID]/CONGRATULATIONS']
+			| HomeWebAppRouteQueryParams['HOME_WEB_APP__/ASSETS/[ASSET_ID]/TRACK'];
+		const assetId = assetRouteQueryParams.asset_id;
+		if (!assetId) {
+			console.error('asset_id is required');
+			return '/';
+		}
+		const path = `/assets/${assetId}${
+			routeStaticId === 'HOME_WEB_APP__/ASSETS/[ASSET_ID]/CONGRATULATIONS'
+				? '/congratulations'
+				: '/track'
+		}${queries.length ? `?${queries.join('&')}` : ''}`;
+		if (includeOrigin) return `${origin as string}${path}`;
+		return path;
+	}
+
+	if (
 		routeStaticId === 'HOME_WEB_APP__/INDEX' ||
 		routeStaticId === 'HOME_WEB_APP__/GET_STARTED'
 	) {
 		const path = `${
-			routeStaticId === 'HOME_WEB_APP__/ASSETS'
-				? '/assets'
-				: routeStaticId === 'HOME_WEB_APP__/INDEX'
-				? '/'
-				: '/get-started'
+			routeStaticId === 'HOME_WEB_APP__/INDEX' ? '/' : '/get-started'
 		}${queries.length ? `?${queries.join('&')}` : ''}`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
