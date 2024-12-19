@@ -3,7 +3,6 @@ import * as express from 'express';
 import { statSync } from 'fs';
 import {
 	addHealthRoutesToExpressApp,
-	initializeResLocalsWithGeneralizedResponseFields,
 	logExpressInvocation,
 	sendExpressResponse,
 } from 'ergonomic-node';
@@ -18,7 +17,6 @@ const app = express.default();
 
 // ---- Invocation Initialization Middleware ---- //
 app.use(express.json());
-app.use(initializeResLocalsWithGeneralizedResponseFields());
 
 // ---- Health Checks ---- //
 

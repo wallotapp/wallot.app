@@ -5,7 +5,6 @@ import { FirebaseUserCustomTokenResponse } from 'ergonomic';
 import {
 	GeneralizedResLocals,
 	addHealthRoutesToExpressApp,
-	initializeResLocalsWithGeneralizedResponseFields,
 	logExpressInvocation,
 	sendExpressResponse,
 } from 'ergonomic-node';
@@ -29,7 +28,6 @@ const app = express.default();
 
 // ---- Invocation Initialization Middleware ---- //
 app.use(express.json());
-app.use(initializeResLocalsWithGeneralizedResponseFields());
 
 // ---- Application Routes: Wallot ---- //
 
