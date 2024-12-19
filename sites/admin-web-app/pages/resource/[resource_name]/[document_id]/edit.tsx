@@ -14,13 +14,16 @@ import {
 } from '@wallot/js';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
-import { GeneralizedAdminResourceTablePage } from 'ergonomic-react/src/features/data/components/GeneralizedAdminCollectionTablePage';
+import { GeneralizedAdminUpdateOperationPage } from 'ergonomic-react/src/features/data/components/GeneralizedAdminUpdateOperationPage';
+import { getCreateOperationMutationForResource } from '@wallot/react/src/hooks/getCreateOperationMutationForResource';
 import { getPageQueryHookForResource } from '@wallot/react/src/hooks/getPageQueryHookForResource';
+import { getUpdateOperationMutationForResource } from '@wallot/react/src/hooks/getUpdateOperationMutationForResource';
 
 // ==== Static Page Props ==== //
 
 // Route Static ID
-const ROUTE_STATIC_ID = 'ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/ALL' as const;
+const ROUTE_STATIC_ID =
+	'ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT' as const;
 
 // Route Static Props
 const ROUTE_STATIC_PROPS: PageStaticProps = {
@@ -57,7 +60,7 @@ const Page: NextPage = () => {
 	const query: RouteQueryParams = (router?.query as RouteQueryParams) ?? {};
 
 	// Router Query Param Values
-	const { resource_name } = query;
+	const { resource_name, document_id } = query;
 
 	// ==== Constants ==== //
 
@@ -65,7 +68,7 @@ const Page: NextPage = () => {
 	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace(
 		'[RESOURCE_NAME]',
 		resource_name || '',
-	);
+	).replace('[DOCUMENT_ID]', document_id || '');
 
 	// Runtime Page Props
 	const pageProps: PageProps = {
@@ -76,12 +79,18 @@ const Page: NextPage = () => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<GeneralizedAdminResourceTablePage
+			<GeneralizedAdminUpdateOperationPage
 				getAdminWebAppRoute={
 					getAdminWebAppRoute as (options: unknown) => string
 				}
 				getApiResourceSpec={getApiResourceSpec}
+				getCreateOperationMutationForResource={
+					getCreateOperationMutationForResource
+				}
 				getPageQueryHookForResource={getPageQueryHookForResource}
+				getUpdateOperationMutationForResource={
+					getUpdateOperationMutationForResource
+				}
 				idPrefixByResourceName={idPrefixByResourceName}
 			/>
 		</PageComponent>
