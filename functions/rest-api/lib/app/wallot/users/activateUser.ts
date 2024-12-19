@@ -16,6 +16,10 @@ import { siteOriginByTarget } from '../../../variables.js';
 import { locateCompatibleParameters } from '../parameters/locateCompatibleParameters.js';
 import { createAssetOrdersFromRecommendation } from '../assetOrders/createAssetOrdersFromRecommendation.js';
 import { createRecommendationForUser } from '../recommendations/createRecommendationForUser.js';
+import { cancelActivationReminderEmails } from './cancelActivationReminderEmails.js';
+import { placeUserInEmailCohort } from './placeUserInEmailCohort.js';
+import { scheduleOrderCompletionReminderEmail } from './scheduleOrderCompletionReminderEmail.js';
+import { scheduleWeek1RetentionEmail } from './scheduleWeek1RetentionEmail.js';
 
 export const activateUser = async (
 	{
@@ -106,7 +110,17 @@ export const activateUser = async (
 
 	// Construct the post-response callback
 	const onFinished = async () => {
-		return Promise.resolve();
+		// Cancel activation reminder emails for USER (if any are remaining)
+		await cancelActivationReminderEmails({ userId });
+
+		// Place USER in email cohort/s best fit for her PARAMETERs
+		await placeUserInEmailCohort({ userId });
+    
+		// Schedule order completion reminder email for USER
+		await scheduleOrderCompletionReminderEmail({ userId });
+    
+		// Schedule week-1 retention email for USER
+		await scheduleWeek1RetentionEmail({ userId });
 	};
 
 	// Construct the redirect URL using ORDER
