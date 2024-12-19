@@ -65,13 +65,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					title: 'Error',
 					description: message,
 				});
-        setError('root', {
-          type: 'manual',
-          message: 'An error occurred. Please try again.',
-        });
+				setError('root', {
+					type: 'manual',
+					message: 'An error occurred. Please try again.',
+				});
 
-        // Reset form
-        reset();
+				// Reset form
+				reset();
 			},
 			onSuccess: async ({
 				custom_token: customToken,

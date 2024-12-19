@@ -96,47 +96,23 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			fieldKey: 'age_range' as const,
 			renderTooltipContent: () => (
 				<div>
-					<ul className='text-xs list-disc list-inside'>
-						{([] as string[]).map((rule) => (
-							<li key={rule}>{rule}</li>
-						))}
-					</ul>
+					This helps us recommend stocks with an appropriate horizon for
+					liquidation and identify volatility tolerance
 				</div>
 			),
 		},
 		{
 			fieldKey: 'capital_level' as const,
-			renderTooltipContent: () => (
-				<div>
-					<ul className='text-xs list-disc list-inside'>
-						{([] as string[]).map((rule) => (
-							<li key={rule}>{rule}</li>
-						))}
-					</ul>
-				</div>
-			),
 		},
 		{
 			fieldKey: 'investing_goals' as const,
-			renderTooltipContent: () => (
-				<div>
-					<ul className='text-xs list-disc list-inside'>
-						{([] as string[]).map((rule) => (
-							<li key={rule}>{rule}</li>
-						))}
-					</ul>
-				</div>
-			),
 		},
 		{
 			fieldKey: 'risk_preference' as const,
 			renderTooltipContent: () => (
 				<div>
-					<ul className='text-xs list-disc list-inside'>
-						{([] as string[]).map((rule) => (
-							<li key={rule}>{rule}</li>
-						))}
-					</ul>
+					This helps us balance risk with potential returns when recommending a
+					stock
 				</div>
 			),
 		},
