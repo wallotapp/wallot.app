@@ -22,12 +22,12 @@ type WallotPaymentMethodPayload = typeof wallotMockPaymentMethodPayload;
 // ==== Static Page Props ==== //
 
 // Route Static ID
-const ROUTE_STATIC_ID = 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONFIRM' as const;
+const ROUTE_STATIC_ID = 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/ASSETS' as const;
 
 // Route Static Props
 const ROUTE_STATIC_PROPS: PageStaticProps = {
 	routeStaticId: ROUTE_STATIC_ID,
-	title: 'Confirm Order',
+	title: 'Assets',
 };
 
 // Route Query Params Type
