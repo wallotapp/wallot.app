@@ -21,7 +21,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const query: RouteQueryParams = router?.query ?? {};
 
 	// Router Query Param Values
-	const {client_token} = query;
+	const { client_token } = query;
 
 	// ==== Constants ==== //
 
@@ -43,7 +43,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 				const getStartedRoute = getHomeWebAppRoute({
 					includeOrigin: false,
 					origin: null,
-					queryParams: {client_token},
+					queryParams: { client_token },
 					routeStaticId: 'HOME_WEB_APP__/GET_STARTED',
 				});
 				await router.replace(getStartedRoute);

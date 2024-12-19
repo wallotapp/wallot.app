@@ -10,7 +10,8 @@ import { HomeWebAppRouteQueryParams } from '@wallot/js';
 // ==== Static Page Props ==== //
 
 // Route Static ID
-const ROUTE_STATIC_ID = 'HOME_WEB_APP__/ASSETS/[ASSET_ID]/CONGRATULATIONS' as const;
+const ROUTE_STATIC_ID =
+	'HOME_WEB_APP__/ASSETS/[ASSET_ID]/CONGRATULATIONS' as const;
 
 // Route Static Props
 const ROUTE_STATIC_PROPS: PageStaticProps = {
