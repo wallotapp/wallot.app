@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import * as yup from 'yup';
 import {
 	GeneralizedApiResourceCreateParamsRequiredFieldEnum,
@@ -7,6 +8,7 @@ import {
 	YupHelpers,
 	getApiResourceSpec,
 	getEnum,
+	getCurrencyUsdStringFromCents,
 } from 'ergonomic';
 import {
 	apiYupHelpers,
@@ -37,13 +39,11 @@ const properties = {
 	activation_reminder_task_id: yup.string().min(1).meta({
 		unique_key: true,
 	}),
-	age_range: AgeRangeEnum.getOptionalSchema()
-		.default(null)
-		.nullable()
-		.meta({
-			label_message_user_text:
-				'Enter your age range, which will help us tailor your investment horizon',
-		}),
+	age_range: AgeRangeEnum.getOptionalSchema().default(null).nullable().meta({
+		label_by_enum_option: AgeRangeEnum.obj,
+		label_message_user_text:
+			'Enter your age range, which will help us tailor your investment horizon',
+	}),
 	alpaca_account: apiYupHelpers
 		.idRef(['alpaca_account'])
 		.default(null)
@@ -54,6 +54,10 @@ const properties = {
 		.nullable()
 		.label('Capital')
 		.meta({
+			label_by_enum_option: R.mapObjIndexed(
+				(v) => getCurrencyUsdStringFromCents(Number(v)),
+				CapitalLevelEnum.obj,
+			),
 			label_message_user_text: 'Enter the amount you would like to invest',
 		}),
 	category: UserCategoryEnum.getDefinedSchema(),
