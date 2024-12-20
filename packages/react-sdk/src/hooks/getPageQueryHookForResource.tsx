@@ -12,7 +12,6 @@ import { useQueryAlpacaAssetPage } from '@wallot/react/src/features/alpacaAssets
 import { useQueryAlpacaOrderPage } from '@wallot/react/src/features/alpacaOrders';
 import { useQueryAlpacaPositionPage } from '@wallot/react/src/features/alpacaPositions';
 import { useQueryAlphaVantageCompanyPage } from '@wallot/react/src/features/alphaVantageCompanies';
-import { useQueryAlphaVantageStockPricePage } from '@wallot/react/src/features/alphaVantageStockPrices';
 import { useQueryAssetPage } from '@wallot/react/src/features/assets';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { useQueryAssetPricePage } from '@wallot/react/src/features/assetPrices';
@@ -55,7 +54,6 @@ const queryHookMap = {
 	alpaca_order: useQueryAlpacaOrderPage,
 	alpaca_position: useQueryAlpacaPositionPage,
 	alpha_vantage_company: useQueryAlphaVantageCompanyPage,
-	alpha_vantage_stock_price: useQueryAlphaVantageStockPricePage,
 	asset: useQueryAssetPage,
 	asset_order: useQueryAssetOrderPage,
 	asset_price: useQueryAssetPricePage,

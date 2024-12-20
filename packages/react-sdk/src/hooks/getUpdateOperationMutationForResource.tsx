@@ -10,7 +10,6 @@ import { useUpdateAlpacaAssetMutation } from '@wallot/react/src/features/alpacaA
 import { useUpdateAlpacaOrderMutation } from '@wallot/react/src/features/alpacaOrders';
 import { useUpdateAlpacaPositionMutation } from '@wallot/react/src/features/alpacaPositions';
 import { useUpdateAlphaVantageCompanyMutation } from '@wallot/react/src/features/alphaVantageCompanies';
-import { useUpdateAlphaVantageStockPriceMutation } from '@wallot/react/src/features/alphaVantageStockPrices';
 import { useUpdateAssetMutation } from '@wallot/react/src/features/assets';
 import { useUpdateAssetOrderMutation } from '@wallot/react/src/features/assetOrders';
 import { useUpdateAssetPriceMutation } from '@wallot/react/src/features/assetPrices';
@@ -53,7 +52,6 @@ const updateOperationMutationMap = {
 	alpaca_order: useUpdateAlpacaOrderMutation,
 	alpaca_position: useUpdateAlpacaPositionMutation,
 	alpha_vantage_company: useUpdateAlphaVantageCompanyMutation,
-	alpha_vantage_stock_price: useUpdateAlphaVantageStockPriceMutation,
 	asset: useUpdateAssetMutation,
 	asset_order: useUpdateAssetOrderMutation,
 	asset_price: useUpdateAssetPriceMutation,
