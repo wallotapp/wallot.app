@@ -31,7 +31,6 @@ erDiagram
 	ASSET ||--|| ALPACA_ASSET : "mirrors"
 	ASSET ||--|| ALPHA_VANTAGE_COMPANY : "mirrors"
 	ASSET_ORDER ||--o| ALPACA_ORDER : "mirrors"
-	ASSET_PRICE ||--|| ALPHA_VANTAGE_STOCK_PRICE : "mirrors"
 	BANK_ACCOUNT ||--o| ALPACA_ACH_RELATIONSHIP : "mirrors"
 	BANK_ACCOUNT ||--|| STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "mirrors"
 	INVOICE ||--|| STRIPE_INVOICE : "mirrors"
@@ -101,7 +100,6 @@ erDiagram
   }
   ASSET_PRICE {
     string asset FK "min(1)"
-		string alpha_vantage_stock_price FK "min(1)"
   }
   AUTH_CREDENTIAL {
     string user FK "min(1)"
