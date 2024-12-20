@@ -7,10 +7,10 @@ describe('Recommendation', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My Recommendation',
-			forecasts: [],
+			asset_prices: [],
 			model: '',
+			news_reports: [],
 			open_ai_recommendation: '',
-			parameters: [],
 			user: '',
 		};
 		expect(exampleRecommendation).toEqual<typeof exampleRecommendation>({
@@ -23,11 +23,11 @@ describe('Recommendation', () => {
 			_date_created: expect.any(String),
 			_deleted: false,
 			description: '',
+			asset_prices: [],
 			name: 'My Recommendation',
-			forecasts: [],
 			model: '',
+			news_reports: [],
 			open_ai_recommendation: '',
-			parameters: [],
 			user: '',
 		});
 	});

@@ -65,15 +65,13 @@ erDiagram
 
 	%% Similarity Relationships
 	MODEL_FAMILY }o--o{ PARAMETER : "caters_to"
-	RECOMMENDATION }o--o{ PARAMETER : "caters_to"
 	USER ||--o{ PARAMETER : "fits"
 
 	%% Computation Relationships
 	BANK_ACCOUNT ||--o{ ACH_TRANSFER : "derives_from_the_computation_of"
-	FORECAST }|--|{ NEWS_REPORT : "derives_from_the_computation_of"
-	FORECAST }|--|{ ASSET_PRICE : "derives_from_the_computation_of"
 	POSITION |o--o{ ASSET_ORDER : "derives_from_the_computation_of"
-	RECOMMENDATION }|--|{ FORECAST : "derives_from_the_computation_of"
+	RECOMMENDATION }|--|{ NEWS_REPORT : "derives_from_the_computation_of"
+	RECOMMENDATION }|--|{ ASSET_PRICE : "derives_from_the_computation_of"
 
 	%% Transaction Relationships
 	INVOICE }|--|| PAYMENT_METHOD : "charges"
@@ -116,11 +114,6 @@ erDiagram
   EQUITY_ACCOUNT {
     string user FK "min(1)"
   }
-  FORECAST {
-    string[] asset_prices FK "min(1)"
-    string model FK "min(1)"
-    string[] news_reports FK "min(1)"
-  }
   INVOICE {
     string license FK "min(1)"
     string payment_method FK "min(1)"
@@ -153,10 +146,10 @@ erDiagram
     string equity_account FK "min(1)"
   }
   RECOMMENDATION {
-    string[] forecasts FK "min(1)"
+    string[] asset_prices FK "min(1)"
     string model FK "min(1)"
+    string[] news_reports FK "min(1)"
     string open_ai_recommendation FK "min(1)"
-    string[] parameters FK "min(1)"
     string user FK "nullable"
   }
   STRIPE_FINANCIAL_CONNECTION_ACCOUNT {
