@@ -151,9 +151,9 @@ erDiagram
     string stripe_financial_connection_session FK "min(1)"
   }
   USER {
-    string alpaca_account FK "nullable"
+    string alpaca_account_id UK "nullable"
     string[] parameters FK "nullable"
-    string stripe_customer_id FK "min(1)"
+    string stripe_customer_id UK "min(1)"
   }
 ```
 
