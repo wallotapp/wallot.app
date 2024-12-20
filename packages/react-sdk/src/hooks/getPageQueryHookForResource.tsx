@@ -7,7 +7,6 @@ import { WallotResourceName } from '@wallot/js';
 import { useQueryAchTransferPage } from '@wallot/react/src/features/achTransfers';
 import { useQueryAlpacaAccountPage } from '@wallot/react/src/features/alpacaAccounts';
 import { useQueryAlpacaAchRelationshipPage } from '@wallot/react/src/features/alpacaAchRelationships';
-import { useQueryAlpacaAchTransferPage } from '@wallot/react/src/features/alpacaAchTransfers';
 import { useQueryAlpacaAssetPage } from '@wallot/react/src/features/alpacaAssets';
 import { useQueryAlpacaOrderPage } from '@wallot/react/src/features/alpacaOrders';
 import { useQueryAlpacaPositionPage } from '@wallot/react/src/features/alpacaPositions';
@@ -49,7 +48,6 @@ const queryHookMap = {
 	ach_transfer: useQueryAchTransferPage,
 	alpaca_account: useQueryAlpacaAccountPage,
 	alpaca_ach_relationship: useQueryAlpacaAchRelationshipPage,
-	alpaca_ach_transfer: useQueryAlpacaAchTransferPage,
 	alpaca_asset: useQueryAlpacaAssetPage,
 	alpaca_order: useQueryAlpacaOrderPage,
 	alpaca_position: useQueryAlpacaPositionPage,

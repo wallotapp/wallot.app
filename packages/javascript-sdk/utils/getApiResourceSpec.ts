@@ -3,7 +3,6 @@ import { WallotResourceName } from './WallotDatabaseTypes.js';
 import { achTransfersApi } from '../achTransfers/index.js';
 import { alpacaAccountsApi } from '../alpacaAccounts/index.js';
 import { alpacaAchRelationshipsApi } from '../alpacaAchRelationships/index.js';
-import { alpacaAchTransfersApi } from '../alpacaAchTransfers/index.js';
 import { alpacaAssetsApi } from '../alpacaAssets/index.js';
 import { alpacaOrdersApi } from '../alpacaOrders/index.js';
 import { alpacaPositionsApi } from '../alpacaPositions/index.js';
@@ -46,8 +45,6 @@ export const getApiResourceSpec = (
 			return alpacaAccountsApi as unknown as GeneralizedApiResourceSpec;
 		case 'alpaca_ach_relationship':
 			return alpacaAchRelationshipsApi as unknown as GeneralizedApiResourceSpec;
-		case 'alpaca_ach_transfer':
-			return alpacaAchTransfersApi as unknown as GeneralizedApiResourceSpec;
 		case 'alpaca_asset':
 			return alpacaAssetsApi as unknown as GeneralizedApiResourceSpec;
 		case 'alpaca_order':

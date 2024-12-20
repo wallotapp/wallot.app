@@ -5,7 +5,6 @@ import { WallotResourceName } from '@wallot/js';
 import { useCreateAchTransferMutation } from '@wallot/react/src/features/achTransfers';
 import { useCreateAlpacaAccountMutation } from '@wallot/react/src/features/alpacaAccounts';
 import { useCreateAlpacaAchRelationshipMutation } from '@wallot/react/src/features/alpacaAchRelationships';
-import { useCreateAlpacaAchTransferMutation } from '@wallot/react/src/features/alpacaAchTransfers';
 import { useCreateAlpacaAssetMutation } from '@wallot/react/src/features/alpacaAssets';
 import { useCreateAlpacaOrderMutation } from '@wallot/react/src/features/alpacaOrders';
 import { useCreateAlpacaPositionMutation } from '@wallot/react/src/features/alpacaPositions';
@@ -47,7 +46,6 @@ const createOperationMutationMap = {
 	ach_transfer: useCreateAchTransferMutation,
 	alpaca_account: useCreateAlpacaAccountMutation,
 	alpaca_ach_relationship: useCreateAlpacaAchRelationshipMutation,
-	alpaca_ach_transfer: useCreateAlpacaAchTransferMutation,
 	alpaca_asset: useCreateAlpacaAssetMutation,
 	alpaca_order: useCreateAlpacaOrderMutation,
 	alpaca_position: useCreateAlpacaPositionMutation,

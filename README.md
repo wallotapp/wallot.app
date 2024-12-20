@@ -27,7 +27,6 @@ bash functions/rest-api/smoke-tests/test-health-endpoints.sh test primary
 ```mermaid
 erDiagram
 	%% Mirror Relationships
-	ACH_TRANSFER ||--o| ALPACA_ACH_TRANSFER : "mirrors"
 	ASSET ||--|| ALPACA_ASSET : "mirrors"
 	ASSET ||--|| ALPHA_VANTAGE_COMPANY : "mirrors"
 	ASSET_ORDER ||--o| ALPACA_ORDER : "mirrors"
@@ -84,7 +83,6 @@ erDiagram
 
 	%% Entity Definitions
 	ACH_TRANSFER {
-    string alpaca_ach_transfer FK "min(1)"
     string bank_account FK "min(1)"
   }
   ASSET {

@@ -27,11 +27,6 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
-	alpaca_ach_transfer: apiYupHelpers
-		.idRef(['alpaca_ach_transfer'])
-		.default(null)
-		.nullable()
-		.meta({ unique_key: true }),
 	bank_account: apiYupHelpers
 		.idRef(['bank_account'])
 		.min(1)
