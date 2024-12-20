@@ -49,12 +49,6 @@
 			"visibility": "public"
 		},
 		{
-			"name_singular": "alpha_vantage_stock_price",
-			"name_plural": "alpha_vantage_stock_prices",
-			"id_prefix": "av_stck_pr",
-			"visibility": "public"
-		},
-		{
 			"name_singular": "asset",
 			"name_plural": "assets",
 			"id_prefix": "ast",
