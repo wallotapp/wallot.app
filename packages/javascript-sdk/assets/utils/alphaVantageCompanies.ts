@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { getEnum, Keys } from 'ergonomic';
 
 export const alphaVantageCompanyProperties = {
 	alpha_vantage_company_200DayMovingAverage: yup
@@ -105,3 +106,9 @@ export const alphaVantageCompanyProperties = {
 		.meta({ unique_key: true }),
 	alpha_vantage_company_TrailingPE: yup.string().nullable().default(null),
 } as const;
+
+export const AlphaVantageCompanyPropertyNameEnum = getEnum(
+	Keys(alphaVantageCompanyProperties),
+);
+export type AlphaVantageCompanyPropertyName =
+	keyof typeof AlphaVantageCompanyPropertyNameEnum.obj;

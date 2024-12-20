@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { YupHelpers, getEnum, GeneralizedFieldTypeEnum } from 'ergonomic';
+import { YupHelpers, getEnum, GeneralizedFieldTypeEnum, Keys } from 'ergonomic';
 
 export const AlpacaAssetCategoryEnum = getEnum(['default']);
 export type AlpacaAssetCategory = keyof typeof AlpacaAssetCategoryEnum.obj;
@@ -78,3 +78,7 @@ export const alpacaAssetProperties = {
 		.meta({ type: GeneralizedFieldTypeEnum.obj.short_text, unique_key: true }),
 	alpaca_asset_tradable: YupHelpers.booleanDefaultUnset(),
 } as const;
+
+export const AlpacaAssetPropertyNameEnum = getEnum(Keys(alpacaAssetProperties));
+export type AlpacaAssetPropertyName =
+	keyof typeof AlpacaAssetPropertyNameEnum.obj;
