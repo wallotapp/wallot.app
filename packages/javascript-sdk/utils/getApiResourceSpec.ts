@@ -27,7 +27,6 @@ import { parametersApi } from '../parameters/index.js';
 import { paymentMethodsApi } from '../paymentMethods/index.js';
 import { positionsApi } from '../positions/index.js';
 import { recommendationsApi } from '../recommendations/index.js';
-import { stripeCustomersApi } from '../stripeCustomers/index.js';
 import { stripeFinancialConnectionAccountsApi } from '../stripeFinancialConnectionAccounts/index.js';
 import { stripeFinancialConnectionSessionsApi } from '../stripeFinancialConnectionSessions/index.js';
 import { stripeInvoicesApi } from '../stripeInvoices/index.js';
@@ -93,8 +92,6 @@ export const getApiResourceSpec = (
 			return positionsApi as unknown as GeneralizedApiResourceSpec;
 		case 'recommendation':
 			return recommendationsApi as unknown as GeneralizedApiResourceSpec;
-		case 'stripe_customer':
-			return stripeCustomersApi as unknown as GeneralizedApiResourceSpec;
 		case 'stripe_financial_connection_account':
 			return stripeFinancialConnectionAccountsApi as unknown as GeneralizedApiResourceSpec;
 		case 'stripe_financial_connection_session':

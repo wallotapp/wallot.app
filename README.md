@@ -39,7 +39,7 @@ erDiagram
 	POSITION ||--o| ALPACA_POSITION : "mirrors"
 	RECOMMENDATION ||--|| OPEN_AI_RECOMMENDATION : "mirrors"
 	USER ||--o| ALPACA_ACCOUNT : "mirrors"
-	USER ||--|| STRIPE_CUSTOMER : "mirrors"
+	USER ||--|| STRIPE_CUSTOMER_ID : "mirrors"
 
 	%% Ownership Relationships
 	EQUITY_ACCOUNT ||--o{ POSITION : "owns"
@@ -153,7 +153,7 @@ erDiagram
   USER {
     string alpaca_account FK "nullable"
     string[] parameters FK "nullable"
-    string stripe_customer FK "min(1)"
+    string stripe_customer_id FK "min(1)"
   }
 ```
 

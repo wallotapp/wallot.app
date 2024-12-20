@@ -163,12 +163,6 @@
 			"visibility": "public"
 		},
 		{
-			"name_singular": "stripe_customer",
-			"name_plural": "stripe_customers",
-			"id_prefix": "strp_cus",
-			"visibility": "public"
-		},
-		{
 			"name_singular": "stripe_financial_connection_account",
 			"name_plural": "stripe_financial_connection_accounts",
 			"id_prefix": "strp_fc_acct",

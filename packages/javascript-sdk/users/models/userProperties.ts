@@ -30,7 +30,7 @@ export type UserCategory = keyof typeof UserCategoryEnum.obj;
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
 	'activation_reminder_task_id',
-	'stripe_customer',
+	'stripe_customer_id',
 	'username',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
@@ -78,10 +78,10 @@ const properties = {
 			label_by_enum_option: riskPreferenceLabelDictionary,
 			label_message_user_text: 'Select a risk level you are comfortable with',
 		}),
-	stripe_customer: apiYupHelpers
-		.idRef(['stripe_customer'])
-		.min(1)
-		.meta({ unique_key: true }),
+	stripe_customer_id: yup.string().required().meta({
+		unique_key: true,
+		type: GeneralizedFieldTypeEnum.obj.short_text,
+	}),
 	username: usernameSchema().defined().meta({ unique_key: true }),
 } as const;
 type U = typeof properties;
