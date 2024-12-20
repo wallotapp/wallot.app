@@ -7,6 +7,7 @@ describe('Model', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My Model',
+			date_published: '',
 			model_family: '',
 			open_ai_model: '',
 		};
@@ -21,6 +22,7 @@ describe('Model', () => {
 			_deleted: false,
 			description: '',
 			name: 'My Model',
+			date_published: '',
 			model_family: '',
 			open_ai_model: '',
 		});

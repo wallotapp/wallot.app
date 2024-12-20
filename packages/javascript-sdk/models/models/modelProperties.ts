@@ -18,6 +18,7 @@ export type ModelCategory = keyof typeof ModelCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'date_published',
 	'model_family',
 	'open_ai_model',
 ] as const);
@@ -29,6 +30,7 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: ModelCategoryEnum.getDefinedSchema(),
+	date_published: YupHelpers.dateTime(),
 	model_family: apiYupHelpers
 		.idRef(['model_family'])
 		.min(1)
