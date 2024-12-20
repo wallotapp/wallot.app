@@ -19,3 +19,4 @@ export * from './ageRange.js';
 export * from './capitalLevel.js';
 export * from './investingGoal.js';
 export * from './riskPreference.js';
+export * from './userExperienceMachine.js';
