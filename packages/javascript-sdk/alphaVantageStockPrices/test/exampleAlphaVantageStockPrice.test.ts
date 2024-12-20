@@ -10,6 +10,17 @@ describe('AlphaVantageStockPrice', () => {
 			...apiResourceDefaultJson,
 			category: 'daily',
 			name: 'My AlphaVantageStockPrice',
+			adjusted_close: '',
+			close: '',
+			dividend_amount: '',
+			high: '',
+			low: '',
+			open: '',
+			split_coefficient: '',
+			symbol: '',
+			timestamp: '',
+			time_zone: '',
+			volume: '',
 		};
 		expect(exampleAlphaVantageStockPrice).toEqual<
 			typeof exampleAlphaVantageStockPrice
@@ -24,6 +35,17 @@ describe('AlphaVantageStockPrice', () => {
 			_deleted: false,
 			description: '',
 			name: 'My AlphaVantageStockPrice',
+			adjusted_close: '',
+			close: '',
+			dividend_amount: '',
+			high: '',
+			low: '',
+			open: '',
+			split_coefficient: '',
+			symbol: '',
+			timestamp: '',
+			time_zone: '',
+			volume: '',
 		});
 	});
 });
