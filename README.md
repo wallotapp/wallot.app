@@ -29,10 +29,9 @@ erDiagram
 	%% Mirror Relationships
 
 	BANK_ACCOUNT ||--o| ALPACA_ACH_RELATIONSHIP : "mirrors"
-	INVOICE ||--|| STRIPE_INVOICE : "mirrors"
 	MODEL ||--|| OPEN_AI_MODEL : "mirrors"
 	LICENSE ||--|| STRIPE_SUBSCRIPTION : "mirrors"
-	PAYMENT_METHOD ||--|| STRIPE_PAYMENT_METHOD : "mirrors"
+	PAYMENT_METHOD ||--||  : "mirrors"
 	POSITION ||--o| ALPACA_POSITION : "mirrors"
 	USER ||--o| ALPACA_ACCOUNT : "mirrors"
 
@@ -41,6 +40,8 @@ erDiagram
   ASSET ||--|| ALPHA_VANTAGE_COMPANY_NAME : "owns"
   ASSET_ORDER ||--o| ALPACA_ORDER_ID : "owns"
   BANK_ACCOUNT ||--|| STRIPE_FINANCIAL_CONNECTIONS_ACCOUNT_ID : "owns"
+  BANK_ACCOUNT ||--|| STRIPE_PAYMENT_METHOD_ID : "owns"
+	INVOICE ||--|| STRIPE_INVOICE_ID : "owns"
 	MODEL_FAMILY ||--o{ MODEL : "owns"
 	OPEN_AI_MODEL_FAMILY ||--o{ OPEN_AI_MODEL : "owns"
 	ORDER ||--o{ ASSET_ORDER : "owns"
@@ -107,9 +108,9 @@ erDiagram
     string stripe_payment_method_id UK "min(1)"
   }
   INVOICE {
+    string bank_account FK "min(1)"
     string license FK "min(1)"
-    string payment_method FK "min(1)"
-    string stripe_invoice FK "min(1)"
+    string stripe_invoice_id FK "min(1)"
   }
   LICENSE {
     string stripe_subscription FK "nullable"
@@ -125,11 +126,6 @@ erDiagram
   }
   ORDER {
     string bank_account FK "min(1)"
-    string user FK "min(1)"
-  }
-  PAYMENT_METHOD {
-    string bank_account FK "min(1)"
-    string stripe_payment_method FK "nullable"
     string user FK "min(1)"
   }
   POSITION {

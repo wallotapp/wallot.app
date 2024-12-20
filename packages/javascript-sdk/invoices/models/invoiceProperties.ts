@@ -36,7 +36,7 @@ const properties = {
 		.meta({ unique_key: false }),
 	category: InvoiceCategoryEnum.getDefinedSchema(),
 	license: apiYupHelpers.idRef(['license']).min(1).meta({ unique_key: false }),
-	stripe_invoice_id: yup.string().default(null).nullable().meta({
+	stripe_invoice_id: yup.string().defined().min(1).meta({
 		unique_key: true,
 		type: GeneralizedFieldTypeEnum.obj.short_text,
 	}),
