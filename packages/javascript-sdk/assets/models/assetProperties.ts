@@ -7,19 +7,20 @@ import {
 	YupHelpers,
 	getApiResourceSpec,
 	getEnum,
+	Keys,
 } from 'ergonomic';
 import {
 	apiYupHelpers,
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
+import { alpacaAssetProperties } from '../utils/alpacaAssets.js';
 
 export const AssetCategoryEnum = getEnum(['default']);
 export type AssetCategory = keyof typeof AssetCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
-	'alpaca_asset',
-	'alpha_vantage_company',
+	...Keys(alpacaAssetProperties),
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -28,10 +29,7 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
-	alpaca_asset: apiYupHelpers
-		.idRef(['alpaca_asset'])
-		.min(1)
-		.meta({ unique_key: true }),
+	...alpacaAssetProperties,
 	alpha_vantage_company: apiYupHelpers
 		.idRef(['alpha_vantage_company'])
 		.min(1)
