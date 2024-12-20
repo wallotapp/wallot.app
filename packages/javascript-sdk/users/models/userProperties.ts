@@ -48,11 +48,10 @@ const properties = {
 		label_by_enum_option: AgeRangeEnum.obj,
 		label_message_user_text: 'Select your age range',
 	}),
-	alpaca_account: apiYupHelpers
-		.idRef(['alpaca_account'])
-		.default(null)
-		.nullable()
-		.meta({ unique_key: true }),
+	alpaca_account_id: yup.string().default(null).nullable().meta({
+		unique_key: true,
+		type: GeneralizedFieldTypeEnum.obj.short_text,
+	}),
 	capital_level: CapitalLevelEnum.getDefinedSchema()
 		.default(null)
 		.nullable()
