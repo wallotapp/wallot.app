@@ -29,7 +29,6 @@ erDiagram
 	%% Mirror Relationships
 
 	BANK_ACCOUNT ||--o| ALPACA_ACH_RELATIONSHIP : "mirrors"
-	BANK_ACCOUNT ||--|| STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "mirrors"
 	INVOICE ||--|| STRIPE_INVOICE : "mirrors"
 	MODEL ||--|| OPEN_AI_MODEL : "mirrors"
 	LICENSE ||--|| STRIPE_SUBSCRIPTION : "mirrors"
@@ -41,6 +40,7 @@ erDiagram
 	ASSET ||--|| ALPACA_ASSET_ID : "owns"
   ASSET ||--|| ALPHA_VANTAGE_COMPANY_NAME : "owns"
   ASSET_ORDER ||--o| ALPACA_ORDER_ID : "owns"
+  BANK_ACCOUNT ||--|| STRIPE_FINANCIAL_CONNECTIONS_ACCOUNT_ID : "owns"
 	MODEL_FAMILY ||--o{ MODEL : "owns"
 	OPEN_AI_MODEL_FAMILY ||--o{ OPEN_AI_MODEL : "owns"
 	ORDER ||--o{ ASSET_ORDER : "owns"
@@ -57,8 +57,7 @@ erDiagram
 	%% Production Relationships
 	MODEL ||--o{ RECOMMENDATION : "produces"
 	RECOMMENDATION }o--o{ ASSET_ORDER : "factors_into"
-	STRIPE_FINANCIAL_CONNECTION_SESSION ||--o{ STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "produces"
-	USER ||--o{ STRIPE_FINANCIAL_CONNECTION_SESSION : "produces"
+	STRIPE_FINANCIAL_CONNECTIONS_SESSION_FLOW ||--o{ STRIPE_FINANCIAL_CONNECTIONS_ACCOUNT_LINK : "produces"
 
 	%% Similarity Relationships
 	MODEL_FAMILY }o--o{ PARAMETER : "caters_to"
@@ -104,7 +103,7 @@ erDiagram
   }
   BANK_ACCOUNT {
     string alpaca_ach_relationship_id UK "nullable"
-    string stripe_financial_connection_account_id UK "min(1)"
+    string stripe_financial_connections_account_id UK "min(1)"
     string stripe_payment_method_id UK "min(1)"
   }
   INVOICE {
@@ -143,9 +142,6 @@ erDiagram
     string[] news_reports FK "min(1)"
     string[] open_ai_api_request_ids "min(1)"
     string user FK "nullable"
-  }
-  STRIPE_FINANCIAL_CONNECTION_ACCOUNT {
-    string stripe_financial_connection_session FK "min(1)"
   }
   USER {
     string alpaca_account_id UK "nullable"
