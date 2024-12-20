@@ -36,7 +36,6 @@ erDiagram
 	BANK_ACCOUNT ||--|| STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "mirrors"
 	INVOICE ||--|| STRIPE_INVOICE : "mirrors"
 	MODEL ||--|| OPEN_AI_MODEL : "mirrors"
-	MODEL_FAMILY ||--|| OPEN_AI_MODEL_FAMILY : "mirrors"
 	LICENSE ||--|| STRIPE_SUBSCRIPTION : "mirrors"
 	PAYMENT_METHOD ||--|| STRIPE_PAYMENT_METHOD : "mirrors"
 	POSITION ||--o| ALPACA_POSITION : "mirrors"

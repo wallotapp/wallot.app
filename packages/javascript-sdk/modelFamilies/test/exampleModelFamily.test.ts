@@ -7,7 +7,6 @@ describe('ModelFamily', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My ModelFamily',
-			open_ai_model_family: '',
 			parameters: [],
 		};
 		expect(exampleModelFamily).toEqual<typeof exampleModelFamily>({
@@ -21,7 +20,6 @@ describe('ModelFamily', () => {
 			_deleted: false,
 			description: '',
 			name: 'My ModelFamily',
-			open_ai_model_family: '',
 			parameters: [],
 		});
 	});

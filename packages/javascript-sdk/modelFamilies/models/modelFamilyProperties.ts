@@ -18,7 +18,6 @@ export type ModelFamilyCategory = keyof typeof ModelFamilyCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
-	'open_ai_model_family',
 	'parameters',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
@@ -29,10 +28,6 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: ModelFamilyCategoryEnum.getDefinedSchema(),
-	open_ai_model_family: apiYupHelpers
-		.idRef(['open_ai_model_family'])
-		.min(1)
-		.meta({ unique_key: true }),
 	parameters: apiYupHelpers.idRefs(['parameter']).min(1),
 } as const;
 type U = typeof properties;
