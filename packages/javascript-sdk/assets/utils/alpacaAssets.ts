@@ -49,13 +49,23 @@ export const AlpacaAssetStatusEnum = getEnum(['active', 'inactive']);
 export type AlpacaAssetStatus = keyof typeof AlpacaAssetStatusEnum.obj;
 
 export const alpacaAssetProperties = {
-	alpaca_asset_attributes: YupHelpers.array(AlpacaAssetAttributesEnum.getDefinedSchema()),
+	alpaca_asset_attributes: YupHelpers.array(
+		AlpacaAssetAttributesEnum.getDefinedSchema(),
+	),
 	alpaca_asset_class: AlpacaAssetClassEnum.getDefinedSchema(),
 	alpaca_asset_easy_to_borrow: YupHelpers.booleanDefaultUnset(),
 	alpaca_asset_exchange: AlpacaExchangeEnum.getDefinedSchema(),
 	alpaca_asset_fractionable: YupHelpers.booleanDefaultUnset(),
-	alpaca_asset_id: yup.string().required().defined().min(1).meta({ unique_key: true }),
-	alpaca_asset_maintenance_margin_requirement: yup.number().nullable().default(null), // <= deprecated
+	alpaca_asset_id: yup
+		.string()
+		.required()
+		.defined()
+		.min(1)
+		.meta({ unique_key: true }),
+	alpaca_asset_maintenance_margin_requirement: yup
+		.number()
+		.nullable()
+		.default(null), // <= deprecated
 	alpaca_asset_margin_requirement_long: yup.string().nullable().default(null),
 	alpaca_asset_margin_requirement_short: yup.string().nullable().default(null),
 	alpaca_asset_marginable: YupHelpers.booleanDefaultUnset(),
