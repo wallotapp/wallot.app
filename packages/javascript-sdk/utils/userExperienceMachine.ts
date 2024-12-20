@@ -16,7 +16,6 @@ export type UserExperienceEvent = {
 		| 'RESOLVE_PROBLEM_WITH_ORDER';
 };
 export type UserExperienceState =
-	| 'guest'
 	| 'registered'
 	| 'activated'
 	| 'trackingProgress.waitingForOrderToBeFilled'
