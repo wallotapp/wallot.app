@@ -2,7 +2,6 @@ import { v4 } from 'uuid';
 import {
 	RegisterUserParams,
 	RegisterUserResponse,
-	stripeCustomersApi,
 	usersApi,
 	authCredentialsApi,
 	equityAccountsApi,
@@ -40,7 +39,6 @@ export const registerUser = async ({
 	}
 
 	// Initialize Firestore document IDs
-	const stripeCustomerDocId = stripeCustomersApi.generateId();
 	const userDocId = usersApi.generateId();
 	const authCredentialDocId = authCredentialsApi.generateId();
 	const equityAccountDocId = equityAccountsApi.generateId();
@@ -59,23 +57,9 @@ export const registerUser = async ({
 	// Create a Stripe Customer
 	const stripeCustomer = await createStripeCustomer({
 		email,
-		metadata: { _id: stripeCustomerDocId, user_id: userDocId },
+		metadata: { user_id: userDocId },
 		username,
 	});
-
-	// Create a STRIPE_CUSTOMER Firestore document
-	const stripeCustomerDoc = stripeCustomersApi.mergeCreateParams({
-		createParams: {
-			_id: stripeCustomerDocId,
-			category: 'default',
-			name: '',
-			stripe_id: stripeCustomer.id,
-		},
-	});
-	batch.set(
-		db.collection(stripeCustomersApi.collectionId).doc(stripeCustomerDocId),
-		stripeCustomerDoc,
-	);
 
 	// Create a USER Firestore document
 	const activationReminderTaskId = v4();
@@ -85,7 +69,7 @@ export const registerUser = async ({
 			activation_reminder_task_id: activationReminderTaskId,
 			category: 'default',
 			name: '',
-			stripe_customer: stripeCustomerDocId,
+			stripe_customer_id: stripeCustomer.id,
 			username,
 		},
 	});

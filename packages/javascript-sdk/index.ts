@@ -26,7 +26,6 @@ export * from './parameters/index.js';
 export * from './paymentMethods/index.js';
 export * from './positions/index.js';
 export * from './recommendations/index.js';
-export * from './stripeCustomers/index.js';
 export * from './stripeFinancialConnectionAccounts/index.js';
 export * from './stripeFinancialConnectionSessions/index.js';
 export * from './stripeInvoices/index.js';

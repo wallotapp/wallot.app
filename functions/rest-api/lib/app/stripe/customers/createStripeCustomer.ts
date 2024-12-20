@@ -6,7 +6,7 @@ export const createStripeCustomer = ({
 	metadata,
 	username,
 }: Pick<RegisterUserParams, 'email' | 'username'> & {
-	metadata: { _id: string; user_id: string };
+	metadata: { user_id: string };
 }) =>
 	stripe.customers.create({
 		email: email,
