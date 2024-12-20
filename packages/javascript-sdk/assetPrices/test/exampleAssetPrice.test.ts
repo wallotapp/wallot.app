@@ -5,7 +5,7 @@ describe('AssetPrice', () => {
 		const { apiResourceDefaultJson } = assetPricesApi;
 		const exampleAssetPrice: AssetPrice = {
 			...apiResourceDefaultJson,
-			category: 'default',
+			category: 'daily_ohlcv',
 			name: 'My AssetPrice',
 			adjusted_close: '',
 			asset: '',
@@ -25,7 +25,7 @@ describe('AssetPrice', () => {
 			_date_last_modified: expect.any(String),
 			_created_by: expect.any(String),
 			_object: 'asset_price',
-			category: 'default',
+			category: 'daily_ohlcv',
 			_archived: false,
 			_date_created: expect.any(String),
 			_deleted: false,

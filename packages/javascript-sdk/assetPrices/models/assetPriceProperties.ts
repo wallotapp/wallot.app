@@ -13,7 +13,7 @@ import {
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 
-export const AssetPriceCategoryEnum = getEnum(['default']);
+export const AssetPriceCategoryEnum = getEnum(['daily_ohlcv']);
 export type AssetPriceCategory = keyof typeof AssetPriceCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
