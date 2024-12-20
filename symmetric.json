@@ -7,36 +7,6 @@
 			"visibility": "public"
 		},
 		{
-			"name_singular": "alpaca_account",
-			"name_plural": "alpaca_accounts",
-			"id_prefix": "alp_acct",
-			"visibility": "public"
-		},
-		{
-			"name_singular": "alpaca_ach_relationship",
-			"name_plural": "alpaca_ach_relationships",
-			"id_prefix": "alp_ach_rel",
-			"visibility": "public"
-		},
-		{
-			"name_singular": "alpaca_asset",
-			"name_plural": "alpaca_assets",
-			"id_prefix": "alp_ast",
-			"visibility": "public"
-		},
-		{
-			"name_singular": "alpaca_position",
-			"name_plural": "alpaca_positions",
-			"id_prefix": "alp_pos",
-			"visibility": "public"
-		},
-		{
-			"name_singular": "alpha_vantage_company",
-			"name_plural": "alpha_vantage_companies",
-			"id_prefix": "av_co",
-			"visibility": "public"
-		},
-		{
 			"name_singular": "asset",
 			"name_plural": "assets",
 			"id_prefix": "ast",
@@ -64,12 +34,6 @@
 			"name_singular": "bank_account",
 			"name_plural": "bank_accounts",
 			"id_prefix": "bnk",
-			"visibility": "public"
-		},
-		{
-			"name_singular": "equity_account",
-			"name_plural": "equity_accounts",
-			"id_prefix": "eq",
 			"visibility": "public"
 		},
 		{
@@ -121,12 +85,6 @@
 			"visibility": "public"
 		},
 		{
-			"name_singular": "open_ai_recommendation",
-			"name_plural": "open_ai_recommendations",
-			"id_prefix": "opai_rec",
-			"visibility": "public"
-		},
-		{
 			"id_prefix": "ord",
 			"name_plural": "orders",
 			"name_singular": "order",
@@ -139,12 +97,6 @@
 			"visibility": "public"
 		},
 		{
-			"id_prefix": "pm",
-			"name_plural": "payment_methods",
-			"name_singular": "payment_method",
-			"visibility": "public"
-		},
-		{
 			"id_prefix": "pos",
 			"name_plural": "positions",
 			"name_singular": "position",
@@ -154,36 +106,6 @@
 			"id_prefix": "rec",
 			"name_plural": "recommendations",
 			"name_singular": "recommendation",
-			"visibility": "public"
-		},
-		{
-			"name_singular": "stripe_financial_connection_account",
-			"name_plural": "stripe_financial_connection_accounts",
-			"id_prefix": "strp_fc_acct",
-			"visibility": "public"
-		},
-		{
-			"name_singular": "stripe_financial_connection_session",
-			"name_plural": "stripe_financial_connection_sessions",
-			"id_prefix": "strp_fc_sn",
-			"visibility": "public"
-		},
-		{
-			"name_singular": "stripe_invoice",
-			"name_plural": "stripe_invoices",
-			"id_prefix": "strp_inv",
-			"visibility": "public"
-		},
-		{
-			"name_singular": "stripe_payment_method",
-			"name_plural": "stripe_payment_methods",
-			"id_prefix": "strp_pm",
-			"visibility": "public"
-		},
-		{
-			"name_singular": "stripe_subscription",
-			"name_plural": "stripe_subscriptions",
-			"id_prefix": "strp_sub",
 			"visibility": "public"
 		},
 		{
