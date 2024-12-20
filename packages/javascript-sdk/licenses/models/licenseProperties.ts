@@ -28,10 +28,10 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: LicenseCategoryEnum.getDefinedSchema(),
-	stripe_subscription: apiYupHelpers
-		.idRef(['stripe_subscription'])
-		.default(null)
+	stripe_subscription_id: yup
+		.string()
 		.nullable()
+		.default(null)
 		.meta({ unique_key: true }),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: true }),
 } as const;

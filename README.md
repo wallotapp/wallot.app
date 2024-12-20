@@ -30,7 +30,6 @@ erDiagram
 
 	BANK_ACCOUNT ||--o| ALPACA_ACH_RELATIONSHIP : "mirrors"
 	MODEL ||--|| OPEN_AI_MODEL : "mirrors"
-	LICENSE ||--|| STRIPE_SUBSCRIPTION : "mirrors"
 	PAYMENT_METHOD ||--||  : "mirrors"
 	POSITION ||--o| ALPACA_POSITION : "mirrors"
 	USER ||--o| ALPACA_ACCOUNT : "mirrors"
@@ -42,6 +41,7 @@ erDiagram
   BANK_ACCOUNT ||--|| STRIPE_FINANCIAL_CONNECTIONS_ACCOUNT_ID : "owns"
   BANK_ACCOUNT ||--|| STRIPE_PAYMENT_METHOD_ID : "owns"
 	INVOICE ||--|| STRIPE_INVOICE_ID : "owns"
+	LICENSE ||--o| STRIPE_SUBSCRIPTION_ID : "owns"
 	MODEL_FAMILY ||--o{ MODEL : "owns"
 	OPEN_AI_MODEL_FAMILY ||--o{ OPEN_AI_MODEL : "owns"
 	ORDER ||--o{ ASSET_ORDER : "owns"
@@ -113,7 +113,7 @@ erDiagram
     string stripe_invoice_id FK "min(1)"
   }
   LICENSE {
-    string stripe_subscription FK "nullable"
+    string stripe_subscription_id UK "nullable"
     string user FK "min(1)"
   }
   MODEL {
