@@ -57,7 +57,6 @@ erDiagram
 	USER ||--o{ RECOMMENDATION : "owns"
 
 	%% Production Relationships
-	MODEL ||--o{ FORECAST : "produces"
 	MODEL ||--o{ RECOMMENDATION : "produces"
 	RECOMMENDATION }o--o{ ASSET_ORDER : "factors_into"
 	STRIPE_FINANCIAL_CONNECTION_SESSION ||--o{ STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "produces"

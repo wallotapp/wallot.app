@@ -17,7 +17,6 @@ import { useUpdateAssetPriceMutation } from '@wallot/react/src/features/assetPri
 import { useUpdateAuthCredentialMutation } from '@wallot/react/src/features/authCredentials';
 import { useUpdateBankAccountMutation } from '@wallot/react/src/features/bankAccounts';
 import { useUpdateEquityAccountMutation } from '@wallot/react/src/features/equityAccounts';
-import { useUpdateForecastMutation } from '@wallot/react/src/features/forecasts';
 import { useUpdateIdentityVerificationDocumentMutation } from '@wallot/react/src/features/identityVerificationDocuments';
 import { useUpdateInvoiceMutation } from '@wallot/react/src/features/invoices';
 import { useUpdateLicenseMutation } from '@wallot/react/src/features/licenses';
@@ -61,7 +60,6 @@ const updateOperationMutationMap = {
 	auth_credential: useUpdateAuthCredentialMutation,
 	bank_account: useUpdateBankAccountMutation,
 	equity_account: useUpdateEquityAccountMutation,
-	forecast: useUpdateForecastMutation,
 	identity_verification_document: useUpdateIdentityVerificationDocumentMutation,
 	invoice: useUpdateInvoiceMutation,
 	license: useUpdateLicenseMutation,

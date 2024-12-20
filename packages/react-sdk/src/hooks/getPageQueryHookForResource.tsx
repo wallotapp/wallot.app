@@ -19,7 +19,6 @@ import { useQueryAssetPricePage } from '@wallot/react/src/features/assetPrices';
 import { useQueryAuthCredentialPage } from '@wallot/react/src/features/authCredentials';
 import { useQueryBankAccountPage } from '@wallot/react/src/features/bankAccounts';
 import { useQueryEquityAccountPage } from '@wallot/react/src/features/equityAccounts';
-import { useQueryForecastPage } from '@wallot/react/src/features/forecasts';
 import { useQueryIdentityVerificationDocumentPage } from '@wallot/react/src/features/identityVerificationDocuments';
 import { useQueryInvoicePage } from '@wallot/react/src/features/invoices';
 import { useQueryLicensePage } from '@wallot/react/src/features/licenses';
@@ -63,7 +62,6 @@ const queryHookMap = {
 	auth_credential: useQueryAuthCredentialPage,
 	bank_account: useQueryBankAccountPage,
 	equity_account: useQueryEquityAccountPage,
-	forecast: useQueryForecastPage,
 	identity_verification_document: useQueryIdentityVerificationDocumentPage,
 	invoice: useQueryInvoicePage,
 	license: useQueryLicensePage,

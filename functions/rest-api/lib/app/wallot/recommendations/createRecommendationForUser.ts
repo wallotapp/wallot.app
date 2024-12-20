@@ -1,5 +1,4 @@
 import { ActivateUserParams, Parameter, Recommendation } from '@wallot/js';
-import { locateRecentForecastsProducedByModel } from '../forecasts/locateRecentForecastsProducedByModel.js';
 import { locateBestModelFamiliesForParameterSet } from '../models/locateBestModelFamiliesForParameterSet.js';
 import { locateLatestModelInModelFamily } from '../models/locateLatestModelInModelFamily.js';
 import { promptGptForCustomRecommendation } from './promptGptForCustomRecommendation.js';
@@ -34,12 +33,7 @@ export const createRecommendationForUser = async (
 		model_family: bestModelFamily,
 	});
 
-	// Locate recent FORECASTs produced by MODEL
-	const forecasts = await locateRecentForecastsProducedByModel({
-		model: latestModel,
-	});
-
-	// Generate custom RECOMMENDATION for USER from FORECASTs and PARAMETERs
+	// Generate custom RECOMMENDATION for USER
 	const customRecommendation = await promptGptForCustomRecommendation({
 		age_range,
 		capital_level,
@@ -48,7 +42,6 @@ export const createRecommendationForUser = async (
 		userId,
 		compatibleParameters,
 		latestModel,
-		forecasts,
 	});
 
 	return customRecommendation;

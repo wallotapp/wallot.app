@@ -14,7 +14,6 @@ export * from './assetPrices/index.js';
 export * from './authCredentials/index.js';
 export * from './bankAccounts/index.js';
 export * from './equityAccounts/index.js';
-export * from './forecasts/index.js';
 export * from './identityVerificationDocuments/index.js';
 export * from './invoices/index.js';
 export * from './licenses/index.js';

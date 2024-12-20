@@ -91,12 +91,6 @@
 			"visibility": "public"
 		},
 		{
-			"id_prefix": "fr",
-			"name_plural": "forecasts",
-			"name_singular": "forecast",
-			"visibility": "public"
-		},
-		{
 			"name_singular": "identity_verification_document",
 			"name_plural": "identity_verification_documents",
 			"id_prefix": "id_ver",
