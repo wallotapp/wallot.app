@@ -5,7 +5,7 @@ describe('AchTransfer', () => {
 		const { apiResourceDefaultJson } = achTransfersApi;
 		const exampleAchTransfer: AchTransfer = {
 			...apiResourceDefaultJson,
-			category: 'default',
+			category: 'incoming',
 			name: 'My AchTransfer',
 			bank_account: '',
 		};
@@ -14,7 +14,7 @@ describe('AchTransfer', () => {
 			_date_last_modified: expect.any(String),
 			_created_by: expect.any(String),
 			_object: 'ach_transfer',
-			category: 'default',
+			category: 'incoming',
 			_archived: false,
 			_date_created: expect.any(String),
 			_deleted: false,

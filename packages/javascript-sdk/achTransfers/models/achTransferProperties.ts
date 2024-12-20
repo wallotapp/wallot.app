@@ -13,7 +13,7 @@ import {
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 
-export const AchTransferCategoryEnum = getEnum(['default']);
+export const AchTransferCategoryEnum = getEnum(['incoming', 'outgoing']);
 export type AchTransferCategory = keyof typeof AchTransferCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
