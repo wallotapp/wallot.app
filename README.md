@@ -27,7 +27,7 @@ bash functions/rest-api/smoke-tests/test-health-endpoints.sh test primary
 ```mermaid
 erDiagram
 	%% Mirror Relationships
-	ASSET ||--|| ALPHA_VANTAGE_COMPANY : "mirrors"
+
 	BANK_ACCOUNT ||--o| ALPACA_ACH_RELATIONSHIP : "mirrors"
 	BANK_ACCOUNT ||--|| STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "mirrors"
 	INVOICE ||--|| STRIPE_INVOICE : "mirrors"
@@ -40,6 +40,7 @@ erDiagram
 
 	%% Ownership Relationships
 	ASSET ||--|| ALPACA_ASSET_ID : "owns"
+  ASSET ||--|| ALPHA_VANTAGE_COMPANY_NAME : "owns"
   ASSET_ORDER ||--o| ALPACA_ORDER_ID : "owns"
 	MODEL_FAMILY ||--o{ MODEL : "owns"
 	OPEN_AI_MODEL_FAMILY ||--o{ OPEN_AI_MODEL : "owns"
@@ -86,8 +87,8 @@ erDiagram
     string bank_account FK "min(1)"
   }
   ASSET {
-    string alpaca_asset_id FK "min(1)"
-    string alpha_vantage_company FK "min(1)"
+    string alpaca_asset_id UK "min(1)"
+    string alpha_vantage_company_Name UK "min(1)"
   }
   ASSET_ORDER {
     string alpaca_order_id FK "nullable"

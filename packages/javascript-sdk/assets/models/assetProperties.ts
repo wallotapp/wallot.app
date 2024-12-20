@@ -14,6 +14,7 @@ import {
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 import { alpacaAssetProperties } from '../utils/alpacaAssets.js';
+import { alphaVantageCompanyProperties } from '../utils/alphaVantageCompanies.js';
 
 export const AssetCategoryEnum = getEnum(['default']);
 export type AssetCategory = keyof typeof AssetCategoryEnum.obj;
@@ -21,6 +22,7 @@ export type AssetCategory = keyof typeof AssetCategoryEnum.obj;
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
 	...Keys(alpacaAssetProperties),
+	...Keys(alphaVantageCompanyProperties),
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -30,10 +32,7 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	...alpacaAssetProperties,
-	alpha_vantage_company: apiYupHelpers
-		.idRef(['alpha_vantage_company'])
-		.min(1)
-		.meta({ unique_key: true }),
+	...alphaVantageCompanyProperties,
 	category: AssetCategoryEnum.getDefinedSchema(),
 } as const;
 type U = typeof properties;
