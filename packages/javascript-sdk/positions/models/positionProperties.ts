@@ -19,7 +19,7 @@ export type PositionCategory = keyof typeof PositionCategoryEnum.obj;
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
 	'asset',
-	'equity_account',
+	'user',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -32,12 +32,12 @@ const properties = {
 		.idRef(['asset'])
 		.min(1)
 		.meta({
-			unique_by: ['equity_account'],
+			unique_by: ['user'],
 			unique_key: false,
 		}),
 	category: PositionCategoryEnum.getDefinedSchema(),
-	equity_account: apiYupHelpers
-		.idRef(['equity_account'])
+	user: apiYupHelpers
+		.idRef(['user'])
 		.min(1)
 		.meta({ unique_key: false }),
 } as const;

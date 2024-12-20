@@ -46,7 +46,6 @@ erDiagram
 	OPEN_AI_MODEL_FAMILY ||--o{ OPEN_AI_MODEL : "owns"
 	ORDER ||--o{ ASSET_ORDER : "owns"
 	USER ||--|| AUTH_CREDENTIAL : "owns"
-	USER ||--|| EQUITY_ACCOUNT : "owns"
 	USER ||--o{ IDENTITY_VERIFICATION_DOCUMENT : "owns"
 	USER ||--|| LICENSE : "owns"
 	USER ||--o{ ORDER : "owns"
@@ -106,9 +105,6 @@ erDiagram
   BANK_ACCOUNT {
     string alpaca_ach_relationship_id UK "nullable"
     string stripe_financial_connection_account FK "min(1)"
-  }
-  EQUITY_ACCOUNT {
-    string user FK "min(1)"
   }
   INVOICE {
     string license FK "min(1)"

@@ -4,7 +4,6 @@ import {
 	RegisterUserResponse,
 	usersApi,
 	authCredentialsApi,
-	equityAccountsApi,
 	licensesApi,
 	getHomeWebAppRoute,
 } from '@wallot/js';
@@ -41,7 +40,6 @@ export const registerUser = async ({
 	// Initialize Firestore document IDs
 	const userDocId = usersApi.generateId();
 	const authCredentialDocId = authCredentialsApi.generateId();
-	const equityAccountDocId = equityAccountsApi.generateId();
 	const licenseDocId = licensesApi.generateId();
 
 	// Initialize a Firestore batch transaction
@@ -88,20 +86,6 @@ export const registerUser = async ({
 	batch.set(
 		db.collection(authCredentialsApi.collectionId).doc(authCredentialDocId),
 		authCredentialDoc,
-	);
-
-	// Create an EQUITY_ACCOUNT Firestore document
-	const equityAccountDoc = equityAccountsApi.mergeCreateParams({
-		createParams: {
-			_id: equityAccountDocId,
-			category: 'default',
-			name: '',
-			user: userDocId,
-		},
-	});
-	batch.set(
-		db.collection(equityAccountsApi.collectionId).doc(equityAccountDocId),
-		equityAccountDoc,
 	);
 
 	// Create a LICENSE Firestore document

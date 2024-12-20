@@ -8,7 +8,7 @@ describe('Position', () => {
 			category: 'default',
 			name: 'My Position',
 			asset: '',
-			equity_account: '',
+			user: '',
 		};
 		expect(examplePosition).toEqual<typeof examplePosition>({
 			_id: expect.any(String),
@@ -22,7 +22,7 @@ describe('Position', () => {
 			description: '',
 			name: 'My Position',
 			asset: '',
-			equity_account: '',
+			user: '',
 		});
 	});
 });
