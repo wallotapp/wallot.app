@@ -7,7 +7,6 @@ describe('Position', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My Position',
-			alpaca_position: '',
 			asset: '',
 			equity_account: '',
 		};
@@ -22,7 +21,6 @@ describe('Position', () => {
 			_deleted: false,
 			description: '',
 			name: 'My Position',
-			alpaca_position: '',
 			asset: '',
 			equity_account: '',
 		});

@@ -41,7 +41,6 @@ erDiagram
 	%% Ownership Relationships
 	ASSET ||--|| ALPACA_ASSET_ID : "owns"
   ASSET_ORDER ||--o| ALPACA_ORDER_ID : "owns"
-	EQUITY_ACCOUNT ||--o{ POSITION : "owns"
 	MODEL_FAMILY ||--o{ MODEL : "owns"
 	OPEN_AI_MODEL_FAMILY ||--o{ OPEN_AI_MODEL : "owns"
 	ORDER ||--o{ ASSET_ORDER : "owns"
@@ -51,6 +50,7 @@ erDiagram
 	USER ||--|| LICENSE : "owns"
 	USER ||--o{ ORDER : "owns"
 	USER ||--o{ PAYMENT_METHOD : "owns"
+	USER ||--o{ POSITION : "owns"
 	USER ||--o{ RECOMMENDATION : "owns"
   USER ||--|| STRIPE_CUSTOMER_ID : "owns"
 
@@ -136,9 +136,8 @@ erDiagram
     string user FK "min(1)"
   }
   POSITION {
-    string alpaca_position FK "min(1)"
     string asset FK "min(1)"
-    string equity_account FK "min(1)"
+    string user FK "min(1)"
   }
   RECOMMENDATION {
     string[] asset_prices FK "min(1)"
