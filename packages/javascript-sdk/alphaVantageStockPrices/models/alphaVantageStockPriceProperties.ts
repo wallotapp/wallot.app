@@ -13,7 +13,7 @@ import {
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 
-export const AlphaVantageStockPriceCategoryEnum = getEnum(['default']);
+export const AlphaVantageStockPriceCategoryEnum = getEnum(['daily']);
 export type AlphaVantageStockPriceCategory =
 	keyof typeof AlphaVantageStockPriceCategoryEnum.obj;
 

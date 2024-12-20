@@ -8,7 +8,7 @@ describe('AlphaVantageStockPrice', () => {
 		const { apiResourceDefaultJson } = alphaVantageStockPricesApi;
 		const exampleAlphaVantageStockPrice: AlphaVantageStockPrice = {
 			...apiResourceDefaultJson,
-			category: 'default',
+			category: 'daily',
 			name: 'My AlphaVantageStockPrice',
 		};
 		expect(exampleAlphaVantageStockPrice).toEqual<
@@ -18,7 +18,7 @@ describe('AlphaVantageStockPrice', () => {
 			_date_last_modified: expect.any(String),
 			_created_by: expect.any(String),
 			_object: 'alpha_vantage_stock_price',
-			category: 'default',
+			category: 'daily',
 			_archived: false,
 			_date_created: expect.any(String),
 			_deleted: false,
