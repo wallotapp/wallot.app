@@ -7,6 +7,8 @@ describe('OpenAiModel', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My OpenAiModel',
+			date_published: '',
+			open_ai_model_family: '',
 		};
 		expect(exampleOpenAiModel).toEqual<typeof exampleOpenAiModel>({
 			_id: expect.any(String),
@@ -19,6 +21,8 @@ describe('OpenAiModel', () => {
 			_deleted: false,
 			description: '',
 			name: 'My OpenAiModel',
+			date_published: '',
+			open_ai_model_family: '',
 		});
 	});
 });

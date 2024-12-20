@@ -47,6 +47,7 @@ erDiagram
 	%% Ownership Relationships
 	EQUITY_ACCOUNT ||--o{ POSITION : "owns"
 	MODEL_FAMILY ||--o{ MODEL : "owns"
+	OPEN_AI_MODEL_FAMILY ||--o{ OPEN_AI_MODEL : "owns"
 	ORDER ||--o{ ASSET_ORDER : "owns"
 	USER ||--|| AUTH_CREDENTIAL : "owns"
 	USER ||--|| EQUITY_ACCOUNT : "owns"
