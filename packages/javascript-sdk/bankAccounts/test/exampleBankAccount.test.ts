@@ -8,7 +8,9 @@ describe('BankAccount', () => {
 			category: 'default',
 			name: 'My BankAccount',
 			alpaca_ach_relationship_id: '',
-			stripe_financial_connection_account: '',
+			stripe_financial_connection_account_id: '',
+			stripe_payment_method_id: '',
+			user: '',
 		};
 		expect(exampleBankAccount).toEqual<typeof exampleBankAccount>({
 			_id: expect.any(String),
@@ -22,7 +24,9 @@ describe('BankAccount', () => {
 			description: '',
 			name: 'My BankAccount',
 			alpaca_ach_relationship_id: '',
-			stripe_financial_connection_account: '',
+			stripe_financial_connection_account_id: '',
+			stripe_payment_method_id: '',
+			user: '',
 		});
 	});
 });

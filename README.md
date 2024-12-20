@@ -104,7 +104,8 @@ erDiagram
   }
   BANK_ACCOUNT {
     string alpaca_ach_relationship_id UK "nullable"
-    string stripe_financial_connection_account FK "min(1)"
+    string stripe_financial_connection_account_id UK "min(1)"
+    string stripe_payment_method_id UK "min(1)"
   }
   INVOICE {
     string license FK "min(1)"
