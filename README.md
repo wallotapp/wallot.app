@@ -103,7 +103,7 @@ erDiagram
     string user FK "min(1)"
   }
   BANK_ACCOUNT {
-    string alpaca_ach_relationship FK "nullable"
+    string alpaca_ach_relationship_id UK "nullable"
     string stripe_financial_connection_account FK "min(1)"
   }
   EQUITY_ACCOUNT {
