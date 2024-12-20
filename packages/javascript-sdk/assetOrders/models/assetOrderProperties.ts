@@ -7,6 +7,7 @@ import {
 	YupHelpers,
 	getApiResourceSpec,
 	getEnum,
+	GeneralizedFieldTypeEnum,
 } from 'ergonomic';
 import {
 	apiYupHelpers,
@@ -28,11 +29,10 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
-	alpaca_order: apiYupHelpers
-		.idRef(['alpaca_order'])
-		.default(null)
-		.nullable()
-		.meta({ unique_key: true }),
+	alpaca_order_id: yup.string().default(null).nullable().meta({
+		unique_key: true,
+		type: GeneralizedFieldTypeEnum.obj.short_text,
+	}),
 	asset: apiYupHelpers
 		.idRef(['asset'])
 		.min(1)

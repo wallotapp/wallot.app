@@ -4,7 +4,6 @@ import { achTransfersApi } from '../achTransfers/index.js';
 import { alpacaAccountsApi } from '../alpacaAccounts/index.js';
 import { alpacaAchRelationshipsApi } from '../alpacaAchRelationships/index.js';
 import { alpacaAssetsApi } from '../alpacaAssets/index.js';
-import { alpacaOrdersApi } from '../alpacaOrders/index.js';
 import { alpacaPositionsApi } from '../alpacaPositions/index.js';
 import { alphaVantageCompaniesApi } from '../alphaVantageCompanies/index.js';
 import { assetsApi } from '../assets/index.js';
@@ -46,8 +45,6 @@ export const getApiResourceSpec = (
 			return alpacaAchRelationshipsApi as unknown as GeneralizedApiResourceSpec;
 		case 'alpaca_asset':
 			return alpacaAssetsApi as unknown as GeneralizedApiResourceSpec;
-		case 'alpaca_order':
-			return alpacaOrdersApi as unknown as GeneralizedApiResourceSpec;
 		case 'alpaca_position':
 			return alpacaPositionsApi as unknown as GeneralizedApiResourceSpec;
 		case 'alpha_vantage_company':

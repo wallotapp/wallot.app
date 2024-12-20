@@ -25,12 +25,6 @@
 			"visibility": "public"
 		},
 		{
-			"name_singular": "alpaca_order",
-			"name_plural": "alpaca_orders",
-			"id_prefix": "alp_ord",
-			"visibility": "public"
-		},
-		{
 			"name_singular": "alpaca_position",
 			"name_plural": "alpaca_positions",
 			"id_prefix": "alp_pos",

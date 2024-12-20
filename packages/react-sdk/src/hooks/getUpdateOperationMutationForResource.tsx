@@ -6,7 +6,6 @@ import { useUpdateAchTransferMutation } from '@wallot/react/src/features/achTran
 import { useUpdateAlpacaAccountMutation } from '@wallot/react/src/features/alpacaAccounts';
 import { useUpdateAlpacaAchRelationshipMutation } from '@wallot/react/src/features/alpacaAchRelationships';
 import { useUpdateAlpacaAssetMutation } from '@wallot/react/src/features/alpacaAssets';
-import { useUpdateAlpacaOrderMutation } from '@wallot/react/src/features/alpacaOrders';
 import { useUpdateAlpacaPositionMutation } from '@wallot/react/src/features/alpacaPositions';
 import { useUpdateAlphaVantageCompanyMutation } from '@wallot/react/src/features/alphaVantageCompanies';
 import { useUpdateAssetMutation } from '@wallot/react/src/features/assets';
@@ -46,7 +45,6 @@ const updateOperationMutationMap = {
 	alpaca_account: useUpdateAlpacaAccountMutation,
 	alpaca_ach_relationship: useUpdateAlpacaAchRelationshipMutation,
 	alpaca_asset: useUpdateAlpacaAssetMutation,
-	alpaca_order: useUpdateAlpacaOrderMutation,
 	alpaca_position: useUpdateAlpacaPositionMutation,
 	alpha_vantage_company: useUpdateAlphaVantageCompanyMutation,
 	asset: useUpdateAssetMutation,

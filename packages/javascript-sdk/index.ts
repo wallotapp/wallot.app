@@ -3,7 +3,6 @@ export * from './achTransfers/index.js';
 export * from './alpacaAccounts/index.js';
 export * from './alpacaAchRelationships/index.js';
 export * from './alpacaAssets/index.js';
-export * from './alpacaOrders/index.js';
 export * from './alpacaPositions/index.js';
 export * from './alphaVantageCompanies/index.js';
 export * from './assets/index.js';

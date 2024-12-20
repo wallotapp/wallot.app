@@ -29,7 +29,6 @@ erDiagram
 	%% Mirror Relationships
 	ASSET ||--|| ALPACA_ASSET : "mirrors"
 	ASSET ||--|| ALPHA_VANTAGE_COMPANY : "mirrors"
-	ASSET_ORDER ||--o| ALPACA_ORDER : "mirrors"
 	BANK_ACCOUNT ||--o| ALPACA_ACH_RELATIONSHIP : "mirrors"
 	BANK_ACCOUNT ||--|| STRIPE_FINANCIAL_CONNECTION_ACCOUNT : "mirrors"
 	INVOICE ||--|| STRIPE_INVOICE : "mirrors"
@@ -41,6 +40,7 @@ erDiagram
 	USER ||--o| ALPACA_ACCOUNT : "mirrors"
 
 	%% Ownership Relationships
+	ASSET_ORDER ||--o| ALPACA_ORDER_ID : "owns"
 	EQUITY_ACCOUNT ||--o{ POSITION : "owns"
 	MODEL_FAMILY ||--o{ MODEL : "owns"
 	OPEN_AI_MODEL_FAMILY ||--o{ OPEN_AI_MODEL : "owns"
@@ -90,7 +90,7 @@ erDiagram
     string alpha_vantage_company FK "min(1)"
   }
   ASSET_ORDER {
-    string alpaca_order FK "nullable"
+    string alpaca_order_id FK "nullable"
     string asset FK "min(1)"
     string order FK "min(1)"
     string position FK "min(1)"
