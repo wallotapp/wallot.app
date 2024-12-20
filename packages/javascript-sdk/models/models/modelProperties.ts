@@ -31,6 +31,7 @@ const properties = {
 	_object: YupHelpers.constant(_object),
 	category: ModelCategoryEnum.getDefinedSchema(),
 	date_published: YupHelpers.dateTime(),
+	name: GeneralizedApiResourceProperties.name.meta({ unique_key: true }),
 	model_family: apiYupHelpers
 		.idRef(['model_family'])
 		.min(1)
