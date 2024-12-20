@@ -5,7 +5,7 @@ describe('NewsReport', () => {
 		const { apiResourceDefaultJson } = newsReportsApi;
 		const exampleNewsReport: NewsReport = {
 			...apiResourceDefaultJson,
-			category: 'default',
+			category: 'company_specific_financial_releases',
 			name: 'My NewsReport',
 		};
 		expect(exampleNewsReport).toEqual<typeof exampleNewsReport>({
@@ -13,7 +13,7 @@ describe('NewsReport', () => {
 			_date_last_modified: expect.any(String),
 			_created_by: expect.any(String),
 			_object: 'news_report',
-			category: 'default',
+			category: 'company_specific_financial_releases',
 			_archived: false,
 			_date_created: expect.any(String),
 			_deleted: false,
