@@ -36,10 +36,7 @@ const properties = {
 			unique_key: false,
 		}),
 	category: PositionCategoryEnum.getDefinedSchema(),
-	user: apiYupHelpers
-		.idRef(['user'])
-		.min(1)
-		.meta({ unique_key: false }),
+	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: false }),
 } as const;
 type U = typeof properties;
 

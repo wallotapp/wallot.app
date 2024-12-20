@@ -10,7 +10,7 @@ describe('Recommendation', () => {
 			asset_prices: [],
 			model: '',
 			news_reports: [],
-			open_ai_recommendation: '',
+			open_ai_api_request_ids: [],
 			user: '',
 		};
 		expect(exampleRecommendation).toEqual<typeof exampleRecommendation>({
@@ -27,7 +27,7 @@ describe('Recommendation', () => {
 			name: 'My Recommendation',
 			model: '',
 			news_reports: [],
-			open_ai_recommendation: '',
+			open_ai_api_request_ids: [],
 			user: '',
 		});
 	});

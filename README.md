@@ -35,7 +35,6 @@ erDiagram
 	LICENSE ||--|| STRIPE_SUBSCRIPTION : "mirrors"
 	PAYMENT_METHOD ||--|| STRIPE_PAYMENT_METHOD : "mirrors"
 	POSITION ||--o| ALPACA_POSITION : "mirrors"
-	RECOMMENDATION ||--|| OPEN_AI_RECOMMENDATION : "mirrors"
 	USER ||--o| ALPACA_ACCOUNT : "mirrors"
 
 	%% Ownership Relationships
@@ -45,6 +44,7 @@ erDiagram
 	MODEL_FAMILY ||--o{ MODEL : "owns"
 	OPEN_AI_MODEL_FAMILY ||--o{ OPEN_AI_MODEL : "owns"
 	ORDER ||--o{ ASSET_ORDER : "owns"
+	RECOMMENDATION ||--|{ OPEN_AI_API_REQUEST_IDS : "owns"
 	USER ||--|| AUTH_CREDENTIAL : "owns"
 	USER ||--o{ IDENTITY_VERIFICATION_DOCUMENT : "owns"
 	USER ||--|| LICENSE : "owns"
@@ -140,7 +140,7 @@ erDiagram
     string[] asset_prices FK "min(1)"
     string model FK "min(1)"
     string[] news_reports FK "min(1)"
-    string open_ai_recommendation FK "min(1)"
+    string[] open_ai_api_request_ids "min(1)"
     string user FK "nullable"
   }
   STRIPE_FINANCIAL_CONNECTION_ACCOUNT {

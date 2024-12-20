@@ -22,7 +22,7 @@ const createParamsRequiredFieldEnum = getEnum([
 	'asset_prices',
 	'model',
 	'news_reports',
-	'open_ai_recommendation',
+	'open_ai_api_request_ids',
 	'user',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
@@ -36,10 +36,9 @@ const properties = {
 	category: RecommendationCategoryEnum.getDefinedSchema(),
 	model: apiYupHelpers.idRef(['model']).min(1).meta({ unique_key: false }),
 	news_reports: apiYupHelpers.idRefs(['news_report']).min(1),
-	open_ai_recommendation: apiYupHelpers
-		.idRef(['open_ai_recommendation'])
-		.min(1)
-		.meta({ unique_key: true }),
+	open_ai_api_request_ids: YupHelpers.array(yup.string().defined())
+		.defined()
+		.min(1),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: false }),
 } as const;
 type U = typeof properties;
