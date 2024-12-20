@@ -44,6 +44,7 @@ const properties = {
 	dividend_amount: yup.string().nullable().default(null),
 	high: yup.string().nullable().default(null),
 	low: yup.string().nullable().default(null),
+	name: GeneralizedApiResourceProperties.name.meta({ unique_key: true }),
 	open: yup.string().nullable().default(null),
 	split_coefficient: yup.string().nullable().default(null),
 	symbol: yup
