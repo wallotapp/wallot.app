@@ -39,7 +39,6 @@ erDiagram
 	POSITION ||--o| ALPACA_POSITION : "mirrors"
 	RECOMMENDATION ||--|| OPEN_AI_RECOMMENDATION : "mirrors"
 	USER ||--o| ALPACA_ACCOUNT : "mirrors"
-	USER ||--|| STRIPE_CUSTOMER_ID : "mirrors"
 
 	%% Ownership Relationships
 	EQUITY_ACCOUNT ||--o{ POSITION : "owns"
@@ -53,6 +52,7 @@ erDiagram
 	USER ||--o{ ORDER : "owns"
 	USER ||--o{ PAYMENT_METHOD : "owns"
 	USER ||--o{ RECOMMENDATION : "owns"
+  USER ||--|| STRIPE_CUSTOMER_ID : "owns"
 
 	%% Production Relationships
 	MODEL ||--o{ RECOMMENDATION : "produces"
