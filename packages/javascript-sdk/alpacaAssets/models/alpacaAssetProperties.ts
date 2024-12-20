@@ -43,6 +43,7 @@ export const AlpacaAssetAttributesEnum = getEnum([
 	'ipo',
 	'has_options',
 	'options_late_close',
+	'fractional_eh_enabled',
 ]);
 export type AlpacaAssetAttributes = keyof typeof AlpacaAssetAttributesEnum.obj;
 
