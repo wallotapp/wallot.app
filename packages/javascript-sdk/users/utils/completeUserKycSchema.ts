@@ -1,5 +1,6 @@
 import * as yup from 'yup';
-import { Keys, WithNonNullableKeys, getFieldSpecByFieldKey } from 'ergonomic';
+import { Keys, getFieldSpecByFieldKey } from 'ergonomic';
+import { ActivatedUser } from './activateUserSchema.js';
 import { User, usersApi } from '../models/userProperties.js';
 
 export const completeUserKycProperties = {
@@ -22,7 +23,7 @@ export type CompleteUserKycResponse = {
 	redirect_url: string;
 };
 
-export type KycUser = WithNonNullableKeys<User, keyof CompleteUserKycParams>;
+export type KycUser = ActivatedUser & CompleteUserKycParams;
 export const isKycUser = (user: User): user is KycUser => {
 	try {
 		completeUserKycSchema.validateSync(user);
