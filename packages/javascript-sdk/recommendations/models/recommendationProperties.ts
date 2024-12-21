@@ -37,7 +37,7 @@ const properties = {
 		yup.object({
 			symbol: yup.string().defined(),
 			side: assetOrdersApi.properties.side,
-			amount: yup.string().defined(),
+			amount: yup.string().defined(), // String number of dollars, e.g. '1000' for $1,000.00
 		}),
 	)
 		.defined()
