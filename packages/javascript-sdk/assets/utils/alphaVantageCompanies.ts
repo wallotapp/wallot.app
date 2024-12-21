@@ -112,3 +112,9 @@ export const AlphaVantageCompanyPropertyNameEnum = getEnum(
 );
 export type AlphaVantageCompanyPropertyName =
 	keyof typeof AlphaVantageCompanyPropertyNameEnum.obj;
+
+export type RemoveAlphaVantageCompanyPrefix<T> = {
+	[K in keyof T as K extends `alpha_vantage_company_${infer Rest}`
+		? Rest
+		: K]: T[K];
+};

@@ -69,6 +69,7 @@ export const alpacaAssetProperties = {
 	alpaca_asset_margin_requirement_long: yup.string().nullable().default(null),
 	alpaca_asset_margin_requirement_short: yup.string().nullable().default(null),
 	alpaca_asset_marginable: YupHelpers.booleanDefaultUnset(),
+	alpaca_asset_name: yup.string().defined().min(1),
 	alpaca_asset_shortable: YupHelpers.booleanDefaultUnset(),
 	alpaca_asset_status: AlpacaAssetStatusEnum.getDefinedSchema(),
 	alpaca_asset_symbol: yup
@@ -82,3 +83,7 @@ export const alpacaAssetProperties = {
 export const AlpacaAssetPropertyNameEnum = getEnum(Keys(alpacaAssetProperties));
 export type AlpacaAssetPropertyName =
 	keyof typeof AlpacaAssetPropertyNameEnum.obj;
+
+export type RemoveAlpacaAssetPrefix<T> = {
+	[K in keyof T as K extends `alpaca_asset_${infer Rest}` ? Rest : K]: T[K];
+};

@@ -13,13 +13,15 @@ import {
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 import {
-	// AlpacaAssetPropertyName,
+	AlpacaAssetPropertyName,
 	AlpacaAssetPropertyNameEnum,
+	RemoveAlpacaAssetPrefix,
 	alpacaAssetProperties,
 } from '../utils/alpacaAssets.js';
 import {
-	// AlphaVantageCompanyPropertyName,
+	AlphaVantageCompanyPropertyName,
 	AlphaVantageCompanyPropertyNameEnum,
+	RemoveAlphaVantageCompanyPrefix,
 	alphaVantageCompanyProperties,
 } from '../utils/alphaVantageCompanies.js';
 
@@ -52,3 +54,10 @@ export const assetsApi = getApiResourceSpec<keyof U, U, T>({
 export type Asset = yup.InferType<typeof assetsApi.apiResourceJsonSchema>;
 export type CreateAssetParams = CreateParams<Asset, T>;
 export type UpdateAssetParams = UpdateParams<Asset>;
+
+export type AlpacaAsset = RemoveAlpacaAssetPrefix<
+	Pick<Asset, AlpacaAssetPropertyName>
+>;
+export type AlphaVantageCompany = RemoveAlphaVantageCompanyPrefix<
+	Pick<Asset, AlphaVantageCompanyPropertyName>
+>;
