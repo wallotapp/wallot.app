@@ -71,6 +71,12 @@ export type SubmittedAlpacaAccountHadAnErrorContextUpdates = {
 };
 type UserWithRejectedAlpacaAccount = User; // todo
 
+// SubmittedAlpacaAccountBecameActiveContextUpdates
+export type SubmittedAlpacaAccountBecameActiveContextUpdates = {
+	userWithActiveAlpacaAccount: UserWithActiveAlpacaAccount;
+};
+type UserWithActiveAlpacaAccount = User; // todo
+
 export type UserExperienceState =
 	| 'guest'
 	| 'registered'
