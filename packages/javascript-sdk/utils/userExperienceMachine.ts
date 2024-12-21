@@ -1,6 +1,7 @@
 import { createMachine } from 'xstate';
 
 export type UserExperienceContext = Record<string, unknown>;
+
 export type UserExperienceEvent = {
 	type:
 		| 'USER_COMPLETED_REGISTRATION_FORM'
@@ -20,6 +21,19 @@ export type UserExperienceEvent = {
 		| 'USER_RESOLVED_ERROR_WITH_QUEUED_ALPACA_ACH_TRANSFER' // UserResolvedErrorWithQueuedAlpacaAchTransferContextUpdates
 		| 'USER_RESOLVED_ERROR_WITH_PENDING_NEW_ALPACA_ORDER'; // UserResolvedErrorWithPendingNewAlpacaOrderContextUpdates
 };
+
+// UserCompletedActivationFormContextUpdates
+import { ActivatedUser } from '../users/utils/activateUserSchema.js';
+import { Recommendation, } from '../recommendations/models/recommendationProperties.js';
+import { Order } from '../orders/models/orderProperties.js';
+import { AssetOrder } from '../assetOrders/models/assetOrderProperties.js';
+export type UserCompletedActivationFormContextUpdates = {
+  activatedUser: ActivatedUser;
+  recommendationFromWallotFinancialModel: Recommendation;
+  orderContainerForAssetOrders: Order;
+  assetOrdersMappedFromRecommendationBestChoices: AssetOrder[];
+};
+
 export type UserExperienceState =
 	| 'guest'
 	| 'registered'
