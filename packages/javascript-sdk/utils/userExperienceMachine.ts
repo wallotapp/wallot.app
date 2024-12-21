@@ -44,6 +44,27 @@ export type UserCompletedKycAndBankContextUpdates = {
 	kycUser: KycUser;
 };
 
+// UserConfirmedOrderContextUpdates
+import { AchTransfer } from '../achTransfers/models/achTransferProperties.js';
+import { Invoice } from '../invoices/models/invoiceProperties.js';
+import { License } from '../licenses/models/licenseProperties.js';
+import { User } from '../users/models/userProperties.js';
+export type UserConfirmedOrderContextUpdates = {
+	userPendingAlpacaAccount: UserPendingAlpacaAccount;
+	invoice: Invoice;
+	proLicense: ProLicense;
+	confirmedOrder: ConfirmedOrder;
+	achTransferPendingAlpacaQueue: AchTransferPendingAlpacaQueue;
+	bankAccountPendingAlpacaAchRelationship: BankAccountPendingAlpacaAchRelationship;
+	assetOrdersPendingAlpacaFill: AssetOrderPendingAlpacaFill[];
+};
+type UserPendingAlpacaAccount = User; // todo
+type ProLicense = License; // todo
+type ConfirmedOrder = Order; // todo
+type BankAccountPendingAlpacaAchRelationship = BankAccount; // todo
+type AchTransferPendingAlpacaQueue = AchTransfer; // todo
+type AssetOrderPendingAlpacaFill = AssetOrder; // todo
+
 export type UserExperienceState =
 	| 'guest'
 	| 'registered'
