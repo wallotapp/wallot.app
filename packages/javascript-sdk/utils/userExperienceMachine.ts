@@ -4,21 +4,21 @@ export type UserExperienceContext = Record<string, unknown>;
 export type UserExperienceEvent = {
 	type:
 		| 'USER_COMPLETED_REGISTRATION_FORM'
-		| 'USER_COMPLETED_ACTIVATION_FORM'
-		| 'USER_COMPLETED_KYC_AND_BANK'
-		| 'USER_CONFIRMED_ORDER'
-		| 'SUBMITTED_ALPACA_ACCOUNT_BECAME_ACTIVE'
-		| 'SUBMITTED_ALPACA_ACCOUNT_HAD_AN_ERROR'
-		| 'QUEUED_ALPACA_ACH_RELATIONSHIP_BECAME_APPROVED'
-		| 'QUEUED_ALPACA_ACH_RELATIONSHIP_HAD_AN_ERROR'
-		| 'QUEUED_ALPACA_ACH_TRANSFER_BECAME_COMPLETE'
-		| 'QUEUED_ALPACA_ACH_TRANSFER_HAD_AN_ERROR'
-		| 'PENDING_NEW_ALPACA_ORDER_BECAME_FILLED'
-		| 'PENDING_NEW_ALPACA_ORDER_HAD_AN_ERROR'
-		| 'USER_RESOLVED_ERROR_WITH_SUBMITTED_ALPACA_ACCOUNT'
-		| 'USER_RESOLVED_ERROR_WITH_QUEUED_ALPACA_ACH_RELATIONSHIP'
-		| 'USER_RESOLVED_ERROR_WITH_QUEUED_ALPACA_ACH_TRANSFER'
-		| 'USER_RESOLVED_ERROR_WITH_PENDING_NEW_ALPACA_ORDER';
+		| 'USER_COMPLETED_ACTIVATION_FORM' // UserCompletedActivationFormContextUpdates
+		| 'USER_COMPLETED_KYC_AND_BANK' // UserCompletedKycAndBankContextUpdates
+		| 'USER_CONFIRMED_ORDER' // UserConfirmedOrderContextUpdates
+		| 'SUBMITTED_ALPACA_ACCOUNT_BECAME_ACTIVE' // SubmittedAlpacaAccountBecameActiveContextUpdates
+		| 'SUBMITTED_ALPACA_ACCOUNT_HAD_AN_ERROR' // SubmittedAlpacaAccountHadAnErrorContextUpdates
+		| 'QUEUED_ALPACA_ACH_RELATIONSHIP_BECAME_APPROVED' // QueuedAlpacaAchRelationshipBecameApprovedContextUpdates
+		| 'QUEUED_ALPACA_ACH_RELATIONSHIP_HAD_AN_ERROR' // QueuedAlpacaAchRelationshipHadAnErrorContextUpdates
+		| 'QUEUED_ALPACA_ACH_TRANSFER_BECAME_COMPLETE' // QueuedAlpacaAchTransferBecameCompleteContextUpdates
+		| 'QUEUED_ALPACA_ACH_TRANSFER_HAD_AN_ERROR' // QueuedAlpacaAchTransferHadAnErrorContextUpdates
+		| 'PENDING_NEW_ALPACA_ORDER_BECAME_FILLED' // PendingNewAlpacaOrderBecameFilledContextUpdates
+		| 'PENDING_NEW_ALPACA_ORDER_HAD_AN_ERROR' // PendingNewAlpacaOrderHadAnErrorContextUpdates
+		| 'USER_RESOLVED_ERROR_WITH_SUBMITTED_ALPACA_ACCOUNT' // UserResolvedErrorWithSubmittedAlpacaAccountContextUpdates
+		| 'USER_RESOLVED_ERROR_WITH_QUEUED_ALPACA_ACH_RELATIONSHIP' // UserResolvedErrorWithQueuedAlpacaAchRelationshipContextUpdates
+		| 'USER_RESOLVED_ERROR_WITH_QUEUED_ALPACA_ACH_TRANSFER' // UserResolvedErrorWithQueuedAlpacaAchTransferContextUpdates
+		| 'USER_RESOLVED_ERROR_WITH_PENDING_NEW_ALPACA_ORDER'; // UserResolvedErrorWithPendingNewAlpacaOrderContextUpdates
 };
 export type UserExperienceState =
 	| 'guest'
