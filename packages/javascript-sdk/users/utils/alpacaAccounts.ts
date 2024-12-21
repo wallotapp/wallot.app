@@ -6,7 +6,7 @@ export const alpacaAccountProperties = {
 	alpaca_account_agreements: yup
 		.array()
 		.of(
-			yup.object().shape({
+			yup.object({
 				agreement: yup.string().nullable().default(null),
 				ip_address: yup.string().nullable().default(null),
 				signed_at: yup.string().nullable().default(null),
@@ -16,8 +16,7 @@ export const alpacaAccountProperties = {
 		.default(null), // { "agreement": "customer_agreement", "signed_at": "2024-12-12T01:59:15.126099757Z", "ip_address": "127.0.0.1" }
 	alpaca_account_auto_approve: yup.boolean().nullable().default(null), // `null`
 	alpaca_account_contact: yup
-		.object()
-		.shape({
+		.object({
 			city: yup.string().nullable().default(null), // "San Mateo"
 			email_address: yup.string().nullable().default(null), // "john@example.com"
 			local_street_address: yup.string().nullable().default(null), // `null`
@@ -31,8 +30,7 @@ export const alpacaAccountProperties = {
 	alpaca_account_crypto_status: yup.string().nullable().default(null), // "INACTIVE" or (presumably) "ACTIVE"
 	alpaca_account_currency: yup.string().nullable().default(null), // "USD"
 	alpaca_account_disclosures: yup
-		.object()
-		.shape({
+		.object({
 			immediate_family_exposed: yup.boolean().nullable().default(null),
 			is_affiliated_exchange_or_finra: yup.boolean().nullable().default(null),
 			is_affiliated_exchange_or_iiroc: yup.boolean().nullable().default(null),
@@ -45,7 +43,7 @@ export const alpacaAccountProperties = {
 	alpaca_account_documents: yup
 		.array()
 		.of(
-			yup.object().shape({
+			yup.object({
 				content: yup.string().nullable().default(null),
 				content_data: yup.string().nullable().default(null),
 				created_at: yup.string().nullable().default(null),
@@ -67,8 +65,7 @@ export const alpacaAccountProperties = {
 		unique_key: true,
 	}), // v4 uuid
 	alpaca_account_identity: yup
-		.object()
-		.shape({
+		.object({
 			country_of_birth: yup.string().nullable().default(null), // "USA"
 			country_of_citizenship: yup.string().nullable().default(null), // "USA"
 			country_of_tax_residence: yup.string().nullable().default(null), // "USA"
@@ -84,16 +81,14 @@ export const alpacaAccountProperties = {
 	alpaca_account_minor_identity: yup.string().nullable().default(null), // `null`
 	alpaca_account_status: yup.string().nullable().default(null), // "SUBMITTED" or "ACTIVE"
 	alpaca_account_trading_configurations: yup
-		.object()
-		.shape({
+		.object({
 			fractional_trading: yup.boolean().nullable().default(null),
 		})
 		.nullable()
 		.default(null), // `null` or { "fractional_trading": true }
 	alpaca_account_trading_type: yup.string().nullable().default(null), // "margin"
 	alpaca_account_trusted_contact: yup
-		.object()
-		.shape({
+		.object({
 			email_address: yup.string().nullable().default(null),
 			family_name: yup.string().nullable().default(null),
 			given_name: yup.string().nullable().default(null),
