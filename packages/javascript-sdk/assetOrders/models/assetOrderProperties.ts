@@ -19,6 +19,7 @@ export type AssetOrderCategory = keyof typeof AssetOrderCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'amount',
 	'asset',
 	'order',
 	'recommendations',
@@ -34,6 +35,7 @@ const properties = {
 		unique_key: true,
 		type: GeneralizedFieldTypeEnum.obj.short_text,
 	}),
+	amount: YupHelpers.usd().defined().min(1),
 	asset: apiYupHelpers
 		.idRef(['asset'])
 		.min(1)
