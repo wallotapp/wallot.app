@@ -77,6 +77,18 @@ export type SubmittedAlpacaAccountBecameActiveContextUpdates = {
 };
 type UserWithActiveAlpacaAccount = User; // todo
 
+// QueuedAlpacaAchRelationshipHadAnErrorContextUpdates
+export type QueuedAlpacaAchRelationshipHadAnErrorContextUpdates = {
+	bankAccountWithRejectedAlpacaAchRelationship: BankAccountWithRejectedAlpacaAchRelationship;
+};
+type BankAccountWithRejectedAlpacaAchRelationship = BankAccount; // todo
+
+// QueuedAlpacaAchRelationshipBecameApprovedContextUpdates
+export type QueuedAlpacaAchRelationshipBecameApprovedContextUpdates = {
+	bankAccountWithApprovedAlpacaAchRelationship: BankAccountWithApprovedAlpacaAchRelationship;
+};
+type BankAccountWithApprovedAlpacaAchRelationship = BankAccount; // todo
+
 export type UserExperienceState =
 	| 'guest'
 	| 'registered'
