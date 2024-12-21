@@ -65,6 +65,12 @@ type BankAccountPendingAlpacaAchRelationship = BankAccount; // todo
 type AchTransferPendingAlpacaQueue = AchTransfer; // todo
 type AssetOrderPendingAlpacaFill = AssetOrder; // todo
 
+// SubmittedAlpacaAccountHadAnErrorContextUpdates
+export type SubmittedAlpacaAccountHadAnErrorContextUpdates = {
+	userWithRejectedAlpacaAccount: UserWithRejectedAlpacaAccount;
+};
+type UserWithRejectedAlpacaAccount = User; // todo
+
 export type UserExperienceState =
 	| 'guest'
 	| 'registered'
