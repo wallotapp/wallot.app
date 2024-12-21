@@ -16,13 +16,13 @@ import {
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 import { usernameSchema } from '../utils/username.js';
-import { AgeRangeEnum } from '../../utils/ageRange.js'; // Select one
-import { CapitalLevelEnum } from '../../utils/capitalLevel.js'; // Select one
-import { InvestingGoalEnum } from '../../utils/investingGoal.js'; // Select many
+import { AgeRangeEnum } from '../../utils/ageRange.js';
+import { CapitalLevelEnum } from '../../utils/capitalLevel.js';
+import { InvestingGoalEnum } from '../../utils/investingGoal.js';
 import {
 	RiskPreferenceEnum,
 	riskPreferenceLabelDictionary,
-} from '../../utils/riskPreference.js'; // Select one
+} from '../../utils/riskPreference.js';
 
 export const UserCategoryEnum = getEnum(['default']);
 export type UserCategory = keyof typeof UserCategoryEnum.obj;
