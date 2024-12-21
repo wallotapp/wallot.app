@@ -29,7 +29,10 @@ export type UserExperienceState =
 	| 'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved'
 	| 'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchTransferToChangeFromQueuedToComplete'
 	| 'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaOrderToChangeFromPendingNewToFilled'
-	| 'trackingProgress.resolvingProblemWithOrder'
+	| 'trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAccountActivationError'
+	| 'trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchRelationshipError'
+	| 'trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchTransferError'
+	| 'trackingProgress.resolvingProblemWithOrder.resolvingAlpacaOrderError'
 	| 'trackingProgress.homeostasis';
 export const userExperienceMachine = createMachine<
 	UserExperienceContext,
@@ -97,7 +100,7 @@ export const userExperienceMachine = createMachine<
 								SUBMITTED_ALPACA_ACCOUNT_BECAME_ACTIVE:
 									'waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved',
 								SUBMITTED_ALPACA_ACCOUNT_HAD_AN_ERROR:
-									'#userExperience.trackingProgress.resolvingProblemWithOrder',
+									'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAccountActivationError',
 							},
 							description:
 								'Waiting for the Alpaca account status to change from Submitted to Active.',
@@ -107,7 +110,7 @@ export const userExperienceMachine = createMachine<
 								QUEUED_ALPACA_ACH_RELATIONSHIP_BECAME_APPROVED:
 									'waitingForAlpacaAchTransferToChangeFromQueuedToComplete',
 								QUEUED_ALPACA_ACH_RELATIONSHIP_HAD_AN_ERROR:
-									'#userExperience.trackingProgress.resolvingProblemWithOrder',
+									'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchRelationshipError',
 							},
 							description:
 								'Waiting for the Alpaca ACH relationship status to change from Queued to Approved.',
@@ -117,7 +120,7 @@ export const userExperienceMachine = createMachine<
 								QUEUED_ALPACA_ACH_TRANSFER_BECAME_COMPLETE:
 									'waitingForAlpacaOrderToChangeFromPendingNewToFilled',
 								QUEUED_ALPACA_ACH_TRANSFER_HAD_AN_ERROR:
-									'#userExperience.trackingProgress.resolvingProblemWithOrder',
+									'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchTransferError',
 							},
 							description:
 								'Waiting for the Alpaca ACH transfer status to change from Queued to Complete.',
@@ -127,7 +130,7 @@ export const userExperienceMachine = createMachine<
 								PENDING_NEW_ALPACA_ORDER_BECAME_FILLED:
 									'#userExperience.trackingProgress.homeostasis',
 								PENDING_NEW_ALPACA_ORDER_HAD_AN_ERROR:
-									'#userExperience.trackingProgress.resolvingProblemWithOrder',
+									'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaOrderError',
 							},
 							description:
 								'Waiting for the Alpaca order status to change from PendingNew to Filled.',
@@ -135,6 +138,20 @@ export const userExperienceMachine = createMachine<
 					},
 				},
 				resolvingProblemWithOrder: {
+					states: {
+						resolvingAlpacaAccountActivationError: {
+							description: 'Resolving issues with Alpaca account activation',
+						},
+						resolvingAlpacaAchRelationshipError: {
+							description: 'Resolving issues with ACH relationship setup',
+						},
+						resolvingAlpacaAchTransferError: {
+							description: 'Resolving issues with ACH transfer',
+						},
+						resolvingAlpacaOrderError: {
+							description: 'Resolving issues with order execution',
+						},
+					},
 					on: {
 						RESOLVE_PROBLEM_WITH_ORDER: {
 							target: 'waitingForOrderToBeFilled',
