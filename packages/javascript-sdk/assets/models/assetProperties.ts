@@ -30,6 +30,7 @@ export type AssetCategory = keyof typeof AssetCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'symbol',
 	...AlpacaAssetPropertyNameEnum.arr,
 	...AlphaVantageCompanyPropertyNameEnum.arr,
 ] as const);
@@ -41,6 +42,7 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: AssetCategoryEnum.getDefinedSchema(),
+	symbol: yup.string().defined().min(1).meta({ unique_key: true }),
 	...alpacaAssetProperties,
 	...alphaVantageCompanyProperties,
 } as const;
