@@ -5,8 +5,7 @@ export type UserExperienceEvent = {
 	type:
 		| 'USER_COMPLETED_REGISTRATION_FORM'
 		| 'USER_COMPLETED_ACTIVATION_FORM'
-		| 'USER_COMPLETED_DEMOGRAPHICS_FORM'
-		| 'USER_CONNECTED_BANK_ACCOUNT'
+		| 'USER_COMPLETED_KYC_AND_BANK'
 		| 'USER_CONFIRMED_ORDER'
 		| 'SUBMITTED_ALPACA_ACCOUNT_BECAME_ACTIVE'
 		| 'SUBMITTED_ALPACA_ACCOUNT_HAD_AN_ERROR'
@@ -23,7 +22,8 @@ export type UserExperienceEvent = {
 };
 export type UserExperienceState =
 	| 'registered'
-	| 'activated'
+	| 'activated.inputting_kyc_and_bank'
+	| 'activated.ready_to_confirm_order'
 	| 'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAccountToChangeFromSubmittedToActive'
 	| 'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved'
 	| 'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchTransferToChangeFromQueuedToComplete'
@@ -65,23 +65,28 @@ export const userExperienceMachine = createMachine<
 				'The user has registered and is awaiting account activation.',
 		},
 		activated: {
-			on: {
-				USER_COMPLETED_DEMOGRAPHICS_FORM: {
-					actions: (_context, _event) => {
-						// Fulfill KYC requirements
+			initial: 'inputting_kyc_and_bank',
+			states: {
+				inputting_kyc_and_bank: {
+					on: {
+						USER_COMPLETED_KYC_AND_BANK: {
+							target: 'ready_to_confirm_order',
+							actions: (_context, _event) => {
+								// Save KYC and bank details
+							},
+						},
 					},
 				},
-				USER_CONNECTED_BANK_ACCOUNT: {
-					actions: (_context, _event) => {
-						// Connect bank account for ACH transfers
-					},
-				},
-				USER_CONFIRMED_ORDER: {
-					target: 'trackingProgress',
-					actions: (_context, _event) => {
-						// Subscribe user to Wallot Pro license
-						// Queue tasks to purchase stocks
-						// Redirect user to Assets Screen
+				ready_to_confirm_order: {
+					on: {
+						USER_CONFIRMED_ORDER: {
+							target: '#userExperience.trackingProgress',
+							actions: (_context, _event) => {
+								// Subscribe user to Wallot Pro license
+								// Queue tasks to purchase stocks
+								// Redirect user to Assets Screen
+							},
+						},
 					},
 				},
 			},
