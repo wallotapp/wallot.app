@@ -1,10 +1,6 @@
 import { createMachine } from 'xstate';
 
-export type UserExperienceContext = {
-	order?: {
-		status: 'pending' | 'success' | 'failure';
-	};
-};
+export type UserExperienceContext = Record<string, unknown>;
 export type UserExperienceEvent = {
 	type:
 		| 'COMPLETE_REGISTRATION_FORM'
