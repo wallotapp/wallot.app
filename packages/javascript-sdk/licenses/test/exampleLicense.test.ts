@@ -21,6 +21,7 @@ describe('License', () => {
 			_deleted: false,
 			description: '',
 			name: 'My License',
+			plan: 'free',
 			stripe_subscription_id: '',
 			user: '',
 		});

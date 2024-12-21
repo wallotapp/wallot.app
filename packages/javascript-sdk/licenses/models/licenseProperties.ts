@@ -22,12 +22,16 @@ const createParamsRequiredFieldEnum = getEnum([
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
+export const LicensePlanEnum = getEnum(['free', 'pro']);
+export type LicensePlan = keyof typeof LicensePlanEnum.obj;
+
 const _object = 'license';
 const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: LicenseCategoryEnum.getDefinedSchema(),
+	plan: LicensePlanEnum.getDefinedSchema().default('free'),
 	stripe_subscription_id: yup
 		.string()
 		.nullable()
