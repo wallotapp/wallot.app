@@ -1,6 +1,6 @@
 import * as yup from 'yup';
-import { Keys, getFieldSpecByFieldKey } from 'ergonomic';
-import { usersApi } from '../models/userProperties.js';
+import { Keys, WithNonNullableKeys, getFieldSpecByFieldKey } from 'ergonomic';
+import { User, usersApi } from '../models/userProperties.js';
 import { AgeRange } from '../../utils/ageRange.js';
 import { CapitalLevel } from '../../utils/capitalLevel.js';
 
@@ -28,4 +28,14 @@ export const activateUserSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
 export type ActivateUserParams = yup.InferType<typeof activateUserSchema>;
 export type ActivateUserResponse = {
 	redirect_url: string;
+};
+
+export type ActivatedUser = WithNonNullableKeys<User, keyof ActivateUserParams>;
+export const isActivatedUser = (user: User): user is ActivatedUser => {
+	try {
+		activateUserSchema.validateSync(user);
+		return true;
+	} catch (error) {
+		return false;
+	}
 };
