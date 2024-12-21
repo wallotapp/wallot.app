@@ -51,11 +51,11 @@ import { License } from '../licenses/models/licenseProperties.js';
 import { User } from '../users/models/userProperties.js';
 export type UserConfirmedOrderContextUpdates = {
 	userPendingAlpacaAccount: UserPendingAlpacaAccount;
-	invoice: Invoice;
 	proLicense: ProLicense;
+	invoice: Invoice;
 	orderConfirmedByUser: OrderConfirmedByUser;
-	achTransferPendingAlpacaQueue: AchTransferPendingAlpacaQueue;
 	bankAccountPendingAlpacaAchRelationship: BankAccountPendingAlpacaAchRelationship;
+	achTransferPendingAlpacaQueue: AchTransferPendingAlpacaQueue;
 	assetOrdersPendingAlpacaFill: AssetOrderPendingAlpacaFill[];
 };
 type UserPendingAlpacaAccount = User; // todo
