@@ -97,40 +97,54 @@ export const userExperienceMachine = createMachine<
 					states: {
 						waitingForAlpacaAccountToChangeFromSubmittedToActive: {
 							on: {
-								SUBMITTED_ALPACA_ACCOUNT_BECAME_ACTIVE:
-									'waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved',
-								SUBMITTED_ALPACA_ACCOUNT_HAD_AN_ERROR:
-									'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAccountActivationError',
+								SUBMITTED_ALPACA_ACCOUNT_BECAME_ACTIVE: {
+									target:
+										'waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved',
+								},
+								SUBMITTED_ALPACA_ACCOUNT_HAD_AN_ERROR: {
+									target:
+										'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAccountActivationError',
+								},
 							},
 							description:
 								'Waiting for the Alpaca account status to change from Submitted to Active.',
 						},
 						waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved: {
 							on: {
-								QUEUED_ALPACA_ACH_RELATIONSHIP_BECAME_APPROVED:
-									'waitingForAlpacaAchTransferToChangeFromQueuedToComplete',
-								QUEUED_ALPACA_ACH_RELATIONSHIP_HAD_AN_ERROR:
-									'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchRelationshipError',
+								QUEUED_ALPACA_ACH_RELATIONSHIP_BECAME_APPROVED: {
+									target:
+										'waitingForAlpacaAchTransferToChangeFromQueuedToComplete',
+								},
+								QUEUED_ALPACA_ACH_RELATIONSHIP_HAD_AN_ERROR: {
+									target:
+										'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchRelationshipError',
+								},
 							},
 							description:
 								'Waiting for the Alpaca ACH relationship status to change from Queued to Approved.',
 						},
 						waitingForAlpacaAchTransferToChangeFromQueuedToComplete: {
 							on: {
-								QUEUED_ALPACA_ACH_TRANSFER_BECAME_COMPLETE:
-									'waitingForAlpacaOrderToChangeFromPendingNewToFilled',
-								QUEUED_ALPACA_ACH_TRANSFER_HAD_AN_ERROR:
-									'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchTransferError',
+								QUEUED_ALPACA_ACH_TRANSFER_BECAME_COMPLETE: {
+									target: 'waitingForAlpacaOrderToChangeFromPendingNewToFilled',
+								},
+								QUEUED_ALPACA_ACH_TRANSFER_HAD_AN_ERROR: {
+									target:
+										'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchTransferError',
+								},
 							},
 							description:
 								'Waiting for the Alpaca ACH transfer status to change from Queued to Complete.',
 						},
 						waitingForAlpacaOrderToChangeFromPendingNewToFilled: {
 							on: {
-								PENDING_NEW_ALPACA_ORDER_BECAME_FILLED:
-									'#userExperience.trackingProgress.homeostasis',
-								PENDING_NEW_ALPACA_ORDER_HAD_AN_ERROR:
-									'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaOrderError',
+								PENDING_NEW_ALPACA_ORDER_BECAME_FILLED: {
+									target: '#userExperience.trackingProgress.homeostasis',
+								},
+								PENDING_NEW_ALPACA_ORDER_HAD_AN_ERROR: {
+									target:
+										'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaOrderError',
+								},
 							},
 							description:
 								'Waiting for the Alpaca order status to change from PendingNew to Filled.',
@@ -141,29 +155,37 @@ export const userExperienceMachine = createMachine<
 					states: {
 						resolvingAlpacaAccountActivationError: {
 							on: {
-								USER_RESOLVED_ERROR_WITH_SUBMITTED_ALPACA_ACCOUNT:
-									'#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAccountToChangeFromSubmittedToActive',
+								USER_RESOLVED_ERROR_WITH_SUBMITTED_ALPACA_ACCOUNT: {
+									target:
+										'#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAccountToChangeFromSubmittedToActive',
+								},
 							},
 							description: 'Resolving issues with Alpaca account activation',
 						},
 						resolvingAlpacaAchRelationshipError: {
 							on: {
-								USER_RESOLVED_ERROR_WITH_QUEUED_ALPACA_ACH_RELATIONSHIP:
-									'#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved',
+								USER_RESOLVED_ERROR_WITH_QUEUED_ALPACA_ACH_RELATIONSHIP: {
+									target:
+										'#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved',
+								},
 							},
 							description: 'Resolving issues with ACH relationship setup',
 						},
 						resolvingAlpacaAchTransferError: {
 							on: {
-								USER_RESOLVED_ERROR_WITH_QUEUED_ALPACA_ACH_TRANSFER:
-									'#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchTransferToChangeFromQueuedToComplete',
+								USER_RESOLVED_ERROR_WITH_QUEUED_ALPACA_ACH_TRANSFER: {
+									target:
+										'#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchTransferToChangeFromQueuedToComplete',
+								},
 							},
 							description: 'Resolving issues with ACH transfer',
 						},
 						resolvingAlpacaOrderError: {
 							on: {
-								USER_RESOLVED_ERROR_WITH_PENDING_NEW_ALPACA_ORDER:
-									'#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaOrderToChangeFromPendingNewToFilled',
+								USER_RESOLVED_ERROR_WITH_PENDING_NEW_ALPACA_ORDER: {
+									target:
+										'#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaOrderToChangeFromPendingNewToFilled',
+								},
 							},
 							description: 'Resolving issues with order execution',
 						},
