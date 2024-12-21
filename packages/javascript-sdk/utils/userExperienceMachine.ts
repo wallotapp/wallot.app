@@ -113,6 +113,16 @@ export type PendingNewAlpacaOrderHadAnErrorContextUpdates = {
 };
 type OrderWithRejectedAlpacaOrder = Order; // todo
 
+// Resolution updates use the same context updates as `UserCompletedKycAndBankContextUpdates`
+export type UserResolvedErrorWithSubmittedAlpacaAccountContextUpdates =
+	UserCompletedKycAndBankContextUpdates;
+export type UserResolvedErrorWithQueuedAlpacaAchRelationshipContextUpdates =
+	UserCompletedKycAndBankContextUpdates;
+export type UserResolvedErrorWithQueuedAlpacaAchTransferContextUpdates =
+	UserCompletedKycAndBankContextUpdates;
+export type UserResolvedErrorWithPendingNewAlpacaOrderContextUpdates =
+	UserCompletedKycAndBankContextUpdates;
+
 export type UserExperienceState =
 	| 'guest'
 	| 'registered'
