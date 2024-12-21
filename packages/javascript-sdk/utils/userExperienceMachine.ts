@@ -3,11 +3,11 @@ import { createMachine } from 'xstate';
 export type UserExperienceContext = Record<string, unknown>;
 export type UserExperienceEvent = {
 	type:
-		| 'COMPLETE_REGISTRATION_FORM'
-		| 'COMPLETE_ACTIVATION_FORM'
-		| 'COMPLETE_DEMOGRAPHICS_FORM'
-		| 'CONNECT_BANK_ACCOUNT'
-		| 'CONFIRM_ORDER'
+		| 'USER_COMPLETED_REGISTRATION_FORM'
+		| 'USER_COMPLETED_ACTIVATION_FORM'
+		| 'USER_COMPLETED_DEMOGRAPHICS_FORM'
+		| 'USER_CONNECTED_BANK_ACCOUNT'
+		| 'USER_CONFIRMED_ORDER'
 		| 'SUBMITTED_ALPACA_ACCOUNT_BECAME_ACTIVE'
 		| 'SUBMITTED_ALPACA_ACCOUNT_HAD_AN_ERROR'
 		| 'QUEUED_ALPACA_ACH_RELATIONSHIP_BECAME_APPROVED'
@@ -44,7 +44,7 @@ export const userExperienceMachine = createMachine<
 	states: {
 		guest: {
 			on: {
-				COMPLETE_REGISTRATION_FORM: {
+				USER_COMPLETED_REGISTRATION_FORM: {
 					target: 'registered',
 					actions: (_context, _event) => {
 						// Redirect user to Account Activation Screen
@@ -55,7 +55,7 @@ export const userExperienceMachine = createMachine<
 		},
 		registered: {
 			on: {
-				COMPLETE_ACTIVATION_FORM: {
+				USER_COMPLETED_ACTIVATION_FORM: {
 					target: 'activated',
 					actions: (_context, _event) => {
 						// Generate personalized list of stocks and redirect to Checkout Screen
@@ -67,17 +67,17 @@ export const userExperienceMachine = createMachine<
 		},
 		activated: {
 			on: {
-				COMPLETE_DEMOGRAPHICS_FORM: {
+				USER_COMPLETED_DEMOGRAPHICS_FORM: {
 					actions: (_context, _event) => {
 						// Fulfill KYC requirements
 					},
 				},
-				CONNECT_BANK_ACCOUNT: {
+				USER_CONNECTED_BANK_ACCOUNT: {
 					actions: (_context, _event) => {
 						// Connect bank account for ACH transfers
 					},
 				},
-				CONFIRM_ORDER: {
+				USER_CONFIRMED_ORDER: {
 					target: 'trackingProgress',
 					actions: (_context, _event) => {
 						// Queue tasks to purchase stocks and redirect to Stocks Progress Dashboard Screen
