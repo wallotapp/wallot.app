@@ -12,6 +12,7 @@ describe('AssetOrder', () => {
 			asset: '',
 			order: '',
 			position: '',
+			side: 'buy',
 			recommendations: [],
 		};
 		expect(exampleAssetOrder).toEqual<typeof exampleAssetOrder>({
@@ -30,6 +31,7 @@ describe('AssetOrder', () => {
 			asset: '',
 			order: '',
 			position: '',
+			side: 'buy',
 			recommendations: [],
 		});
 	});

@@ -12,6 +12,7 @@ import {
 	apiYupHelpers,
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
+import { assetOrdersApi } from '../../assetOrders/models/assetOrderProperties.js';
 
 export const RecommendationCategoryEnum = getEnum(['default']);
 export type RecommendationCategory =
@@ -35,7 +36,7 @@ const properties = {
 	best_orders: YupHelpers.array(
 		yup.object({
 			symbol: yup.string().defined(),
-			side: yup.string().defined(),
+			side: assetOrdersApi.properties.side,
 			amount: yup.string().defined(),
 		}),
 	)

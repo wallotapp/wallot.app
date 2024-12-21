@@ -23,8 +23,12 @@ const createParamsRequiredFieldEnum = getEnum([
 	'asset',
 	'order',
 	'recommendations',
+	'side',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
+
+export const AssetOrderSideEnum = getEnum(['buy', 'sell']);
+export type AssetOrderSide = keyof typeof AssetOrderSideEnum.obj;
 
 const _object = 'asset_order';
 const properties = {
@@ -51,6 +55,7 @@ const properties = {
 		.nullable()
 		.meta({ unique_key: false }),
 	recommendations: apiYupHelpers.idRefs(['recommendation']).defined().min(1),
+	side: AssetOrderSideEnum.getDefinedSchema(),
 } as const;
 type U = typeof properties;
 
