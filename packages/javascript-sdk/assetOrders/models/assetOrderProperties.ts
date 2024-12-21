@@ -21,6 +21,7 @@ const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
 	'asset',
 	'order',
+	'recommendations',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -47,10 +48,7 @@ const properties = {
 		.default(null)
 		.nullable()
 		.meta({ unique_key: false }),
-	recommendations: apiYupHelpers
-		.idRefs(['recommendation'])
-		.default(null)
-		.nullable(),
+	recommendations: apiYupHelpers.idRefs(['recommendation']).defined().min(1),
 } as const;
 type U = typeof properties;
 

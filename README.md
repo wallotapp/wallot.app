@@ -57,7 +57,7 @@ erDiagram
 
 	%% Production Relationships
 	MODEL ||--o{ RECOMMENDATION : "produces"
-	RECOMMENDATION }o--o{ ASSET_ORDER : "factors_into"
+	RECOMMENDATION }o--|{ ASSET_ORDER : "factors_into"
 	STRIPE_FINANCIAL_CONNECTIONS_SESSION_FLOW ||--o{ STRIPE_FINANCIAL_CONNECTIONS_ACCOUNT_LINK : "produces"
 
 	%% Similarity Relationships
