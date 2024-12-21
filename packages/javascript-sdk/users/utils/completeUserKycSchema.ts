@@ -10,7 +10,11 @@ export const completeUserKycProperties = {
 			.min(1)
 			.nullable(false)
 			.default(''),
-	// rest...
+	// rest of alpaca...
+	default_bank_account: usersApi.properties.default_bank_account
+		.min(1)
+		.nullable(false)
+		.default(''),
 } as const;
 export const completeUserKycSchema = yup.object(completeUserKycProperties);
 export const completeUserKycSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
