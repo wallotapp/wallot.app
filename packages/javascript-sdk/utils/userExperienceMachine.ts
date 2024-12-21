@@ -24,23 +24,24 @@ export type UserExperienceEvent = {
 
 // UserCompletedActivationFormContextUpdates
 import { ActivatedUser } from '../users/utils/activateUserSchema.js';
-import { Recommendation, } from '../recommendations/models/recommendationProperties.js';
+import { Recommendation } from '../recommendations/models/recommendationProperties.js';
 import { Order } from '../orders/models/orderProperties.js';
 import { AssetOrder } from '../assetOrders/models/assetOrderProperties.js';
 export type UserCompletedActivationFormContextUpdates = {
-  activatedUser: ActivatedUser;
-  recommendationFromWallotFinancialModel: Recommendation;
-  orderContainerForAssetOrders: Order;
-  assetOrdersMappedFromRecommendationBestChoices: AssetOrder[];
+	activatedUser: ActivatedUser;
+	recommendationFromWallotFinancialModel: Recommendation;
+	orderContainerForAssetOrders: Order;
+	assetOrdersMappedFromRecommendationBestChoices: AssetOrder[];
 };
 
+// UserCompletedKycAndBankContextUpdates
 import { BankAccount } from '../bankAccounts/models/bankAccountProperties.js';
 import { IdentityVerificationDocument } from '../identityVerificationDocuments/models/identityVerificationDocumentProperties.js';
 import { KycUser } from '../users/utils/completeUserKycSchema.js';
 export type UserCompletedKycAndBankContextUpdates = {
-  connectedBankAccounts: BankAccount[];
-  uploadedIdentityVerificationDocument: IdentityVerificationDocument;
-  kycUser: KycUser;
+	connectedBankAccounts: BankAccount[];
+	uploadedIdentityVerificationDocument: IdentityVerificationDocument;
+	kycUser: KycUser;
 };
 
 export type UserExperienceState =
