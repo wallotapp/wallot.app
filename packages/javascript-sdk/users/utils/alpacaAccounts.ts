@@ -10,7 +10,7 @@ export const alpacaAccountContactProperties = {
 	city: yup.string().nullable().default(null), // "San Mateo"
 	email_address: yup.string().nullable().default(null), // "john@example.com"
 	local_street_address: yup.string().nullable().default(null), // `null`
-	phone_number: yup.string().nullable().default(null), // "226-555-0970"
+	phone_number: yup.string().nullable().default(null), // "813-555-0970"
 	postal_code: yup.string().nullable().default(null), // "94401"
 	state: yup.string().nullable().default(null), // "CA"
 	street_address: yup.array().of(yup.string()).nullable().default(null), // ["20 N San Mateo Dr"]
