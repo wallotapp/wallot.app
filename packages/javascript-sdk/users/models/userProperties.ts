@@ -64,6 +64,11 @@ const properties = {
 			label_message_user_text: 'Enter the amount you would like to invest',
 		}),
 	category: UserCategoryEnum.getDefinedSchema(),
+	default_bank_account: apiYupHelpers
+		.idRef(['bank_account'])
+		.default(null)
+		.nullable()
+		.meta({ unique_key: true }),
 	investing_goals: YupHelpers.array(InvestingGoalEnum.getDefinedSchema()).meta({
 		label_message_user_text:
 			'Tell us a bit about your goals, for example, retirement or purchasing a home',
