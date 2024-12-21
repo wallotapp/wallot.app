@@ -52,6 +52,7 @@ const properties = {
 		unique_key: true,
 		type: GeneralizedFieldTypeEnum.obj.short_text,
 	}),
+	alpaca_account_identity_given_name: yup.string().nullable().default(null),
 	capital_level: CapitalLevelEnum.getDefinedSchema()
 		.default(null)
 		.nullable()
