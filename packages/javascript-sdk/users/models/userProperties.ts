@@ -23,6 +23,12 @@ import {
 	RiskPreferenceEnum,
 	riskPreferenceLabelDictionary,
 } from '../../utils/riskPreference.js';
+import {
+	AlpacaAccountPropertyName,
+	AlpacaAccountPropertyNameEnum,
+	RemoveAlpacaAccountPrefix,
+	alpacaAccountProperties,
+} from '../utils/alpacaAccounts.js';
 
 export const UserCategoryEnum = getEnum(['default']);
 export type UserCategory = keyof typeof UserCategoryEnum.obj;
@@ -32,6 +38,7 @@ const createParamsRequiredFieldEnum = getEnum([
 	'activation_reminder_task_id',
 	'stripe_customer_id',
 	'username',
+	...AlpacaAccountPropertyNameEnum.arr,
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -88,6 +95,7 @@ const properties = {
 		type: GeneralizedFieldTypeEnum.obj.short_text,
 	}),
 	username: usernameSchema().defined().meta({ unique_key: true }),
+	...alpacaAccountProperties,
 } as const;
 type U = typeof properties;
 
@@ -99,3 +107,7 @@ export const usersApi = getApiResourceSpec<keyof U, U, T>({
 export type User = yup.InferType<typeof usersApi.apiResourceJsonSchema>;
 export type CreateUserParams = CreateParams<User, T>;
 export type UpdateUserParams = UpdateParams<User>;
+
+export type AlpacaAccount = RemoveAlpacaAccountPrefix<
+	Pick<User, AlpacaAccountPropertyName>
+>;
