@@ -27,8 +27,8 @@ describe('isActivatedUser', () => {
 		};
 		expect(isActivatedUser(user as unknown as User)).toBe(false);
 	});
-	
-  it('should return false for users with malformed data', () => {
+
+	it('should return false for users with malformed data', () => {
 		const user = {
 			age_range: '800',
 			capital_level: '0',
