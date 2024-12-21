@@ -63,7 +63,9 @@ export const alpacaAccountProperties = {
 		.of(yup.string())
 		.nullable()
 		.default(null), // ["us_equity"]
-	alpaca_account_id: yup.string().nullable().default(null), // v4 uuid
+	alpaca_account_id: yup.string().nullable().default(null).meta({
+		unique_key: true,
+	}), // v4 uuid
 	alpaca_account_identity: yup
 		.object()
 		.shape({
