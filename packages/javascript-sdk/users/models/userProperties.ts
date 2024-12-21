@@ -25,7 +25,6 @@ import {
 } from '../../utils/riskPreference.js';
 import {
 	AlpacaAccountPropertyName,
-	AlpacaAccountPropertyNameEnum,
 	RemoveAlpacaAccountPrefix,
 	alpacaAccountProperties,
 } from '../utils/alpacaAccounts.js';
@@ -38,7 +37,6 @@ const createParamsRequiredFieldEnum = getEnum([
 	'activation_reminder_task_id',
 	'stripe_customer_id',
 	'username',
-	...AlpacaAccountPropertyNameEnum.arr,
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
