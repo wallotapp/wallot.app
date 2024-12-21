@@ -102,7 +102,7 @@ export type QueuedAlpacaAchTransferHadAnErrorContextUpdates = {
 export type AchTransferWithRejectedAlpacaAchTransfer = AchTransfer; // todo
 
 // PendingNewAlpacaOrderBecameFilledContextUpdates
-export type PendingNewAlpacaOrdeÏrBecameFilledContextUpdates = {
+export type PendingNewAlpacaOrderBecameFilledContextUpdates = {
 	orderWithFilledAlpacaOrder: OrderWithFilledAlpacaOrder;
 };
 export type OrderWithFilledAlpacaOrder = Order; // todo
