@@ -53,14 +53,14 @@ export type UserConfirmedOrderContextUpdates = {
 	userPendingAlpacaAccount: UserPendingAlpacaAccount;
 	invoice: Invoice;
 	proLicense: ProLicense;
-	confirmedOrder: ConfirmedOrder;
+	orderConfirmedByUser: OrderConfirmedByUser;
 	achTransferPendingAlpacaQueue: AchTransferPendingAlpacaQueue;
 	bankAccountPendingAlpacaAchRelationship: BankAccountPendingAlpacaAchRelationship;
 	assetOrdersPendingAlpacaFill: AssetOrderPendingAlpacaFill[];
 };
 type UserPendingAlpacaAccount = User; // todo
 type ProLicense = License; // todo
-type ConfirmedOrder = Order; // todo
+type OrderConfirmedByUser = Order; // todo
 type BankAccountPendingAlpacaAchRelationship = BankAccount; // todo
 type AchTransferPendingAlpacaQueue = AchTransfer; // todo
 type AssetOrderPendingAlpacaFill = AssetOrder; // todo
@@ -88,6 +88,30 @@ export type QueuedAlpacaAchRelationshipHadAnErrorContextUpdates = {
 	bankAccountWithRejectedAlpacaAchRelationship: BankAccountWithRejectedAlpacaAchRelationship;
 };
 type BankAccountWithRejectedAlpacaAchRelationship = BankAccount; // todo
+
+// QueuedAlpacaAchTransferBecameCompleteContextUpdates
+export type QueuedAlpacaAchTransferBecameCompleteContextUpdates = {
+	achTransferWithCompleteAlpacaAchTransfer: AchTransferWithCompleteAlpacaAchTransfer;
+};
+type AchTransferWithCompleteAlpacaAchTransfer = AchTransfer; // todo
+
+// QueuedAlpacaAchTransferHadAnErrorContextUpdates
+export type QueuedAlpacaAchTransferHadAnErrorContextUpdates = {
+	achTransferWithRejectedAlpacaAchTransfer: AchTransferWithRejectedAlpacaAchTransfer;
+};
+type AchTransferWithRejectedAlpacaAchTransfer = AchTransfer; // todo
+
+// PendingNewAlpacaOrderBecameFilledContextUpdates
+export type PendingNewAlpacaOrdeÏrBecameFilledContextUpdates = {
+	orderWithFilledAlpacaOrder: OrderWithFilledAlpacaOrder;
+};
+type OrderWithFilledAlpacaOrder = Order; // todo
+
+// PendingNewAlpacaOrderHadAnErrorContextUpdates
+export type PendingNewAlpacaOrderHadAnErrorContextUpdates = {
+	orderWithRejectedAlpacaOrder: OrderWithRejectedAlpacaOrder;
+};
+type OrderWithRejectedAlpacaOrder = Order; // todo
 
 export type UserExperienceState =
 	| 'guest'
