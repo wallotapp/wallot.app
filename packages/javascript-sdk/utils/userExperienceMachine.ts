@@ -12,13 +12,23 @@ export type UserExperienceEvent = {
 		| 'COMPLETE_DEMOGRAPHICS_FORM'
 		| 'CONNECT_BANK_ACCOUNT'
 		| 'CONFIRM_ORDER'
-		| 'ORDER_RESULT_COMPLETE'
+		| 'SUBMITTED_ALPACA_ACCOUNT_BECAME_ACTIVE'
+		| 'SUBMITTED_ALPACA_ACCOUNT_HAD_AN_ERROR'
+		| 'QUEUED_ALPACA_ACH_RELATIONSHIP_BECAME_APPROVED'
+		| 'QUEUED_ALPACA_ACH_RELATIONSHIP_HAD_AN_ERROR'
+		| 'QUEUED_ALPACA_ACH_TRANSFER_BECAME_COMPLETE'
+		| 'QUEUED_ALPACA_ACH_TRANSFER_HAD_AN_ERROR'
+		| 'PENDING_NEW_ALPACA_ORDER_BECAME_FILLED'
+		| 'PENDING_NEW_ALPACA_ORDER_HAD_AN_ERROR'
 		| 'RESOLVE_PROBLEM_WITH_ORDER';
 };
 export type UserExperienceState =
 	| 'registered'
 	| 'activated'
-	| 'trackingProgress.waitingForOrderToBeFilled'
+	| 'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAccountToChangeFromSubmittedToActive'
+	| 'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved'
+	| 'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchTransferToChangeFromQueuedToComplete'
+	| 'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaOrderToChangeFromPendingNewToFilled'
 	| 'trackingProgress.resolvingProblemWithOrder'
 	| 'trackingProgress.homeostasis';
 export const userExperienceMachine = createMachine<
@@ -80,25 +90,49 @@ export const userExperienceMachine = createMachine<
 				'The user is tracking the progress of their stock purchase orders.',
 			states: {
 				waitingForOrderToBeFilled: {
-					on: {
-						ORDER_RESULT_COMPLETE: [
-							{
-								target: 'resolvingProblemWithOrder',
-								actions: (_context, _event) => {
-									// Handle unsuccessful order
-								},
-								cond: 'isOrderUnsuccessful',
+					initial: 'waitingForAlpacaAccountToChangeFromSubmittedToActive',
+					states: {
+						waitingForAlpacaAccountToChangeFromSubmittedToActive: {
+							on: {
+								SUBMITTED_ALPACA_ACCOUNT_BECAME_ACTIVE:
+									'waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved',
+								SUBMITTED_ALPACA_ACCOUNT_HAD_AN_ERROR:
+									'#userExperience.trackingProgress.resolvingProblemWithOrder',
 							},
-							{
-								target: 'homeostasis',
-								actions: (_context, _event) => {
-									// Handle successful order
-								},
-								cond: 'isOrderSuccessful',
+							description:
+								'Waiting for the Alpaca account status to change from Submitted to Active.',
+						},
+						waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved: {
+							on: {
+								QUEUED_ALPACA_ACH_RELATIONSHIP_BECAME_APPROVED:
+									'waitingForAlpacaAchTransferToChangeFromQueuedToComplete',
+								QUEUED_ALPACA_ACH_RELATIONSHIP_HAD_AN_ERROR:
+									'#userExperience.trackingProgress.resolvingProblemWithOrder',
 							},
-						],
+							description:
+								'Waiting for the Alpaca ACH relationship status to change from Queued to Approved.',
+						},
+						waitingForAlpacaAchTransferToChangeFromQueuedToComplete: {
+							on: {
+								QUEUED_ALPACA_ACH_TRANSFER_BECAME_COMPLETE:
+									'waitingForAlpacaOrderToChangeFromPendingNewToFilled',
+								QUEUED_ALPACA_ACH_TRANSFER_HAD_AN_ERROR:
+									'#userExperience.trackingProgress.resolvingProblemWithOrder',
+							},
+							description:
+								'Waiting for the Alpaca ACH transfer status to change from Queued to Complete.',
+						},
+						waitingForAlpacaOrderToChangeFromPendingNewToFilled: {
+							on: {
+								PENDING_NEW_ALPACA_ORDER_BECAME_FILLED:
+									'#userExperience.trackingProgress.homeostasis',
+								PENDING_NEW_ALPACA_ORDER_HAD_AN_ERROR:
+									'#userExperience.trackingProgress.resolvingProblemWithOrder',
+							},
+							description:
+								'Waiting for the Alpaca order status to change from PendingNew to Filled.',
+						},
 					},
-					description: 'The order has been placed and is waiting to be filled.',
 				},
 				resolvingProblemWithOrder: {
 					on: {
@@ -121,8 +155,5 @@ export const userExperienceMachine = createMachine<
 		},
 	},
 }).withConfig({
-	guards: {
-		isOrderSuccessful: ({ order }) => order?.status === 'success',
-		isOrderUnsuccessful: ({ order }) => order?.status === 'failure',
-	},
+	guards: {},
 });
