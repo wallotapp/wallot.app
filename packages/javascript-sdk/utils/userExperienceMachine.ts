@@ -21,6 +21,7 @@ export type UserExperienceEvent = {
 		| 'USER_RESOLVED_ERROR_WITH_PENDING_NEW_ALPACA_ORDER';
 };
 export type UserExperienceState =
+	| 'guest'
 	| 'registered'
 	| 'activated.inputting_kyc_and_bank'
 	| 'activated.ready_to_confirm_order'
