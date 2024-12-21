@@ -34,6 +34,15 @@ export type UserCompletedActivationFormContextUpdates = {
   assetOrdersMappedFromRecommendationBestChoices: AssetOrder[];
 };
 
+import { BankAccount } from '../bankAccounts/models/bankAccountProperties.js';
+import { IdentityVerificationDocument } from '../identityVerificationDocuments/models/identityVerificationDocumentProperties.js';
+import { KycUser } from '../users/utils/completeUserKycSchema.js';
+export type UserCompletedKycAndBankContextUpdates = {
+  connectedBankAccounts: BankAccount[];
+  uploadedIdentityVerificationDocument: IdentityVerificationDocument;
+  kycUser: KycUser;
+};
+
 export type UserExperienceState =
 	| 'guest'
 	| 'registered'
