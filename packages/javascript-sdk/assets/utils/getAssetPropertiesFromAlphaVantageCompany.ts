@@ -1,5 +1,8 @@
 import { Asset, AlphaVantageCompany } from '../models/assetProperties.js';
-import { AlphaVantageCompanyPropertyName, AlphaVantageCompanyPropertyNameEnum } from './alphaVantageCompanies.js';
+import {
+	AlphaVantageCompanyPropertyName,
+	AlphaVantageCompanyPropertyNameEnum,
+} from './alphaVantageCompanies.js';
 
 export const getAssetPropertiesFromAlphaVantageCompany = (
 	alphaVantageCompany: AlphaVantageCompany,
