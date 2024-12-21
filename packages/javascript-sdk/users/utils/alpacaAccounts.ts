@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { getEnum, Keys } from 'ergonomic';
 
 export const alpacaAccountProperties = {
 	alpaca_account_account_number: yup.string().nullable().default(null),
@@ -81,3 +82,13 @@ export const alpacaAccountProperties = {
 		.nullable()
 		.default(null),
 } as const;
+
+export const AlpacaAccountPropertyNameEnum = getEnum(
+	Keys(alpacaAccountProperties),
+);
+export type AlpacaAccountPropertyName =
+	keyof typeof AlpacaAccountPropertyNameEnum.obj;
+
+export type RemoveAlpacaAccountPrefix<T> = {
+	[K in keyof T as K extends `alpaca_account_${infer Rest}` ? Rest : K]: T[K];
+};
