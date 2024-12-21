@@ -65,29 +65,29 @@ type BankAccountPendingAlpacaAchRelationship = BankAccount; // todo
 type AchTransferPendingAlpacaQueue = AchTransfer; // todo
 type AssetOrderPendingAlpacaFill = AssetOrder; // todo
 
-// SubmittedAlpacaAccountHadAnErrorContextUpdates
-export type SubmittedAlpacaAccountHadAnErrorContextUpdates = {
-	userWithRejectedAlpacaAccount: UserWithRejectedAlpacaAccount;
-};
-type UserWithRejectedAlpacaAccount = User; // todo
-
 // SubmittedAlpacaAccountBecameActiveContextUpdates
 export type SubmittedAlpacaAccountBecameActiveContextUpdates = {
 	userWithActiveAlpacaAccount: UserWithActiveAlpacaAccount;
 };
 type UserWithActiveAlpacaAccount = User; // todo
 
-// QueuedAlpacaAchRelationshipHadAnErrorContextUpdates
-export type QueuedAlpacaAchRelationshipHadAnErrorContextUpdates = {
-	bankAccountWithRejectedAlpacaAchRelationship: BankAccountWithRejectedAlpacaAchRelationship;
+// SubmittedAlpacaAccountHadAnErrorContextUpdates
+export type SubmittedAlpacaAccountHadAnErrorContextUpdates = {
+	userWithRejectedAlpacaAccount: UserWithRejectedAlpacaAccount;
 };
-type BankAccountWithRejectedAlpacaAchRelationship = BankAccount; // todo
+type UserWithRejectedAlpacaAccount = User; // todo
 
 // QueuedAlpacaAchRelationshipBecameApprovedContextUpdates
 export type QueuedAlpacaAchRelationshipBecameApprovedContextUpdates = {
 	bankAccountWithApprovedAlpacaAchRelationship: BankAccountWithApprovedAlpacaAchRelationship;
 };
 type BankAccountWithApprovedAlpacaAchRelationship = BankAccount; // todo
+
+// QueuedAlpacaAchRelationshipHadAnErrorContextUpdates
+export type QueuedAlpacaAchRelationshipHadAnErrorContextUpdates = {
+	bankAccountWithRejectedAlpacaAchRelationship: BankAccountWithRejectedAlpacaAchRelationship;
+};
+type BankAccountWithRejectedAlpacaAchRelationship = BankAccount; // todo
 
 export type UserExperienceState =
 	| 'guest'
