@@ -58,60 +58,60 @@ export type UserConfirmedOrderContextUpdates = {
 	achTransferPendingAlpacaQueue: AchTransferPendingAlpacaQueue;
 	assetOrdersPendingAlpacaFill: AssetOrderPendingAlpacaFill[];
 };
-type UserPendingAlpacaAccount = User; // todo
-type ProLicense = License; // todo
-type OrderConfirmedByUser = Order; // todo
-type BankAccountPendingAlpacaAchRelationship = BankAccount; // todo
-type AchTransferPendingAlpacaQueue = AchTransfer; // todo
-type AssetOrderPendingAlpacaFill = AssetOrder; // todo
+export type UserPendingAlpacaAccount = User; // todo
+export type ProLicense = License; // todo
+export type OrderConfirmedByUser = Order; // todo
+export type BankAccountPendingAlpacaAchRelationship = BankAccount; // todo
+export type AchTransferPendingAlpacaQueue = AchTransfer; // todo
+export type AssetOrderPendingAlpacaFill = AssetOrder; // todo
 
 // SubmittedAlpacaAccountBecameActiveContextUpdates
 export type SubmittedAlpacaAccountBecameActiveContextUpdates = {
 	userWithActiveAlpacaAccount: UserWithActiveAlpacaAccount;
 };
-type UserWithActiveAlpacaAccount = User; // todo
+export type UserWithActiveAlpacaAccount = User; // todo
 
 // SubmittedAlpacaAccountHadAnErrorContextUpdates
 export type SubmittedAlpacaAccountHadAnErrorContextUpdates = {
 	userWithRejectedAlpacaAccount: UserWithRejectedAlpacaAccount;
 };
-type UserWithRejectedAlpacaAccount = User; // todo
+export type UserWithRejectedAlpacaAccount = User; // todo
 
 // QueuedAlpacaAchRelationshipBecameApprovedContextUpdates
 export type QueuedAlpacaAchRelationshipBecameApprovedContextUpdates = {
 	bankAccountWithApprovedAlpacaAchRelationship: BankAccountWithApprovedAlpacaAchRelationship;
 };
-type BankAccountWithApprovedAlpacaAchRelationship = BankAccount; // todo
+export type BankAccountWithApprovedAlpacaAchRelationship = BankAccount; // todo
 
 // QueuedAlpacaAchRelationshipHadAnErrorContextUpdates
 export type QueuedAlpacaAchRelationshipHadAnErrorContextUpdates = {
 	bankAccountWithRejectedAlpacaAchRelationship: BankAccountWithRejectedAlpacaAchRelationship;
 };
-type BankAccountWithRejectedAlpacaAchRelationship = BankAccount; // todo
+export type BankAccountWithRejectedAlpacaAchRelationship = BankAccount; // todo
 
 // QueuedAlpacaAchTransferBecameCompleteContextUpdates
 export type QueuedAlpacaAchTransferBecameCompleteContextUpdates = {
 	achTransferWithCompleteAlpacaAchTransfer: AchTransferWithCompleteAlpacaAchTransfer;
 };
-type AchTransferWithCompleteAlpacaAchTransfer = AchTransfer; // todo
+export type AchTransferWithCompleteAlpacaAchTransfer = AchTransfer; // todo
 
 // QueuedAlpacaAchTransferHadAnErrorContextUpdates
 export type QueuedAlpacaAchTransferHadAnErrorContextUpdates = {
 	achTransferWithRejectedAlpacaAchTransfer: AchTransferWithRejectedAlpacaAchTransfer;
 };
-type AchTransferWithRejectedAlpacaAchTransfer = AchTransfer; // todo
+export type AchTransferWithRejectedAlpacaAchTransfer = AchTransfer; // todo
 
 // PendingNewAlpacaOrderBecameFilledContextUpdates
 export type PendingNewAlpacaOrdeÏrBecameFilledContextUpdates = {
 	orderWithFilledAlpacaOrder: OrderWithFilledAlpacaOrder;
 };
-type OrderWithFilledAlpacaOrder = Order; // todo
+export type OrderWithFilledAlpacaOrder = Order; // todo
 
 // PendingNewAlpacaOrderHadAnErrorContextUpdates
 export type PendingNewAlpacaOrderHadAnErrorContextUpdates = {
 	orderWithRejectedAlpacaOrder: OrderWithRejectedAlpacaOrder;
 };
-type OrderWithRejectedAlpacaOrder = Order; // todo
+export type OrderWithRejectedAlpacaOrder = Order; // todo
 
 // Resolution updates use the same context updates as `UserCompletedKycAndBankContextUpdates`
 export type UserResolvedErrorWithSubmittedAlpacaAccountContextUpdates =
