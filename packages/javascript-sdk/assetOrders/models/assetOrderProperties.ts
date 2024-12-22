@@ -12,7 +12,7 @@ import {
 	apiYupHelpers,
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
-import { alpacaOrderProperties } from '../utils/alpacaOrder.js';
+import { alpacaOrderProperties } from '../utils/alpacaOrders.js';
 
 export const AssetOrderCategoryEnum = getEnum(['default']);
 export type AssetOrderCategory = keyof typeof AssetOrderCategoryEnum.obj;
@@ -23,12 +23,9 @@ const createParamsRequiredFieldEnum = getEnum([
 	'asset',
 	'order',
 	'recommendations',
-	'side',
+	'alpaca_order_side',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
-
-export const AssetOrderSideEnum = getEnum(['buy', 'sell']);
-export type AssetOrderSide = keyof typeof AssetOrderSideEnum.obj;
 
 const _object = 'asset_order';
 const properties = {
@@ -51,7 +48,6 @@ const properties = {
 		.nullable()
 		.meta({ unique_key: false }),
 	recommendations: apiYupHelpers.idRefs(['recommendation']).defined().min(1),
-	side: AssetOrderSideEnum.getDefinedSchema(),
 	...alpacaOrderProperties,
 } as const;
 type U = typeof properties;

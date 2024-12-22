@@ -36,7 +36,7 @@ const properties = {
 	best_orders: YupHelpers.array(
 		yup.object({
 			symbol: yup.string().defined(),
-			side: assetOrdersApi.properties.side,
+			side: assetOrdersApi.properties.alpaca_order_side.defined(),
 			amount: yup.string().defined(), // String number of dollars, e.g. '1000' for $1,000.00
 		}),
 	)

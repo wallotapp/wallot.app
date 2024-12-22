@@ -1,2 +1,2 @@
-export * from './alpacaOrder.js';
+export * from './alpacaOrders.js';
 export * from './assetOrderPendingAlpacaFillSchema.js';
