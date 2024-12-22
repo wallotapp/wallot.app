@@ -1,3 +1,4 @@
+import { default as OpenAI } from 'openai';
 import {
 	getCloudStorageBucket,
 	getFirebaseAuth,
@@ -16,5 +17,8 @@ export const getServices = (secrets: SecretData) => ({
 		secrets.SECRET_CRED_FIREBASE_PROJECT_STORAGE_BUCKET_NAME,
 	),
 	db: getFirestoreDB(secrets),
+	openAI: new OpenAI({
+		apiKey: secrets.SECRET_CRED_OPENAI_API_KEY,
+	}),
 	stripe: getStripeInstance(secrets),
 });
