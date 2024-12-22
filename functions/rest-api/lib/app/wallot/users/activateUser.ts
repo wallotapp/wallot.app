@@ -56,11 +56,14 @@ export const activateUser = async (
 	);
 
 	// Create a custom RECOMMENDATION for USER
-	const recommendation = await createRecommendationForUser(
-		{ age_range, capital_level, investing_goals, risk_preference },
-		{ userId },
+	const recommendation = await createRecommendationForUser({
+		age_range,
+		capital_level,
+		investing_goals,
+		risk_preference,
+		userId,
 		compatibleParameters,
-	);
+	});
 	batch.set(
 		db.collection(recommendationsApi.collectionId).doc(recommendation._id),
 		recommendation,

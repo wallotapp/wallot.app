@@ -3,16 +3,17 @@ import { locateBestModelFamiliesForParameterSet } from '../models/locateBestMode
 import { locateLatestModelInModelFamily } from '../models/locateLatestModelInModelFamily.js';
 import { promptGptForCustomRecommendation } from './promptGptForCustomRecommendation.js';
 
-export const createRecommendationForUser = async (
-	{
-		age_range,
-		capital_level,
-		investing_goals,
-		risk_preference,
-	}: ActivateUserParams,
-	{ userId }: { userId: string },
-	compatibleParameters: Parameter[],
-): Promise<Recommendation> => {
+export const createRecommendationForUser = async ({
+	age_range,
+	capital_level,
+	investing_goals,
+	risk_preference,
+	userId,
+	compatibleParameters,
+}: ActivateUserParams & {
+	userId: string;
+	compatibleParameters: Parameter[];
+}): Promise<Recommendation> => {
 	// Locate best MODEL_FAMILYs for PARAMETERs
 	const bestModelFamilies = await locateBestModelFamiliesForParameterSet({
 		age_range,
