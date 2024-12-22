@@ -57,44 +57,55 @@ export type UserConfirmedOrderContextUpdates = {
 };
 
 // SubmittedAlpacaAccountBecameActiveContextUpdates
+import { UserWithActiveAlpacaAccount } from '../users/utils/userWithActiveAlpacaAccountSchema.js';
+import { BankAccountPendingAlpacaAchRelationship } from '../bankAccounts/utils/bankAccountPendingAlpacaAchRelationshipSchema.js';
 export type SubmittedAlpacaAccountBecameActiveContextUpdates = {
 	userWithActiveAlpacaAccount: UserWithActiveAlpacaAccount;
 	bankAccountPendingAlpacaAchRelationship: BankAccountPendingAlpacaAchRelationship;
 };
 
 // SubmittedAlpacaAccountHadAnErrorContextUpdates
+import { UserWithRejectedAlpacaAccount } from '../users/utils/userWithRejectedAlpacaAccountSchema.js';
 export type SubmittedAlpacaAccountHadAnErrorContextUpdates = {
 	userWithRejectedAlpacaAccount: UserWithRejectedAlpacaAccount;
 };
 
 // QueuedAlpacaAchRelationshipBecameApprovedContextUpdates
+import { BankAccountWithApprovedAlpacaAchRelationship } from '../bankAccounts/utils/bankAccountWithApprovedAlpacaAchRelationshipSchema.js';
+import { AchTransferPendingAlpacaQueue } from '../achTransfers/utils/achTransferPendingAlpacaQueueSchema.js';
 export type QueuedAlpacaAchRelationshipBecameApprovedContextUpdates = {
 	bankAccountWithApprovedAlpacaAchRelationship: BankAccountWithApprovedAlpacaAchRelationship;
 	achTransferPendingAlpacaQueue: AchTransferPendingAlpacaQueue;
 };
 
 // QueuedAlpacaAchRelationshipHadAnErrorContextUpdates
+import { BankAccountWithRejectedAlpacaAchRelationship } from '../bankAccounts/utils/bankAccountWithRejectedAlpacaAchRelationshipSchema.js';
 export type QueuedAlpacaAchRelationshipHadAnErrorContextUpdates = {
 	bankAccountWithRejectedAlpacaAchRelationship: BankAccountWithRejectedAlpacaAchRelationship;
 };
 
 // QueuedAlpacaAchTransferBecameCompleteContextUpdates
+import { AchTransferReceivedByAlpaca } from '../achTransfers/utils/achTransferReceivedByAlpacaSchema.js';
+import { AssetOrderPendingAlpacaFill } from '../assetOrders/utils/assetOrderPendingAlpacaFillSchema.js';
 export type QueuedAlpacaAchTransferBecameCompleteContextUpdates = {
 	achTransferReceivedByAlpaca: AchTransferReceivedByAlpaca;
 	assetOrdersPendingAlpacaFill: AssetOrderPendingAlpacaFill[];
 };
 
 // QueuedAlpacaAchTransferHadAnErrorContextUpdates
+import { AchTransferWithRejectedAlpacaAchTransfer } from '../achTransfers/utils/achTransferWithRejectedAlpacaAchTransferSchema.js';
 export type QueuedAlpacaAchTransferHadAnErrorContextUpdates = {
 	achTransferWithRejectedAlpacaAchTransfer: AchTransferWithRejectedAlpacaAchTransfer;
 };
 
 // PendingNewAlpacaOrderBecameFilledContextUpdates
+import { OrderFilledByAlpaca } from '../orders/utils/orderFilledByAlpacaSchema.js';
 export type PendingNewAlpacaOrderBecameFilledContextUpdates = {
 	orderFilledByAlpaca: OrderFilledByAlpaca;
 };
 
 // PendingNewAlpacaOrderHadAnErrorContextUpdates
+import { OrderWithRejectedAlpacaOrder } from '../orders/utils/orderWithRejectedAlpacaOrderSchema.js';
 export type PendingNewAlpacaOrderHadAnErrorContextUpdates = {
 	orderWithRejectedAlpacaOrder: OrderWithRejectedAlpacaOrder;
 };
