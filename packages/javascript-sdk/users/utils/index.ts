@@ -7,4 +7,4 @@ export * from './registerUserSchema.js';
 export * from './username.js';
 export * from './userPendingAlpacaAccountSchema.js';
 export * from './userWithActiveAlpacaAccountSchema.js';
-export * from './userWithRejectedAlpacaAccountSchema.js';
+export * from './userRejectedByAlpacaSchema.js';

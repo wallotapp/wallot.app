@@ -65,9 +65,9 @@ export type SubmittedAlpacaAccountBecameActiveContextUpdates = {
 };
 
 // SubmittedAlpacaAccountHadAnErrorContextUpdates
-import { UserWithRejectedAlpacaAccount } from '../users/utils/userWithRejectedAlpacaAccountSchema.js';
+import { UserRejectedByAlpaca } from '../users/utils/userRejectedByAlpacaSchema.js';
 export type SubmittedAlpacaAccountHadAnErrorContextUpdates = {
-	userWithRejectedAlpacaAccount: UserWithRejectedAlpacaAccount;
+	userRejectedByAlpaca: UserRejectedByAlpaca;
 };
 
 // QueuedAlpacaAchRelationshipBecameApprovedContextUpdates
