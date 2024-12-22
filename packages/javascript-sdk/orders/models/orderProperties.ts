@@ -16,6 +16,9 @@ import {
 export const OrderCategoryEnum = getEnum(['default']);
 export type OrderCategory = keyof typeof OrderCategoryEnum.obj;
 
+export const OrderStatusEnum = getEnum(['pending', 'confirmed_by_user']);
+export type OrderStatus = keyof typeof OrderStatusEnum.obj;
+
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
 	'user',
@@ -33,6 +36,7 @@ const properties = {
 		.nullable()
 		.meta({ unique_key: false }),
 	category: OrderCategoryEnum.getDefinedSchema(),
+	status: OrderStatusEnum.getDefinedSchema().default('pending'),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: false }),
 } as const;
 type U = typeof properties;
