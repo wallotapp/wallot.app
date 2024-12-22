@@ -4,6 +4,7 @@ import { getEnum, Keys } from 'ergonomic';
 // === Enums === //
 
 // Status
+// More information is documented here: https://docs.alpaca.markets/docs/accounts-statuses
 export const AlpacaAccountStatusEnum = getEnum([
 	'INACTIVE', // Account not set to trade given asset.
 	'ONBOARDING', // An application is expected for this user, but has not been submitted yet.
