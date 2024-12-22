@@ -5,12 +5,14 @@ import {
 	ActivateUserParams,
 	CreateRecommendationParams,
 	Model,
+	modelsApi,
+	OpenAiModel,
 	Recommendation,
 	recommendationsApi,
 	riskPreferenceLabelDictionary,
 } from '@wallot/js';
 import { variables } from '../../../variables.js';
-import { openAI } from '../../../services.js';
+import { db, openAI } from '../../../services.js';
 
 const zodResponseFormat = zodResponseFormatFromOpenAI as unknown as (
 	arg1: unknown,
@@ -35,12 +37,20 @@ export const promptGptForCustomRecommendation = async ({
 	investing_goals,
 	risk_preference,
 	capital_level,
-	bestModel,
+	model,
 	userId,
 }: ActivateUserParams & {
+	model: Model;
 	userId: string;
-	bestModel: Model;
 }): Promise<Recommendation> => {
+	// Fetch the OPEN_AI_MODEL associated with the MODEL
+	const { open_ai_model } = model;
+	const openAiModelDocRef = db
+		.collection(modelsApi.collectionId)
+		.doc(open_ai_model);
+	const openAiModel = (await openAiModelDocRef.get()).data() as OpenAiModel;
+
+	// Construct the GPT prompt
 	const capitalFormatted = getCurrencyUsdStringFromCents(Number(capital_level));
 	const fullStockTradingInstruction = `- You are allowed to choose any stocks trading on the NASDAQ or NYSE.`;
 	const limitedStockTradingInstruction = `- You are allowed to choose any stocks from the following list of fourteen options:
@@ -94,8 +104,9 @@ For example, if you were to recommend allocating a $1,000 budget toward investin
 }
 \`\`\``;
 
+	// Request a GPT recommendation
 	const completion = await openAI.beta.chat.completions.parse({
-		model: 'gpt-4o-2024-08-06',
+		model: openAiModel.name,
 		messages: [{ role: 'user', content: prompt }],
 		response_format: zodResponseFormat(
 			gptRecommendationSchema,
@@ -103,7 +114,7 @@ For example, if you were to recommend allocating a $1,000 budget toward investin
 		),
 	});
 
-	// Extract the parsed recommendation from the response
+	// Extract the parsed data from the response
 	const gptRecommendation = completion.choices?.[0]?.message
 		.parsed as unknown as GptRecommendation | undefined;
 
@@ -111,6 +122,7 @@ For example, if you were to recommend allocating a $1,000 budget toward investin
 		throw new Error('Failed to parse GPT response');
 	}
 
+	// Construct the RECOMMENDATION
 	const recommendationParams: CreateRecommendationParams = {
 		best_investments: gptRecommendation.best_investments.map((order) => ({
 			...order,
@@ -119,7 +131,7 @@ For example, if you were to recommend allocating a $1,000 budget toward investin
 		category: 'default',
 		description: gptRecommendation.description,
 		name: gptRecommendation.name,
-		model: bestModel._id,
+		model: model._id,
 		news_reports: [],
 		open_ai_api_request_ids: [completion.id],
 		user: userId,

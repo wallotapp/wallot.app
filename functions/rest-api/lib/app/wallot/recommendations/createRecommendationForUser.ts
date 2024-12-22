@@ -41,7 +41,7 @@ export const createRecommendationForUser = async ({
 		investing_goals,
 		risk_preference,
 		userId,
-		bestModel: latestModel,
+		model: latestModel,
 	});
 
 	return customRecommendation;
