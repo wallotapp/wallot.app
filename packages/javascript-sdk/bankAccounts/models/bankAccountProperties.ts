@@ -13,7 +13,11 @@ import {
 	apiYupHelpers,
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
-import { alpacaAchRelationshipProperties } from '../utils/alpacaAchRelationships.js';
+import {
+	alpacaAchRelationshipProperties,
+	AlpacaAchRelationshipPropertyName,
+	RemoveAlpacaAchRelationshipPrefix,
+} from '../utils/alpacaAchRelationships.js';
 
 export const BankAccountCategoryEnum = getEnum(['default']);
 export type BankAccountCategory = keyof typeof BankAccountCategoryEnum.obj;
@@ -55,3 +59,7 @@ export type BankAccount = yup.InferType<
 >;
 export type CreateBankAccountParams = CreateParams<BankAccount, T>;
 export type UpdateBankAccountParams = UpdateParams<BankAccount>;
+
+export type AlpacaAchRelationship = RemoveAlpacaAchRelationshipPrefix<
+	Pick<BankAccount, AlpacaAchRelationshipPropertyName>
+>;
