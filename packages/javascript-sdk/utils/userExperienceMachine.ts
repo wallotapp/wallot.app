@@ -45,6 +45,7 @@ export type UserCompletedKycAndBankContextUpdates = {
 };
 
 // UserConfirmedOrderContextUpdates
+import { UserPendingAlpacaAccount } from '../users/utils/userPendingAlpacaAccount.js';
 import { AchTransfer } from '../achTransfers/models/achTransferProperties.js';
 import { Invoice } from '../invoices/models/invoiceProperties.js';
 import { License } from '../licenses/models/licenseProperties.js';
@@ -58,7 +59,7 @@ export type UserConfirmedOrderContextUpdates = {
 	achTransferPendingAlpacaQueue: AchTransferPendingAlpacaQueue;
 	assetOrdersPendingAlpacaFill: AssetOrderPendingAlpacaFill[];
 };
-export type UserPendingAlpacaAccount = User; // todo
+// export type UserPendingAlpacaAccount = User; // todo
 export type ProLicense = License; // todo
 export type OrderConfirmedByUser = Order; // todo
 export type BankAccountPendingAlpacaAchRelationship = BankAccount; // todo

@@ -11,9 +11,8 @@ export const userPendingAlpacaAccountProperties = {
 	alpaca_account_id: alpacaAccountProperties.alpaca_account_id
 		.min(1)
 		.nullable(false),
-	alpaca_account_status: alpacaAccountProperties.alpaca_account_status
-		.min(1)
-		.nullable(false),
+	alpaca_account_status:
+		alpacaAccountProperties.alpaca_account_status.nullable(false),
 };
 export const userPendingAlpacaAccountSchema = yup.object(
 	userPendingAlpacaAccountProperties,
