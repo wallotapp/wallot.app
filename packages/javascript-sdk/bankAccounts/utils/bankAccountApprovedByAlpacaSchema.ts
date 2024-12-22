@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import { BankAccount } from '../models/bankAccountProperties.js';
 import { AlpacaAchRelationshipStatusEnum } from './alpacaAchRelationships.js';
 import { YupHelpers } from 'ergonomic';
+import { BankAccountPendingAlpacaAchRelationship } from './bankAccountPendingAlpacaAchRelationshipSchema.js';
 
 export const bankAccountApprovedByAlpacaProperties = {
 	alpaca_ach_relationship_status: YupHelpers.constant(
@@ -15,8 +16,8 @@ export type BankAccountApprovedByAlpacaParams = yup.InferType<
 	typeof bankAccountApprovedByAlpacaSchema
 >;
 
-export type BankAccountApprovedByAlpaca = BankAccount &
-	BankAccountApprovedByAlpacaParams;
+export type BankAccountApprovedByAlpaca =
+	BankAccountPendingAlpacaAchRelationship & BankAccountApprovedByAlpacaParams;
 export const isBankAccountApprovedByAlpaca = (
 	bankAccount: BankAccount,
 ): bankAccount is BankAccountApprovedByAlpaca => {
