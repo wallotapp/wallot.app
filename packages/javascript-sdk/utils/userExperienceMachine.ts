@@ -99,15 +99,16 @@ export type QueuedAlpacaAchTransferHadAnErrorContextUpdates = {
 };
 
 // PendingNewAlpacaOrderBecameFilledContextUpdates
-import { OrderFilledByAlpaca } from '../orders/utils/orderFilledByAlpacaSchema.js';
+import { AssetOrderFilledByAlpaca } from '../assetOrders/utils/assetOrderFilledByAlpacaSchema.js';
+import { AssetOrderRejectedByAlpaca } from '../assetOrders/utils/assetOrderRejectedByAlpacaSchema.js';
 export type PendingNewAlpacaOrderBecameFilledContextUpdates = {
-	orderFilledByAlpaca: OrderFilledByAlpaca;
+	assetOrdersFilledByAlpaca: AssetOrderFilledByAlpaca[];
+	assetOrdersRejectedByAlpaca: AssetOrderRejectedByAlpaca[];
 };
 
 // PendingNewAlpacaOrderHadAnErrorContextUpdates
-import { OrderRejectedByAlpaca } from '../orders/utils/orderRejectedByAlpacaSchema.js';
 export type PendingNewAlpacaOrderHadAnErrorContextUpdates = {
-	orderRejectedByAlpaca: OrderRejectedByAlpaca;
+	assetOrdersRejectedByAlpaca: AssetOrderRejectedByAlpaca[];
 };
 
 // Resolution updates use the same context updates as `UserCompletedKycAndBankContextUpdates`
