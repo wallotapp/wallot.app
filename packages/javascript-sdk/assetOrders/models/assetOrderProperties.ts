@@ -7,12 +7,12 @@ import {
 	YupHelpers,
 	getApiResourceSpec,
 	getEnum,
-	GeneralizedFieldTypeEnum,
 } from 'ergonomic';
 import {
 	apiYupHelpers,
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
+import { alpacaOrderProperties } from '../utils/alpacaOrder.js';
 
 export const AssetOrderCategoryEnum = getEnum(['default']);
 export type AssetOrderCategory = keyof typeof AssetOrderCategoryEnum.obj;
@@ -35,10 +35,6 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
-	alpaca_order_id: yup.string().default(null).nullable().meta({
-		unique_key: true,
-		type: GeneralizedFieldTypeEnum.obj.short_text,
-	}),
 	amount: YupHelpers.usd().defined().min(1),
 	asset: apiYupHelpers
 		.idRef(['asset'])
@@ -56,6 +52,7 @@ const properties = {
 		.meta({ unique_key: false }),
 	recommendations: apiYupHelpers.idRefs(['recommendation']).defined().min(1),
 	side: AssetOrderSideEnum.getDefinedSchema(),
+	...alpacaOrderProperties,
 } as const;
 type U = typeof properties;
 
