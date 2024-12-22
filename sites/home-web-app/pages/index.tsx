@@ -23,6 +23,9 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// Router Query Param Values
 	const { client_token } = query;
 
+	// Router Ready State
+	const routerReady = router.isReady;
+
 	// ==== Constants ==== //
 
 	// Runtime Route ID
@@ -35,21 +38,21 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	};
 
 	// ==== Effects ==== //
-	useEffect(
-		() =>
-			void (async () => {
-				// Wait 1 second
-				await new Promise((resolve) => setTimeout(resolve, 1000));
-				const getStartedRoute = getHomeWebAppRoute({
-					includeOrigin: false,
-					origin: null,
-					queryParams: { client_token },
-					routeStaticId: 'HOME_WEB_APP__/GET_STARTED',
-				});
-				await router.replace(getStartedRoute);
-			})(),
-		[],
-	);
+	useEffect(() => {
+		if (!routerReady) return;
+
+		return void (async () => {
+			// Wait 1 second
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+			const getStartedRoute = getHomeWebAppRoute({
+				includeOrigin: false,
+				origin: null,
+				queryParams: { client_token },
+				routeStaticId: 'HOME_WEB_APP__/GET_STARTED',
+			});
+			await router.replace(getStartedRoute);
+		})();
+	}, [client_token, routerReady]);
 
 	// ==== Render ==== //
 	return (
