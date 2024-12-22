@@ -13,6 +13,7 @@ import {
 	apiYupHelpers,
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
+import { alpacaAchRelationshipProperties } from '../utils/alpacaAchRelationships.js';
 
 export const BankAccountCategoryEnum = getEnum(['default']);
 export type BankAccountCategory = keyof typeof BankAccountCategoryEnum.obj;
@@ -30,10 +31,6 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
-	alpaca_ach_relationship_id: yup.string().default(null).nullable().meta({
-		unique_key: true,
-		type: GeneralizedFieldTypeEnum.obj.short_text,
-	}),
 	category: BankAccountCategoryEnum.getDefinedSchema(),
 	stripe_financial_connections_account_id: yup.string().defined().min(1).meta({
 		unique_key: true,
@@ -44,6 +41,7 @@ const properties = {
 		type: GeneralizedFieldTypeEnum.obj.short_text,
 	}),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: false }),
+	...alpacaAchRelationshipProperties,
 } as const;
 type U = typeof properties;
 

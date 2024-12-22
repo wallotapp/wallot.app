@@ -8,7 +8,9 @@ export const bankAccountPendingAlpacaAchRelationshipProperties = {
 			.min(1)
 			.nullable(false),
 	alpaca_ach_relationship_status:
-		alpacaAchRelationshipProperties.alpaca_account_status.nullable(false),
+		alpacaAchRelationshipProperties.alpaca_ach_relationship_status.nullable(
+			false,
+		),
 };
 export const bankAccountPendingAlpacaAchRelationshipSchema = yup.object(
 	bankAccountPendingAlpacaAchRelationshipProperties,
