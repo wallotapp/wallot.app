@@ -3,6 +3,13 @@ import { AchTransfer } from '../models/achTransferProperties.js';
 import { alpacaAchTransferProperties } from './alpacaAchTransfers.js';
 
 export const achTransferPendingAlpacaQueueProperties = {
+	alpaca_ach_transfer_amount:
+		alpacaAchTransferProperties.alpaca_ach_transfer_amount
+			.defined()
+			.min(1)
+			.nullable(false), // "1234.56" for $1,234.56 (Must be > 0.00)
+	alpaca_ach_transfer_direction:
+		alpacaAchTransferProperties.alpaca_ach_transfer_direction.nullable(false),
 	alpaca_ach_transfer_id: alpacaAchTransferProperties.alpaca_ach_transfer_id
 		.min(1)
 		.nullable(false),
