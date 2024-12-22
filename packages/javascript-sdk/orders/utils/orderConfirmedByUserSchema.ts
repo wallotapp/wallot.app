@@ -21,6 +21,7 @@ export const isOrderConfirmedByUser = (
 		orderConfirmedByUserSchema.validateSync(order);
 		return true;
 	} catch (error) {
+		console.error('Error detected in isOrderConfirmedByUser', error);
 		return false;
 	}
 };

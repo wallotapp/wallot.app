@@ -19,6 +19,7 @@ export const isProLicense = (license: License): license is ProLicense => {
 		proLicenseSchema.validateSync(license);
 		return true;
 	} catch (error) {
+		console.error('Error detected in isProLicense', error);
 		return false;
 	}
 };

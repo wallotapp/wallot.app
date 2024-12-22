@@ -193,6 +193,7 @@ export const isKycUser = (user: User): user is KycUser => {
 		completeUserKycSchema.validateSync(user);
 		return true;
 	} catch (error) {
+		console.error('Error detected in isKycUser', error);
 		return false;
 	}
 };

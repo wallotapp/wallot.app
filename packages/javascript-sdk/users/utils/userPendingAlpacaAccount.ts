@@ -29,6 +29,7 @@ export const isUserPendingAlpacaAccount = (
 		userPendingAlpacaAccountSchema.validateSync(user);
 		return true;
 	} catch (error) {
+		console.error('Error detected in isUserPendingAlpacaAccount', error);
 		return false;
 	}
 };

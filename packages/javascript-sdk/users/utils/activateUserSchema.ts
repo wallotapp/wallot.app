@@ -42,6 +42,7 @@ export const isActivatedUser = (user: User): user is ActivatedUser => {
 		activateUserSchema.validateSync(user);
 		return true;
 	} catch (error) {
+		console.error('Error detected in isActivatedUser', error);
 		return false;
 	}
 };
