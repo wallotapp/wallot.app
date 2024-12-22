@@ -24,14 +24,14 @@ export const createRecommendationForUser = async ({
 	});
 
 	// Select the first MODEL_FAMILY
-	if (bestModelFamilies.length === 0) {
-		throw new Error('No model families found');
-	}
 	const bestModelFamily = bestModelFamilies[0];
+	if (bestModelFamily == null) {
+		throw new Error('No model family found');
+	}
 
 	// Locate latest MODEL in MODEL_FAMILY
 	const latestModel = await locateLatestModelInModelFamily({
-		model_family: bestModelFamily,
+		modelFamily: bestModelFamily,
 	});
 
 	// Generate custom RECOMMENDATION for USER
