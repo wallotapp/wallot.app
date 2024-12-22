@@ -64,12 +64,7 @@ export const completeUserKycProperties = {
 				.default('' as UsaStateCode),
 			street_address: yup
 				.array()
-				.of(
-					alpacaAccountContactProperties.street_address
-						.nullable(false)
-						.min(1)
-						.defined(),
-				)
+				.of(yup.string().nullable(false).min(1).defined())
 				.nullable(false)
 				.min(1)
 				.required()
