@@ -8,6 +8,7 @@ describe('Order', () => {
 			category: 'default',
 			name: 'My Order',
 			bank_account: '',
+			status: 'pending',
 			user: '',
 		};
 		expect(exampleOrder).toEqual<typeof exampleOrder>({
@@ -22,6 +23,7 @@ describe('Order', () => {
 			description: '',
 			name: 'My Order',
 			bank_account: '',
+			status: 'pending',
 			user: '',
 		});
 	});
