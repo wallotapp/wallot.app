@@ -19,6 +19,7 @@ export type InvoiceCategory = keyof typeof InvoiceCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'amount',
 	'bank_account',
 	'license',
 	'stripe_invoice_id',
@@ -30,6 +31,7 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
+	amount: YupHelpers.usd(),
 	bank_account: apiYupHelpers
 		.idRef(['bank_account'])
 		.min(1)
