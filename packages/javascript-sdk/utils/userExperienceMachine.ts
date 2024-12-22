@@ -72,10 +72,10 @@ export type SubmittedAlpacaAccountHadAnErrorContextUpdates = {
 
 // QueuedAlpacaAchRelationshipBecameApprovedContextUpdates
 import { BankAccountApprovedByAlpaca } from '../bankAccounts/utils/bankAccountApprovedByAlpacaSchema.js';
-import { AchTransferPendingAlpacaQueue } from '../achTransfers/utils/achTransferPendingAlpacaQueueSchema.js';
+import { AchTransfer } from '../achTransfers/models/achTransferProperties.js';
 export type QueuedAlpacaAchRelationshipBecameApprovedContextUpdates = {
 	bankAccountApprovedByAlpaca: BankAccountApprovedByAlpaca;
-	achTransferPendingAlpacaQueue: AchTransferPendingAlpacaQueue;
+	achTransfer: AchTransfer;
 };
 
 // QueuedAlpacaAchRelationshipHadAnErrorContextUpdates

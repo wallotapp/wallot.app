@@ -42,22 +42,20 @@ export type AlpacaAchTransferWireFeePaymentMethod =
 
 export const alpacaAchTransferProperties = {
 	alpaca_ach_transfer_account_id: yup.string().nullable().default(null),
-	alpaca_ach_transfer_amount: yup.string().nullable().default(null), // "1234.56" for $1,234.56 (Must be > 0.00)
+	alpaca_ach_transfer_amount: yup.string().defined().min(1).nullable(false), // "1234.56" for $1,234.56 (Must be > 0.00)
 	alpaca_ach_transfer_created_at: yup.string().nullable().default(null),
 	alpaca_ach_transfer_direction:
-		AlpacaAchTransferDirectionEnum.getOptionalSchema().nullable().default(null),
+		AlpacaAchTransferDirectionEnum.getDefinedSchema(),
 	alpaca_ach_transfer_expires_at: yup.string().nullable().default(null),
 	alpaca_ach_transfer_hold_until: yup.string().nullable().default(null),
-	alpaca_ach_transfer_id: yup.string().default(null).nullable().meta({
+	alpaca_ach_transfer_id: yup.string().min(1).defined().meta({
 		unique_key: true,
 		type: GeneralizedFieldTypeEnum.obj.short_text,
 	}),
 	alpaca_ach_transfer_instant_amount: yup.string().nullable().default(null),
 	alpaca_ach_transfer_reason: yup.string().nullable().default(null), // Cause of the status
 	alpaca_ach_transfer_relationship_id: yup.string().nullable().default(null), // The ACH relationship ID only present if type = "ach"
-	alpaca_ach_transfer_status: AlpacaAchTransferStatusEnum.getOptionalSchema()
-		.nullable()
-		.default(null),
+	alpaca_ach_transfer_status: AlpacaAchTransferStatusEnum.getDefinedSchema(),
 	alpaca_ach_transfer_updated_at: yup.string().nullable().default(null),
 
 	// ===  Properties for Wire Transfers === //
