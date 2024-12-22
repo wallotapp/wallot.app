@@ -1,11 +1,14 @@
 import * as yup from 'yup';
 import { getEnum, Keys } from 'ergonomic';
 
+// Agreements
 export const alpacaAccountAgreementsProperties = {
 	agreement: yup.string().nullable().default(null),
 	ip_address: yup.string().nullable().default(null),
 	signed_at: yup.string().nullable().default(null),
 } as const;
+
+// Contact
 export const alpacaAccountContactProperties = {
 	city: yup.string().nullable().default(null), // "San Mateo"
 	email_address: yup.string().nullable().default(null), // "john@example.com"
@@ -14,6 +17,8 @@ export const alpacaAccountContactProperties = {
 	state: yup.string().nullable().default(null), // "CA"
 	street_address: yup.array().of(yup.string()).nullable().default(null), // ["20 N San Mateo Dr"]
 } as const;
+
+// Disclosures
 export const alpacaAccountDisclosuresProperties = {
 	immediate_family_exposed: yup.boolean().nullable().default(null),
 	is_affiliated_exchange_or_finra: yup.boolean().nullable().default(null),
@@ -22,6 +27,8 @@ export const alpacaAccountDisclosuresProperties = {
 	is_discretionary: yup.boolean().nullable().default(null),
 	is_politically_exposed: yup.boolean().nullable().default(null),
 } as const;
+
+// Documents
 export const alpacaAccountDocumentsProperties = {
 	content: yup.string().nullable().default(null),
 	content_data: yup.string().nullable().default(null),
@@ -30,6 +37,8 @@ export const alpacaAccountDocumentsProperties = {
 	id: yup.string().nullable().default(null),
 	mime_type: yup.string().nullable().default(null),
 } as const;
+
+// Identity
 export const alpacaAccountIdentityProperties = {
 	country_of_birth: yup.string().nullable().default(null), // "USA"
 	country_of_citizenship: yup.string().nullable().default(null), // "USA"
@@ -40,6 +49,8 @@ export const alpacaAccountIdentityProperties = {
 	tax_id: yup.string().nullable().default(null), // "123-55-4321"
 	tax_id_type: yup.string().nullable().default(null), // "USA_SSN"
 } as const;
+
+// KYC Results
 export const AlpacaAccountKycResultsSummaryEnum = getEnum(['pass', 'fail']);
 export type AlpacaAccountKycResultsSummary =
 	keyof typeof AlpacaAccountKycResultsSummaryEnum.obj;
@@ -49,9 +60,13 @@ export const alpacaAccountKycResultsProperties = {
 		.nullable()
 		.default(null),
 } as const;
+
+// Trading Configurations
 export const alpacaAccountTradingConfigurationsProperties = {
 	fractional_trading: yup.boolean().nullable().default(null),
 } as const;
+
+// Trusted Contact
 export const alpacaAccountTrustedContactProperties = {
 	email_address: yup.string().nullable().default(null),
 	family_name: yup.string().nullable().default(null),
