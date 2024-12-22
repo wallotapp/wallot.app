@@ -1,3 +1,3 @@
 export * from './achTransferPendingAlpacaQueueSchema.js';
-export * from './achTransferReceivedByAlpacaSchema.js';
+export * from './achTransferWithFundsReceivedByAlpacaSchema.js';
 export * from './achTransferWithRejectedAlpacaAchTransferSchema.js';

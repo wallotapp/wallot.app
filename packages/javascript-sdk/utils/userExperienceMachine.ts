@@ -85,10 +85,10 @@ export type QueuedAlpacaAchRelationshipHadAnErrorContextUpdates = {
 };
 
 // QueuedAlpacaAchTransferBecameCompleteContextUpdates
-import { AchTransferReceivedByAlpaca } from '../achTransfers/utils/achTransferReceivedByAlpacaSchema.js';
+import { AchTransferWithFundsReceivedByAlpaca } from '../achTransfers/utils/achTransferWithFundsReceivedByAlpacaSchema.js';
 import { AssetOrderPendingAlpacaFill } from '../assetOrders/utils/assetOrderPendingAlpacaFillSchema.js';
 export type QueuedAlpacaAchTransferBecameCompleteContextUpdates = {
-	achTransferReceivedByAlpaca: AchTransferReceivedByAlpaca;
+	achTransferWithFundsReceivedByAlpaca: AchTransferWithFundsReceivedByAlpaca;
 	assetOrdersPendingAlpacaFill: AssetOrderPendingAlpacaFill[];
 };
 
