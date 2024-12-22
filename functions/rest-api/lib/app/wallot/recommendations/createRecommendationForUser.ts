@@ -16,10 +16,6 @@ export const createRecommendationForUser = async ({
 }): Promise<Recommendation> => {
 	// Locate best MODEL_FAMILYs for PARAMETERs
 	const bestModelFamilies = await locateBestModelFamiliesForParameterSet({
-		age_range,
-		capital_level,
-		investing_goals,
-		risk_preference,
 		compatibleParameters,
 	});
 
