@@ -49,6 +49,21 @@ export const alpacaAccountTrustedContactProperties = {
 	given_name: yup.string().nullable().default(null),
 } as const;
 
+export const AlpacaAccountStatusEnum = getEnum([
+	'INACTIVE', // Account not set to trade given asset.
+	'ONBOARDING', // An application is expected for this user, but has not been submitted yet.
+	'SUBMITTED', // The application has been submitted and in process.
+	'SUBMISSION_FAILED', // Used to display if failure on submission
+	'ACTION_REQUIRED', // The application requires manual action.
+	'ACCOUNT_UPDATED', // Used to display when Account has been modified by user
+	'APPROVAL_PENDING', // Initial value. The application approval process is in process.
+	'APPROVED', // The account application has been approved, and waiting to be ACTIVE
+	'REJECTED', // The account application is rejected for some reason
+	'ACTIVE', // The account is fully active. Trading and funding are processed under this status.
+	'ACCOUNT_CLOSED', // The account is closed.
+]);
+export type AlpacaAccountStatus = keyof typeof AlpacaAccountStatusEnum.obj;
+
 export const alpacaAccountProperties = {
 	alpaca_account_account_number: yup.string().nullable().default(null), // "689760856"
 	alpaca_account_agreements: yup
