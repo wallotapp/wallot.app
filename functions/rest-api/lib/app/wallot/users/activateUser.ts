@@ -81,10 +81,10 @@ export const activateUser = async (
 	// Create ASSET_ORDERs using:
 	// 	- the symbols from RECOMMENDATION
 	// 	- recent ASSET_PRICEs
-	const assetOrders = await createAssetOrdersFromRecommendation(
+	const assetOrders = await createAssetOrdersFromRecommendation({
+		orderId: orderDocId,
 		recommendation,
-		{ orderId: orderDocId },
-	);
+	});
 	assetOrders.forEach((assetOrder) => {
 		const assetOrderDocId = assetOrder._id;
 		batch.set(

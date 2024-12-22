@@ -7,40 +7,59 @@ import {
 } from '@wallot/js';
 import { db } from '../../../services.js';
 
-export const createAssetOrdersFromRecommendation = async (
-	recommendation: Recommendation,
-	{ orderId }: { orderId: string },
-): Promise<AssetOrder[]> => {
+export const createAssetOrdersFromRecommendation = async ({
+	orderId,
+	recommendation,
+}: {
+	orderId: string;
+	recommendation: Recommendation;
+}): Promise<AssetOrder[]> => {
 	const { best_orders } = recommendation;
-	const order = best_orders[0];
-	if (!order) {
-		throw new Error('No best order found');
+
+	if (!best_orders || best_orders.length === 0) {
+		throw new Error('No best orders found');
 	}
-	const { amount, side, symbol } = order;
-	const assetCollectionId = assetsApi.collectionId;
-	const assetQuerySnapshot = await db
-		.collection(assetCollectionId)
-		.where('symbol', '==', symbol)
-		.get();
-	if (assetQuerySnapshot.empty) {
-		throw new Error('Asset not found');
-	}
-	const assetDoc = assetQuerySnapshot.docs[0];
-	if (!assetDoc) {
-		throw new Error('Asset not found');
-	}
-	const amountUsdCents = parseInt(amount) * 100;
-	const params: CreateAssetOrderParams = {
-		alpaca_order_side: side,
-		amount: amountUsdCents,
-		asset: assetDoc.id,
-		order: orderId,
-		category: 'default',
-		name: '',
-		recommendations: [recommendation._id],
-	};
-	const assetOrdersMappedFromRecommendationBestChoices: AssetOrder[] = [
-		assetOrdersApi.mergeCreateParams({ createParams: params }),
-	];
+
+	const assetOrdersPromises = best_orders.map(async (order) => {
+		const { amount, side, symbol } = order;
+
+		// Fetch asset information from Firestore
+		const assetCollectionId = assetsApi.collectionId;
+		const assetQuerySnapshot = await db
+			.collection(assetCollectionId)
+			.where('symbol', '==', symbol)
+			.get();
+
+		if (assetQuerySnapshot.empty) {
+			throw new Error(`Asset not found for symbol: ${symbol}`);
+		}
+
+		const assetDoc = assetQuerySnapshot.docs[0];
+		if (!assetDoc) {
+			throw new Error(`Asset not found for symbol: ${symbol}`);
+		}
+
+		const amountUsdCents = parseInt(amount) * 100;
+
+		// Construct parameters for creating the asset order
+		const params: CreateAssetOrderParams = {
+			alpaca_order_side: side,
+			amount: amountUsdCents,
+			asset: assetDoc.id,
+			category: 'default',
+			name: '',
+			order: orderId,
+			recommendations: [recommendation._id],
+		};
+
+		// Merge the params to create an asset order
+		return assetOrdersApi.mergeCreateParams({ createParams: params });
+	});
+
+	// Wait for all promises to resolve
+	const assetOrdersMappedFromRecommendationBestChoices = await Promise.all(
+		assetOrdersPromises,
+	);
+
 	return assetOrdersMappedFromRecommendationBestChoices;
 };
