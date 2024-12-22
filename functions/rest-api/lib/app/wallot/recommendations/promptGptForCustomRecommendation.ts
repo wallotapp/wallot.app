@@ -5,14 +5,15 @@ import {
 	ActivateUserParams,
 	CreateRecommendationParams,
 	Model,
-	modelsApi,
+	investingGoalLabelDictionary,
 	OpenAiModel,
 	Recommendation,
 	recommendationsApi,
 	riskPreferenceLabelDictionary,
+	openAiModelsApi,
 } from '@wallot/js';
 import { variables } from '../../../variables.js';
-import { db, openAI } from '../../../services.js';
+import { db, log, openAI } from '../../../services.js';
 
 const zodResponseFormat = zodResponseFormatFromOpenAI as unknown as (
 	arg1: unknown,
@@ -27,7 +28,7 @@ const gptRecommendationSchema = z.object({
 			rationale: z.string(),
 		}),
 	),
-	name: z.string(),
+	title: z.string(),
 	description: z.string(),
 });
 type GptRecommendation = z.infer<typeof gptRecommendationSchema>;
@@ -46,7 +47,7 @@ export const promptGptForCustomRecommendation = async ({
 	// Fetch the OPEN_AI_MODEL associated with the MODEL
 	const { open_ai_model } = model;
 	const openAiModelDocRef = db
-		.collection(modelsApi.collectionId)
+		.collection(openAiModelsApi.collectionId)
 		.doc(open_ai_model);
 	const openAiModel = (await openAiModelDocRef.get()).data() as OpenAiModel;
 
@@ -76,7 +77,9 @@ export const promptGptForCustomRecommendation = async ({
 	
 Here is a bit of information about me:
 1. I am in the ${age_range} age range.
-2. My investing goals include: ${investing_goals.join(', ')}.
+2. My investing goals include: ${investing_goals
+		.map((goal) => investingGoalLabelDictionary[goal])
+		.join(', ')}.
 3. I am investing ${capitalFormatted} of capital.
 4. My risk tolerance is ${risk_preference}, i.e. I prefer a ${
 		riskPreferenceLabelDictionary[risk_preference]
@@ -94,13 +97,13 @@ For example, if you were to recommend allocating a $1,000 budget toward investin
 
 \`\`\`json
 {
+	"title": "$1,000 investment in a portfolio of technology stocks",
+	"description": "After careful analysis, we recommend investing in Microsoft (MSFT), Apple (AAPL), and Amazon (AMZN), a diversified portfolio of technology stocks. This portfolio is designed to provide long-term growth potential while minimizing risk. These stocks have been selected based on their strong fundamentals, growth potential, and market leadership.",
 	"best_investments": [
 		{ "symbol": "MSFT", "amount": "500", "rationale": "Strong revenue growth from business- and government-focused cloud services and software products. The company is also an industry leader in Artificial Intelligence (AI) research and development." },
 		{ "symbol": "AAPL", "amount": "100", "rationale": "Consistent year-over-year revenue growth from iPhones, iPads, and add-on services." },
 		{ "symbol": "AMZN", "amount": "400", "rationale": "Continued revenue expansion through e-commerce, cloud (AWS), and streaming services." },
 	],
-	"description": "After careful analysis, we recommend investing in Microsoft (MSFT), Apple (AAPL), and Amazon (AMZN), a diversified portfolio of technology stocks. This portfolio is designed to provide long-term growth potential while minimizing risk. These stocks have been selected based on their strong fundamentals, growth potential, and market leadership.",
-	"name": "$1,000 investment in a portfolio of technology stocks",
 }
 \`\`\``;
 
@@ -112,6 +115,13 @@ For example, if you were to recommend allocating a $1,000 budget toward investin
 			gptRecommendationSchema,
 			'investment_recommendation',
 		),
+	});
+
+	// Log the GPT prompt and completion
+	log({
+		prompt,
+		completion,
+		userId,
 	});
 
 	// Extract the parsed data from the response
@@ -130,7 +140,7 @@ For example, if you were to recommend allocating a $1,000 budget toward investin
 		})),
 		category: 'default',
 		description: gptRecommendation.description,
-		name: gptRecommendation.name,
+		name: gptRecommendation.title,
 		model: model._id,
 		news_reports: [],
 		open_ai_api_request_ids: [completion.id],

@@ -8,6 +8,7 @@ import {
 import { SecretData } from './SecretDataTypes.js';
 import { getAlpacaBrokerApiClient } from './alpaca/index.js';
 import { getAlphaVantageClient } from './alphaVantage/index.js';
+import { log } from './log.js';
 
 export const getServices = (secrets: SecretData) => ({
 	alpaca: { broker: getAlpacaBrokerApiClient(secrets) },
@@ -17,6 +18,7 @@ export const getServices = (secrets: SecretData) => ({
 		secrets.SECRET_CRED_FIREBASE_PROJECT_STORAGE_BUCKET_NAME,
 	),
 	db: getFirestoreDB(secrets),
+	log: log(secrets.SECRET_CRED_SERVER_PROTOCOL),
 	openAI: new OpenAI({
 		apiKey: secrets.SECRET_CRED_OPENAI_API_KEY,
 	}),
