@@ -57,10 +57,10 @@ export type UserConfirmedOrderContextUpdates = {
 };
 
 // SubmittedAlpacaAccountBecameActiveContextUpdates
-import { UserWithActiveAlpacaAccount } from '../users/utils/userWithActiveAlpacaAccountSchema.js';
+import { UserActivatedByAlpaca } from '../users/utils/userActivatedByAlpacaSchema.js';
 import { BankAccountPendingAlpacaAchRelationship } from '../bankAccounts/utils/bankAccountPendingAlpacaAchRelationshipSchema.js';
 export type SubmittedAlpacaAccountBecameActiveContextUpdates = {
-	userWithActiveAlpacaAccount: UserWithActiveAlpacaAccount;
+	userActivatedByAlpaca: UserActivatedByAlpaca;
 	bankAccountPendingAlpacaAchRelationship: BankAccountPendingAlpacaAchRelationship;
 };
 
