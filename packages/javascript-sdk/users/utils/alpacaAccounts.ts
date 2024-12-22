@@ -76,7 +76,7 @@ export const AlpacaAccountKycResultsSummaryEnum = getEnum(['pass', 'fail']);
 export type AlpacaAccountKycResultsSummary =
 	keyof typeof AlpacaAccountKycResultsSummaryEnum.obj;
 export const alpacaAccountKycResultsProperties = {
-	additional_information: yup.string().nullable().default(null),
+	additional_information: yup.string().optional().nullable().default(null),
 	summary: AlpacaAccountKycResultsSummaryEnum.getOptionalSchema()
 		.nullable()
 		.default(null),
@@ -131,7 +131,10 @@ export const alpacaAccountProperties = {
 		.object(alpacaAccountIdentityProperties)
 		.nullable()
 		.default(null),
-	alpaca_account_kyc_results: yup.object().nullable().default(null),
+	alpaca_account_kyc_results: yup
+		.object(alpacaAccountKycResultsProperties)
+		.nullable()
+		.default(null),
 	// { "summary": "pass" } or { "summary": "fail", "additional_information": "..." }
 	alpaca_account_last_equity: yup.number().nullable().default(null), // "0" or "1236.31"
 	alpaca_account_minor_identity: yup.string().nullable().default(null), // `null`
