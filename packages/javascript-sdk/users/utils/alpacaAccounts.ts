@@ -40,6 +40,15 @@ export const alpacaAccountIdentityProperties = {
 	tax_id: yup.string().nullable().default(null), // "123-55-4321"
 	tax_id_type: yup.string().nullable().default(null), // "USA_SSN"
 } as const;
+export const AlpacaAccountKycResultsSummaryEnum = getEnum(['pass', 'fail']);
+export type AlpacaAccountKycResultsSummary =
+	keyof typeof AlpacaAccountKycResultsSummaryEnum.obj;
+export const alpacaAccountKycResultsProperties = {
+	additional_information: yup.string().nullable().default(null),
+	summary: AlpacaAccountKycResultsSummaryEnum.getOptionalSchema()
+		.nullable()
+		.default(null),
+} as const;
 export const alpacaAccountTradingConfigurationsProperties = {
 	fractional_trading: yup.boolean().nullable().default(null),
 } as const;
@@ -101,6 +110,8 @@ export const alpacaAccountProperties = {
 		.object(alpacaAccountIdentityProperties)
 		.nullable()
 		.default(null),
+	alpaca_account_kyc_results: yup.object().nullable().default(null),
+	// { "summary": "pass" } or { "summary": "fail", "additional_information": "..." }
 	alpaca_account_last_equity: yup.number().nullable().default(null), // "0" or "1236.31"
 	alpaca_account_minor_identity: yup.string().nullable().default(null), // `null`
 	alpaca_account_status: yup.string().nullable().default(null), // "SUBMITTED" or "ACTIVE"
