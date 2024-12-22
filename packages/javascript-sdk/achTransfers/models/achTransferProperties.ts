@@ -12,12 +12,19 @@ import {
 	apiYupHelpers,
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
+import {
+	AlpacaAchTransferPropertyNameEnum,
+	alpacaAchTransferProperties,
+	RemoveAlpacaAchTransferPrefix,
+	AlpacaAchTransferPropertyName,
+} from '../utils/alpacaAchTransfers.js';
 
 export const AchTransferCategoryEnum = getEnum(['incoming', 'outgoing']);
 export type AchTransferCategory = keyof typeof AchTransferCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	...AlpacaAchTransferPropertyNameEnum.arr,
 	'bank_account',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
@@ -32,6 +39,7 @@ const properties = {
 		.min(1)
 		.meta({ unique_key: false }),
 	category: AchTransferCategoryEnum.getDefinedSchema(),
+	...alpacaAchTransferProperties,
 } as const;
 type U = typeof properties;
 
@@ -45,3 +53,7 @@ export type AchTransfer = yup.InferType<
 >;
 export type CreateAchTransferParams = CreateParams<AchTransfer, T>;
 export type UpdateAchTransferParams = UpdateParams<AchTransfer>;
+
+export type AlpacaAchTransfer = RemoveAlpacaAchTransferPrefix<
+	Pick<AchTransfer, AlpacaAchTransferPropertyName>
+>;
