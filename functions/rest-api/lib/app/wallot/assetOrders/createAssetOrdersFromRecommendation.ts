@@ -14,13 +14,13 @@ export const createAssetOrdersFromRecommendation = async ({
 	orderId: string;
 	recommendation: Recommendation;
 }): Promise<AssetOrder[]> => {
-	const { best_orders } = recommendation;
+	const { best_investments } = recommendation;
 
-	if (!best_orders || best_orders.length === 0) {
+	if (!best_investments || best_investments.length === 0) {
 		throw new Error('No best orders found');
 	}
 
-	const assetOrdersPromises = best_orders.map(async (order) => {
+	const assetOrdersPromises = best_investments.map(async (order) => {
 		const { amount, side, symbol } = order;
 
 		// Fetch asset information from Firestore

@@ -20,7 +20,7 @@ export type RecommendationCategory =
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
-	'best_orders',
+	'best_investments',
 	'model',
 	'news_reports',
 	'open_ai_api_request_ids',
@@ -33,11 +33,12 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
-	best_orders: YupHelpers.array(
+	best_investments: YupHelpers.array(
 		yup.object({
+			amount: yup.string().defined(), // String number of dollars, e.g. '1000' for $1,000.00
+			rationale: yup.string().defined(), // Reasoning behind the recommendation
 			symbol: yup.string().defined(),
 			side: assetOrdersApi.properties.alpaca_order_side.defined(),
-			amount: yup.string().defined(), // String number of dollars, e.g. '1000' for $1,000.00
 		}),
 	)
 		.defined()

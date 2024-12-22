@@ -18,7 +18,7 @@ const zodResponseFormat = zodResponseFormatFromOpenAI as unknown as (
 ) => undefined;
 
 const gptRecommendationSchema = z.object({
-	best_orders: z.array(
+	best_investments: z.array(
 		z.object({
 			symbol: z.string(),
 			amount: z.string(),
@@ -84,7 +84,7 @@ For example, if you were to recommend allocating a $1,000 budget toward investin
 
 \`\`\`json
 {
-	"best_orders": [
+	"best_investments": [
 		{ "symbol": "MSFT", "amount": "500", "rationale": "Strong revenue growth from business- and government-focused cloud services and software products. The company is also an industry leader in Artificial Intelligence (AI) research and development." },
 		{ "symbol": "AAPL", "amount": "100", "rationale": "Consistent year-over-year revenue growth from iPhones, iPads, and add-on services." },
 		{ "symbol": "AMZN", "amount": "400", "rationale": "Continued revenue expansion through e-commerce, cloud (AWS), and streaming services." },
@@ -112,7 +112,7 @@ For example, if you were to recommend allocating a $1,000 budget toward investin
 	}
 
 	const recommendationParams: CreateRecommendationParams = {
-		best_orders: gptRecommendation.best_orders.map((order) => ({
+		best_investments: gptRecommendation.best_investments.map((order) => ({
 			...order,
 			side: 'buy',
 		})),
