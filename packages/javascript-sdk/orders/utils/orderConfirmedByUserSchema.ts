@@ -1,9 +1,9 @@
 import * as yup from 'yup';
 import { YupHelpers } from 'ergonomic';
-import { Order } from '../models/orderProperties.js';
+import { Order, OrderStatusEnum } from '../models/orderProperties.js';
 
 export const orderConfirmedByUserProperties = {
-	status: YupHelpers.constant('confirmed_by_user'),
+	status: YupHelpers.constant(OrderStatusEnum.obj.confirmed_by_user),
 };
 export const orderConfirmedByUserSchema = yup.object(
 	orderConfirmedByUserProperties,
