@@ -22,7 +22,9 @@
 		"firebase-functions": "^4.4.1",
 		"googleapis": "^134.0.0",
 		"google-auth-library": "^9.15.0",
-		"stripe": "^14.10.0"
+		"openai": "^4.77.0",
+		"stripe": "^14.10.0",
+		"zod": "^3.24.1"
 	},
 	"devDependencies": {
 		"@types/google-libphonenumber": "^7.4.23",
