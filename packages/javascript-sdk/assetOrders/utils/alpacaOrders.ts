@@ -120,6 +120,9 @@ export const alpacaOrderProperties = {
 	alpaca_order_side: AlpacaOrderSideEnum.getOptionalSchema()
 		.nullable()
 		.default(null),
+	alpaca_order_status: AlpacaOrderStatusEnum.getOptionalSchema()
+		.nullable()
+		.default(null),
 	alpaca_order_stop_price: yup.string().nullable().default(null),
 	alpaca_order_submitted_at: yup.string().nullable().default(null),
 	alpaca_order_symbol: yup.string().nullable().default(null),
