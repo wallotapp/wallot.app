@@ -41,6 +41,7 @@ export type AlpacaAchTransferWireFeePaymentMethod =
 	keyof typeof AlpacaAchTransferWireFeePaymentMethodEnum.obj;
 
 export const alpacaAchTransferProperties = {
+	alpaca_ach_transfer_account_id: yup.string().nullable().default(null),
 	alpaca_ach_transfer_amount: yup.string().nullable().default(null), // "1234.56" for $1,234.56 (Must be > 0.00)
 	alpaca_ach_transfer_created_at: yup.string().nullable().default(null),
 	alpaca_ach_transfer_direction:
@@ -57,7 +58,6 @@ export const alpacaAchTransferProperties = {
 	alpaca_ach_transfer_status: AlpacaAchTransferStatusEnum.getOptionalSchema()
 		.nullable()
 		.default(null),
-	alpaca_ach_transfer_account_id: yup.string().nullable().default(null),
 	alpaca_ach_transfer_updated_at: yup.string().nullable().default(null),
 
 	// ===  Properties for Wire Transfers === //
