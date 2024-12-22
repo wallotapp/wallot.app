@@ -71,17 +71,17 @@ export type SubmittedAlpacaAccountHadAnErrorContextUpdates = {
 };
 
 // QueuedAlpacaAchRelationshipBecameApprovedContextUpdates
-import { BankAccountWithApprovedAlpacaAchRelationship } from '../bankAccounts/utils/bankAccountWithApprovedAlpacaAchRelationshipSchema.js';
+import { BankAccountApprovedByAlpaca } from '../bankAccounts/utils/bankAccountApprovedByAlpacaSchema.js';
 import { AchTransferPendingAlpacaQueue } from '../achTransfers/utils/achTransferPendingAlpacaQueueSchema.js';
 export type QueuedAlpacaAchRelationshipBecameApprovedContextUpdates = {
-	bankAccountWithApprovedAlpacaAchRelationship: BankAccountWithApprovedAlpacaAchRelationship;
+	bankAccountApprovedByAlpaca: BankAccountApprovedByAlpaca;
 	achTransferPendingAlpacaQueue: AchTransferPendingAlpacaQueue;
 };
 
 // QueuedAlpacaAchRelationshipHadAnErrorContextUpdates
-import { BankAccountWithRejectedAlpacaAchRelationship } from '../bankAccounts/utils/bankAccountWithRejectedAlpacaAchRelationshipSchema.js';
+import { BankAccountRejectedByAlpaca } from '../bankAccounts/utils/bankAccountRejectedByAlpacaSchema.js';
 export type QueuedAlpacaAchRelationshipHadAnErrorContextUpdates = {
-	bankAccountWithRejectedAlpacaAchRelationship: BankAccountWithRejectedAlpacaAchRelationship;
+	bankAccountRejectedByAlpaca: BankAccountRejectedByAlpaca;
 };
 
 // QueuedAlpacaAchTransferBecameCompleteContextUpdates
@@ -93,9 +93,9 @@ export type QueuedAlpacaAchTransferBecameCompleteContextUpdates = {
 };
 
 // QueuedAlpacaAchTransferHadAnErrorContextUpdates
-import { AchTransferWithRejectedAlpacaAchTransfer } from '../achTransfers/utils/achTransferWithRejectedAlpacaAchTransferSchema.js';
+import { AchTransferRejectedByAlpaca } from '../achTransfers/utils/achTransferRejectedByAlpacaSchema.js';
 export type QueuedAlpacaAchTransferHadAnErrorContextUpdates = {
-	achTransferWithRejectedAlpacaAchTransfer: AchTransferWithRejectedAlpacaAchTransfer;
+	achTransferRejectedByAlpaca: AchTransferRejectedByAlpaca;
 };
 
 // PendingNewAlpacaOrderBecameFilledContextUpdates
@@ -105,9 +105,9 @@ export type PendingNewAlpacaOrderBecameFilledContextUpdates = {
 };
 
 // PendingNewAlpacaOrderHadAnErrorContextUpdates
-import { OrderWithRejectedAlpacaOrder } from '../orders/utils/orderWithRejectedAlpacaOrderSchema.js';
+import { OrderRejectedByAlpaca } from '../orders/utils/orderRejectedByAlpacaSchema.js';
 export type PendingNewAlpacaOrderHadAnErrorContextUpdates = {
-	orderWithRejectedAlpacaOrder: OrderWithRejectedAlpacaOrder;
+	orderRejectedByAlpaca: OrderRejectedByAlpaca;
 };
 
 // Resolution updates use the same context updates as `UserCompletedKycAndBankContextUpdates`

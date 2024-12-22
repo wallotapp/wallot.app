@@ -1,3 +1,3 @@
+export * from './bankAccountApprovedByAlpacaSchema.js';
 export * from './bankAccountPendingAlpacaAchRelationshipSchema.js';
-export * from './bankAccountWithApprovedAlpacaAchRelationshipSchema.js';
-export * from './bankAccountWithRejectedAlpacaAchRelationshipSchema.js';
+export * from './bankAccountRejectedByAlpacaSchema.js';
