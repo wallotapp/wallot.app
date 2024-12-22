@@ -30,18 +30,17 @@ const gptRecommendationSchema = z.object({
 });
 type GptRecommendation = z.infer<typeof gptRecommendationSchema>;
 
-export type PromptGptForCustomRecommendationParams = unknown;
-export const promptGptForCustomRecommendation = async (
-	params: PromptGptForCustomRecommendationParams,
-): Promise<Recommendation> => {
-	const {
-		age_range,
-		investing_goals,
-		risk_preference,
-		capital_level,
-		bestModel,
-		userId,
-	} = params as ActivateUserParams & { userId: string; bestModel: Model };
+export const promptGptForCustomRecommendation = async ({
+	age_range,
+	investing_goals,
+	risk_preference,
+	capital_level,
+	bestModel,
+	userId,
+}: ActivateUserParams & {
+	userId: string;
+	bestModel: Model;
+}): Promise<Recommendation> => {
 	const capitalFormatted = getCurrencyUsdStringFromCents(Number(capital_level));
 	const fullStockTradingInstruction = `- You are allowed to choose any stocks trading on the NASDAQ or NYSE.`;
 	const limitedStockTradingInstruction = `- You are allowed to choose any stocks from the following list of fourteen options:
