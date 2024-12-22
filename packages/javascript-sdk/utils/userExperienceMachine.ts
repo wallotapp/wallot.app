@@ -46,25 +46,15 @@ export type UserCompletedKycAndBankContextUpdates = {
 
 // UserConfirmedOrderContextUpdates
 import { UserPendingAlpacaAccount } from '../users/utils/userPendingAlpacaAccount.js';
-import { AchTransfer } from '../achTransfers/models/achTransferProperties.js';
+import { ProLicense } from '../licenses/utils/proLicenseSchema.js';
 import { Invoice } from '../invoices/models/invoiceProperties.js';
-import { License } from '../licenses/models/licenseProperties.js';
-import { User } from '../users/models/userProperties.js';
+import { OrderConfirmedByUser } from '../orders/utils/orderConfirmedByUserSchema.js';
 export type UserConfirmedOrderContextUpdates = {
 	userPendingAlpacaAccount: UserPendingAlpacaAccount;
 	proLicense: ProLicense;
 	invoice: Invoice;
 	orderConfirmedByUser: OrderConfirmedByUser;
-	bankAccountPendingAlpacaAchRelationship: BankAccountPendingAlpacaAchRelationship;
-	achTransferPendingAlpacaQueue: AchTransferPendingAlpacaQueue;
-	assetOrdersPendingAlpacaFill: AssetOrderPendingAlpacaFill[];
 };
-// export type UserPendingAlpacaAccount = User; // todo
-export type ProLicense = License; // todo
-export type OrderConfirmedByUser = Order; // todo
-export type BankAccountPendingAlpacaAchRelationship = BankAccount; // todo
-export type AchTransferPendingAlpacaQueue = AchTransfer; // todo
-export type AssetOrderPendingAlpacaFill = AssetOrder; // todo
 
 // SubmittedAlpacaAccountBecameActiveContextUpdates
 export type SubmittedAlpacaAccountBecameActiveContextUpdates = {
@@ -351,3 +341,6 @@ export const userExperienceMachine = createMachine<
 }).withConfig({
 	guards: {},
 });
+
+import { User } from '../users/index.js';
+import { AchTransfer } from '../achTransfers/index.js';
