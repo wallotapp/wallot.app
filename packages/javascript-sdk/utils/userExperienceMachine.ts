@@ -59,6 +59,7 @@ export type UserConfirmedOrderContextUpdates = {
 // SubmittedAlpacaAccountBecameActiveContextUpdates
 export type SubmittedAlpacaAccountBecameActiveContextUpdates = {
 	userWithActiveAlpacaAccount: UserWithActiveAlpacaAccount;
+	bankAccountPendingAlpacaAchRelationship: BankAccountPendingAlpacaAchRelationship;
 };
 export type UserWithActiveAlpacaAccount = User; // todo
 
@@ -71,6 +72,7 @@ export type UserWithRejectedAlpacaAccount = User; // todo
 // QueuedAlpacaAchRelationshipBecameApprovedContextUpdates
 export type QueuedAlpacaAchRelationshipBecameApprovedContextUpdates = {
 	bankAccountWithApprovedAlpacaAchRelationship: BankAccountWithApprovedAlpacaAchRelationship;
+	achTransferPendingAlpacaQueue: AchTransferPendingAlpacaQueue;
 };
 export type BankAccountWithApprovedAlpacaAchRelationship = BankAccount; // todo
 
@@ -82,9 +84,10 @@ export type BankAccountWithRejectedAlpacaAchRelationship = BankAccount; // todo
 
 // QueuedAlpacaAchTransferBecameCompleteContextUpdates
 export type QueuedAlpacaAchTransferBecameCompleteContextUpdates = {
-	achTransferWithCompleteAlpacaAchTransfer: AchTransferWithCompleteAlpacaAchTransfer;
+	achTransferReceivedByAlpaca: AchTransferReceivedByAlpaca;
+	assetOrdersPendingAlpacaFill: AssetOrderPendingAlpacaFill[];
 };
-export type AchTransferWithCompleteAlpacaAchTransfer = AchTransfer; // todo
+export type AchTransferReceivedByAlpaca = AchTransfer; // todo
 
 // QueuedAlpacaAchTransferHadAnErrorContextUpdates
 export type QueuedAlpacaAchTransferHadAnErrorContextUpdates = {
@@ -94,9 +97,9 @@ export type AchTransferWithRejectedAlpacaAchTransfer = AchTransfer; // todo
 
 // PendingNewAlpacaOrderBecameFilledContextUpdates
 export type PendingNewAlpacaOrderBecameFilledContextUpdates = {
-	orderWithFilledAlpacaOrder: OrderWithFilledAlpacaOrder;
+	orderFilledByAlpaca: OrderFilledByAlpaca;
 };
-export type OrderWithFilledAlpacaOrder = Order; // todo
+export type OrderFilledByAlpaca = Order; // todo
 
 // PendingNewAlpacaOrderHadAnErrorContextUpdates
 export type PendingNewAlpacaOrderHadAnErrorContextUpdates = {
