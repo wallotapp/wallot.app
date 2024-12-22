@@ -38,5 +38,8 @@
 			"http": "http://localhost:7151",
 			"https": "https://app-wallot-support-staging.web.app"
 		}
+	},
+	"SERVER_VAR_FEATURE_FLAGS": {
+		"ENABLE_ALL_US_EQUITIES": false
 	}
 }
