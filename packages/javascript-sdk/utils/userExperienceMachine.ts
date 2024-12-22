@@ -45,7 +45,7 @@ export type UserCompletedKycAndBankContextUpdates = {
 };
 
 // UserConfirmedOrderContextUpdates
-import { UserPendingAlpacaAccount } from '../users/utils/userPendingAlpacaAccount.js';
+import { UserPendingAlpacaAccount } from '../users/utils/userPendingAlpacaAccountSchema.js';
 import { ProLicense } from '../licenses/utils/proLicenseSchema.js';
 import { Invoice } from '../invoices/models/invoiceProperties.js';
 import { OrderConfirmedByUser } from '../orders/utils/orderConfirmedByUserSchema.js';
@@ -61,51 +61,43 @@ export type SubmittedAlpacaAccountBecameActiveContextUpdates = {
 	userWithActiveAlpacaAccount: UserWithActiveAlpacaAccount;
 	bankAccountPendingAlpacaAchRelationship: BankAccountPendingAlpacaAchRelationship;
 };
-export type UserWithActiveAlpacaAccount = User; // todo
 
 // SubmittedAlpacaAccountHadAnErrorContextUpdates
 export type SubmittedAlpacaAccountHadAnErrorContextUpdates = {
 	userWithRejectedAlpacaAccount: UserWithRejectedAlpacaAccount;
 };
-export type UserWithRejectedAlpacaAccount = User; // todo
 
 // QueuedAlpacaAchRelationshipBecameApprovedContextUpdates
 export type QueuedAlpacaAchRelationshipBecameApprovedContextUpdates = {
 	bankAccountWithApprovedAlpacaAchRelationship: BankAccountWithApprovedAlpacaAchRelationship;
 	achTransferPendingAlpacaQueue: AchTransferPendingAlpacaQueue;
 };
-export type BankAccountWithApprovedAlpacaAchRelationship = BankAccount; // todo
 
 // QueuedAlpacaAchRelationshipHadAnErrorContextUpdates
 export type QueuedAlpacaAchRelationshipHadAnErrorContextUpdates = {
 	bankAccountWithRejectedAlpacaAchRelationship: BankAccountWithRejectedAlpacaAchRelationship;
 };
-export type BankAccountWithRejectedAlpacaAchRelationship = BankAccount; // todo
 
 // QueuedAlpacaAchTransferBecameCompleteContextUpdates
 export type QueuedAlpacaAchTransferBecameCompleteContextUpdates = {
 	achTransferReceivedByAlpaca: AchTransferReceivedByAlpaca;
 	assetOrdersPendingAlpacaFill: AssetOrderPendingAlpacaFill[];
 };
-export type AchTransferReceivedByAlpaca = AchTransfer; // todo
 
 // QueuedAlpacaAchTransferHadAnErrorContextUpdates
 export type QueuedAlpacaAchTransferHadAnErrorContextUpdates = {
 	achTransferWithRejectedAlpacaAchTransfer: AchTransferWithRejectedAlpacaAchTransfer;
 };
-export type AchTransferWithRejectedAlpacaAchTransfer = AchTransfer; // todo
 
 // PendingNewAlpacaOrderBecameFilledContextUpdates
 export type PendingNewAlpacaOrderBecameFilledContextUpdates = {
 	orderFilledByAlpaca: OrderFilledByAlpaca;
 };
-export type OrderFilledByAlpaca = Order; // todo
 
 // PendingNewAlpacaOrderHadAnErrorContextUpdates
 export type PendingNewAlpacaOrderHadAnErrorContextUpdates = {
 	orderWithRejectedAlpacaOrder: OrderWithRejectedAlpacaOrder;
 };
-export type OrderWithRejectedAlpacaOrder = Order; // todo
 
 // Resolution updates use the same context updates as `UserCompletedKycAndBankContextUpdates`
 export type UserResolvedErrorWithSubmittedAlpacaAccountContextUpdates =
@@ -344,6 +336,3 @@ export const userExperienceMachine = createMachine<
 }).withConfig({
 	guards: {},
 });
-
-import { User } from '../users/index.js';
-import { AchTransfer } from '../achTransfers/index.js';
