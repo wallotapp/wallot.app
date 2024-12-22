@@ -142,6 +142,7 @@ export const userExperienceMachine = createMachine<
 	context: {},
 	id: 'userExperience',
 	initial: 'guest',
+	predictableActionArguments: true,
 	states: {
 		guest: {
 			on: {
