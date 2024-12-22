@@ -83,10 +83,7 @@ export const activateUser = async (
 	// 	- recent ASSET_PRICEs
 	const assetOrders = await createAssetOrdersFromRecommendation(
 		recommendation,
-		{
-			orderId: orderDocId,
-			userId,
-		},
+		{ orderId: orderDocId },
 	);
 	assetOrders.forEach((assetOrder) => {
 		const assetOrderDocId = assetOrder._id;
