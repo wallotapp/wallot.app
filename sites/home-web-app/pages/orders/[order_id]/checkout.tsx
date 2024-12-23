@@ -86,7 +86,11 @@ const Page: NextPage = () => {
 	);
 
 	// Current User
-	const { currentUser, isUserPageLoading } = useQueryCurrentUser();
+	const {
+		currentUser,
+		isUserPageLoading,
+		refetch: refetchUser,
+	} = useQueryCurrentUser();
 
 	// Current Auth Credential
 	const { currentAuthCredential, isAuthCredentialPageLoading } =
@@ -121,11 +125,14 @@ const Page: NextPage = () => {
 				// Show success toast
 				toast({
 					title: 'Success',
-					description: 'Saved your contact details...',
+					description: 'Saved your billing information...',
 				});
 
-				// Move to the tax section
-				setActiveBillingInformationSection('Tax Details');
+				// Close the billing information section
+				setActiveBillingInformationSection(null);
+
+				// Refetch the user
+				await refetchUser();
 			},
 		});
 
