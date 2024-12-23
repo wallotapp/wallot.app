@@ -17,8 +17,7 @@ export const UserNameTag: React.FC<UserNameTagProps> = ({
 	user,
 	showSubtitle = false,
 }) => {
-	// User Auth Credential
-	const { data: userAuthCredential } = useQueryAuthCredentialPage({
+	const { data: authCredential } = useQueryAuthCredentialPage({
 		firestoreQueryOptions: {
 			whereClauses: [['user', '==', user?._id]],
 		},
@@ -29,11 +28,7 @@ export const UserNameTag: React.FC<UserNameTagProps> = ({
 
 	return (
 		<div
-			className={cn(
-				'flex items-center px-4 py-3 space-x-2 w-full',
-				// ''
-				className,
-			)}
+			className={cn('flex items-center px-4 py-3 space-x-2 w-full', className)}
 		>
 			<div>
 				<Avatar className='!h-7 !w-7'>
@@ -58,7 +53,7 @@ export const UserNameTag: React.FC<UserNameTagProps> = ({
 				{showSubtitle === 'email' && (
 					<div>
 						<p className={cn('text-gray-500 text-[0.75rem]')}>
-							{userAuthCredential?.documents?.[0]?.emails?.[0]}
+							{authCredential?.documents?.[0]?.emails?.[0]}
 						</p>
 					</div>
 				)}
