@@ -17,6 +17,7 @@ import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import Link from 'next/link';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { FiShoppingCart } from 'react-icons/fi';
+import { Separator } from 'ergonomic-react/src/components/ui/separator';
 
 const AssetOrderCartItem: React.FC<{
 	assetOrder: AssetOrder;
@@ -118,58 +119,84 @@ const Page: NextPage = () => {
 					)}
 				>
 					<div>
-						<div className={cn('', 'lg:flex lg:items-end lg:justify-between')}>
-							<div>
-								<p className='text-5xl'>Your Cart</p>
-							</div>
-							<div className='mt-6 lg:mt-0'>
-								<Link
-									href={getHomeWebAppRoute({
-										includeOrigin: true,
-										origin: siteOriginByTarget.HOME_WEB_APP,
-										queryParams: { order_id },
-										routeStaticId: 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CART',
-									})}
-								>
-									<button>
-										<div className='bg-black py-1.5 px-10 rounded-sm flex items-center space-x-2'>
-											<div>
-												<FiShoppingCart className='text-white dark:text-brand text-xs' />
-											</div>
-											<div>
-												<p className='text-sm text-white dark:text-brand'>
-													I'm Ready to Pay
-												</p>
-											</div>
-										</div>
-									</button>
-								</Link>
-							</div>
+						<div>
+							<p className='font-semibold text-3xl'>Your Cart</p>
+							<p className='font-medium text-base'>
+								Wallot is a trusted partner to buy and trade stocks
+							</p>
 						</div>
-						<div className={cn('mt-10', 'grid grid-cols-1 gap-3')}>
-							{isDataLoading ? (
-								<Fragment>
-									{[1, 2, 3, 4].map((_, index) => (
-										<div className=''>
-											<Skeleton
-												className='h-[30rem] !bg-gray-300'
-												key={index}
-											/>
-										</div>
-									))}
-								</Fragment>
-							) : (
-								<Fragment>
-									{assetOrders.map((assetOrder) => {
-										return (
-											<AssetOrderCartItem
-												assetOrder={assetOrder}
-												key={assetOrder._id}
-											/>
-										);
-									})}
-								</Fragment>
+						<div
+							className={cn(
+								'mt-10',
+								'lg:flex lg:justify-between lg:space-x-24',
 							)}
+						>
+							<div className='lg:w-3/5'>
+								<div>
+									{isDataLoading ? (
+										<Fragment>
+											{[1, 2, 3, 4].map((_, index) => (
+												<div className=''>
+													<Skeleton
+														className='h-[30rem] !bg-gray-300'
+														key={index}
+													/>
+												</div>
+											))}
+										</Fragment>
+									) : (
+										<Fragment>
+											{assetOrders.map((assetOrder) => {
+												return (
+													<AssetOrderCartItem
+														assetOrder={assetOrder}
+														key={assetOrder._id}
+													/>
+												);
+											})}
+										</Fragment>
+									)}
+								</div>
+							</div>
+							<div
+								className={cn('bg-slate-100 px-6 py-10', 'lg:w-2/5 lg:pl-10')}
+							>
+								<div>
+									<p className='font-semibold text-xl'>Order Summary</p>
+								</div>
+								<div className='mt-2.5'>
+									<p className='font-medium text-base'>
+										{assetOrders.length} item{assetOrders.length > 1 ? 's' : ''}
+									</p>
+								</div>
+								<div className='mt-4'>
+									<Separator />
+								</div>
+								<div className='mt-6'>
+									<Link
+										href={getHomeWebAppRoute({
+											includeOrigin: true,
+											origin: siteOriginByTarget.HOME_WEB_APP,
+											queryParams: { order_id },
+											routeStaticId: 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CART',
+										})}
+									>
+										<button className='w-full'>
+											<div className='bg-black py-2.5 px-10 rounded-sm flex items-center justify-center space-x-2'>
+												<div>
+													<FiShoppingCart className='text-white dark:text-brand text-xs' />
+												</div>
+												<div>
+													<p className='text-sm text-white dark:text-brand'>
+														I'm Ready to Pay
+													</p>
+												</div>
+											</div>
+										</button>
+									</Link>
+								</div>
+								<div></div>
+							</div>
 						</div>
 					</div>
 				</div>
