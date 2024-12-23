@@ -39,7 +39,7 @@ import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/Lite
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { useQueryCurrentAuthCredential } from '@wallot/react/src/features/authCredentials';
-import { FiChevronDown } from 'react-icons/fi';
+import { FiChevronDown, FiChevronLeft } from 'react-icons/fi';
 import { GoCheckCircle } from 'react-icons/go';
 
 const BillingInformationSectionEnum = getEnum([
@@ -391,6 +391,24 @@ const Page: NextPage = () => {
 				currentUser?.alpaca_account_identity?.tax_id_type ??
 				initialFormData.tax_id_type,
 		};
+		const isContactDetailsSectionCompleteInDefaultValues =
+			defaultValues.email_address &&
+			defaultValues.phone_number &&
+			defaultValues.street_address_line_1 &&
+			defaultValues.city &&
+			defaultValues.state &&
+			defaultValues.postal_code;
+		const isTaxDetailsSectionCompleteInDefaultValues =
+			defaultValues.given_name &&
+			defaultValues.family_name &&
+			defaultValues.date_of_birth &&
+			defaultValues.tax_id_type &&
+			defaultValues.tax_id;
+		if (!isContactDetailsSectionCompleteInDefaultValues) {
+			setActiveBillingInformationSection('Contact Details');
+		} else if (!isTaxDetailsSectionCompleteInDefaultValues) {
+			setActiveBillingInformationSection('Tax Details');
+		}
 		reset(defaultValues);
 		setHasInitializedDefaultValues(true);
 	}, [
@@ -415,6 +433,25 @@ const Page: NextPage = () => {
 					)}
 				>
 					<div>
+						<Link
+							href={getHomeWebAppRoute({
+								includeOrigin: true,
+								origin: siteOriginByTarget.HOME_WEB_APP,
+								queryParams: { order_id },
+								routeStaticId: 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CART',
+							})}
+							className={cn(
+								'flex items-center space-x-0.5 cursor-pointer text-brand-dark',
+								'absolute top-28 left-6 lg:left-28',
+							)}
+						>
+							<div>
+								<FiChevronLeft />
+							</div>
+							<div>
+								<p className='text-sm font-semibold'>Back</p>
+							</div>
+						</Link>
 						<div className={cn('lg:flex lg:justify-between lg:space-x-28')}>
 							<div className='lg:w-3/5'>
 								<div>
@@ -452,7 +489,25 @@ const Page: NextPage = () => {
 											}}
 										>
 											<div>
-												<p>Billing Information</p>
+												<div>
+													<p className='font-semibold text-xl'>
+														Billing Information
+													</p>
+												</div>
+												{activeBillingInformationSection == null && (
+													<div className='mt-2 font-semibold text-sm'>
+														<p>
+															{liveData.given_name} {liveData.family_name}
+														</p>
+														{isContactDetailsSectionComplete && (
+															<p>
+																{liveData.street_address_line_1},{' '}
+																{liveData.city}, {liveData.state}{' '}
+																{liveData.postal_code}
+															</p>
+														)}
+													</div>
+												)}
 											</div>
 											{activeBillingInformationSection != null && (
 												<div>

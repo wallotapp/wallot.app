@@ -18,7 +18,7 @@ import Link from 'next/link';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
-import { FiTrendingUp } from 'react-icons/fi';
+import { FiChevronLeft, FiTrendingUp } from 'react-icons/fi';
 
 const AssetOrderCartItem: React.FC<
 	{
@@ -127,6 +127,25 @@ const Page: NextPage = () => {
 					)}
 				>
 					<div>
+						<Link
+							href={getHomeWebAppRoute({
+								includeOrigin: true,
+								origin: siteOriginByTarget.HOME_WEB_APP,
+								queryParams: { order_id },
+								routeStaticId: 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/ASSETS',
+							})}
+							className={cn(
+								'flex items-center space-x-0.5 cursor-pointer text-brand-dark',
+								'absolute top-28 left-6 lg:left-28',
+							)}
+						>
+							<div>
+								<FiChevronLeft />
+							</div>
+							<div>
+								<p className='text-sm font-semibold'>Back</p>
+							</div>
+						</Link>
 						<div className={cn('lg:flex lg:justify-between lg:space-x-28')}>
 							<div className='lg:w-3/5'>
 								<div>
