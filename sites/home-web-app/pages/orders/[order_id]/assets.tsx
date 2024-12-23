@@ -38,7 +38,7 @@ const AssetOrderCard: React.FC<{
 		return null;
 	}
 	const { rationale } = investmentRecommendationForAsset;
-	const amountUsdString = getCurrencyUsdStringFromCents(Number(amount) * 100);
+	const amountUsdString = getCurrencyUsdStringFromCents(amount);
 
 	return (
 		<div

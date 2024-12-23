@@ -25,7 +25,7 @@ const AssetOrderCartItem: React.FC<
 		assetOrder: AssetOrder;
 	} & BaseComponent
 > = ({ assetOrder: { alpaca_order_symbol, amount }, className = '' }) => {
-	const amountUsdString = getCurrencyUsdStringFromCents(Number(amount));
+	const amountUsdString = getCurrencyUsdStringFromCents(amount);
 
 	return (
 		<div
@@ -107,7 +107,7 @@ const Page: NextPage = () => {
 		});
 	const assetOrders = assetOrderPage?.documents ?? [];
 	const assetTotalAmount = assetOrders.reduce((acc, assetOrder) => {
-		return acc + Number(assetOrder.amount);
+		return acc + assetOrder.amount;
 	}, 0);
 	const assetTotalAmountUsdString =
 		getCurrencyUsdStringFromCents(assetTotalAmount);
