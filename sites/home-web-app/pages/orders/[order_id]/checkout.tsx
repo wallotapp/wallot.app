@@ -187,8 +187,8 @@ const Page: NextPage = () => {
 		{ fieldKey: 'given_name' as const },
 		{ fieldKey: 'family_name' as const },
 		{ fieldKey: 'date_of_birth' as const },
-		{ fieldKey: 'tax_id' as const },
 		{ fieldKey: 'tax_id_type' as const },
+		{ fieldKey: 'tax_id' as const },
 	].map(({ fieldKey }) => ({
 		control,
 		fieldErrors: formState.errors,
@@ -218,6 +218,22 @@ const Page: NextPage = () => {
 		renderTooltipContent: undefined,
 		setError: (message) => setError(fieldKey, { message }),
 	}));
+	const formTitle =
+		activeBillingInformationSection === 'Contact Details'
+			? 'Enter your Contact Details'
+			: activeBillingInformationSection === 'Tax Details'
+			? 'Enter your Tax Details'
+			: activeBillingInformationSection === 'Disclosures'
+			? 'Enter your Disclosures'
+			: '';
+	const formSubtitle =
+		activeBillingInformationSection === 'Contact Details'
+			? 'We will use this information in the event that there are problems processing your order'
+			: activeBillingInformationSection === 'Tax Details'
+			? 'This information is stored securely and used for tax reporting purposes'
+			: activeBillingInformationSection === 'Disclosures'
+			? 'Please answer the following questions to the best of your knowledge'
+			: '';
 
 	// ==== Functions ==== //
 
@@ -391,22 +407,18 @@ const Page: NextPage = () => {
 														<div
 															key={billingInformationSection}
 															className={cn(
-																'flex space-x-2 items-center',
+																'flex space-x-2 items-center cursor-pointer',
 																isActive
 																	? 'border-brand border-b-2'
 																	: 'border-slate-200 border-b',
 															)}
+															onClick={() =>
+																setActiveBillingInformationSection(
+																	billingInformationSection,
+																)
+															}
 														>
-															<div
-																className=''
-																onClick={() =>
-																	setActiveBillingInformationSection(
-																		billingInformationSection,
-																	)
-																}
-															>
-																{billingInformationSection}
-															</div>
+															<p>{billingInformationSection}</p>
 														</div>
 													);
 												},
@@ -421,13 +433,9 @@ const Page: NextPage = () => {
 															'lg:h-[70vh]',
 														)}
 													>
-														<p className='font-semibold text-xl'>
-															Enter your Contact Details
-														</p>
+														<p className='font-semibold text-xl'>{formTitle}</p>
 														<p className='font-extralight text-sm'>
-															This information is stored securely and used in
-															the event that there are problems processing your
-															order
+															{formSubtitle}
 														</p>
 														<div
 															className={cn(
