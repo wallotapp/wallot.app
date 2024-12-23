@@ -38,6 +38,7 @@ import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/Lite
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { useQueryCurrentAuthCredential } from '@wallot/react/src/features/authCredentials';
+import { FiChevronDown } from 'react-icons/fi';
 
 const BillingInformationSectionEnum = getEnum([
 	'Contact Details',
@@ -64,10 +65,13 @@ const Page: NextPage = () => {
 	// ==== State ==== //
 	const [activeBillingInformationSection, setActiveBillingInformationSection] =
 		useState<BillingInformationSection | null>(null);
-	const showBillingInformationDialog = activeBillingInformationSection !== null;
-	const idxOfActiveBillingInformationSection = showBillingInformationDialog
-		? BillingInformationSectionEnum.arr.indexOf(activeBillingInformationSection)
-		: -1;
+	const idxOfActiveBillingInformationSection =
+		activeBillingInformationSection == null
+			? -1
+			: BillingInformationSectionEnum.arr.indexOf(
+					activeBillingInformationSection,
+			  );
+
 	const isSectionComplete = (section: BillingInformationSection) => {
 		const idx = BillingInformationSectionEnum.arr.indexOf(section);
 		return idx < idxOfActiveBillingInformationSection;
@@ -265,136 +269,156 @@ const Page: NextPage = () => {
 									<p className='font-semibold text-3xl'>Checkout</p>
 								</div>
 								<div
-									className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200 w-full text-left cursor-pointer'
-									onClick={() =>
+									className={cn(
+										'mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200 w-full text-left',
+										activeBillingInformationSection == null
+											? 'cursor-pointer'
+											: '',
+									)}
+									onClick={() => {
+										if (activeBillingInformationSection != null) {
+											return;
+										}
 										setActiveBillingInformationSection(
 											BillingInformationSectionEnum.obj['Contact Details'],
-										)
-									}
+										);
+									}}
 								>
-									<div>
-										<p>Billing Information</p>
-									</div>
-									{showBillingInformationDialog && (
+									<div className='flex justify-between'>
 										<div
 											className={cn(
-												'mt-4',
-												// 'lg:flex lg:space-x-10'
+												'flex space-x-2 items-center',
+												activeBillingInformationSection != null
+													? 'cursor-pointer'
+													: '',
 											)}
+											onClick={() => {
+												if (activeBillingInformationSection == null) {
+													return;
+												}
+												setActiveBillingInformationSection(null);
+											}}
 										>
-											<div className='flex items-center space-x-4'>
-												{BillingInformationSectionEnum.arr.map(
-													(billingInformationSection) => {
-														const isComplete = isSectionComplete(
-															billingInformationSection,
-														);
-														isComplete; // <== Fix this
-														const isActive =
-															activeBillingInformationSection ===
-															billingInformationSection;
-														return (
+											<div>
+												<p>Billing Information</p>
+											</div>
+											{activeBillingInformationSection != null && (
+												<div>
+													<FiChevronDown />
+												</div>
+											)}
+										</div>
+										{activeBillingInformationSection == null && (
+											<div>
+												<p className='font-semibold text-sm underline'>Edit</p>
+											</div>
+										)}
+									</div>
+									<div
+										className={cn(
+											'mt-4',
+											activeBillingInformationSection == null ? 'hidden' : '',
+										)}
+									>
+										<div className='flex items-center space-x-4'>
+											{BillingInformationSectionEnum.arr.map(
+												(billingInformationSection) => {
+													const isComplete = isSectionComplete(
+														billingInformationSection,
+													);
+													isComplete; // <== Fix this
+													const isActive =
+														activeBillingInformationSection ===
+														billingInformationSection;
+													return (
+														<div
+															key={billingInformationSection}
+															className={cn(
+																'flex space-x-2 items-center',
+																isActive
+																	? 'border-brand border-b-2'
+																	: 'border-slate-200 border-b',
+															)}
+														>
 															<div
-																key={billingInformationSection}
-																className={cn(
-																	'flex space-x-2 items-center',
-																	isActive
-																		? 'border-brand border-b-2'
-																		: 'border-slate-200 border-b',
-																)}
+																className=''
+																onClick={() =>
+																	setActiveBillingInformationSection(
+																		billingInformationSection,
+																	)
+																}
 															>
-																<div
-																	className=''
+																{billingInformationSection}
+															</div>
+														</div>
+													);
+												},
+											)}
+										</div>
+										<div className={cn('mt-4')}>
+											<form onSubmit={handleSubmit(onSubmit) as () => void}>
+												<div className='relative'>
+													<div
+														className={cn(
+															'h-[50vh] overflow-y-auto',
+															'lg:h-[70vh]',
+														)}
+													>
+														<p className='font-semibold text-xl'>
+															Enter your Contact Details
+														</p>
+														<p className='font-extralight text-sm'>
+															This information is stored securely and used in
+															the event that there are problems processing your
+															order
+														</p>
+														<div className='px-1'>
+															{fields.map((fieldProps) => (
+																<LiteFormFieldContainer
+																	key={fieldProps.fieldKey}
+																	{...fieldProps}
+																/>
+															))}
+														</div>
+														{Boolean(formState.errors['root']?.message) && (
+															<div className='mt-4'>
+																<LiteFormFieldError
+																	fieldErrorMessage={
+																		formState.errors['root']?.message ?? ''
+																	}
+																/>
+															</div>
+														)}
+													</div>
+													<div className={cn('py-4')}>
+														<div className='flex justify-between space-x-4'>
+															<div className='flex-1'>
+																<button
+																	className='w-full text-center bg-slate-200 py-2 rounded-md border border-slate-300'
+																	type='button'
 																	onClick={() =>
-																		setActiveBillingInformationSection(
-																			billingInformationSection,
-																		)
+																		setActiveBillingInformationSection(null)
 																	}
 																>
-																	{billingInformationSection}
-																</div>
+																	<p className='font-normal text-sm'>Back</p>
+																</button>
 															</div>
-														);
-													},
-												)}
-											</div>
-											<div
-												className={cn(
-													'mt-4',
-													// 'lg:max-w-md lg:absolute lg:mt-0',
-													// 'lg:left-[50%] lg:transform lg:-translate-x-1/2',
-													// 'xl:left-[42%] xl:transform xl:-translate-x-1/2',
-												)}
-											>
-												<form onSubmit={handleSubmit(onSubmit) as () => void}>
-													<div className='relative'>
-														<div
-															className={cn(
-																'h-[50vh] overflow-y-auto',
-																'lg:h-[70vh]',
-															)}
-														>
-															<p className='font-semibold text-xl'>
-																Enter your Contact Details
-															</p>
-															<p className='font-extralight text-sm'>
-																This information is stored securely and used in
-																the event that there are problems processing
-																your order
-															</p>
-															<div className='px-1'>
-																{fields.map((fieldProps) => (
-																	<LiteFormFieldContainer
-																		key={fieldProps.fieldKey}
-																		{...fieldProps}
-																	/>
-																))}
-															</div>
-															{Boolean(formState.errors['root']?.message) && (
-																<div className='mt-4'>
-																	<LiteFormFieldError
-																		fieldErrorMessage={
-																			formState.errors['root']?.message ?? ''
-																		}
-																	/>
-																</div>
-															)}
-															{/* <div className='h-24' /> */}
-														</div>
-														<div
-															className={cn(
-																'py-4',
-																// 'bg-background lg:fixed lg:-bottom-0.5 lg:w-full',
-															)}
-														>
-															<div className='flex justify-between space-x-4'>
-																<div className='flex-1'>
-																	<button
-																		className='w-full text-center bg-slate-200 py-2 rounded-md border border-slate-300'
-																		type='button'
-																		onClick={() =>
-																			setActiveBillingInformationSection(null)
-																		}
-																	>
-																		<p className='font-normal text-sm'>Back</p>
-																	</button>
-																</div>
-																<div className='flex-1'>
-																	<button
-																		className='w-full text-center bg-black py-2 rounded-md border'
-																		type='submit'
-																	>
-																		<p className='font-normal text-sm text-white'>
-																			Continue
-																		</p>
-																	</button>
-																</div>
+															<div className='flex-1'>
+																<button
+																	className='w-full text-center bg-black py-2 rounded-md border'
+																	type='submit'
+																>
+																	<p className='font-normal text-sm text-white'>
+																		Continue
+																	</p>
+																</button>
 															</div>
 														</div>
 													</div>
-												</form>
-											</div>
+												</div>
+											</form>
 										</div>
-									)}
+									</div>
 								</div>
 								<div className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200'>
 									<div>
