@@ -26,12 +26,6 @@ import {
 import Link from 'next/link';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
-import {
-	Dialog,
-	DialogContent,
-	DialogTrigger,
-} from 'ergonomic-react/src/components/ui/dialog';
-import { GoCircle, GoCheckCircle } from 'react-icons/go';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useForm } from 'react-hook-form';
@@ -234,71 +228,6 @@ const Page: NextPage = () => {
 		assetTotalAmount + 2499,
 	);
 
-	// ==== Billing Information Forms ==== //
-	const ContactDetailsForm = () => {
-		return (
-			<form onSubmit={handleSubmit(onSubmit) as () => void}>
-				<div className='relative'>
-					<div className={cn('h-[50vh] overflow-y-auto', 'lg:h-[70vh]')}>
-						<p className='font-semibold text-xl'>Enter your Contact Details</p>
-						<p className='font-extralight text-sm'>
-							This information is stored securely and used in the event that
-							there are problems processing your order
-						</p>
-						<div className='px-1'>
-							{fields.map((fieldProps) => (
-								<LiteFormFieldContainer
-									key={fieldProps.fieldKey}
-									{...fieldProps}
-								/>
-							))}
-						</div>
-						{Boolean(formState.errors['root']?.message) && (
-							<div className='mt-4'>
-								<LiteFormFieldError
-									fieldErrorMessage={formState.errors['root']?.message ?? ''}
-								/>
-							</div>
-						)}
-						<div className='h-24' />
-					</div>
-					<div
-						className={cn(
-							'lg:fixed bg-background py-4',
-							'lg:-bottom-0.5 lg:w-full',
-						)}
-					>
-						<div className='flex justify-between space-x-4'>
-							<div className='flex-1'>
-								<button
-									className='w-full text-center bg-slate-200 py-2 rounded-md border border-slate-300'
-									type='button'
-									onClick={() => setActiveBillingInformationSection(null)}
-								>
-									<p className='font-normal text-sm'>Back</p>
-								</button>
-							</div>
-							<div className='flex-1'>
-								<button
-									className='w-full text-center bg-black py-2 rounded-md border'
-									type='submit'
-								>
-									<p className='font-normal text-sm text-white'>Continue</p>
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</form>
-		);
-	};
-	const TaxDetailsForm = () => {
-		return <div></div>;
-	};
-	const DisclosuresForm = () => {
-		return <div></div>;
-	};
-
 	// ==== Effects ==== //
 	const [hasInitializedContactDefaults, setHasInitializedContactDefaults] =
 		useState(false);
@@ -335,50 +264,44 @@ const Page: NextPage = () => {
 								<div>
 									<p className='font-semibold text-3xl'>Checkout</p>
 								</div>
-								<Dialog
-									open={showBillingInformationDialog}
-									onOpenChange={(open) => {
-										if (!open) {
-											setActiveBillingInformationSection(null);
-										}
-									}}
-									defaultOpen={false}
+								<div
+									className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200 w-full text-left cursor-pointer'
+									onClick={() =>
+										setActiveBillingInformationSection(
+											BillingInformationSectionEnum.obj['Contact Details'],
+										)
+									}
 								>
-									<DialogTrigger asChild>
-										<button
-											className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200 w-full text-left'
-											type='button'
-											onClick={() =>
-												setActiveBillingInformationSection(
-													BillingInformationSectionEnum.obj['Contact Details'],
-												)
-											}
+									<div>
+										<p>Billing Information</p>
+									</div>
+									{showBillingInformationDialog && (
+										<div
+											className={cn(
+												'mt-4',
+												// 'lg:flex lg:space-x-10'
+											)}
 										>
-											<div>
-												<p>Billing Information</p>
-											</div>
-										</button>
-									</DialogTrigger>
-									<DialogContent className='!h-[80vh] !max-h-[80vh] !w-[80vw] !max-w-[80vw]'>
-										<div className={cn('mt-4', 'lg:flex lg:space-x-10')}>
-											<div className=''>
+											<div className='flex items-center space-x-4'>
 												{BillingInformationSectionEnum.arr.map(
 													(billingInformationSection) => {
 														const isComplete = isSectionComplete(
 															billingInformationSection,
 														);
+														isComplete; // <== Fix this
+														const isActive =
+															activeBillingInformationSection ===
+															billingInformationSection;
 														return (
 															<div
 																key={billingInformationSection}
-																className='flex space-x-2 items-center'
+																className={cn(
+																	'flex space-x-2 items-center',
+																	isActive
+																		? 'border-brand border-b-2'
+																		: 'border-slate-200 border-b',
+																)}
 															>
-																<div>
-																	{isComplete ? (
-																		<GoCheckCircle className='text-brand' />
-																	) : (
-																		<GoCircle className='' />
-																	)}
-																</div>
 																<div
 																	className=''
 																	onClick={() =>
@@ -397,23 +320,82 @@ const Page: NextPage = () => {
 											<div
 												className={cn(
 													'mt-4',
-													'lg:max-w-md lg:absolute lg:mt-0',
-													'lg:left-[50%] lg:transform lg:-translate-x-1/2',
-													'xl:left-[42%] xl:transform xl:-translate-x-1/2',
+													// 'lg:max-w-md lg:absolute lg:mt-0',
+													// 'lg:left-[50%] lg:transform lg:-translate-x-1/2',
+													// 'xl:left-[42%] xl:transform xl:-translate-x-1/2',
 												)}
 											>
-												{activeBillingInformationSection ===
-													'Contact Details' && <ContactDetailsForm />}
-												{activeBillingInformationSection === 'Tax Details' && (
-													<TaxDetailsForm />
-												)}
-												{activeBillingInformationSection === 'Disclosures' && (
-													<DisclosuresForm />
-												)}
+												<form onSubmit={handleSubmit(onSubmit) as () => void}>
+													<div className='relative'>
+														<div
+															className={cn(
+																'h-[50vh] overflow-y-auto',
+																'lg:h-[70vh]',
+															)}
+														>
+															<p className='font-semibold text-xl'>
+																Enter your Contact Details
+															</p>
+															<p className='font-extralight text-sm'>
+																This information is stored securely and used in
+																the event that there are problems processing
+																your order
+															</p>
+															<div className='px-1'>
+																{fields.map((fieldProps) => (
+																	<LiteFormFieldContainer
+																		key={fieldProps.fieldKey}
+																		{...fieldProps}
+																	/>
+																))}
+															</div>
+															{Boolean(formState.errors['root']?.message) && (
+																<div className='mt-4'>
+																	<LiteFormFieldError
+																		fieldErrorMessage={
+																			formState.errors['root']?.message ?? ''
+																		}
+																	/>
+																</div>
+															)}
+															{/* <div className='h-24' /> */}
+														</div>
+														<div
+															className={cn(
+																'py-4',
+																// 'bg-background lg:fixed lg:-bottom-0.5 lg:w-full',
+															)}
+														>
+															<div className='flex justify-between space-x-4'>
+																<div className='flex-1'>
+																	<button
+																		className='w-full text-center bg-slate-200 py-2 rounded-md border border-slate-300'
+																		type='button'
+																		onClick={() =>
+																			setActiveBillingInformationSection(null)
+																		}
+																	>
+																		<p className='font-normal text-sm'>Back</p>
+																	</button>
+																</div>
+																<div className='flex-1'>
+																	<button
+																		className='w-full text-center bg-black py-2 rounded-md border'
+																		type='submit'
+																	>
+																		<p className='font-normal text-sm text-white'>
+																			Continue
+																		</p>
+																	</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</form>
 											</div>
 										</div>
-									</DialogContent>
-								</Dialog>
+									)}
+								</div>
 								<div className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200'>
 									<div>
 										<p>Payment</p>
