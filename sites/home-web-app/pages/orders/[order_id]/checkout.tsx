@@ -205,7 +205,7 @@ const Page: NextPage = () => {
 			_id: currentUser._id,
 			alpaca_account_contact: {
 				...R.pick(
-					['email_address', 'phone_number', 'city', 'postal_code'],
+					['email_address', 'phone_number', 'city', 'postal_code'] as const,
 					data,
 				),
 				state: data.state as UsaStateCode,
@@ -214,6 +214,29 @@ const Page: NextPage = () => {
 					data.street_address_line_2,
 				].filter(Boolean as unknown as (x: string) => x is string),
 			},
+			alpaca_account_disclosures: R.pick(
+				[
+					'immediate_family_exposed',
+					'is_affiliated_exchange_or_finra',
+					'is_affiliated_exchange_or_iiroc',
+					'is_control_person',
+					'is_politically_exposed',
+				] as const,
+				data,
+			),
+			alpaca_account_identity: R.pick(
+				[
+					'country_of_birth',
+					'country_of_citizenship',
+					'country_of_tax_residence',
+					'date_of_birth',
+					'family_name',
+					'given_name',
+					'tax_id',
+					'tax_id_type',
+				] as const,
+				data,
+			),
 		});
 	};
 
