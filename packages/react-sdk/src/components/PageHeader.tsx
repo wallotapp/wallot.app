@@ -35,10 +35,10 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
 	// Site Origin by Target
 	const siteOriginByTarget = useSiteOriginByTarget();
 	const siteUrl = process.env.NEXT_PUBLIC_SITE_URL as string;
-	const knowledgeBaseWebAppOrigin = siteOriginByTarget['KNOWLEDGE_BASE_WEB_APP'] as string;
-	const homeWebAppOrigin = siteOriginByTarget[
-		'HOME_WEB_APP'
+	const knowledgeBaseWebAppOrigin = siteOriginByTarget[
+		'KNOWLEDGE_BASE_WEB_APP'
 	] as string;
+	const homeWebAppOrigin = siteOriginByTarget['HOME_WEB_APP'] as string;
 	const ssoWebAppOrigin = siteOriginByTarget['SSO_WEB_APP'] as string;
 	const blogWebAppOrigin = siteOriginByTarget['BLOG_WEB_APP'] as string;
 
@@ -92,9 +92,14 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
 			queryParams: {},
 			routeStaticId: 'KNOWLEDGE_BASE_WEB_APP__/INDEX',
 		});
-		const knowledgeBaseTarget = siteUrl !== knowledgeBaseWebAppOrigin ? '_blank' : '';
+		const knowledgeBaseTarget =
+			siteUrl !== knowledgeBaseWebAppOrigin ? '_blank' : '';
 		return (
-			<Link className={className} href={knowledgeBaseHref} target={knowledgeBaseTarget}>
+			<Link
+				className={className}
+				href={knowledgeBaseHref}
+				target={knowledgeBaseTarget}
+			>
 				<p
 					className={cn(
 						'font-light text-sm',
@@ -162,9 +167,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
 						'bg-brand space-x-2 flex items-center rounded-sm px-4 py-1.5',
 					)}
 				>
-					<p className='text-xs text-white font-light'>
-						Create a free account
-					</p>
+					<p className='text-xs text-white font-light'>Create a free account</p>
 				</button>
 			</Link>
 		);
@@ -187,9 +190,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
 		{ Component: KnowledgeBaseLink, key: 'Learn' },
 		{ Component: SupportLink, key: 'Support' },
 		{ Component: BlogLink, key: 'Blog' },
-	].filter(
-		(x): x is Exclude<typeof x, null> => x != null,
-	);
+	].filter((x): x is Exclude<typeof x, null> => x != null);
 
 	// ==== Render ==== //
 	return (
