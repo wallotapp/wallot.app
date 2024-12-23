@@ -49,9 +49,7 @@ export const PageActionHeader: React.FC<PageActionHeaderProps> = ({
 				>
 					<div className='bg-black py-1.5 pl-3 pr-2 rounded-sm flex items-center space-x-1'>
 						<div>
-							<p className='text-xs text-white dark:text-brand'>
-								Learn more
-							</p>
+							<p className='text-xs text-white dark:text-brand'>Learn more</p>
 						</div>
 						<div>
 							<GoChevronRight className='text-white dark:text-brand text-sm' />

@@ -198,7 +198,7 @@ const Page: NextPage = () => {
 						This information is stored securely and used in the event that there
 						are problems processing your order
 					</p>
-					<div>
+					<div className='px-1'>
 						{fields.map((fieldProps) => (
 							<LiteFormFieldContainer
 								key={fieldProps.fieldKey}

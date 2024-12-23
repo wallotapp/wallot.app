@@ -4,6 +4,7 @@ import {
 	Keys,
 	UsaStateCodeEnum,
 	UsaStateCode,
+	GeneralizedFieldTypeEnum,
 	getFieldSpecByFieldKey,
 	YupHelpers,
 } from 'ergonomic';
@@ -23,23 +24,35 @@ export const alpacaAccountContactFormDataProperties = {
 		.nullable(false)
 		.min(1)
 		.required()
-		.defined(),
+		.defined()
+		.meta({ type: GeneralizedFieldTypeEnum.obj.address_field }),
 	email_address: YupHelpers.emailAddress().required().min(1),
 	phone_number: alpacaAccountContactProperties.phone_number
 		.nullable(false)
 		.min(1)
 		.required()
-		.defined(),
+		.defined()
+		.meta({ type: GeneralizedFieldTypeEnum.obj.short_text }),
 	postal_code: alpacaAccountContactProperties.postal_code
 		.nullable(false)
 		.min(1)
 		.required()
-		.defined(),
+		.defined()
+		.meta({ type: GeneralizedFieldTypeEnum.obj.address_field }),
 	state: UsaStateCodeEnum.getDefinedSchema()
 		.required()
 		.default('' as UsaStateCode),
-	street_address_line_1: yup.string().min(1).required().defined(), // "20 N San Mateo Dr"
-	street_address_line_2: yup.string().optional().default(''),
+	street_address_line_1: yup
+		.string()
+		.min(1)
+		.required()
+		.defined()
+		.meta({ type: GeneralizedFieldTypeEnum.obj.address_field }), // "20 N San Mateo Dr"
+	street_address_line_2: yup
+		.string()
+		.optional()
+		.default('')
+		.meta({ type: GeneralizedFieldTypeEnum.obj.address_field }),
 } as const;
 export const alpacaAccountContactFormDataSchema = yup.object(
 	alpacaAccountContactFormDataProperties,
