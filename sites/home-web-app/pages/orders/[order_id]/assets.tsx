@@ -11,6 +11,7 @@ import { HomeWebAppRouteQueryParams } from '@wallot/js';
 import { AssetOrder } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
+import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
 
 const AssetOrderCard: React.FC<{ assetOrder: AssetOrder }> = ({
 	assetOrder,
@@ -72,6 +73,7 @@ const Page: NextPage = () => {
 		<PageComponent {...pageProps}>
 			<div className={cn('flex flex-col min-h-screen min-w-screen relative')}>
 				<AuthenticatedPageHeader showHomeLink={false} />
+				<PageActionHeader />
 				<div
 					className={cn(
 						'min-h-[95vh] w-full',
