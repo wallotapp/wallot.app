@@ -16,14 +16,13 @@ import { Fragment } from 'react';
 import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import Link from 'next/link';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
-import { FiShoppingCart } from 'react-icons/fi';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 
 const AssetOrderCartItem: React.FC<{
 	assetOrder: AssetOrder;
 }> = ({ assetOrder }) => {
 	const amountUsdString = getCurrencyUsdStringFromCents(
-		Number(assetOrder.amount) * 100,
+		Number(assetOrder.amount),
 	);
 
 	return (
@@ -103,6 +102,11 @@ const Page: NextPage = () => {
 			},
 		});
 	const assetOrders = assetOrderPage?.documents ?? [];
+	const assetTotalAmount = assetOrders.reduce((acc, assetOrder) => {
+		return acc + Number(assetOrder.amount);
+	}, 0);
+	const assetTotalAmountUsdString =
+		getCurrencyUsdStringFromCents(assetTotalAmount);
 	const isDataLoading = isAssetOrderPageLoading;
 
 	// ==== Render ==== //
@@ -119,20 +123,15 @@ const Page: NextPage = () => {
 					)}
 				>
 					<div>
-						<div>
-							<p className='font-semibold text-3xl'>Your Cart</p>
-							<p className='font-medium text-base'>
-								Wallot is a trusted partner to buy and trade stocks
-							</p>
-						</div>
-						<div
-							className={cn(
-								'mt-10',
-								'lg:flex lg:justify-between lg:space-x-24',
-							)}
-						>
+						<div className={cn('lg:flex lg:justify-between lg:space-x-28')}>
 							<div className='lg:w-3/5'>
 								<div>
+									<p className='font-semibold text-3xl'>Your Cart</p>
+									<p className='font-medium text-base'>
+										Wallot is a trusted partner to buy and trade stocks
+									</p>
+								</div>
+								<div className='mt-6'>
 									{isDataLoading ? (
 										<Fragment>
 											{[1, 2, 3, 4].map((_, index) => (
@@ -159,7 +158,10 @@ const Page: NextPage = () => {
 								</div>
 							</div>
 							<div
-								className={cn('bg-slate-100 px-6 py-10', 'lg:w-2/5 lg:pl-10')}
+								className={cn(
+									'bg-slate-100 mt-8 px-10 py-10 rounded-xl h-fit',
+									'lg:w-2/5',
+								)}
 							>
 								<div>
 									<p className='font-semibold text-xl'>Order Summary</p>
@@ -172,25 +174,41 @@ const Page: NextPage = () => {
 								<div className='mt-4'>
 									<Separator />
 								</div>
+								<div className='mt-6 flex justify-between'>
+									<div>
+										<p className='font-semibold text-xl'>
+											Subtotal{' '}
+											<span className='text-sm text-brand-dark'>(USD)</span>
+										</p>
+									</div>
+									<div>
+										<p className='font-medium text-xl'>
+											{assetTotalAmountUsdString}
+										</p>
+									</div>
+								</div>
+								<div className='mt-6 text-center'>
+									<p className='font-normal text-sm'>
+										Subtotal does not include applicable
+										<br />
+										trading license fees and taxes
+									</p>
+								</div>
 								<div className='mt-6'>
 									<Link
 										href={getHomeWebAppRoute({
 											includeOrigin: true,
 											origin: siteOriginByTarget.HOME_WEB_APP,
 											queryParams: { order_id },
-											routeStaticId: 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CART',
+											routeStaticId:
+												'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CHECKOUT',
 										})}
 									>
 										<button className='w-full'>
 											<div className='bg-black py-2.5 px-10 rounded-sm flex items-center justify-center space-x-2'>
-												<div>
-													<FiShoppingCart className='text-white dark:text-brand text-xs' />
-												</div>
-												<div>
-													<p className='text-sm text-white dark:text-brand'>
-														I'm Ready to Pay
-													</p>
-												</div>
+												<p className='text-sm text-white dark:text-brand'>
+													I'm Ready to Pay
+												</p>
 											</div>
 										</button>
 									</Link>
