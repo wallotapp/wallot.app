@@ -8,9 +8,9 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import {
-	CompleteUserKycParams,
-	completeUserKycSchema,
-	completeUserKycSchemaFieldSpecByFieldKey,
+	AlpacaAccountContactFormDataParams,
+	alpacaAccountContactFormDataSchema,
+	alpacaAccountContactFormDataSchemaFieldSpecByFieldKey,
 	getHomeWebAppRoute,
 	HomeWebAppRouteQueryParams,
 } from '@wallot/js';
@@ -35,8 +35,6 @@ import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
-LiteFormFieldContainer; // <== fix this
-LiteFormFieldError; // <== fix this
 
 const BillingInformationSectionEnum = getEnum([
 	'Contact Details',
@@ -85,15 +83,15 @@ const Page: NextPage = () => {
 
 	// Form Resolver
 	const resolver = useYupValidationResolver(
-		completeUserKycSchema,
+		alpacaAccountContactFormDataSchema,
 		defaultGeneralizedFormDataTransformationOptions,
 	);
 
 	// Form
 	const initialFormData =
-		completeUserKycSchema.getDefault() as CompleteUserKycParams;
+		alpacaAccountContactFormDataSchema.getDefault() as AlpacaAccountContactFormDataParams;
 	const { control, formState, handleSubmit, reset, setError } =
-		useForm<CompleteUserKycParams>({
+		useForm<AlpacaAccountContactFormDataParams>({
 			defaultValues: initialFormData,
 			resolver,
 			shouldUnregister: false,
@@ -154,26 +152,24 @@ const Page: NextPage = () => {
 	const formStatus =
 		formState.isSubmitting || isUpdateUserRunning ? 'running' : 'idle';
 	const isFormSubmitting = formStatus === 'running';
-	const fields: LiteFormFieldProps<CompleteUserKycParams>[] = [
-		{
-			fieldKey: 'alpaca_account_agreements' as const,
-			renderTooltipContent: () => (
-				<div>
-					This helps us identify stocks with appropriate liquidation horizons
-					and volatility levels
-				</div>
-			),
-		},
-	].map(({ fieldKey, renderTooltipContent }) => ({
+	const fields: LiteFormFieldProps<AlpacaAccountContactFormDataParams>[] = [
+		{ fieldKey: 'email_address' as const },
+		{ fieldKey: 'phone_number' as const },
+		{ fieldKey: 'street_address_line_1' as const },
+		{ fieldKey: 'street_address_line_2' as const },
+		{ fieldKey: 'city' as const },
+		{ fieldKey: 'state' as const },
+		{ fieldKey: 'postal_code' as const },
+	].map(({ fieldKey }) => ({
 		control,
 		fieldErrors: formState.errors,
 		fieldKey,
-		fieldSpec: completeUserKycSchemaFieldSpecByFieldKey[fieldKey],
+		fieldSpec: alpacaAccountContactFormDataSchemaFieldSpecByFieldKey[fieldKey],
 		hideRequiredIndicator: true,
 		initialFormData,
 		isSubmitting: isFormSubmitting,
-		operation: 'create',
-		renderTooltipContent,
+		operation: 'update',
+		renderTooltipContent: undefined,
 		setError: (message) => setError(fieldKey, { message }),
 	}));
 	fields; // <== fix this
@@ -202,6 +198,21 @@ const Page: NextPage = () => {
 						This information is stored securely and used in the event that there
 						are problems processing your order
 					</p>
+					<div>
+						{fields.map((fieldProps) => (
+							<LiteFormFieldContainer
+								key={fieldProps.fieldKey}
+								{...fieldProps}
+							/>
+						))}
+					</div>
+					{Boolean(formState.errors['root']?.message) && (
+						<div className='mt-4'>
+							<LiteFormFieldError
+								fieldErrorMessage={formState.errors['root']?.message ?? ''}
+							/>
+						</div>
+					)}
 					<div className='h-24' />
 				</div>
 				<div
