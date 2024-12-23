@@ -9,9 +9,9 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import {
-	AlpacaAccountContactFormDataParams,
-	alpacaAccountContactFormDataSchema,
-	alpacaAccountContactFormDataSchemaFieldSpecByFieldKey,
+	KycFormDataParams,
+	kycFormDataSchema,
+	kycFormDataSchemaFieldSpecByFieldKey,
 	getHomeWebAppRoute,
 	HomeWebAppRouteQueryParams,
 } from '@wallot/js';
@@ -90,7 +90,7 @@ const Page: NextPage = () => {
 
 	// Form Resolver
 	const resolver = useYupValidationResolver(
-		alpacaAccountContactFormDataSchema,
+		kycFormDataSchema,
 		defaultGeneralizedFormDataTransformationOptions,
 	);
 
@@ -102,10 +102,9 @@ const Page: NextPage = () => {
 		useQueryCurrentAuthCredential();
 
 	// Form
-	const initialFormData =
-		alpacaAccountContactFormDataSchema.getDefault() as AlpacaAccountContactFormDataParams;
+	const initialFormData = kycFormDataSchema.getDefault() as KycFormDataParams;
 	const { control, formState, handleSubmit, reset, setError, setValue } =
-		useForm<AlpacaAccountContactFormDataParams>({
+		useForm<KycFormDataParams>({
 			defaultValues: initialFormData,
 			resolver,
 			shouldUnregister: false,
@@ -164,7 +163,7 @@ const Page: NextPage = () => {
 	const formStatus =
 		formState.isSubmitting || isUpdateUserRunning ? 'running' : 'idle';
 	const isFormSubmitting = formStatus === 'running';
-	const fields: LiteFormFieldProps<AlpacaAccountContactFormDataParams>[] = [
+	const fields: LiteFormFieldProps<KycFormDataParams>[] = [
 		{ fieldKey: 'email_address' as const },
 		{ fieldKey: 'phone_number' as const },
 		{ fieldKey: 'street_address_line_1' as const },
@@ -176,7 +175,7 @@ const Page: NextPage = () => {
 		control,
 		fieldErrors: formState.errors,
 		fieldKey,
-		fieldSpec: alpacaAccountContactFormDataSchemaFieldSpecByFieldKey[fieldKey],
+		fieldSpec: kycFormDataSchemaFieldSpecByFieldKey[fieldKey],
 		hideRequiredIndicator: true,
 		initialFormData,
 		isSubmitting: isFormSubmitting,
@@ -188,7 +187,7 @@ const Page: NextPage = () => {
 	// ==== Functions ==== //
 
 	// Form Submit Handler
-	const onSubmit = (data: AlpacaAccountContactFormDataParams) => {
+	const onSubmit = (data: KycFormDataParams) => {
 		if (currentUser == null) {
 			toast({
 				title: 'Error',

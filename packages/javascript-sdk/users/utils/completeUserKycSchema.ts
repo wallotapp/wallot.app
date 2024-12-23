@@ -17,10 +17,8 @@ import {
 	alpacaAccountIdentityProperties,
 } from './alpacaAccounts.js';
 
-// ==== Form Schemas ==== //
-
-// Contact
-export const alpacaAccountContactFormDataProperties = {
+// ==== Form Schema ==== //
+export const kycFormDataProperties = {
 	city: alpacaAccountContactProperties.city
 		.nullable(false)
 		.min(1)
@@ -56,17 +54,12 @@ export const alpacaAccountContactFormDataProperties = {
 		.default('')
 		.meta({ type: GeneralizedFieldTypeEnum.obj.address_field }),
 } as const;
-export const alpacaAccountContactFormDataSchema = yup.object(
-	alpacaAccountContactFormDataProperties,
+export const kycFormDataSchema = yup.object(kycFormDataProperties);
+export const kycFormDataSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
+	kycFormDataSchema,
+	Keys(kycFormDataProperties),
 );
-export const alpacaAccountContactFormDataSchemaFieldSpecByFieldKey =
-	getFieldSpecByFieldKey(
-		alpacaAccountContactFormDataSchema,
-		Keys(alpacaAccountContactFormDataProperties),
-	);
-export type AlpacaAccountContactFormDataParams = yup.InferType<
-	typeof alpacaAccountContactFormDataSchema
->;
+export type KycFormDataParams = yup.InferType<typeof kycFormDataSchema>;
 
 // Identity
 // Disclosures
@@ -103,7 +96,7 @@ export const completeUserKycProperties = {
 		.object({
 			...R.pick(
 				['city', 'email_address', 'phone_number', 'postal_code', 'state'],
-				alpacaAccountContactFormDataProperties,
+				kycFormDataProperties,
 			),
 			street_address: yup
 				.array()
