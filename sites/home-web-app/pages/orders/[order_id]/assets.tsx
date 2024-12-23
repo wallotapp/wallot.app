@@ -65,25 +65,33 @@ const Page: NextPage = () => {
 				whereClauses: [['order', '==', order_id]],
 			},
 		});
-	const assetOrders = (assetOrderPage?.documents ?? []).filter(() => false);
+	const assetOrders = assetOrderPage?.documents ?? [];
 
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
 			<div className={cn('flex flex-col min-h-screen min-w-screen relative')}>
 				<AuthenticatedPageHeader showHomeLink={false} />
-				{!isAssetOrderPageLoading && (
-					<div className='flex space-x-4'>
-						{[1, 2, 3].map((_, index) => (
-							<Skeleton className='h-[30rem] w-72' key={index} />
-						))}
-					</div>
-				)}
-				{assetOrders.map((assetOrder) => {
-					return (
-						<AssetOrderCard key={assetOrder._id} assetOrder={assetOrder} />
-					);
-				})}
+				<div
+					className={cn(
+						'min-h-[95vh] w-full',
+						'py-48 px-6',
+						'lg:py-48 lg:px-28',
+					)}
+				>
+					{isAssetOrderPageLoading && (
+						<div className='flex space-x-4'>
+							{[1, 2, 3].map((_, index) => (
+								<Skeleton className='h-[30rem] w-72' key={index} />
+							))}
+						</div>
+					)}
+					{assetOrders.map((assetOrder) => {
+						return (
+							<AssetOrderCard key={assetOrder._id} assetOrder={assetOrder} />
+						);
+					})}
+				</div>
 			</div>
 		</PageComponent>
 	);
