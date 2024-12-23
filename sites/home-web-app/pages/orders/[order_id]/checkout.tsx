@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -43,6 +43,7 @@ import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
+import { useQueryCurrentAuthCredential } from '@wallot/react/src/features/authCredentials';
 
 const BillingInformationSectionEnum = getEnum([
 	'Contact Details',
@@ -98,10 +99,14 @@ const Page: NextPage = () => {
 	// Current User
 	const { currentUser } = useQueryCurrentUser();
 
+	// Current Auth Credential
+	const { currentAuthCredential, isAuthCredentialPageLoading } =
+		useQueryCurrentAuthCredential();
+
 	// Form
 	const initialFormData =
 		alpacaAccountContactFormDataSchema.getDefault() as AlpacaAccountContactFormDataParams;
-	const { control, formState, handleSubmit, reset, setError } =
+	const { control, formState, handleSubmit, reset, setError, setValue } =
 		useForm<AlpacaAccountContactFormDataParams>({
 			defaultValues: initialFormData,
 			resolver,
@@ -293,6 +298,23 @@ const Page: NextPage = () => {
 	const DisclosuresForm = () => {
 		return <div></div>;
 	};
+
+	// ==== Effects ==== //
+	const [hasInitializedContactDefaults, setHasInitializedContactDefaults] =
+		useState(false);
+	useEffect(() => {
+		if (hasInitializedContactDefaults) return;
+		if (isAuthCredentialPageLoading) return;
+		setHasInitializedContactDefaults(true);
+		const { emails = [] } = currentAuthCredential ?? {};
+		const email = emails[0];
+		if (!email) return;
+		setValue('email_address', email);
+	}, [
+		currentAuthCredential,
+		isAuthCredentialPageLoading,
+		hasInitializedContactDefaults,
+	]);
 
 	// ==== Render ==== //
 	return (
