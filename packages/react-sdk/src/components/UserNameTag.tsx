@@ -39,8 +39,11 @@ export const UserNameTag: React.FC<UserNameTagProps> = ({
 				<Avatar className='!h-7 !w-7'>
 					<AvatarImage src={undefined} alt='User' />
 					<AvatarFallback className='!bg-gray-700 !text-white text-xs'>
-						{user?.alpaca_account_identity?.given_name?.[0] ??
-							user?.username?.[0] ?? <>&nbsp;</>}
+						{(
+							user?.alpaca_account_identity?.given_name?.[0] ??
+							user?.username?.[0] ??
+							''
+						).toUpperCase() || <>&nbsp;</>}
 					</AvatarFallback>
 				</Avatar>
 			</div>
