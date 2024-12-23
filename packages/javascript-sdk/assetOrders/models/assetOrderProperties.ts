@@ -24,6 +24,7 @@ const createParamsRequiredFieldEnum = getEnum([
 	'order',
 	'recommendations',
 	'alpaca_order_side',
+	'alpaca_order_symbol',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 

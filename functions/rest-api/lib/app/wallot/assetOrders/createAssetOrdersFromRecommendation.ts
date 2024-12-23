@@ -44,6 +44,7 @@ export const createAssetOrdersFromRecommendation = async ({
 		// Construct parameters for creating the asset order
 		const params: CreateAssetOrderParams = {
 			alpaca_order_side: side,
+			alpaca_order_symbol: symbol,
 			amount: amountUsdCents,
 			asset: assetDoc.id,
 			category: 'default',
