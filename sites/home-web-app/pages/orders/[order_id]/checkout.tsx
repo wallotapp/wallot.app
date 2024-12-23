@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -10,24 +11,23 @@ import { getHomeWebAppRoute, HomeWebAppRouteQueryParams } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
-import { getCurrencyUsdStringFromCents } from 'ergonomic';
+import { getCurrencyUsdStringFromCents, getEnum } from 'ergonomic';
 import Link from 'next/link';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
-import { FiCopy } from 'react-icons/fi';
-import { Button } from 'ergonomic-react/src/components/ui/button';
 import {
 	Dialog,
-	DialogClose,
 	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
 	DialogTrigger,
 } from 'ergonomic-react/src/components/ui/dialog';
-import { Input } from 'ergonomic-react/src/components/ui/input';
-import { Label } from 'ergonomic-react/src/components/ui/label';
+import { GoCircle, GoCheckCircle } from 'react-icons/go';
+
+const BillingInformationSectionEnum = getEnum([
+	'Contact Details',
+	'Tax Details',
+	'Disclosures',
+]);
+type BillingInformationSection = keyof typeof BillingInformationSectionEnum.obj;
 
 // ==== Static Page Props ==== //
 
@@ -44,6 +44,18 @@ const ROUTE_STATIC_PROPS: PageStaticProps = {
 type RouteQueryParams = HomeWebAppRouteQueryParams[typeof ROUTE_STATIC_ID];
 
 const Page: NextPage = () => {
+	// ==== State ==== //
+	const [activeBillingInformationSection, setActiveBillingInformationSection] =
+		useState<BillingInformationSection | null>(null);
+	const showBillingInformationDialog = activeBillingInformationSection !== null;
+	const idxOfActiveBillingInformationSection = showBillingInformationDialog
+		? BillingInformationSectionEnum.arr.indexOf(activeBillingInformationSection)
+		: -1;
+	const isSectionComplete = (section: BillingInformationSection) => {
+		const idx = BillingInformationSectionEnum.arr.indexOf(section);
+		return idx < idxOfActiveBillingInformationSection;
+	};
+
 	// ==== Hooks ==== //
 
 	// Router
@@ -86,6 +98,48 @@ const Page: NextPage = () => {
 		assetTotalAmount + 2499,
 	);
 
+	// ==== Billing Information Forms ==== //
+	const ContactDetailsForm = () => {
+		return (
+			<div className='relative'>
+				<div className='h-[70vh] overflow-y-auto'>
+					<p className='font-semibold text-xl'>Enter your Contact Details</p>
+					<p className='font-extralight text-sm'>
+						This information is stored securely and used in the event that there
+						are problems processing your order
+					</p>
+					<div className='h-24' />
+				</div>
+				<div className='fixed -bottom-0.5 bg-background py-4 w-full'>
+					<div className='flex justify-between space-x-4'>
+						<div className='flex-1'>
+							<button
+								className='w-full text-center bg-slate-200 py-2 rounded-md border border-slate-300'
+								type='button'
+							>
+								<p className='font-normal text-sm'>Back</p>
+							</button>
+						</div>
+						<div className='flex-1'>
+							<button
+								className='w-full text-center bg-black py-2 rounded-md border'
+								type='button'
+							>
+								<p className='font-normal text-sm text-white'>Continue</p>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	};
+	const TaxDetailsForm = () => {
+		return <div></div>;
+	};
+	const DisclosuresForm = () => {
+		return <div></div>;
+	};
+
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
@@ -105,47 +159,81 @@ const Page: NextPage = () => {
 								<div>
 									<p className='font-semibold text-3xl'>Checkout</p>
 								</div>
-								<Dialog>
+								<Dialog
+									open={showBillingInformationDialog}
+									onOpenChange={(open) => {
+										if (!open) {
+											setActiveBillingInformationSection(null);
+										}
+									}}
+									defaultOpen={false}
+								>
 									<DialogTrigger asChild>
 										<button
 											className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200 w-full text-left'
 											type='button'
+											onClick={() =>
+												setActiveBillingInformationSection(
+													BillingInformationSectionEnum.obj['Contact Details'],
+												)
+											}
 										>
 											<div>
 												<p>Billing Information</p>
 											</div>
 										</button>
 									</DialogTrigger>
-									<DialogContent className='sm:max-w-md'>
-										<DialogHeader>
-											<DialogTitle>Share link</DialogTitle>
-											<DialogDescription>
-												Anyone who has this link will be able to view this.
-											</DialogDescription>
-										</DialogHeader>
-										<div className='flex items-center space-x-2'>
-											<div className='grid flex-1 gap-2'>
-												<Label htmlFor='link' className='sr-only'>
-													Link
-												</Label>
-												<Input
-													id='link'
-													defaultValue='https://ui.shadcn.com/docs/installation'
-													readOnly
-												/>
+									<DialogContent className='!h-[80vh] !max-h-[80vh] !w-[80vw] !max-w-[80vw]'>
+										<div className='mt-4 flex space-x-10'>
+											<div className=''>
+												{BillingInformationSectionEnum.arr.map(
+													(billingInformationSection) => {
+														const isComplete = isSectionComplete(
+															billingInformationSection,
+														);
+														return (
+															<div
+																key={billingInformationSection}
+																className='flex space-x-2 items-center'
+															>
+																<div>
+																	{isComplete ? (
+																		<GoCheckCircle className='text-brand' />
+																	) : (
+																		<GoCircle className='' />
+																	)}
+																</div>
+																<div
+																	className=''
+																	onClick={() =>
+																		setActiveBillingInformationSection(
+																			billingInformationSection,
+																		)
+																	}
+																>
+																	{billingInformationSection}
+																</div>
+															</div>
+														);
+													},
+												)}
 											</div>
-											<Button type='submit' size='sm' className='px-3'>
-												<span className='sr-only'>Copy</span>
-												<FiCopy />
-											</Button>
+											<div
+												className={cn(
+													'max-w-md absolute left-[42%] transform -translate-x-1/2',
+													'',
+												)}
+											>
+												{activeBillingInformationSection ===
+													'Contact Details' && <ContactDetailsForm />}
+												{activeBillingInformationSection === 'Tax Details' && (
+													<TaxDetailsForm />
+												)}
+												{activeBillingInformationSection === 'Disclosures' && (
+													<DisclosuresForm />
+												)}
+											</div>
 										</div>
-										<DialogFooter className='sm:justify-start'>
-											<DialogClose asChild>
-												<Button type='button' variant='secondary'>
-													Close
-												</Button>
-											</DialogClose>
-										</DialogFooter>
 									</DialogContent>
 								</Dialog>
 								<div className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200'>
