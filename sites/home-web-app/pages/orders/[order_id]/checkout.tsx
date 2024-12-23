@@ -557,7 +557,7 @@ const Page: NextPage = () => {
 							<div
 								className={cn(
 									'bg-slate-100 mt-8 px-10 py-10 rounded-xl h-fit',
-									'lg:w-2/5',
+									'lg:w-2/5 lg:sticky lg:top-28 lg:mt-0',
 								)}
 							>
 								<div>
