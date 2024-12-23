@@ -41,6 +41,8 @@ import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components
 import { useQueryCurrentAuthCredential } from '@wallot/react/src/features/authCredentials';
 import { FiChevronDown, FiChevronLeft } from 'react-icons/fi';
 import { GoCheckCircle } from 'react-icons/go';
+import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts';
+import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 
 const BillingInformationSectionEnum = getEnum([
 	'Contact Details',
@@ -95,6 +97,11 @@ const Page: NextPage = () => {
 	// Current Auth Credential
 	const { currentAuthCredential, isAuthCredentialPageLoading } =
 		useQueryCurrentAuthCredential();
+
+	// Bank Accounts for Logged In User
+	const { bankAccountsForLoggedInUser, isBankAccountPageLoading } =
+		useQueryBankAccountsForLoggedInUser();
+	const userHasAtLeastOneBankAccount = bankAccountsForLoggedInUser.length > 0;
 
 	// Form
 	const initialFormData = kycFormDataSchema.getDefault() as KycFormDataParams;
@@ -428,7 +435,9 @@ const Page: NextPage = () => {
 
 	// ==== Complete Purchase ==== //
 	const isCompletePurchaseButtonDisabled =
-		isFormSubmitting || !isBillingInformationSectionComplete;
+		isFormSubmitting ||
+		!isBillingInformationSectionComplete ||
+		!userHasAtLeastOneBankAccount;
 
 	// ==== Render ==== //
 	return (
@@ -752,6 +761,27 @@ const Page: NextPage = () => {
 								<div className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200'>
 									<div>
 										<p>Payment</p>
+									</div>
+									{isBankAccountPageLoading && (
+										<div>
+											<Skeleton className='w-full h-8' />
+										</div>
+									)}
+									<div>
+										{bankAccountsForLoggedInUser.map((bankAccount) => (
+											<div key={bankAccount._id}>
+												<div>
+													<p className='font-semibold text-sm'>
+														{bankAccount.name}
+													</p>
+												</div>
+												<div className='mt-2'>
+													<p className='font-normal text-sm'>
+														{bankAccount.alpaca_ach_relationship_status}
+													</p>
+												</div>
+											</div>
+										))}
 									</div>
 								</div>
 							</div>
