@@ -40,6 +40,7 @@ import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/compon
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { useQueryCurrentAuthCredential } from '@wallot/react/src/features/authCredentials';
 import { FiChevronDown } from 'react-icons/fi';
+import { GoCheckCircle } from 'react-icons/go';
 
 const BillingInformationSectionEnum = getEnum([
 	'Contact Details',
@@ -237,6 +238,8 @@ const Page: NextPage = () => {
 		liveData.date_of_birth &&
 		liveData.tax_id_type &&
 		liveData.tax_id;
+	const isBillingInformationSectionComplete =
+		isContactDetailsSectionComplete && isTaxDetailsSectionComplete;
 	const isContinueButtonDisabled =
 		isFormSubmitting ||
 		(activeBillingInformationSection === 'Contact Details'
@@ -459,7 +462,16 @@ const Page: NextPage = () => {
 										</div>
 										{activeBillingInformationSection == null && (
 											<div>
-												<p className='font-semibold text-sm underline'>Edit</p>
+												{isBillingInformationSectionComplete && (
+													<div className='mb-3'>
+														<GoCheckCircle className='text-brand-dark text-xl' />
+													</div>
+												)}
+												<div>
+													<p className='font-semibold text-sm underline'>
+														Edit
+													</p>
+												</div>
 											</div>
 										)}
 									</div>
