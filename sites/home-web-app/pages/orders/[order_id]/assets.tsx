@@ -8,6 +8,7 @@ import {
 import { HomeWebAppRouteQueryParams } from '@wallot/js';
 import { AssetOrder } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
+import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 
 const AssetOrderCard: React.FC<{ assetOrder: AssetOrder }> = ({
 	assetOrder,
@@ -56,18 +57,26 @@ const Page: NextPage = () => {
 	};
 
 	// ==== Hooks ==== //
-	const { data: assetOrderPage } = useQueryAssetOrderPage({
-		firestoreQueryOptions: {
-			whereClauses: [['order', '==', order_id]],
-		},
-	});
-	const assetOrders = assetOrderPage?.documents ?? [];
+	const { data: assetOrderPage, isLoading: isAssetOrderPageLoading } =
+		useQueryAssetOrderPage({
+			firestoreQueryOptions: {
+				whereClauses: [['order', '==', order_id]],
+			},
+		});
+	const assetOrders = (assetOrderPage?.documents ?? []).filter(() => false);
 
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
 			<div>
 				<div>Assets</div>
+				{!isAssetOrderPageLoading && (
+					<div className='flex space-x-4'>
+						{[1, 2, 3].map((_, index) => (
+							<Skeleton className='h-[30rem] w-72' key={index} />
+						))}
+					</div>
+				)}
 				{assetOrders.map((assetOrder) => {
 					return (
 						<AssetOrderCard key={assetOrder._id} assetOrder={assetOrder} />
