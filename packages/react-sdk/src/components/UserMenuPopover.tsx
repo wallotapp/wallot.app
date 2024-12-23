@@ -86,7 +86,7 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 							<Link href={href} key={href} target='_blank'>
 								<div
 									className={cn(
-										'group hover:bg-orange-50 px-3 py-1',
+										'group hover:bg-purple-50 px-3 py-1',
 										'duration-200 ease-in-out transition-all',
 									)}
 								>
@@ -109,7 +109,7 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 				<div className=''>
 					<button
 						className={cn(
-							'group hover:bg-orange-50 w-full text-left px-3 py-1.5',
+							'group hover:bg-purple-50 w-full text-left px-3 py-1.5',
 							'duration-200 ease-in-out transition-all',
 						)}
 						disabled={false}
