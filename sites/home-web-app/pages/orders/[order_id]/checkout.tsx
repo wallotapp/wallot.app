@@ -249,11 +249,12 @@ const Page: NextPage = () => {
 		liveData.tax_id_type &&
 		liveData.tax_id;
 	const isContinueButtonDisabled =
-		activeBillingInformationSection === 'Contact Details'
+		isFormSubmitting ||
+		(activeBillingInformationSection === 'Contact Details'
 			? !isContactDetailsSectionComplete
 			: activeBillingInformationSection === 'Tax Details'
 			? !isTaxDetailsSectionComplete
-			: false;
+			: false);
 
 	// ==== Functions ==== //
 
