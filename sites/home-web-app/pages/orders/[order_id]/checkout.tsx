@@ -493,12 +493,7 @@ const Page: NextPage = () => {
 										<div className={cn('mt-4')}>
 											<form onSubmit={handleSubmit(onSubmit) as () => void}>
 												<div className='relative'>
-													<div
-														className={cn(
-															'h-[50vh] overflow-y-auto',
-															'lg:h-[70vh]',
-														)}
-													>
+													<div>
 														<p className='font-semibold text-xl'>{formTitle}</p>
 														<p className='font-extralight text-sm'>
 															{formSubtitle}
@@ -561,7 +556,7 @@ const Page: NextPage = () => {
 															</div>
 														)}
 													</div>
-													<div className={cn('py-4')}>
+													<div className={cn('mt-4 py-4')}>
 														<div className='flex justify-between space-x-4'>
 															<div className='flex-1'>
 																<button
