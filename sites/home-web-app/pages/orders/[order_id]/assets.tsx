@@ -8,16 +8,54 @@ import {
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { HomeWebAppRouteQueryParams } from '@wallot/js';
-import { AssetOrder } from '@wallot/js';
+import { AssetOrder, Recommendation } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
+import { useQueryRecommendationPage } from '@wallot/react/src/features/recommendations';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
 import { Fragment } from 'react';
+import { getCurrencyUsdStringFromCents } from 'ergonomic';
 
-const AssetOrderCard: React.FC<{ assetOrder: AssetOrder }> = ({
-	assetOrder,
-}) => {
-	return <div>{assetOrder._id}</div>;
+const AssetOrderCard: React.FC<{
+	assetOrder: AssetOrder;
+	recommendation: Recommendation;
+}> = ({ assetOrder, recommendation }) => {
+	const assetSymbol = assetOrder.alpaca_order_symbol;
+	const { best_investments } = recommendation;
+	const investmentRecommendationForAsset = best_investments.find(
+		({ symbol }) => symbol === assetSymbol,
+	);
+	if (!investmentRecommendationForAsset) {
+		return null;
+	}
+	const { amount, rationale } = investmentRecommendationForAsset;
+	const amountUsdString = getCurrencyUsdStringFromCents(Number(amount) * 100);
+
+	return (
+		<div>
+			<div className={cn('bg-white rounded-lg p-6')}>
+				<div className={cn('flex justify-between')}>
+					<div>
+						<p className={cn('text-2xl font-bold')}>
+							{assetOrder.alpaca_order_symbol}
+						</p>
+						<p className={cn('text-lg')}>
+							{assetOrder.alpaca_order_qty} shares
+						</p>
+					</div>
+					<div>
+						<p className={cn('text-2xl font-bold')}>{amountUsdString}</p>
+						<p className={cn('text-lg')}>
+							{assetOrder.alpaca_order_side} order
+						</p>
+					</div>
+				</div>
+				<div className={cn('mt-4')}>
+					<p className={cn('text-lg')}>{rationale}</p>
+				</div>
+			</div>
+		</div>
+	);
 };
 
 // ==== Static Page Props ==== //
@@ -67,8 +105,22 @@ const Page: NextPage = () => {
 				whereClauses: [['order', '==', order_id]],
 			},
 		});
-	const assetOrdersAll = assetOrderPage?.documents ?? [];
-	const assetOrders = assetOrdersAll.filter(() => false);
+	const assetOrders = assetOrderPage?.documents ?? [];
+	const recommendationIds = assetOrders[0]?.recommendations;
+	const firstRecommendationId = recommendationIds?.[0];
+	const { data: recommendationPage, isLoading: isRecommendationPageLoading } =
+		useQueryRecommendationPage({
+			firestoreQueryOptions: {
+				whereClauses: [['_id', '==', firstRecommendationId]],
+			},
+		});
+	const recommendations = recommendationPage?.documents ?? [];
+	const recommendation = recommendations[0];
+
+	const isDataLoading =
+		isAssetOrderPageLoading ||
+		isRecommendationPageLoading ||
+		recommendation == null;
 
 	// ==== Render ==== //
 	return (
@@ -102,23 +154,30 @@ const Page: NextPage = () => {
 								'xl:grid-cols-4',
 							)}
 						>
-							{!isAssetOrderPageLoading && (
+							{isDataLoading ? (
 								<Fragment>
 									{[1, 2, 3, 4].map((_, index) => (
 										<div className=''>
-											<Skeleton className='h-[30rem] !bg-gray-300' key={index} />
+											<Skeleton
+												className='h-[30rem] !bg-gray-300'
+												key={index}
+											/>
 										</div>
 									))}
 								</Fragment>
+							) : (
+								<Fragment>
+									{assetOrders.map((assetOrder) => {
+										return (
+											<AssetOrderCard
+												assetOrder={assetOrder}
+												key={assetOrder._id}
+												recommendation={recommendation}
+											/>
+										);
+									})}
+								</Fragment>
 							)}
-							{assetOrders.map((assetOrder) => {
-								return (
-									<AssetOrderCard
-										key={assetOrder._id}
-										assetOrder={assetOrder}
-									/>
-								);
-							})}
 						</div>
 					</div>
 				</div>
