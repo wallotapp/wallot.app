@@ -93,8 +93,8 @@ export const AuthenticatedPageHeader: React.FC<
 						})}
 						<UserMenuPopover
 							TriggerComponent={
-								<button className='border-t border-t-gray-200 dark:border-t-gray-800 w-full'>
-									<UserNameTag user={currentUser} />
+								<button className='w-full'>
+									<UserNameTag className='!px-0 !py-0' user={currentUser} />
 								</button>
 							}
 						/>
