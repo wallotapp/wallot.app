@@ -7,7 +7,7 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
-import { HomeWebAppRouteQueryParams } from '@wallot/js';
+import { getHomeWebAppRoute, HomeWebAppRouteQueryParams } from '@wallot/js';
 import { AssetOrder, Recommendation } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { useQueryRecommendationPage } from '@wallot/react/src/features/recommendations';
@@ -15,6 +15,9 @@ import { AuthenticatedPageHeader } from '@wallot/react/src/components/Authentica
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
 import { Fragment } from 'react';
 import { getCurrencyUsdStringFromCents } from 'ergonomic';
+import Link from 'next/link';
+import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
+import { FiShoppingCart } from 'react-icons/fi';
 
 const AssetOrderCard: React.FC<{
 	assetOrder: AssetOrder;
@@ -32,30 +35,33 @@ const AssetOrderCard: React.FC<{
 	const amountUsdString = getCurrencyUsdStringFromCents(Number(amount) * 100);
 
 	return (
-		<div>
-			<div
-				className={cn(
-					'bg-white border border-gray-200 rounded-md shadow-md p-6',
-				)}
-			>
-				<div className={cn('flex justify-between')}>
-					<div>
-						<p className={cn('text-2xl font-semibold')}>
-							{assetOrder.alpaca_order_symbol}
-						</p>
-						<p className={cn('text-lg font-light')}>
-							{assetOrder.alpaca_order_qty} shares
-						</p>
-					</div>
-					<div>
-						<p className={cn('text-2xl font-medium')}>{amountUsdString}</p>
-						<p className={cn('text-lg font-light')}>
-							{assetOrder.alpaca_order_side} order
-						</p>
-					</div>
+		<div
+			className={cn(
+				'bg-white border border-gray-200 rounded-md shadow-md p-6 h-full',
+			)}
+		>
+			<div className={cn('flex justify-between')}>
+				<div>
+					<p className={cn('text-2xl font-semibold')}>
+						{assetOrder.alpaca_order_symbol}
+					</p>
+					<p className={cn('text-lg font-light')}>
+						{assetOrder.alpaca_order_qty} shares
+					</p>
 				</div>
-				<div className={cn('mt-4')}>
-					<p className={cn('text-lg font-extralight')}>{rationale}</p>
+				<div>
+					<p className={cn('text-2xl font-medium')}>{amountUsdString}</p>
+					<p className={cn('text-lg font-light')}>
+						{assetOrder.alpaca_order_side} order
+					</p>
+				</div>
+			</div>
+			<div className={cn('mt-5')}>
+				<div>
+					<p className={cn('text-xs font-semibold')}>Investment thesis</p>
+				</div>
+				<div className='mt-0.5'>
+					<p className={cn('text-sm font-extralight')}>{rationale}</p>
 				</div>
 			</div>
 		</div>
@@ -81,6 +87,9 @@ const Page: NextPage = () => {
 
 	// Router
 	const router = useRouter();
+
+	// Site Origin by Target
+	const siteOriginByTarget = useSiteOriginByTarget();
 
 	// ==== Constants ==== //
 
@@ -147,6 +156,29 @@ const Page: NextPage = () => {
 									<br />
 									these stocks for your portfolio
 								</p>
+							</div>
+							<div>
+								<Link
+									href={getHomeWebAppRoute({
+										includeOrigin: true,
+										origin: siteOriginByTarget.HOME_WEB_APP,
+										queryParams: { order_id },
+										routeStaticId: 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CART',
+									})}
+								>
+									<button>
+										<div className='bg-black py-1.5 px-8 rounded-sm flex items-center space-x-3'>
+											<div>
+												<FiShoppingCart className='text-white dark:text-brand text-sm' />
+											</div>
+											<div>
+												<p className='text-sm text-white dark:text-brand'>
+													Continue to Cart
+												</p>
+											</div>
+										</div>
+									</button>
+								</Link>
 							</div>
 						</div>
 						<div
