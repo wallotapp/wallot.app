@@ -98,26 +98,30 @@ export const kycFormDataProperties = {
 		.min(1)
 		.required()
 		.defined()
-		.label('Last Name'),
+		.label('Last Name')
+		.meta({ type: GeneralizedFieldTypeEnum.obj.short_text }),
 	given_name: alpacaAccountIdentityProperties.given_name
 		.default('')
 		.nullable(false)
 		.min(1)
 		.required()
 		.defined()
-		.label('First Name'),
+		.label('First Name')
+		.meta({ type: GeneralizedFieldTypeEnum.obj.short_text }),
 	tax_id: alpacaAccountIdentityProperties.tax_id
 		.default('')
 		.nullable(false)
 		.min(1)
 		.required()
 		.defined()
-		.label('Tax ID Number'),
+		.label('Tax ID Number')
+		.meta({ type: GeneralizedFieldTypeEnum.obj.short_text }),
 	tax_id_type: alpacaAccountIdentityProperties.tax_id_type
 		.default('' as AlpacaAccountTaxIdType)
 		.nullable(false)
 		.required()
-		.defined(),
+		.defined()
+		.label('Tax ID Type'),
 } as const;
 export const kycFormDataSchema = yup.object(kycFormDataProperties);
 export const kycFormDataSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
