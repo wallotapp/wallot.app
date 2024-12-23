@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import { useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -17,7 +18,11 @@ import {
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
-import { getCurrencyUsdStringFromCents, getEnum } from 'ergonomic';
+import {
+	getCurrencyUsdStringFromCents,
+	getEnum,
+	UsaStateCode,
+} from 'ergonomic';
 import Link from 'next/link';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
@@ -30,7 +35,10 @@ import { GoCircle, GoCheckCircle } from 'react-icons/go';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useForm } from 'react-hook-form';
-import { useUpdateUserMutation } from '@wallot/react/src/features/users';
+import {
+	useQueryCurrentUser,
+	useUpdateUserMutation,
+} from '@wallot/react/src/features/users';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
@@ -87,6 +95,9 @@ const Page: NextPage = () => {
 		defaultGeneralizedFormDataTransformationOptions,
 	);
 
+	// Current User
+	const { currentUser } = useQueryCurrentUser();
+
 	// Form
 	const initialFormData =
 		alpacaAccountContactFormDataSchema.getDefault() as AlpacaAccountContactFormDataParams;
@@ -96,7 +107,6 @@ const Page: NextPage = () => {
 			resolver,
 			shouldUnregister: false,
 		});
-	handleSubmit; // <== fix this
 
 	// Mutation
 	const { mutate: updateUser, isLoading: isUpdateUserRunning } =
@@ -126,7 +136,6 @@ const Page: NextPage = () => {
 				setActiveBillingInformationSection('Tax Details');
 			},
 		});
-	updateUser; // <== fix this
 
 	// ==== Constants ==== //
 
@@ -172,7 +181,39 @@ const Page: NextPage = () => {
 		renderTooltipContent: undefined,
 		setError: (message) => setError(fieldKey, { message }),
 	}));
-	fields; // <== fix this
+
+	// ==== Functions ==== //
+
+	// Form Submit Handler
+	const onSubmit = (data: AlpacaAccountContactFormDataParams) => {
+		if (currentUser == null) {
+			toast({
+				title: 'Error',
+				description: 'Try logging in again',
+			});
+			return;
+		}
+
+		console.log('Activating user with following data:', data);
+		toast({
+			title: 'Saving your preferences',
+			description: 'This may take a few moments.',
+		});
+		updateUser({
+			_id: currentUser._id,
+			alpaca_account_contact: {
+				...R.pick(
+					['email_address', 'phone_number', 'city', 'postal_code'],
+					data,
+				),
+				state: data.state as UsaStateCode,
+				street_address: [
+					data.street_address_line_1,
+					data.street_address_line_2,
+				].filter(Boolean as unknown as (x: string) => x is string),
+			},
+		});
+	};
 
 	// ==== Hooks ==== //
 	const { data: assetOrderPage } = useQueryAssetOrderPage({
@@ -191,56 +232,59 @@ const Page: NextPage = () => {
 	// ==== Billing Information Forms ==== //
 	const ContactDetailsForm = () => {
 		return (
-			<div className='relative'>
-				<div className={cn('h-[50vh] overflow-y-auto', 'lg:h-[70vh]')}>
-					<p className='font-semibold text-xl'>Enter your Contact Details</p>
-					<p className='font-extralight text-sm'>
-						This information is stored securely and used in the event that there
-						are problems processing your order
-					</p>
-					<div className='px-1'>
-						{fields.map((fieldProps) => (
-							<LiteFormFieldContainer
-								key={fieldProps.fieldKey}
-								{...fieldProps}
-							/>
-						))}
+			<form onSubmit={handleSubmit(onSubmit) as () => void}>
+				<div className='relative'>
+					<div className={cn('h-[50vh] overflow-y-auto', 'lg:h-[70vh]')}>
+						<p className='font-semibold text-xl'>Enter your Contact Details</p>
+						<p className='font-extralight text-sm'>
+							This information is stored securely and used in the event that
+							there are problems processing your order
+						</p>
+						<div className='px-1'>
+							{fields.map((fieldProps) => (
+								<LiteFormFieldContainer
+									key={fieldProps.fieldKey}
+									{...fieldProps}
+								/>
+							))}
+						</div>
+						{Boolean(formState.errors['root']?.message) && (
+							<div className='mt-4'>
+								<LiteFormFieldError
+									fieldErrorMessage={formState.errors['root']?.message ?? ''}
+								/>
+							</div>
+						)}
+						<div className='h-24' />
 					</div>
-					{Boolean(formState.errors['root']?.message) && (
-						<div className='mt-4'>
-							<LiteFormFieldError
-								fieldErrorMessage={formState.errors['root']?.message ?? ''}
-							/>
-						</div>
-					)}
-					<div className='h-24' />
-				</div>
-				<div
-					className={cn(
-						'lg:fixed bg-background py-4',
-						'lg:-bottom-0.5 lg:w-full',
-					)}
-				>
-					<div className='flex justify-between space-x-4'>
-						<div className='flex-1'>
-							<button
-								className='w-full text-center bg-slate-200 py-2 rounded-md border border-slate-300'
-								type='button'
-							>
-								<p className='font-normal text-sm'>Back</p>
-							</button>
-						</div>
-						<div className='flex-1'>
-							<button
-								className='w-full text-center bg-black py-2 rounded-md border'
-								type='button'
-							>
-								<p className='font-normal text-sm text-white'>Continue</p>
-							</button>
+					<div
+						className={cn(
+							'lg:fixed bg-background py-4',
+							'lg:-bottom-0.5 lg:w-full',
+						)}
+					>
+						<div className='flex justify-between space-x-4'>
+							<div className='flex-1'>
+								<button
+									className='w-full text-center bg-slate-200 py-2 rounded-md border border-slate-300'
+									type='button'
+									onClick={() => setActiveBillingInformationSection(null)}
+								>
+									<p className='font-normal text-sm'>Back</p>
+								</button>
+							</div>
+							<div className='flex-1'>
+								<button
+									className='w-full text-center bg-black py-2 rounded-md border'
+									type='button'
+								>
+									<p className='font-normal text-sm text-white'>Continue</p>
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</form>
 		);
 	};
 	const TaxDetailsForm = () => {
