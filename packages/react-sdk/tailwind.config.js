@@ -1,6 +1,6 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
-const brandShades = ['brand', 'brand-light', 'brand-dark']; // Define shades
+const brandShades = ['brand', 'brand-light', 'brand-extralight', 'brand-dark']; // Define shades
 const utilities = [
 	'bg',
 	'text',
@@ -79,6 +79,7 @@ module.exports = {
 				border: 'hsl(var(--border))',
 				brand: {
 					DEFAULT: '#7F43D7', // Main logo color
+					extralight: '#C5A3F0', // Extra light variant
 					light: '#A573E8', // Lighter variant
 					dark: '#5B2FA5', // Darker variant
 				},

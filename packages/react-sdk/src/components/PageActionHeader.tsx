@@ -16,7 +16,7 @@ export const PageActionHeader: React.FC<PageActionHeaderProps> = ({
 			className={cn(
 				'h-10 items-center justify-between px-6 fixed top-12 left-0 w-full z-10',
 				'lg:px-28',
-				'bg-brand-light/60',
+				'bg-brand-extralight',
 				'hidden md:flex',
 				className,
 			)}
