@@ -426,6 +426,10 @@ const Page: NextPage = () => {
 		hasInitializedDefaultValues,
 	]);
 
+	// ==== Complete Purchase ==== //
+	const isCompletePurchaseButtonDisabled =
+		isFormSubmitting || !isBillingInformationSectionComplete;
+
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
@@ -651,7 +655,7 @@ const Page: NextPage = () => {
 														<div className='flex justify-between space-x-4'>
 															<div className='flex-1'>
 																<button
-																	className='w-full text-center bg-slate-200 py-2 rounded-md border border-slate-300'
+																	className='w-full text-center bg-slate-50 py-2 rounded-md border border-slate-300'
 																	type='button'
 																	onClick={() => {
 																		if (
@@ -681,9 +685,9 @@ const Page: NextPage = () => {
 																<button
 																	className={cn(
 																		'w-full text-center py-2 rounded-md border',
-																		!isContinueButtonDisabled
-																			? 'bg-black'
-																			: 'bg-slate-700',
+																		isContinueButtonDisabled
+																			? 'bg-slate-500'
+																			: 'bg-black',
 																	)}
 																	type={
 																		activeBillingInformationSection ===
@@ -724,7 +728,14 @@ const Page: NextPage = () => {
 																				</div>
 																			</>
 																		) : (
-																			<p className='font-normal text-sm text-white'>
+																			<p
+																				className={cn(
+																					'font-normal text-sm',
+																					isContinueButtonDisabled
+																						? 'text-slate-300'
+																						: 'text-white',
+																				)}
+																			>
 																				Continue
 																			</p>
 																		)}
@@ -775,23 +786,29 @@ const Page: NextPage = () => {
 									</div>
 								</div>
 								<div className='mt-6'>
-									<Link
-										href={getHomeWebAppRoute({
-											includeOrigin: true,
-											origin: siteOriginByTarget.HOME_WEB_APP,
-											queryParams: { asset_id: 'todo' },
-											routeStaticId:
-												'HOME_WEB_APP__/ASSETS/[ASSET_ID]/CONGRATULATIONS',
-										})}
+									<button
+										className={cn(
+											'py-2.5 px-10 rounded-md flex items-center justify-center space-x-2 w-full',
+											isCompletePurchaseButtonDisabled
+												? 'bg-slate-500'
+												: 'bg-black',
+										)}
+										disabled={isCompletePurchaseButtonDisabled}
+										onClick={() => {
+											console.log('Complete Purchase');
+										}}
 									>
-										<button className='w-full'>
-											<div className='bg-black py-2.5 px-10 rounded-sm flex items-center justify-center space-x-2'>
-												<p className='font-medium text-sm text-white dark:text-brand'>
-													Complete Purchase
-												</p>
-											</div>
-										</button>
-									</Link>
+										<p
+											className={cn(
+												'font-medium text-sm',
+												isCompletePurchaseButtonDisabled
+													? 'text-slate-300'
+													: 'text-white',
+											)}
+										>
+											Complete Purchase
+										</p>
+									</button>
 								</div>
 								<div className='mt-6'>
 									<p className='font-normal text-sm'>
