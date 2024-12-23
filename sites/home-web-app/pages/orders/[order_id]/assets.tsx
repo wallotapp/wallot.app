@@ -152,9 +152,9 @@ const Page: NextPage = () => {
 						<div className={cn('', 'lg:flex lg:items-end lg:justify-between')}>
 							<div>
 								<p className='text-5xl'>
-									Wallot AI recommends
+									We recommend these
 									<br />
-									these stocks for your portfolio
+									stocks for your portfolio
 								</p>
 							</div>
 							<div className='mt-6 lg:mt-0'>
