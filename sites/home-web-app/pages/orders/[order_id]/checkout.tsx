@@ -66,17 +66,6 @@ const Page: NextPage = () => {
 	// ==== State ==== //
 	const [activeBillingInformationSection, setActiveBillingInformationSection] =
 		useState<BillingInformationSection | null>(null);
-	const idxOfActiveBillingInformationSection =
-		activeBillingInformationSection == null
-			? -1
-			: BillingInformationSectionEnum.arr.indexOf(
-					activeBillingInformationSection,
-			  );
-
-	const isSectionComplete = (section: BillingInformationSection) => {
-		const idx = BillingInformationSectionEnum.arr.indexOf(section);
-		return idx < idxOfActiveBillingInformationSection;
-	};
 
 	// ==== Hooks ==== //
 
@@ -483,14 +472,18 @@ const Page: NextPage = () => {
 										<div className='flex items-center space-x-4'>
 											{BillingInformationSectionEnum.arr.map(
 												(billingInformationSection) => {
-													const isComplete = isSectionComplete(
-														billingInformationSection,
-													);
-													isComplete; // <== Fix this
 													const isActive =
 														activeBillingInformationSection ===
 														billingInformationSection;
-													const canClick = isComplete || isActive;
+													const isPrevSectionComplete =
+														billingInformationSection === 'Contact Details'
+															? true
+															: billingInformationSection === 'Tax Details'
+															? isContactDetailsSectionComplete
+															: billingInformationSection === 'Disclosures'
+															? isTaxDetailsSectionComplete
+															: false;
+													const canClick = isActive || isPrevSectionComplete;
 													return (
 														<div
 															key={billingInformationSection}
