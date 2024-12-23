@@ -586,9 +586,26 @@ const Page: NextPage = () => {
 																<button
 																	className='w-full text-center bg-slate-200 py-2 rounded-md border border-slate-300'
 																	type='button'
-																	onClick={() =>
-																		setActiveBillingInformationSection(null)
-																	}
+																	onClick={() => {
+																		if (
+																			activeBillingInformationSection ===
+																			'Contact Details'
+																		) {
+																			setActiveBillingInformationSection(null);
+																		} else if (
+																			activeBillingInformationSection ===
+																			'Tax Details'
+																		) {
+																			setActiveBillingInformationSection(
+																				'Contact Details',
+																			);
+																		} else {
+																			setActiveBillingInformationSection(
+																				'Tax Details',
+																			);
+																		}
+																	}}
+																	disabled={isFormSubmitting}
 																>
 																	<p className='font-normal text-sm'>Back</p>
 																</button>
@@ -627,9 +644,24 @@ const Page: NextPage = () => {
 																	}}
 																	disabled={isContinueButtonDisabled}
 																>
-																	<p className='font-normal text-sm text-white'>
-																		Continue
-																	</p>
+																	<div>
+																		{isFormSubmitting ? (
+																			<>
+																				<div className='flex items-center justify-center space-x-2 min-w-16 py-0.5'>
+																					<div
+																						className={cn(
+																							'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
+																							'border-t-brand border-r-brand border-b-brand',
+																						)}
+																					></div>
+																				</div>
+																			</>
+																		) : (
+																			<p className='font-normal text-sm text-white'>
+																				Continue
+																			</p>
+																		)}
+																	</div>
 																</button>
 															</div>
 														</div>
