@@ -172,7 +172,7 @@ const Page: NextPage = () => {
 												<FiShoppingCart className='text-white dark:text-brand text-xs' />
 											</div>
 											<div>
-												<p className='text-sm text-white dark:text-brand'>
+												<p className='font-medium text-sm text-white dark:text-brand'>
 													Continue to Cart
 												</p>
 											</div>

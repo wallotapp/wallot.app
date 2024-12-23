@@ -144,7 +144,7 @@ const Page: NextPage = () => {
 									>
 										<button className='w-full'>
 											<div className='bg-black py-2.5 px-10 rounded-sm flex items-center justify-center space-x-2'>
-												<p className='text-sm text-white dark:text-brand'>
+												<p className='font-medium text-sm text-white dark:text-brand'>
 													Complete Purchase
 												</p>
 											</div>
