@@ -104,7 +104,7 @@ const Page: NextPage = () => {
 
 	// Form
 	const initialFormData = kycFormDataSchema.getDefault() as KycFormDataParams;
-	const { control, formState, handleSubmit, reset, setError } =
+	const { control, formState, handleSubmit, reset, setError, watch } =
 		useForm<KycFormDataParams>({
 			resolver,
 			shouldUnregister: false,
@@ -234,6 +234,26 @@ const Page: NextPage = () => {
 			: activeBillingInformationSection === 'Disclosures'
 			? 'Please answer the following questions to the best of your knowledge'
 			: '';
+	const liveData = watch();
+	const isContactDetailsSectionComplete =
+		liveData.email_address &&
+		liveData.phone_number &&
+		liveData.street_address_line_1 &&
+		liveData.city &&
+		liveData.state &&
+		liveData.postal_code;
+	const isTaxDetailsSectionComplete =
+		liveData.given_name &&
+		liveData.family_name &&
+		liveData.date_of_birth &&
+		liveData.tax_id_type &&
+		liveData.tax_id;
+	const isContinueButtonDisabled =
+		activeBillingInformationSection === 'Contact Details'
+			? !isContactDetailsSectionComplete
+			: activeBillingInformationSection === 'Tax Details'
+			? !isTaxDetailsSectionComplete
+			: false;
 
 	// ==== Functions ==== //
 
@@ -469,20 +489,23 @@ const Page: NextPage = () => {
 													const isActive =
 														activeBillingInformationSection ===
 														billingInformationSection;
+													const canClick = isComplete || isActive;
 													return (
 														<div
 															key={billingInformationSection}
 															className={cn(
-																'flex space-x-2 items-center cursor-pointer',
+																'flex space-x-2 items-center',
+																canClick ? 'cursor-pointer' : '',
 																isActive
 																	? 'border-brand border-b-2'
 																	: 'border-slate-200 border-b',
 															)}
-															onClick={() =>
-																setActiveBillingInformationSection(
-																	billingInformationSection,
-																)
-															}
+															onClick={() => {
+																if (canClick)
+																	setActiveBillingInformationSection(
+																		billingInformationSection,
+																	);
+															}}
 														>
 															<p>{billingInformationSection}</p>
 														</div>
@@ -571,7 +594,12 @@ const Page: NextPage = () => {
 															</div>
 															<div className='flex-1'>
 																<button
-																	className='w-full text-center bg-black py-2 rounded-md border'
+																	className={cn(
+																		'w-full text-center py-2 rounded-md border',
+																		!isContinueButtonDisabled
+																			? 'bg-black'
+																			: 'bg-slate-700',
+																	)}
 																	type={
 																		activeBillingInformationSection ===
 																		'Disclosures'
@@ -596,6 +624,7 @@ const Page: NextPage = () => {
 																		}
 																		return;
 																	}}
+																	disabled={isContinueButtonDisabled}
 																>
 																	<p className='font-normal text-sm text-white'>
 																		Continue
