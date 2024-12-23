@@ -10,7 +10,7 @@ import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { HomeWebAppRouteQueryParams } from '@wallot/js';
 import { AssetOrder } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
-import { PageHeader } from '@wallot/react/src/components/PageHeader';
+import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
 
 const AssetOrderCard: React.FC<{ assetOrder: AssetOrder }> = ({
 	assetOrder,
@@ -71,7 +71,7 @@ const Page: NextPage = () => {
 	return (
 		<PageComponent {...pageProps}>
 			<div className={cn('flex flex-col min-h-screen min-w-screen relative')}>
-				<PageHeader showHomeLink={false} />
+				<AuthenticatedPageHeader showHomeLink={false} />
 				{!isAssetOrderPageLoading && (
 					<div className='flex space-x-4'>
 						{[1, 2, 3].map((_, index) => (
