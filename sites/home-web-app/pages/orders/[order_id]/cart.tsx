@@ -5,7 +5,51 @@ import {
 	PageStaticProps,
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { HomeWebAppRouteQueryParams } from '@wallot/js';
+import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
+import { default as cn } from 'ergonomic-react/src/lib/cn';
+import { getHomeWebAppRoute, HomeWebAppRouteQueryParams } from '@wallot/js';
+import { AssetOrder } from '@wallot/js';
+import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
+import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
+import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
+import { Fragment } from 'react';
+import { getCurrencyUsdStringFromCents } from 'ergonomic';
+import Link from 'next/link';
+import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
+import { FiShoppingCart } from 'react-icons/fi';
+
+const AssetOrderCartItem: React.FC<{
+	assetOrder: AssetOrder;
+}> = ({ assetOrder }) => {
+	const amountUsdString = getCurrencyUsdStringFromCents(
+		Number(assetOrder.amount) * 100,
+	);
+
+	return (
+		<div
+			className={cn(
+				'bg-white border border-gray-200 rounded-md shadow-md p-6 h-full',
+			)}
+		>
+			<div className={cn('flex justify-between')}>
+				<div>
+					<p className={cn('text-2xl font-semibold')}>
+						{assetOrder.alpaca_order_symbol}
+					</p>
+					<p className={cn('text-lg font-light')}>
+						{assetOrder.alpaca_order_qty} shares
+					</p>
+				</div>
+				<div>
+					<p className={cn('text-2xl font-medium')}>{amountUsdString}</p>
+					<p className={cn('text-lg font-light')}>
+						{assetOrder.alpaca_order_side} order
+					</p>
+				</div>
+			</div>
+		</div>
+	);
+};
 
 // ==== Static Page Props ==== //
 
@@ -27,6 +71,9 @@ const Page: NextPage = () => {
 	// Router
 	const router = useRouter();
 
+	// Site Origin by Target
+	const siteOriginByTarget = useSiteOriginByTarget();
+
 	// ==== Constants ==== //
 
 	// Router Query
@@ -47,11 +94,85 @@ const Page: NextPage = () => {
 		routeId: ROUTE_RUNTIME_ID,
 	};
 
+	// ==== Hooks ==== //
+	const { data: assetOrderPage, isLoading: isAssetOrderPageLoading } =
+		useQueryAssetOrderPage({
+			firestoreQueryOptions: {
+				whereClauses: [['order', '==', order_id]],
+			},
+		});
+	const assetOrders = assetOrderPage?.documents ?? [];
+	const isDataLoading = isAssetOrderPageLoading;
+
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<div>
-				<div>Cart</div>
+			<div className={cn('flex flex-col min-h-screen min-w-screen relative')}>
+				<AuthenticatedPageHeader showHomeLink={false} />
+				<PageActionHeader />
+				<div
+					className={cn(
+						'min-h-[95vh] w-full',
+						'py-48 px-6',
+						'lg:py-48 lg:px-28',
+					)}
+				>
+					<div>
+						<div className={cn('', 'lg:flex lg:items-end lg:justify-between')}>
+							<div>
+								<p className='text-5xl'>Your Cart</p>
+							</div>
+							<div className='mt-6 lg:mt-0'>
+								<Link
+									href={getHomeWebAppRoute({
+										includeOrigin: true,
+										origin: siteOriginByTarget.HOME_WEB_APP,
+										queryParams: { order_id },
+										routeStaticId: 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CART',
+									})}
+								>
+									<button>
+										<div className='bg-black py-1.5 px-10 rounded-sm flex items-center space-x-2'>
+											<div>
+												<FiShoppingCart className='text-white dark:text-brand text-xs' />
+											</div>
+											<div>
+												<p className='text-sm text-white dark:text-brand'>
+													I'm Ready to Pay
+												</p>
+											</div>
+										</div>
+									</button>
+								</Link>
+							</div>
+						</div>
+						<div className={cn('mt-10', 'grid grid-cols-1 gap-3')}>
+							{isDataLoading ? (
+								<Fragment>
+									{[1, 2, 3, 4].map((_, index) => (
+										<div className=''>
+											<Skeleton
+												className='h-[30rem] !bg-gray-300'
+												key={index}
+											/>
+										</div>
+									))}
+								</Fragment>
+							) : (
+								<Fragment>
+									{assetOrders.map((assetOrder) => {
+										return (
+											<AssetOrderCartItem
+												assetOrder={assetOrder}
+												key={assetOrder._id}
+											/>
+										);
+									})}
+								</Fragment>
+							)}
+						</div>
+					</div>
+				</div>
 			</div>
 		</PageComponent>
 	);
