@@ -20,6 +20,27 @@ export const AlpacaAccountStatusEnum = getEnum([
 ]);
 export type AlpacaAccountStatus = keyof typeof AlpacaAccountStatusEnum.obj;
 
+// Tax ID Type
+export const AlpacaAccountTaxIdTypeEnum = getEnum([
+	'DRIVER_LICENSE',
+	'PASSPORT',
+	'USA_SSN',
+	'NATIONAL_ID',
+	'PERMANENT_RESIDENT',
+]);
+export type AlpacaAccountTaxIdType =
+	keyof typeof AlpacaAccountTaxIdTypeEnum.obj;
+export const alpacaAccountTaxIdLabelDictionary: Record<
+	AlpacaAccountTaxIdType,
+	string
+> = {
+	DRIVER_LICENSE: 'Drivers license number',
+	PASSPORT: 'Passport number',
+	USA_SSN: 'United States Social Security Number',
+	NATIONAL_ID: 'National ID number',
+	PERMANENT_RESIDENT: 'Permanent resident number',
+};
+
 // === Object properties === //
 
 // Agreements
@@ -68,7 +89,12 @@ export const alpacaAccountIdentityProperties = {
 	family_name: yup.string().nullable().default(null),
 	given_name: yup.string().nullable().default(null),
 	tax_id: yup.string().nullable().default(null), // "123-55-4321"
-	tax_id_type: yup.string().nullable().default(null), // "USA_SSN"
+	tax_id_type: AlpacaAccountTaxIdTypeEnum.getOptionalSchema()
+		.nullable()
+		.default(null)
+		.meta({
+			label_by_enum_option: alpacaAccountTaxIdLabelDictionary,
+		}),
 } as const;
 
 // KYC Results
