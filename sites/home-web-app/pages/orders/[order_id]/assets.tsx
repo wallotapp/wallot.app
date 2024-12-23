@@ -157,7 +157,7 @@ const Page: NextPage = () => {
 									these stocks for your portfolio
 								</p>
 							</div>
-							<div>
+							<div className='mt-6 lg:mt-0'>
 								<Link
 									href={getHomeWebAppRoute({
 										includeOrigin: true,
@@ -167,9 +167,9 @@ const Page: NextPage = () => {
 									})}
 								>
 									<button>
-										<div className='bg-black py-1.5 px-8 rounded-sm flex items-center space-x-3'>
+										<div className='bg-black py-1.5 px-10 rounded-sm flex items-center space-x-2'>
 											<div>
-												<FiShoppingCart className='text-white dark:text-brand text-sm' />
+												<FiShoppingCart className='text-white dark:text-brand text-xs' />
 											</div>
 											<div>
 												<p className='text-sm text-white dark:text-brand'>
