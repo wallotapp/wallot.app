@@ -196,7 +196,7 @@ const Page: NextPage = () => {
 	const ContactDetailsForm = () => {
 		return (
 			<div className='relative'>
-				<div className='h-[70vh] overflow-y-auto'>
+				<div className={cn('h-[50vh] overflow-y-auto', 'lg:h-[70vh]')}>
 					<p className='font-semibold text-xl'>Enter your Contact Details</p>
 					<p className='font-extralight text-sm'>
 						This information is stored securely and used in the event that there
@@ -204,7 +204,12 @@ const Page: NextPage = () => {
 					</p>
 					<div className='h-24' />
 				</div>
-				<div className='fixed -bottom-0.5 bg-background py-4 w-full'>
+				<div
+					className={cn(
+						'lg:fixed bg-background py-4',
+						'lg:-bottom-0.5 lg:w-full',
+					)}
+				>
 					<div className='flex justify-between space-x-4'>
 						<div className='flex-1'>
 							<button
@@ -278,7 +283,7 @@ const Page: NextPage = () => {
 										</button>
 									</DialogTrigger>
 									<DialogContent className='!h-[80vh] !max-h-[80vh] !w-[80vw] !max-w-[80vw]'>
-										<div className='mt-4 flex space-x-10'>
+										<div className={cn('mt-4', 'lg:flex lg:space-x-10')}>
 											<div className=''>
 												{BillingInformationSectionEnum.arr.map(
 													(billingInformationSection) => {
@@ -314,8 +319,10 @@ const Page: NextPage = () => {
 											</div>
 											<div
 												className={cn(
-													'max-w-md absolute left-[42%] transform -translate-x-1/2',
-													'',
+													'mt-4',
+													'lg:max-w-md lg:absolute lg:mt-0',
+													'lg:left-[50%] lg:transform lg:-translate-x-1/2',
+													'xl:left-[42%] xl:transform xl:-translate-x-1/2',
 												)}
 											>
 												{activeBillingInformationSection ===

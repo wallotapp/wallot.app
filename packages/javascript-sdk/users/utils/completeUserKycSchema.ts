@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import * as yup from 'yup';
 import {
 	Keys,
@@ -14,6 +15,48 @@ import {
 	alpacaAccountIdentityProperties,
 } from './alpacaAccounts.js';
 
+// ==== Form Schemas ==== //
+
+// Contact
+export const alpacaAccountContactFormDataProperties = {
+	city: alpacaAccountContactProperties.city
+		.nullable(false)
+		.min(1)
+		.required()
+		.defined(),
+	email_address: YupHelpers.emailAddress().required().min(1),
+	phone_number: alpacaAccountContactProperties.phone_number
+		.nullable(false)
+		.min(1)
+		.required()
+		.defined(),
+	postal_code: alpacaAccountContactProperties.postal_code
+		.nullable(false)
+		.min(1)
+		.required()
+		.defined(),
+	state: UsaStateCodeEnum.getDefinedSchema()
+		.required()
+		.default('' as UsaStateCode),
+	street_address_line_1: yup.string().min(1).required().defined(), // "20 N San Mateo Dr"
+	street_address_line_2: yup.string().optional().default(''),
+} as const;
+export const alpacaAccountContactFormDataSchema = yup.object(
+	alpacaAccountContactFormDataProperties,
+);
+export const alpacaAccountContactFormDataSchemaFieldSpecByFieldKey =
+	getFieldSpecByFieldKey(
+		alpacaAccountContactFormDataSchema,
+		Keys(alpacaAccountContactFormDataProperties),
+	);
+export type AlpacaAccountContactFormDataParams = yup.InferType<
+	typeof alpacaAccountContactFormDataSchema
+>;
+
+// Identity
+// Disclosures
+
+// ==== Data Schemas ==== //
 export const completeUserKycProperties = {
 	// agreements (at least one object in the array containing)
 	// - agreement (e.g. "customer_agreement")
@@ -43,25 +86,10 @@ export const completeUserKycProperties = {
 	// - phone_number
 	alpaca_account_contact: yup
 		.object({
-			city: alpacaAccountContactProperties.city
-				.nullable(false)
-				.min(1)
-				.required()
-				.defined(),
-			email_address: YupHelpers.emailAddress().required().min(1),
-			phone_number: alpacaAccountContactProperties.phone_number
-				.nullable(false)
-				.min(1)
-				.required()
-				.defined(),
-			postal_code: alpacaAccountContactProperties.postal_code
-				.nullable(false)
-				.min(1)
-				.required()
-				.defined(),
-			state: UsaStateCodeEnum.getDefinedSchema()
-				.required()
-				.default('' as UsaStateCode),
+			...R.pick(
+				['city', 'email_address', 'phone_number', 'postal_code', 'state'],
+				alpacaAccountContactFormDataProperties,
+			),
 			street_address: yup
 				.array()
 				.of(yup.string().nullable(false).min(1).defined())
