@@ -91,6 +91,16 @@ const Page: NextPage = () => {
 								<div>
 									<p className='font-semibold text-3xl'>Checkout</p>
 								</div>
+								<div className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200'>
+									<div>
+										<p>Billing Information</p>
+									</div>
+								</div>
+								<div className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200'>
+									<div>
+										<p>Payment</p>
+									</div>
+								</div>
 							</div>
 							<div
 								className={cn(
@@ -151,7 +161,7 @@ const Page: NextPage = () => {
 										<Link href='/privacy'>
 											<span className='underline'>Privacy Policy</span>
 										</Link>
-										, and affirm that the tax information you provided is
+										, and affirm that the billing information you provided is
 										accurate and complete to the best of your knowledge. In
 										addition, you agree that you are conducting trading activity
 										at your own risk and that you are responsible for any losses
