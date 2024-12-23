@@ -66,7 +66,6 @@ export const alpacaAccountDisclosuresProperties = {
 	is_affiliated_exchange_or_finra: yup.boolean().nullable().default(null),
 	is_affiliated_exchange_or_iiroc: yup.boolean().nullable().default(null),
 	is_control_person: yup.boolean().nullable().default(null),
-	is_discretionary: yup.boolean().nullable().default(null),
 	is_politically_exposed: yup.boolean().nullable().default(null),
 } as const;
 

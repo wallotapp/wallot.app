@@ -56,28 +56,37 @@ export const kycFormDataProperties = {
 		.default('')
 		.meta({ type: GeneralizedFieldTypeEnum.obj.address_field }),
 	// Disclosures
-	immediate_family_exposed: YupHelpers.booleanDefaultFalse(),
-	is_affiliated_exchange_or_finra: YupHelpers.booleanDefaultFalse(),
-	is_affiliated_exchange_or_iiroc: YupHelpers.booleanDefaultFalse(),
-	is_control_person: YupHelpers.booleanDefaultFalse(),
-	is_discretionary: YupHelpers.booleanDefaultFalse(),
-	is_politically_exposed: YupHelpers.booleanDefaultFalse(),
+	immediate_family_exposed: YupHelpers.booleanDefaultFalse().label(
+		'Does a member of your immediate family hold a controlling position, a position on the board of directors, or a position with policy making abilities in a publicly traded company?',
+	),
+	is_affiliated_exchange_or_finra: YupHelpers.booleanDefaultFalse().label(
+		'Are you are affiliated with an exchange or FINRA?',
+	),
+	is_affiliated_exchange_or_iiroc: YupHelpers.booleanDefaultFalse().label(
+		'Are you are affiliated with an exchange or IIROC?',
+	),
+	is_control_person: YupHelpers.booleanDefaultFalse().label(
+		'Do you hold a controlling position, a position on the board of directors, or a position with policy making abilities in a publicly traded company?',
+	),
+	is_politically_exposed: YupHelpers.booleanDefaultFalse().label(
+		'Are you politically exposed?',
+	),
 	// Identity
 	country_of_birth: alpacaAccountIdentityProperties.country_of_birth
-		.default('')
+		.default('USA')
 		.nullable(false)
 		.min(1)
 		.required()
 		.defined(),
 	country_of_citizenship: alpacaAccountIdentityProperties.country_of_citizenship
-		.default('')
+		.default('USA')
 		.nullable(false)
 		.min(1)
 		.required()
 		.defined(),
 	country_of_tax_residence:
 		alpacaAccountIdentityProperties.country_of_tax_residence
-			.default('')
+			.default('USA')
 			.nullable(false)
 			.min(1)
 			.required()
@@ -88,19 +97,22 @@ export const kycFormDataProperties = {
 		.nullable(false)
 		.min(1)
 		.required()
-		.defined(),
+		.defined()
+		.label('Last Name'),
 	given_name: alpacaAccountIdentityProperties.given_name
 		.default('')
 		.nullable(false)
 		.min(1)
 		.required()
-		.defined(),
+		.defined()
+		.label('First Name'),
 	tax_id: alpacaAccountIdentityProperties.tax_id
 		.default('')
 		.nullable(false)
 		.min(1)
 		.required()
-		.defined(),
+		.defined()
+		.label('Tax ID Number'),
 	tax_id_type: alpacaAccountIdentityProperties.tax_id_type
 		.default('' as AlpacaAccountTaxIdType)
 		.nullable(false)
@@ -145,7 +157,13 @@ export const completeUserKycProperties = {
 	alpaca_account_contact: yup
 		.object({
 			...R.pick(
-				['city', 'email_address', 'phone_number', 'postal_code', 'state'],
+				[
+					'city',
+					'email_address',
+					'phone_number',
+					'postal_code',
+					'state',
+				] as const,
 				kycFormDataProperties,
 			),
 			street_address: yup
@@ -171,7 +189,6 @@ export const completeUserKycProperties = {
 	// 	- is_affiliated_exchange_or_finra
 	// 	- is_politically_exposed
 	// 	- immediate_family_exposed
-	// 	- is_discretionary
 	alpaca_account_disclosures: yup
 		.object(
 			R.pick(
@@ -180,9 +197,8 @@ export const completeUserKycProperties = {
 					'is_affiliated_exchange_or_finra',
 					'is_affiliated_exchange_or_iiroc',
 					'is_control_person',
-					'is_discretionary',
 					'is_politically_exposed',
-				],
+				] as const,
 				kycFormDataProperties,
 			),
 		)
@@ -192,7 +208,6 @@ export const completeUserKycProperties = {
 			is_affiliated_exchange_or_finra: false,
 			is_affiliated_exchange_or_iiroc: false,
 			is_control_person: false,
-			is_discretionary: false,
 			is_politically_exposed: false,
 		}),
 	// identity
@@ -216,7 +231,7 @@ export const completeUserKycProperties = {
 					'given_name',
 					'tax_id',
 					'tax_id_type',
-				],
+				] as const,
 				kycFormDataProperties,
 			),
 		)
