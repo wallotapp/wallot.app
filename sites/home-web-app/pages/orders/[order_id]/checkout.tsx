@@ -14,6 +14,20 @@ import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import Link from 'next/link';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
+import { FiCopy } from 'react-icons/fi';
+import { Button } from 'ergonomic-react/src/components/ui/button';
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from 'ergonomic-react/src/components/ui/dialog';
+import { Input } from 'ergonomic-react/src/components/ui/input';
+import { Label } from 'ergonomic-react/src/components/ui/label';
 
 // ==== Static Page Props ==== //
 
@@ -91,11 +105,49 @@ const Page: NextPage = () => {
 								<div>
 									<p className='font-semibold text-3xl'>Checkout</p>
 								</div>
-								<div className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200'>
-									<div>
-										<p>Billing Information</p>
-									</div>
-								</div>
+								<Dialog>
+									<DialogTrigger asChild>
+										<button
+											className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200 w-full text-left'
+											type='button'
+										>
+											<div>
+												<p>Billing Information</p>
+											</div>
+										</button>
+									</DialogTrigger>
+									<DialogContent className='sm:max-w-md'>
+										<DialogHeader>
+											<DialogTitle>Share link</DialogTitle>
+											<DialogDescription>
+												Anyone who has this link will be able to view this.
+											</DialogDescription>
+										</DialogHeader>
+										<div className='flex items-center space-x-2'>
+											<div className='grid flex-1 gap-2'>
+												<Label htmlFor='link' className='sr-only'>
+													Link
+												</Label>
+												<Input
+													id='link'
+													defaultValue='https://ui.shadcn.com/docs/installation'
+													readOnly
+												/>
+											</div>
+											<Button type='submit' size='sm' className='px-3'>
+												<span className='sr-only'>Copy</span>
+												<FiCopy />
+											</Button>
+										</div>
+										<DialogFooter className='sm:justify-start'>
+											<DialogClose asChild>
+												<Button type='button' variant='secondary'>
+													Close
+												</Button>
+											</DialogClose>
+										</DialogFooter>
+									</DialogContent>
+								</Dialog>
 								<div className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200'>
 									<div>
 										<p>Payment</p>
