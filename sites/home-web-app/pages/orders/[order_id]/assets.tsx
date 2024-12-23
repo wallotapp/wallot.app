@@ -12,6 +12,7 @@ import { AssetOrder } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
+import { Fragment } from 'react';
 
 const AssetOrderCard: React.FC<{ assetOrder: AssetOrder }> = ({
 	assetOrder,
@@ -66,7 +67,8 @@ const Page: NextPage = () => {
 				whereClauses: [['order', '==', order_id]],
 			},
 		});
-	const assetOrders = assetOrderPage?.documents ?? [];
+	const assetOrdersAll = assetOrderPage?.documents ?? [];
+	const assetOrders = assetOrdersAll.filter(() => false);
 
 	// ==== Render ==== //
 	return (
@@ -81,18 +83,44 @@ const Page: NextPage = () => {
 						'lg:py-48 lg:px-28',
 					)}
 				>
-					{isAssetOrderPageLoading && (
-						<div className='flex space-x-4'>
-							{[1, 2, 3].map((_, index) => (
-								<Skeleton className='h-[30rem] w-72' key={index} />
-							))}
+					<div>
+						<div className={cn('', 'lg:flex lg:items-end lg:justify-between')}>
+							<div>
+								<p className='text-5xl'>
+									Wallot AI recommends
+									<br />
+									these stocks for your portfolio
+								</p>
+							</div>
 						</div>
-					)}
-					{assetOrders.map((assetOrder) => {
-						return (
-							<AssetOrderCard key={assetOrder._id} assetOrder={assetOrder} />
-						);
-					})}
+						<div
+							className={cn(
+								'mt-10',
+								'grid grid-cols-1 gap-3',
+								'md:grid-cols-2',
+								'lg:grid-cols-2',
+								'xl:grid-cols-4',
+							)}
+						>
+							{!isAssetOrderPageLoading && (
+								<Fragment>
+									{[1, 2, 3, 4].map((_, index) => (
+										<div className=''>
+											<Skeleton className='h-[30rem] !bg-gray-300' key={index} />
+										</div>
+									))}
+								</Fragment>
+							)}
+							{assetOrders.map((assetOrder) => {
+								return (
+									<AssetOrderCard
+										key={assetOrder._id}
+										assetOrder={assetOrder}
+									/>
+								);
+							})}
+						</div>
+					</div>
 				</div>
 			</div>
 		</PageComponent>
