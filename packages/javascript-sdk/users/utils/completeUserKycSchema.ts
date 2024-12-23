@@ -15,10 +15,12 @@ import {
 	alpacaAccountAgreementsProperties,
 	alpacaAccountContactProperties,
 	alpacaAccountIdentityProperties,
+	AlpacaAccountTaxIdType,
 } from './alpacaAccounts.js';
 
 // ==== Form Schema ==== //
 export const kycFormDataProperties = {
+	// Contact
 	city: alpacaAccountContactProperties.city
 		.nullable(false)
 		.min(1)
@@ -53,6 +55,57 @@ export const kycFormDataProperties = {
 		.optional()
 		.default('')
 		.meta({ type: GeneralizedFieldTypeEnum.obj.address_field }),
+	// Disclosures
+	immediate_family_exposed: YupHelpers.booleanDefaultFalse(),
+	is_affiliated_exchange_or_finra: YupHelpers.booleanDefaultFalse(),
+	is_affiliated_exchange_or_iiroc: YupHelpers.booleanDefaultFalse(),
+	is_control_person: YupHelpers.booleanDefaultFalse(),
+	is_discretionary: YupHelpers.booleanDefaultFalse(),
+	is_politically_exposed: YupHelpers.booleanDefaultFalse(),
+	// Identity
+	country_of_birth: alpacaAccountIdentityProperties.country_of_birth
+		.default('')
+		.nullable(false)
+		.min(1)
+		.required()
+		.defined(),
+	country_of_citizenship: alpacaAccountIdentityProperties.country_of_citizenship
+		.default('')
+		.nullable(false)
+		.min(1)
+		.required()
+		.defined(),
+	country_of_tax_residence:
+		alpacaAccountIdentityProperties.country_of_tax_residence
+			.default('')
+			.nullable(false)
+			.min(1)
+			.required()
+			.defined(),
+	date_of_birth: YupHelpers.date().required().min(1),
+	family_name: alpacaAccountIdentityProperties.family_name
+		.default('')
+		.nullable(false)
+		.min(1)
+		.required()
+		.defined(),
+	given_name: alpacaAccountIdentityProperties.given_name
+		.default('')
+		.nullable(false)
+		.min(1)
+		.required()
+		.defined(),
+	tax_id: alpacaAccountIdentityProperties.tax_id
+		.default('')
+		.nullable(false)
+		.min(1)
+		.required()
+		.defined(),
+	tax_id_type: alpacaAccountIdentityProperties.tax_id_type
+		.default('' as AlpacaAccountTaxIdType)
+		.nullable(false)
+		.required()
+		.defined(),
 } as const;
 export const kycFormDataSchema = yup.object(kycFormDataProperties);
 export const kycFormDataSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
@@ -60,9 +113,6 @@ export const kycFormDataSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
 	Keys(kycFormDataProperties),
 );
 export type KycFormDataParams = yup.InferType<typeof kycFormDataSchema>;
-
-// Identity
-// Disclosures
 
 // ==== Data Schemas ==== //
 export const completeUserKycProperties = {
@@ -123,14 +173,19 @@ export const completeUserKycProperties = {
 	// 	- immediate_family_exposed
 	// 	- is_discretionary
 	alpaca_account_disclosures: yup
-		.object({
-			immediate_family_exposed: YupHelpers.booleanDefaultFalse(),
-			is_affiliated_exchange_or_finra: YupHelpers.booleanDefaultFalse(),
-			is_affiliated_exchange_or_iiroc: YupHelpers.booleanDefaultFalse(),
-			is_control_person: YupHelpers.booleanDefaultFalse(),
-			is_discretionary: YupHelpers.booleanDefaultFalse(),
-			is_politically_exposed: YupHelpers.booleanDefaultFalse(),
-		})
+		.object(
+			R.pick(
+				[
+					'immediate_family_exposed',
+					'is_affiliated_exchange_or_finra',
+					'is_affiliated_exchange_or_iiroc',
+					'is_control_person',
+					'is_discretionary',
+					'is_politically_exposed',
+				],
+				kycFormDataProperties,
+			),
+		)
 		.nullable(false)
 		.default({
 			immediate_family_exposed: false,
@@ -150,46 +205,21 @@ export const completeUserKycProperties = {
 	// - tax_id
 	// - tax_id_type
 	alpaca_account_identity: yup
-		.object({
-			country_of_birth: alpacaAccountIdentityProperties.country_of_birth
-				.nullable(false)
-				.min(1)
-				.required()
-				.defined(),
-			country_of_citizenship:
-				alpacaAccountIdentityProperties.country_of_citizenship
-					.nullable(false)
-					.min(1)
-					.required()
-					.defined(),
-			country_of_tax_residence:
-				alpacaAccountIdentityProperties.country_of_tax_residence
-					.nullable(false)
-					.min(1)
-					.required()
-					.defined(),
-			date_of_birth: YupHelpers.date().required().min(1),
-			family_name: alpacaAccountIdentityProperties.family_name
-				.nullable(false)
-				.min(1)
-				.required()
-				.defined(),
-			given_name: alpacaAccountIdentityProperties.given_name
-				.nullable(false)
-				.min(1)
-				.required()
-				.defined(),
-			tax_id: alpacaAccountIdentityProperties.tax_id
-				.nullable(false)
-				.min(1)
-				.required()
-				.defined(),
-			tax_id_type: alpacaAccountIdentityProperties.tax_id_type
-				.nullable(false)
-				.min(1)
-				.required()
-				.defined(),
-		})
+		.object(
+			R.pick(
+				[
+					'country_of_birth',
+					'country_of_citizenship',
+					'country_of_tax_residence',
+					'date_of_birth',
+					'family_name',
+					'given_name',
+					'tax_id',
+					'tax_id_type',
+				],
+				kycFormDataProperties,
+			),
+		)
 		.nullable(false)
 		.defined()
 		.default({
