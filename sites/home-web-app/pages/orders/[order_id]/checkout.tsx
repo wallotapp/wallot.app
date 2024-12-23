@@ -82,10 +82,10 @@ const Page: NextPage = () => {
 	const siteOriginByTarget = useSiteOriginByTarget();
 
 	// Form Resolver
-	const resolver = useYupValidationResolver(
-		kycFormDataSchema,
-		defaultGeneralizedFormDataTransformationOptions,
-	);
+	const resolver = useYupValidationResolver(kycFormDataSchema, {
+		...defaultGeneralizedFormDataTransformationOptions,
+		phoneNumberFieldKeys: ['phone_number'],
+	});
 
 	// Current User
 	const {
