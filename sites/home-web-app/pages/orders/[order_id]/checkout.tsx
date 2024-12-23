@@ -7,7 +7,13 @@ import {
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
-import { getHomeWebAppRoute, HomeWebAppRouteQueryParams } from '@wallot/js';
+import {
+	CompleteUserKycParams,
+	completeUserKycSchema,
+	completeUserKycSchemaFieldSpecByFieldKey,
+	getHomeWebAppRoute,
+	HomeWebAppRouteQueryParams,
+} from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
@@ -21,6 +27,16 @@ import {
 	DialogTrigger,
 } from 'ergonomic-react/src/components/ui/dialog';
 import { GoCircle, GoCheckCircle } from 'react-icons/go';
+import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
+import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
+import { useForm } from 'react-hook-form';
+import { useUpdateUserMutation } from '@wallot/react/src/features/users';
+import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
+import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
+import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
+import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
+LiteFormFieldContainer; // <== fix this
+LiteFormFieldError; // <== fix this
 
 const BillingInformationSectionEnum = getEnum([
 	'Contact Details',
@@ -61,8 +77,58 @@ const Page: NextPage = () => {
 	// Router
 	const router = useRouter();
 
+	// Toaster
+	const { toast } = useToast();
+
 	// Site Origin by Target
 	const siteOriginByTarget = useSiteOriginByTarget();
+
+	// Form Resolver
+	const resolver = useYupValidationResolver(
+		completeUserKycSchema,
+		defaultGeneralizedFormDataTransformationOptions,
+	);
+
+	// Form
+	const initialFormData =
+		completeUserKycSchema.getDefault() as CompleteUserKycParams;
+	const { control, formState, handleSubmit, reset, setError } =
+		useForm<CompleteUserKycParams>({
+			defaultValues: initialFormData,
+			resolver,
+			shouldUnregister: false,
+		});
+	handleSubmit; // <== fix this
+
+	// Mutation
+	const { mutate: updateUser, isLoading: isUpdateUserRunning } =
+		useUpdateUserMutation({
+			onError: ({ error: { message } }) => {
+				// Show the error message
+				toast({
+					title: 'Error',
+					description: message,
+				});
+				setError('root', {
+					type: 'manual',
+					message: 'An error occurred. Please try again.',
+				});
+
+				// Reset form
+				reset();
+			},
+			onSuccess: async () => {
+				// Show success toast
+				toast({
+					title: 'Success',
+					description: 'Saved your contact details...',
+				});
+
+				// Move to the tax section
+				setActiveBillingInformationSection('Tax Details');
+			},
+		});
+	updateUser; // <== fix this
 
 	// ==== Constants ==== //
 
@@ -83,6 +149,34 @@ const Page: NextPage = () => {
 		...ROUTE_STATIC_PROPS,
 		routeId: ROUTE_RUNTIME_ID,
 	};
+
+	// Form
+	const formStatus =
+		formState.isSubmitting || isUpdateUserRunning ? 'running' : 'idle';
+	const isFormSubmitting = formStatus === 'running';
+	const fields: LiteFormFieldProps<CompleteUserKycParams>[] = [
+		{
+			fieldKey: 'alpaca_account_agreements' as const,
+			renderTooltipContent: () => (
+				<div>
+					This helps us identify stocks with appropriate liquidation horizons
+					and volatility levels
+				</div>
+			),
+		},
+	].map(({ fieldKey, renderTooltipContent }) => ({
+		control,
+		fieldErrors: formState.errors,
+		fieldKey,
+		fieldSpec: completeUserKycSchemaFieldSpecByFieldKey[fieldKey],
+		hideRequiredIndicator: true,
+		initialFormData,
+		isSubmitting: isFormSubmitting,
+		operation: 'create',
+		renderTooltipContent,
+		setError: (message) => setError(fieldKey, { message }),
+	}));
+	fields; // <== fix this
 
 	// ==== Hooks ==== //
 	const { data: assetOrderPage } = useQueryAssetOrderPage({
