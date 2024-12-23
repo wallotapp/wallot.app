@@ -5,10 +5,12 @@ import {
 	PageStaticProps,
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
+import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
+import {default as cn} from 'ergonomic-react/src/lib/cn';
 import { HomeWebAppRouteQueryParams } from '@wallot/js';
 import { AssetOrder } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
-import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
+import { PageHeader } from '@wallot/react/src/components/PageHeader';
 
 const AssetOrderCard: React.FC<{ assetOrder: AssetOrder }> = ({
 	assetOrder,
@@ -68,8 +70,8 @@ const Page: NextPage = () => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<div>
-				<div>Assets</div>
+			<div className={cn('flex flex-col min-h-screen min-w-screen relative')}>
+				<PageHeader showHomeLink={false} />
 				{!isAssetOrderPageLoading && (
 					<div className='flex space-x-4'>
 						{[1, 2, 3].map((_, index) => (
