@@ -22,6 +22,7 @@ import {
 	getCurrencyUsdStringFromCents,
 	getEnum,
 	UsaStateCode,
+	UsaStateCodeEnum,
 } from 'ergonomic';
 import Link from 'next/link';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
@@ -95,7 +96,7 @@ const Page: NextPage = () => {
 	);
 
 	// Current User
-	const { currentUser } = useQueryCurrentUser();
+	const { currentUser, isUserPageLoading } = useQueryCurrentUser();
 
 	// Current Auth Credential
 	const { currentAuthCredential, isAuthCredentialPageLoading } =
@@ -103,9 +104,8 @@ const Page: NextPage = () => {
 
 	// Form
 	const initialFormData = kycFormDataSchema.getDefault() as KycFormDataParams;
-	const { control, formState, handleSubmit, reset, setError, setValue } =
+	const { control, formState, handleSubmit, reset, setError } =
 		useForm<KycFormDataParams>({
-			defaultValues: initialFormData,
 			resolver,
 			shouldUnregister: false,
 		});
@@ -306,20 +306,86 @@ const Page: NextPage = () => {
 	);
 
 	// ==== Effects ==== //
-	const [hasInitializedContactDefaults, setHasInitializedContactDefaults] =
+	const [hasInitializedDefaultValues, setHasInitializedDefaultValues] =
 		useState(false);
 	useEffect(() => {
-		if (hasInitializedContactDefaults) return;
+		if (hasInitializedDefaultValues) return;
 		if (isAuthCredentialPageLoading) return;
-		setHasInitializedContactDefaults(true);
+		if (isUserPageLoading) return;
 		const { emails = [] } = currentAuthCredential ?? {};
-		const email = emails[0];
-		if (!email) return;
-		setValue('email_address', email);
+		const fallbackEmail = emails[0];
+		const defaultValues: KycFormDataParams = {
+			city: currentUser?.alpaca_account_contact?.city ?? initialFormData.city,
+			email_address:
+				currentUser?.alpaca_account_contact?.email_address ??
+				fallbackEmail ??
+				initialFormData.email_address,
+			phone_number:
+				currentUser?.alpaca_account_contact?.phone_number ??
+				initialFormData.phone_number,
+			postal_code:
+				currentUser?.alpaca_account_contact?.postal_code ??
+				initialFormData.postal_code,
+			state: UsaStateCodeEnum.isMember(
+				currentUser?.alpaca_account_contact?.state,
+			)
+				? currentUser?.alpaca_account_contact?.state
+				: initialFormData.state,
+			street_address_line_1:
+				currentUser?.alpaca_account_contact?.street_address?.[0] ??
+				initialFormData.street_address_line_1,
+			street_address_line_2:
+				currentUser?.alpaca_account_contact?.street_address?.[1] ??
+				initialFormData.street_address_line_2,
+			immediate_family_exposed:
+				currentUser?.alpaca_account_disclosures?.immediate_family_exposed ??
+				initialFormData.immediate_family_exposed,
+			is_affiliated_exchange_or_finra:
+				currentUser?.alpaca_account_disclosures
+					?.is_affiliated_exchange_or_finra ??
+				initialFormData.is_affiliated_exchange_or_finra,
+			is_affiliated_exchange_or_iiroc:
+				currentUser?.alpaca_account_disclosures
+					?.is_affiliated_exchange_or_iiroc ??
+				initialFormData.is_affiliated_exchange_or_iiroc,
+			is_control_person:
+				currentUser?.alpaca_account_disclosures?.is_control_person ??
+				initialFormData.is_control_person,
+			is_politically_exposed:
+				currentUser?.alpaca_account_disclosures?.is_politically_exposed ??
+				initialFormData.is_politically_exposed,
+			country_of_birth:
+				currentUser?.alpaca_account_identity?.country_of_birth ??
+				initialFormData.country_of_birth,
+			country_of_citizenship:
+				currentUser?.alpaca_account_identity?.country_of_citizenship ??
+				initialFormData.country_of_citizenship,
+			country_of_tax_residence:
+				currentUser?.alpaca_account_identity?.country_of_tax_residence ??
+				initialFormData.country_of_tax_residence,
+			date_of_birth:
+				currentUser?.alpaca_account_identity?.date_of_birth ??
+				initialFormData.date_of_birth,
+			family_name:
+				currentUser?.alpaca_account_identity?.family_name ??
+				initialFormData.family_name,
+			given_name:
+				currentUser?.alpaca_account_identity?.given_name ??
+				initialFormData.given_name,
+			tax_id:
+				currentUser?.alpaca_account_identity?.tax_id ?? initialFormData.tax_id,
+			tax_id_type:
+				currentUser?.alpaca_account_identity?.tax_id_type ??
+				initialFormData.tax_id_type,
+		};
+		reset(defaultValues);
+		setHasInitializedDefaultValues(true);
 	}, [
 		currentAuthCredential,
+		currentUser,
 		isAuthCredentialPageLoading,
-		hasInitializedContactDefaults,
+		isUserPageLoading,
+		hasInitializedDefaultValues,
 	]);
 
 	// ==== Render ==== //
