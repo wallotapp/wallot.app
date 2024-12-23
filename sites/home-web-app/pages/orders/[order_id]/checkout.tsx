@@ -281,7 +281,7 @@ const Page: NextPage = () => {
 							<div className='flex-1'>
 								<button
 									className='w-full text-center bg-black py-2 rounded-md border'
-									type='button'
+									type='submit'
 								>
 									<p className='font-normal text-sm text-white'>Continue</p>
 								</button>
