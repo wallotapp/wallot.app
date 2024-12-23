@@ -7,6 +7,7 @@ import {
 	GeneralizedFieldTypeEnum,
 	getFieldSpecByFieldKey,
 	YupHelpers,
+	USA_STATE_BY_CODE,
 } from 'ergonomic';
 import { ActivatedUser } from './activateUserSchema.js';
 import { User, usersApi } from '../models/userProperties.js';
@@ -25,28 +26,29 @@ export const alpacaAccountContactFormDataProperties = {
 		.min(1)
 		.required()
 		.defined()
+		.default('')
 		.meta({ type: GeneralizedFieldTypeEnum.obj.address_field }),
 	email_address: YupHelpers.emailAddress().required().min(1),
-	phone_number: alpacaAccountContactProperties.phone_number
+	phone_number: YupHelpers.unitedStatesPhoneNumber()
 		.nullable(false)
 		.min(1)
 		.required()
-		.defined()
-		.meta({ type: GeneralizedFieldTypeEnum.obj.short_text }),
-	postal_code: alpacaAccountContactProperties.postal_code
+		.defined(),
+	postal_code: YupHelpers.unitedStatesPostalCode()
 		.nullable(false)
 		.min(1)
 		.required()
-		.defined()
-		.meta({ type: GeneralizedFieldTypeEnum.obj.address_field }),
+		.defined(),
 	state: UsaStateCodeEnum.getDefinedSchema()
 		.required()
-		.default('' as UsaStateCode),
+		.default('' as UsaStateCode)
+		.meta({ label_by_enum_option: USA_STATE_BY_CODE }),
 	street_address_line_1: yup
 		.string()
 		.min(1)
 		.required()
 		.defined()
+		.default('')
 		.meta({ type: GeneralizedFieldTypeEnum.obj.address_field }), // "20 N San Mateo Dr"
 	street_address_line_2: yup
 		.string()
