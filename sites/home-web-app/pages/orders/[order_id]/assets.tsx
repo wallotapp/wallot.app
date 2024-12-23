@@ -6,7 +6,7 @@ import {
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
-import {default as cn} from 'ergonomic-react/src/lib/cn';
+import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { HomeWebAppRouteQueryParams } from '@wallot/js';
 import { AssetOrder } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
