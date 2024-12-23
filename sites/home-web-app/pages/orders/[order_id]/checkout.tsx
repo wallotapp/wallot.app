@@ -163,7 +163,7 @@ const Page: NextPage = () => {
 	const formStatus =
 		formState.isSubmitting || isUpdateUserRunning ? 'running' : 'idle';
 	const isFormSubmitting = formStatus === 'running';
-	const fields: LiteFormFieldProps<KycFormDataParams>[] = [
+	const contactFields: LiteFormFieldProps<KycFormDataParams>[] = [
 		{ fieldKey: 'email_address' as const },
 		{ fieldKey: 'phone_number' as const },
 		{ fieldKey: 'street_address_line_1' as const },
@@ -171,6 +171,41 @@ const Page: NextPage = () => {
 		{ fieldKey: 'city' as const },
 		{ fieldKey: 'state' as const },
 		{ fieldKey: 'postal_code' as const },
+	].map(({ fieldKey }) => ({
+		control,
+		fieldErrors: formState.errors,
+		fieldKey,
+		fieldSpec: kycFormDataSchemaFieldSpecByFieldKey[fieldKey],
+		hideRequiredIndicator: true,
+		initialFormData,
+		isSubmitting: isFormSubmitting,
+		operation: 'update',
+		renderTooltipContent: undefined,
+		setError: (message) => setError(fieldKey, { message }),
+	}));
+	const taxFields: LiteFormFieldProps<KycFormDataParams>[] = [
+		{ fieldKey: 'given_name' as const },
+		{ fieldKey: 'family_name' as const },
+		{ fieldKey: 'date_of_birth' as const },
+		{ fieldKey: 'tax_id' as const },
+		{ fieldKey: 'tax_id_type' as const },
+	].map(({ fieldKey }) => ({
+		control,
+		fieldErrors: formState.errors,
+		fieldKey,
+		fieldSpec: kycFormDataSchemaFieldSpecByFieldKey[fieldKey],
+		hideRequiredIndicator: true,
+		initialFormData,
+		isSubmitting: isFormSubmitting,
+		operation: 'update',
+		renderTooltipContent: undefined,
+		setError: (message) => setError(fieldKey, { message }),
+	}));
+	const disclosureFields: LiteFormFieldProps<KycFormDataParams>[] = [
+		{ fieldKey: 'is_control_person' as const },
+		{ fieldKey: 'is_affiliated_exchange_or_finra' as const },
+		{ fieldKey: 'is_politically_exposed' as const },
+		{ fieldKey: 'immediate_family_exposed' as const },
 	].map(({ fieldKey }) => ({
 		control,
 		fieldErrors: formState.errors,
@@ -394,8 +429,48 @@ const Page: NextPage = () => {
 															the event that there are problems processing your
 															order
 														</p>
-														<div className='px-1'>
-															{fields.map((fieldProps) => (
+														<div
+															className={cn(
+																'px-1',
+																activeBillingInformationSection ===
+																	'Contact Details'
+																	? ''
+																	: 'hidden',
+															)}
+														>
+															{contactFields.map((fieldProps) => (
+																<LiteFormFieldContainer
+																	key={fieldProps.fieldKey}
+																	{...fieldProps}
+																/>
+															))}
+														</div>
+														<div
+															className={cn(
+																'px-1',
+																activeBillingInformationSection ===
+																	'Tax Details'
+																	? ''
+																	: 'hidden',
+															)}
+														>
+															{taxFields.map((fieldProps) => (
+																<LiteFormFieldContainer
+																	key={fieldProps.fieldKey}
+																	{...fieldProps}
+																/>
+															))}
+														</div>
+														<div
+															className={cn(
+																'px-1',
+																activeBillingInformationSection ===
+																	'Disclosures'
+																	? ''
+																	: 'hidden',
+															)}
+														>
+															{disclosureFields.map((fieldProps) => (
 																<LiteFormFieldContainer
 																	key={fieldProps.fieldKey}
 																	{...fieldProps}
@@ -428,7 +503,30 @@ const Page: NextPage = () => {
 															<div className='flex-1'>
 																<button
 																	className='w-full text-center bg-black py-2 rounded-md border'
-																	type='submit'
+																	type={
+																		activeBillingInformationSection ===
+																		'Disclosures'
+																			? 'submit'
+																			: 'button'
+																	}
+																	onClick={() => {
+																		if (
+																			activeBillingInformationSection ===
+																			'Contact Details'
+																		) {
+																			setActiveBillingInformationSection(
+																				'Tax Details',
+																			);
+																		} else if (
+																			activeBillingInformationSection ===
+																			'Tax Details'
+																		) {
+																			setActiveBillingInformationSection(
+																				'Disclosures',
+																			);
+																		}
+																		return;
+																	}}
 																>
 																	<p className='font-normal text-sm text-white'>
 																		Continue
