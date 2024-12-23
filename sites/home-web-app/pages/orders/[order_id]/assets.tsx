@@ -22,16 +22,22 @@ import { FiShoppingCart } from 'react-icons/fi';
 const AssetOrderCard: React.FC<{
 	assetOrder: AssetOrder;
 	recommendation: Recommendation;
-}> = ({ assetOrder, recommendation }) => {
-	const assetSymbol = assetOrder.alpaca_order_symbol;
-	const { best_investments } = recommendation;
+}> = ({
+	assetOrder: {
+		alpaca_order_qty,
+		alpaca_order_side,
+		alpaca_order_symbol,
+		amount,
+	},
+	recommendation: { best_investments = [] },
+}) => {
 	const investmentRecommendationForAsset = best_investments.find(
-		({ symbol }) => symbol === assetSymbol,
+		({ symbol }) => symbol === alpaca_order_symbol,
 	);
 	if (!investmentRecommendationForAsset) {
 		return null;
 	}
-	const { amount, rationale } = investmentRecommendationForAsset;
+	const { rationale } = investmentRecommendationForAsset;
 	const amountUsdString = getCurrencyUsdStringFromCents(Number(amount) * 100);
 
 	return (
@@ -42,18 +48,12 @@ const AssetOrderCard: React.FC<{
 		>
 			<div className={cn('flex justify-between')}>
 				<div>
-					<p className={cn('text-2xl font-semibold')}>
-						{assetOrder.alpaca_order_symbol}
-					</p>
-					<p className={cn('text-lg font-light')}>
-						{assetOrder.alpaca_order_qty} shares
-					</p>
+					<p className={cn('text-2xl font-semibold')}>{alpaca_order_symbol}</p>
+					<p className={cn('text-lg font-light')}>{alpaca_order_qty} shares</p>
 				</div>
 				<div>
 					<p className={cn('text-2xl font-medium')}>{amountUsdString}</p>
-					<p className={cn('text-lg font-light')}>
-						{assetOrder.alpaca_order_side} order
-					</p>
+					<p className={cn('text-lg font-light')}>{alpaca_order_side} order</p>
 				</div>
 			</div>
 			<div className={cn('mt-5')}>
