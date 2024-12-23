@@ -17,34 +17,38 @@ import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import Link from 'next/link';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
+import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
+import { FiTrendingUp } from 'react-icons/fi';
 
-const AssetOrderCartItem: React.FC<{
-	assetOrder: AssetOrder;
-}> = ({ assetOrder }) => {
-	const amountUsdString = getCurrencyUsdStringFromCents(
-		Number(assetOrder.amount),
-	);
+const AssetOrderCartItem: React.FC<
+	{
+		assetOrder: AssetOrder;
+	} & BaseComponent
+> = ({ assetOrder: { alpaca_order_symbol, amount }, className = '' }) => {
+	const amountUsdString = getCurrencyUsdStringFromCents(Number(amount));
 
 	return (
 		<div
 			className={cn(
-				'bg-white border border-gray-200 rounded-md shadow-md p-6 h-full',
+				'bg-white border border-gray-200 rounded-md shadow-md p-6',
+				className,
 			)}
 		>
-			<div className={cn('flex justify-between')}>
-				<div>
-					<p className={cn('text-2xl font-semibold')}>
-						{assetOrder.alpaca_order_symbol}
-					</p>
-					<p className={cn('text-lg font-light')}>
-						{assetOrder.alpaca_order_qty} shares
-					</p>
+			<div className='flex justify-between items-end'>
+				<div className='flex items-start space-x-4'>
+					<div className='bg-black p-5 rounded-lg w-fit h-fit'>
+						<FiTrendingUp className='text-white text-4xl' />
+					</div>
+					<div>
+						<p className='font-bold text-base'>{alpaca_order_symbol}</p>
+						<p className={cn('text-sm font-light text-gray-600', 'mt-1')}>
+							US Securities Purchase
+						</p>
+					</div>
 				</div>
 				<div>
-					<p className={cn('text-2xl font-medium')}>{amountUsdString}</p>
-					<p className={cn('text-lg font-light')}>
-						{assetOrder.alpaca_order_side} order
-					</p>
+					<p>Order</p>
+					<p>{amountUsdString}</p>
 				</div>
 			</div>
 		</div>
@@ -145,10 +149,11 @@ const Page: NextPage = () => {
 										</Fragment>
 									) : (
 										<Fragment>
-											{assetOrders.map((assetOrder) => {
+											{assetOrders.map((assetOrder, assetOrderIdx) => {
 												return (
 													<AssetOrderCartItem
 														assetOrder={assetOrder}
+														className={cn(assetOrderIdx === 0 ? '' : 'mt-4')}
 														key={assetOrder._id}
 													/>
 												);
