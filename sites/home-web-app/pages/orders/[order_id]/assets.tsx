@@ -33,25 +33,29 @@ const AssetOrderCard: React.FC<{
 
 	return (
 		<div>
-			<div className={cn('bg-white rounded-lg p-6')}>
+			<div
+				className={cn(
+					'bg-white border border-gray-200 rounded-md shadow-md p-6',
+				)}
+			>
 				<div className={cn('flex justify-between')}>
 					<div>
-						<p className={cn('text-2xl font-bold')}>
+						<p className={cn('text-2xl font-semibold')}>
 							{assetOrder.alpaca_order_symbol}
 						</p>
-						<p className={cn('text-lg')}>
+						<p className={cn('text-lg font-light')}>
 							{assetOrder.alpaca_order_qty} shares
 						</p>
 					</div>
 					<div>
-						<p className={cn('text-2xl font-bold')}>{amountUsdString}</p>
-						<p className={cn('text-lg')}>
+						<p className={cn('text-2xl font-medium')}>{amountUsdString}</p>
+						<p className={cn('text-lg font-light')}>
 							{assetOrder.alpaca_order_side} order
 						</p>
 					</div>
 				</div>
 				<div className={cn('mt-4')}>
-					<p className={cn('text-lg')}>{rationale}</p>
+					<p className={cn('text-lg font-extralight')}>{rationale}</p>
 				</div>
 			</div>
 		</div>
