@@ -116,6 +116,37 @@ app.post(
 	},
 );
 
+// ---- Application Routes: Stripe ---- //
+
+// Financial Connections Sessions
+import { createStripeFinancialConnectionsSession } from './app/stripe/financialConnections/createStripeFinancialConnectionsSession.js';
+app.options('*/v0/stripe/financial-connections/sessions', corsPolicy);
+app.post(
+	'*/v0/stripe/financial-connections/sessions',
+	(
+		req: express.Request<
+			Record<string, never>,
+			{ client_secret: string },
+			Record<string, never>,
+			Record<string, never>
+		>,
+		res: express.Response<
+			{ client_secret: string },
+			GeneralizedResLocals<{ client_secret: string }>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(
+				auth,
+				secrets,
+			)(createStripeFinancialConnectionsSession)(req, res, next),
+		);
+	},
+);
+
 // ---- Health Checks ---- //
 
 // Gmail API
