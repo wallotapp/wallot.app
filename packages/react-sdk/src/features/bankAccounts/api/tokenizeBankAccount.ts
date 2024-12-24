@@ -18,6 +18,9 @@ export const tokenizeBankAccount = async (
 
 		const data = await getAuthenticatedKyInstance(firebaseUser)
 			.post(`v0/bank-accounts/${bankAccountId}/tokenize`, {
+				headers: {
+					'X-Obfuscate-Request-Body-Properties': 'account_number',
+				},
 				json: params,
 			})
 			.json<TokenizeBankAccountResponse>();
