@@ -87,10 +87,12 @@ const BANK_LOGOS: Record<string, string> = {
 
 type BankIconProps = BaseComponent & {
 	bankName: string | null;
+	size?: number;
 };
 export const BankIcon: React.FC<BankIconProps> = ({
 	bankName,
 	className = '',
+	size = 32,
 }) => {
 	const bankLogo = bankName == null ? null : BANK_LOGOS[bankName];
 
@@ -112,8 +114,8 @@ export const BankIcon: React.FC<BankIconProps> = ({
 			className={className}
 			src={bankLogo}
 			alt={`${bankName} logo`}
-			width={40}
-			height={40}
+			width={size}
+			height={size}
 		/>
 	);
 };
