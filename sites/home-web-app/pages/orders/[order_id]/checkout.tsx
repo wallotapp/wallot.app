@@ -979,7 +979,7 @@ const Page: NextPage = () => {
 															[institutionName, bankAccounts = []],
 															institutionGroupIdx,
 														) => {
-															const isOpen =
+															const isInstitutionAccordionOpen =
 																!isInstitutionAccordionClosed(institutionName);
 															return (
 																<div
@@ -998,7 +998,7 @@ const Page: NextPage = () => {
 																		)}
 																	>
 																		<div>
-																			{isOpen ? (
+																			{isInstitutionAccordionOpen ? (
 																				<BsFillCaretDownFill className='text-gray-400 text-xs' />
 																			) : (
 																				<BsFillCaretRightFill className='text-gray-400 text-xs' />
@@ -1019,7 +1019,9 @@ const Page: NextPage = () => {
 																	<div
 																		className={cn(
 																			'overflow-hidden mt-4 px-6',
-																			isOpen ? '' : 'hidden',
+																			isInstitutionAccordionOpen
+																				? ''
+																				: 'hidden',
 																		)}
 																	>
 																		{bankAccounts.map((bankAccount) => {
