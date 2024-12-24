@@ -865,15 +865,17 @@ const Page: NextPage = () => {
 												)}
 												key={bankAccount._id}
 											>
-												<div className='flex items-center space-x-4'>
-													<BankIcon bankName={bankAccount.institution_name} />
-													<div className=''>
-														<p className='font-medium text-sm'>
-															{bankAccount.name}{' '}
-															<span className='font-light text-xs'>
-																(#{bankAccount.last_4})
-															</span>
-														</p>
+												<div className='flex items-center justify-between'>
+													<div className='flex items-center space-x-4'>
+														<BankIcon bankName={bankAccount.institution_name} />
+														<div className=''>
+															<p className='font-medium text-sm'>
+																{bankAccount.name}{' '}
+																<span className='font-light text-xs'>
+																	(········{bankAccount.last_4})
+																</span>
+															</p>
+														</div>
 													</div>
 												</div>
 											</div>
