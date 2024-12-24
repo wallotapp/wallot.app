@@ -11,6 +11,8 @@ import {
 import {
 	ActivateUserResponse,
 	ActivateUserParams,
+	ConnectBankAccountsParams,
+	ConnectBankAccountsResponse,
 	CreateStripeFinancialConnectionsSessionParams,
 	CreateStripeFinancialConnectionsSessionResponse,
 	RegisterUserParams,
@@ -32,6 +34,32 @@ const app = express.default();
 app.use(express.json());
 
 // ---- Application Routes: Wallot ---- //
+
+// Bank Accounts
+import { connectBankAccounts } from './app/wallot/bankAccounts/connectBankAccounts.js';
+app.options('*/v0/bank-accounts/connect', corsPolicy);
+app.post(
+	'*/v0/bank-accounts/connect',
+	(
+		req: express.Request<
+			Record<string, never>,
+			ConnectBankAccountsResponse,
+			ConnectBankAccountsParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			ConnectBankAccountsResponse,
+			GeneralizedResLocals<ConnectBankAccountsResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(connectBankAccounts)(req, res, next),
+		);
+	},
+);
 
 // Users
 import { registerUser } from './app/wallot/users/registerUser.js';
