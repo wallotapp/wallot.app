@@ -15,6 +15,7 @@ import {
 	getHomeWebAppRoute,
 	HomeWebAppRouteQueryParams,
 	getSsoWebAppRoute,
+	isBankAccountTokenized,
 } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
@@ -40,7 +41,7 @@ import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/Lite
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { FiChevronDown, FiChevronLeft } from 'react-icons/fi';
-import { GoCheckCircle, GoCheckCircleFill, GoPlus } from 'react-icons/go';
+import { GoCheckCircleFill, GoPlus } from 'react-icons/go';
 import {
 	useCreateStripeFinancialConnectionSessionMutation,
 	useQueryBankAccountsForLoggedInUser,
@@ -117,8 +118,11 @@ const Page: NextPage = () => {
 		isBankAccountPageLoading,
 		refetch: refetchBankAccountsForLoggedInUser,
 	} = useQueryBankAccountsForLoggedInUser();
-	refetchBankAccountsForLoggedInUser; // <== Use this
+	const tokenizedBankAccountsForLoggedInUser =
+		bankAccountsForLoggedInUser.filter(isBankAccountTokenized);
 	const userHasAtLeastOneBankAccount = bankAccountsForLoggedInUser.length > 0;
+	const userHasAtLeastOneTokenizedBankAccount =
+		tokenizedBankAccountsForLoggedInUser.length > 0;
 
 	// Form
 	const initialFormData = kycFormDataSchema.getDefault() as KycFormDataParams;
@@ -523,7 +527,7 @@ const Page: NextPage = () => {
 	const isCompletePurchaseButtonDisabled =
 		isContinueButtonDisabled ||
 		!isBillingInformationSectionComplete ||
-		!userHasAtLeastOneBankAccount;
+		!userHasAtLeastOneTokenizedBankAccount;
 
 	// ==== Render ==== //
 	return (
@@ -852,10 +856,24 @@ const Page: NextPage = () => {
 										</div>
 									</div>
 								</div>
-								<div className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200'>
+								<div
+									className={cn(
+										'mt-8 rounded-xl bg-white border px-5 py-6 w-full text-left',
+										userHasAtLeastOneTokenizedBankAccount
+											? 'border-slate-400'
+											: 'border-slate-200',
+									)}
+								>
 									<div className='flex justify-between'>
-										<div>
-											<p className='font-semibold text-xl'>Payment</p>
+										<div className='flex items-center space-x-2'>
+											{userHasAtLeastOneTokenizedBankAccount && (
+												<div>
+													<GoCheckCircleFill className='text-2xl text-slate-700 font-semibold' />
+												</div>
+											)}
+											<div>
+												<p className='font-semibold text-xl'>Payment</p>
+											</div>
 										</div>
 										{isBankAccountPageLoading ? (
 											<div>
