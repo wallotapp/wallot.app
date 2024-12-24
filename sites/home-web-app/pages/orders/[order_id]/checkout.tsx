@@ -879,10 +879,12 @@ const Page: NextPage = () => {
 															'border-t-brand border-r-brand border-b-brand',
 														)}
 													></div>
-													<p className='font-normal text-sm'>Connecting...</p>
+													<p className='font-normal text-sm text-white'>
+														Connecting...
+													</p>
 												</div>
 											) : (
-												<p className='font-normal text-sm'>
+												<p className='font-normal text-sm text-white'>
 													Add a Bank Account
 												</p>
 											)}
