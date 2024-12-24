@@ -157,6 +157,20 @@ const Page: NextPage = () => {
 		bankAccountsForLoggedInUser,
 	);
 	const [
+		bankAccountIdsWithTokenizationFormShown,
+		setBankAccountIdsWithTokenizationFormShown,
+	] = useState<string[]>([]);
+	const isTokenizationFormShown = (bankAccountId: string) => {
+		return bankAccountIdsWithTokenizationFormShown.includes(bankAccountId);
+	};
+	const toggleTokenizationFormShown = (bankAccountId: string) => () => {
+		setBankAccountIdsWithTokenizationFormShown((prev) =>
+			prev.includes(bankAccountId)
+				? prev.filter((x) => x !== bankAccountId)
+				: [...prev, bankAccountId],
+		);
+	};
+	const [
 		bankAccountIdsWithRoutingNumberShown,
 		setBankAccountIdsWithRoutingNumberShown,
 	] = useState<string[]>([]);
@@ -1025,18 +1039,32 @@ const Page: NextPage = () => {
 																		)}
 																	>
 																		{bankAccounts.map((bankAccount) => {
+																			const showTokenizationForm =
+																				isTokenizationFormShown(
+																					bankAccount._id,
+																				);
+																			const handleToggleTokenizationForm =
+																				toggleTokenizationFormShown(
+																					bankAccount._id,
+																				);
+																			handleToggleTokenizationForm; // <== use this in a toggler
 																			const showRoutingNumber =
 																				isRoutingNumberShown(bankAccount._id);
 																			const handleToggleRoutingNumber =
 																				toggleRoutingNumberShown(
 																					bankAccount._id,
 																				);
+																			const isTokenized =
+																				isBankAccountTokenized(bankAccount);
+																			const isDefault =
+																				defaultBankAccountId ===
+																				bankAccount._id;
 																			return (
 																				<div
 																					key={bankAccount._id}
 																					className={cn(
 																						'flex items-start justify-between border rounded-md p-4 mt-2 bg-slate-50/10',
-																						Math.random()
+																						!isTokenized && isDefault
 																							? 'border-amber-900'
 																							: 'border-slate-200',
 																					)}
@@ -1053,8 +1081,7 @@ const Page: NextPage = () => {
 																								</span>
 																							</p>
 																						</div>
-																						{defaultBankAccountId ===
-																							bankAccount._id && (
+																						{isDefault && (
 																							<div
 																								className={cn(
 																									'flex items-center space-x-2',
@@ -1067,7 +1094,14 @@ const Page: NextPage = () => {
 																							</div>
 																						)}
 																					</div>
-																					<div className='w-1/2'>
+																					<div
+																						className={cn(
+																							'w-1/2',
+																							showTokenizationForm
+																								? ''
+																								: 'hidden',
+																						)}
+																					>
 																						<div className='text-right'>
 																							<p className='font-semibold text-xs text-right'>
 																								Routing Number
