@@ -40,7 +40,10 @@ import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/compon
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { FiChevronDown, FiChevronLeft } from 'react-icons/fi';
 import { GoCheckCircle } from 'react-icons/go';
-import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts';
+import {
+	useCreateStripeFinancialConnectionSessionMutation,
+	useQueryBankAccountsForLoggedInUser,
+} from '@wallot/react/src/features/bankAccounts';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 
 const BillingInformationSectionEnum = getEnum([
@@ -94,8 +97,12 @@ const Page: NextPage = () => {
 	} = useQueryCurrentUser();
 
 	// Bank Accounts for Logged In User
-	const { bankAccountsForLoggedInUser, isBankAccountPageLoading } =
-		useQueryBankAccountsForLoggedInUser();
+	const {
+		bankAccountsForLoggedInUser,
+		isBankAccountPageLoading,
+		refetch: refetchBankAccountsForLoggedInUser,
+	} = useQueryBankAccountsForLoggedInUser();
+	refetchBankAccountsForLoggedInUser; // <== Use this
 	const userHasAtLeastOneBankAccount = bankAccountsForLoggedInUser.length > 0;
 
 	// Form
@@ -137,6 +144,17 @@ const Page: NextPage = () => {
 				await refetchUser();
 			},
 		});
+
+	// Mutation
+	const {
+		mutate: createStripeFinancialConnectionSession,
+		isLoading: isCreateStripeFinancialConnectionSessionRunning,
+	} = useCreateStripeFinancialConnectionSessionMutation({
+		onError: () => void 0,
+		onSuccess: () => void 0,
+	});
+	createStripeFinancialConnectionSession; // <== Use this
+	isCreateStripeFinancialConnectionSessionRunning; // <== Use this
 
 	// ==== Constants ==== //
 
