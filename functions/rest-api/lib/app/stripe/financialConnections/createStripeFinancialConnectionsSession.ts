@@ -1,15 +1,22 @@
 import { type Stripe } from 'stripe';
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { FunctionResponse } from '@wallot/node';
-import { User, usersApi } from '@wallot/js';
+import {
+	CreateStripeFinancialConnectionsSessionParams,
+	CreateStripeFinancialConnectionsSessionResponse,
+	User,
+	usersApi,
+} from '@wallot/js';
 import { db, stripe } from '../../../services.js';
 
 export const createStripeFinancialConnectionsSession = async (
-	_body: Record<string, never>,
+	_body: CreateStripeFinancialConnectionsSessionParams,
 	_params: Record<string, never>,
 	_query: Record<string, never>,
 	firebaseUser: FirebaseUser | null,
-): Promise<FunctionResponse<{ client_secret: string }>> => {
+): Promise<
+	FunctionResponse<CreateStripeFinancialConnectionsSessionResponse>
+> => {
 	if (!firebaseUser) throw new Error('Unauthorized');
 
 	// Locate USER by Firebase UID

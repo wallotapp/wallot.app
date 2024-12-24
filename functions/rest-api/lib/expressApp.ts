@@ -11,6 +11,8 @@ import {
 import {
 	ActivateUserResponse,
 	ActivateUserParams,
+	CreateStripeFinancialConnectionsSessionParams,
+	CreateStripeFinancialConnectionsSessionResponse,
 	RegisterUserParams,
 	RegisterUserResponse,
 	User,
@@ -125,14 +127,14 @@ app.post(
 	'*/v0/stripe/financial-connections/sessions',
 	(
 		req: express.Request<
-			Record<string, never>,
-			{ client_secret: string },
+			CreateStripeFinancialConnectionsSessionParams,
+			CreateStripeFinancialConnectionsSessionResponse,
 			Record<string, never>,
 			Record<string, never>
 		>,
 		res: express.Response<
-			{ client_secret: string },
-			GeneralizedResLocals<{ client_secret: string }>
+			CreateStripeFinancialConnectionsSessionResponse,
+			GeneralizedResLocals<CreateStripeFinancialConnectionsSessionResponse>
 		>,
 		next,
 	) => {
