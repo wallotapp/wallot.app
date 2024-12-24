@@ -155,6 +155,20 @@ const Page: NextPage = () => {
 		({ institution_name }) => institution_name ?? 'Bank',
 		bankAccountsForLoggedInUser,
 	);
+	const [
+		bankAccountIdsWithRoutingNumberShown,
+		setBankAccountIdsWithRoutingNumberShown,
+	] = useState<string[]>([]);
+	const isRoutingNumberShown = (bankAccountId: string) => {
+		return bankAccountIdsWithRoutingNumberShown.includes(bankAccountId);
+	};
+	const toggleRoutingNumberShown = (bankAccountId: string) => () => {
+		setBankAccountIdsWithRoutingNumberShown((prev) =>
+			prev.includes(bankAccountId)
+				? prev.filter((x) => x !== bankAccountId)
+				: [...prev, bankAccountId],
+		);
+	};
 
 	// Form
 	const initialFormData = kycFormDataSchema.getDefault() as KycFormDataParams;
@@ -1000,6 +1014,12 @@ const Page: NextPage = () => {
 																		)}
 																	>
 																		{bankAccounts.map((bankAccount) => {
+																			const showRoutingNumber =
+																				isRoutingNumberShown(bankAccount._id);
+																			const handleToggleRoutingNumber =
+																				toggleRoutingNumberShown(
+																					bankAccount._id,
+																				);
 																			return (
 																				<div
 																					key={bankAccount._id}
@@ -1037,20 +1057,50 @@ const Page: NextPage = () => {
 																						)}
 																					</div>
 																					<div className='w-1/2'>
-																						<div>
-																							<p className='text-xs text-right'>
-																								Routing number
+																						<div className='text-right'>
+																							<p className='font-semibold text-xs text-right'>
+																								Routing Number
 																								<span className='text-amber-900'>
 																									*
 																								</span>
 																							</p>
-																							<p className='text-right'>
-																								{bankAccount.routing_number}
-																							</p>
+																							<div className='flex items-center space-x-2 justify-end'>
+																								<div>
+																									<button
+																										className='font-light text-xs'
+																										type='button'
+																										onClick={
+																											handleToggleRoutingNumber
+																										}
+																									>
+																										{showRoutingNumber ? (
+																											<p className=''>Hide</p>
+																										) : (
+																											<p className=''>Show</p>
+																										)}
+																									</button>
+																								</div>
+																								<div>
+																									{showRoutingNumber ? (
+																										<p className=''>
+																											{
+																												bankAccount.routing_number
+																											}
+																										</p>
+																									) : (
+																										<p className=''>
+																											·····
+																											{bankAccount.routing_number?.slice(
+																												-4,
+																											) ?? ''}
+																										</p>
+																									)}
+																								</div>
+																							</div>
 																						</div>
 																						<div className='mt-2'>
-																							<p className='text-xs text-right'>
-																								Account number
+																							<p className='font-semibold text-xs text-right'>
+																								Confirm Account Number
 																								<span className='text-amber-900'>
 																									*
 																								</span>
@@ -1058,7 +1108,7 @@ const Page: NextPage = () => {
 																							<input
 																								className='border border-amber-900 h-8 rounded-md text-xs px-2 w-full'
 																								placeholder={
-																									'Confirm account number ····' +
+																									'Account number ending in ····' +
 																									bankAccount.last_4
 																								}
 																							/>
