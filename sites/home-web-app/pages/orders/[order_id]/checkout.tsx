@@ -45,6 +45,7 @@ import {
 	useQueryBankAccountsForLoggedInUser,
 } from '@wallot/react/src/features/bankAccounts';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
+import { stripePromise } from 'ergonomic-react/src/lib/stripe';
 
 const BillingInformationSectionEnum = getEnum([
 	'Contact Details',
@@ -146,12 +147,51 @@ const Page: NextPage = () => {
 		});
 
 	// Mutation
+	const connectBankAccounts = (_params: unknown) => void 0; // <== Fix this
 	const {
 		mutate: createStripeFinancialConnectionSession,
 		isLoading: isCreateStripeFinancialConnectionSessionRunning,
 	} = useCreateStripeFinancialConnectionSessionMutation({
-		onError: () => void 0,
-		onSuccess: () => void 0,
+		onError: ({ error: { message } }) => {
+			// Show the error message
+			toast({
+				title: 'Error connecting to your bank account',
+				description: message,
+			});
+			setError('root', {
+				type: 'manual',
+				message:
+					'An error occurred connecting to your bank account. Please try again.',
+			});
+		},
+		onSuccess: async ({ client_secret: clientSecret }) => {
+			const stripe = await stripePromise;
+			if (!stripe) {
+				toast({
+					title: 'Error',
+					description: 'Failed to connect to Stripe',
+				});
+				return;
+			}
+			const { financialConnectionsSession } =
+				await stripe.collectFinancialConnectionsAccounts({
+					clientSecret,
+				});
+			if (!financialConnectionsSession) {
+				throw new Error('Failed to collect financial connections accounts');
+			}
+			console.log(
+				'Financial connections session:',
+				financialConnectionsSession,
+			);
+			const { accounts } = financialConnectionsSession;
+			const accountIds: string[] = accounts.map((account) => account.id);
+			connectBankAccounts({
+				stripe_financial_connections_account_ids: accountIds.map((id) => ({
+					stripe_financial_account_id: id,
+				})),
+			});
+		},
 	});
 	createStripeFinancialConnectionSession; // <== Use this
 	isCreateStripeFinancialConnectionSessionRunning; // <== Use this
