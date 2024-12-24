@@ -999,45 +999,74 @@ const Page: NextPage = () => {
 																			isOpen ? '' : 'hidden',
 																		)}
 																	>
-																		{bankAccounts.map((bankAccount) => (
-																			<div
-																				key={bankAccount._id}
-																				className={cn(
-																					'flex items-center justify-between border border-slate-200 rounded-md p-4 mt-2 bg-slate-50/10',
-																				)}
-																			>
-																				<div className='flex items-center space-x-3'>
-																					<div>
-																						<p className='font-normal text-sm'>
-																							{bankAccount.name} &nbsp;
-																							<span className='font-extrabold monospace text-gray-600'>
-																								· · · ·
-																							</span>{' '}
-																							<span className='font-extralight monospace text-gray-600 text-xs'>
-																								{bankAccount.last_4}
-																							</span>
-																						</p>
-																					</div>
-																					{defaultBankAccountId ===
-																						bankAccount._id && (
-																						<div
-																							className={cn(
-																								'flex items-center space-x-2',
-																								'bg-green-800 py-0.5 px-2.5 rounded-full',
-																							)}
-																						>
-																							<p className='font-light text-xs text-white'>
-																								Default
+																		{bankAccounts.map((bankAccount) => {
+																			return (
+																				<div
+																					key={bankAccount._id}
+																					className={cn(
+																						'flex items-start justify-between border rounded-md p-4 mt-2 bg-slate-50/10',
+																						Math.random()
+																							? 'border-amber-900'
+																							: 'border-slate-200',
+																					)}
+																				>
+																					<div className='flex items-center space-x-3'>
+																						<div>
+																							<p className='font-normal text-sm'>
+																								{bankAccount.name} &nbsp;
+																								<span className='font-extrabold monospace text-gray-600'>
+																									· · · ·
+																								</span>{' '}
+																								<span className='font-extralight monospace text-gray-600 text-xs'>
+																									{bankAccount.last_4}
+																								</span>
 																							</p>
 																						</div>
-																					)}
+																						{defaultBankAccountId ===
+																							bankAccount._id && (
+																							<div
+																								className={cn(
+																									'flex items-center space-x-2',
+																									'bg-green-800 py-0.5 px-2.5 rounded-full',
+																								)}
+																							>
+																								<p className='font-light text-xs text-white'>
+																									Default
+																								</p>
+																							</div>
+																						)}
+																					</div>
+																					<div className='w-1/2'>
+																						<div>
+																							<p className='text-xs text-right'>
+																								Routing number
+																								<span className='text-amber-900'>
+																									*
+																								</span>
+																							</p>
+																							<p className='text-right'>
+																								{bankAccount.routing_number}
+																							</p>
+																						</div>
+																						<div className='mt-2'>
+																							<p className='text-xs text-right'>
+																								Account number
+																								<span className='text-amber-900'>
+																									*
+																								</span>
+																							</p>
+																							<input
+																								className='border border-amber-900 h-8 rounded-md text-xs px-2 w-full'
+																								placeholder={
+																									'Confirm account number ····' +
+																									bankAccount.last_4
+																								}
+																							/>
+																						</div>
+																					</div>
 																				</div>
-																				<input
-																					className='border border-slate-300 h-10 rounded-md w-1/2 text-sm px-2'
-																					placeholder='Enter account number'
-																				/>
-																			</div>
-																		))}
+																			);
+																		})}
 																	</div>
 																</div>
 															);
