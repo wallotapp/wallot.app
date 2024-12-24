@@ -46,7 +46,6 @@ erDiagram
 	OPEN_AI_MODEL_FAMILY ||--o{ OPEN_AI_MODEL : "owns"
 	ORDER ||--o{ ASSET_ORDER : "owns"
 	RECOMMENDATION ||--|{ OPEN_AI_API_REQUEST_IDS : "owns"
-	USER ||--|| AUTH_CREDENTIAL : "owns"
 	USER ||--o{ IDENTITY_VERIFICATION_DOCUMENT : "owns"
 	USER ||--|| LICENSE : "owns"
 	USER ||--o{ ORDER : "owns"
@@ -98,9 +97,6 @@ erDiagram
   }
   ASSET_PRICE {
     string asset FK "min(1)"
-  }
-  AUTH_CREDENTIAL {
-    string user FK "min(1)"
   }
   BANK_ACCOUNT {
     string alpaca_ach_relationship_id UK "nullable"
