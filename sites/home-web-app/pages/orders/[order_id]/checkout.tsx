@@ -134,11 +134,12 @@ const Page: NextPage = () => {
 				return 0;
 			},
 		);
-	const tokenizedBankAccountsForLoggedInUser =
-		bankAccountsForLoggedInUser.filter(isBankAccountTokenized);
 	const userHasAtLeastOneBankAccount = bankAccountsForLoggedInUser.length > 0;
-	const userHasAtLeastOneTokenizedBankAccount =
-		tokenizedBankAccountsForLoggedInUser.length > 0;
+	const defaultBankAccount = bankAccountsForLoggedInUser.find(
+		({ _id }) => _id === defaultBankAccountId,
+	);
+	const isDefaultBankAccountTokenized =
+		defaultBankAccount != null && isBankAccountTokenized(defaultBankAccount);
 	const [institutionAccordionsClosed, setInstitutionAccordionsClosed] =
 		useState<string[]>([]);
 	const isInstitutionAccordionClosed = (institutionName: string) => {
@@ -573,7 +574,7 @@ const Page: NextPage = () => {
 	const isCompletePurchaseButtonDisabled =
 		isContinueButtonDisabled ||
 		!isBillingInformationSectionComplete ||
-		!userHasAtLeastOneTokenizedBankAccount;
+		!isDefaultBankAccountTokenized;
 
 	// ==== Render ==== //
 	return (
@@ -905,14 +906,14 @@ const Page: NextPage = () => {
 								<div
 									className={cn(
 										'mt-8 rounded-xl bg-white border px-5 py-6 w-full text-left',
-										userHasAtLeastOneTokenizedBankAccount
+										isDefaultBankAccountTokenized
 											? 'border-slate-400'
 											: 'border-slate-200',
 									)}
 								>
 									<div className='flex justify-between'>
 										<div className='flex items-center space-x-2'>
-											{userHasAtLeastOneTokenizedBankAccount && (
+											{isDefaultBankAccountTokenized && (
 												<div>
 													<GoCheckCircleFill className='text-2xl text-slate-700 font-semibold' />
 												</div>
