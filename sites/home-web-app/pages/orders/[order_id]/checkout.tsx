@@ -151,7 +151,30 @@ const Page: NextPage = () => {
 	const {
 		mutate: connectBankAccounts,
 		isLoading: isConnectBankAccountsRunning,
-	} = useConnectBankAccountsMutation();
+	} = useConnectBankAccountsMutation({
+		onError: ({ error: { message } }) => {
+			// Show the error message
+			toast({
+				title: 'Error connecting to your bank account',
+				description: message,
+			});
+			setError('root', {
+				type: 'manual',
+				message:
+					'An error occurred connecting to your bank account. Please try again.',
+			});
+		},
+		onSuccess: async () => {
+			// Show success toast
+			toast({
+				title: 'Success',
+				description: 'Connecting your bank accounts...',
+			});
+
+			// Refetch the bank accounts
+			await refetchBankAccountsForLoggedInUser();
+		},
+	});
 	const {
 		mutate: createStripeFinancialConnectionSession,
 		isLoading: isCreateStripeFinancialConnectionSessionRunning,
@@ -195,7 +218,6 @@ const Page: NextPage = () => {
 			});
 		},
 	});
-	createStripeFinancialConnectionSession; // <== Use this
 
 	// ==== Constants ==== //
 
@@ -317,6 +339,10 @@ const Page: NextPage = () => {
 			: activeBillingInformationSection === 'Tax Details'
 			? !isTaxDetailsSectionComplete
 			: false);
+	const isConnectBankButtonDisabled =
+		isFormSubmitting ||
+		isConnectBankAccountsRunning ||
+		isCreateStripeFinancialConnectionSessionRunning;
 
 	// ==== Functions ==== //
 
@@ -834,6 +860,34 @@ const Page: NextPage = () => {
 											</div>
 										))}
 									</div>
+									{bankAccountsForLoggedInUser.length === 0 && (
+										<button
+											className={cn(
+												'py-2.5 px-10 rounded-md flex items-center justify-center space-x-2 w-full',
+												isConnectBankButtonDisabled
+													? 'bg-slate-500'
+													: 'bg-black',
+											)}
+											onClick={() => createStripeFinancialConnectionSession({})}
+											disabled={isConnectBankButtonDisabled}
+										>
+											{isConnectBankButtonDisabled ? (
+												<div className='flex items-center justify-center space-x-2'>
+													<div
+														className={cn(
+															'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
+															'border-t-brand border-r-brand border-b-brand',
+														)}
+													></div>
+													<p className='font-normal text-sm'>Connecting...</p>
+												</div>
+											) : (
+												<p className='font-normal text-sm'>
+													Add a Bank Account
+												</p>
+											)}
+										</button>
+									)}
 								</div>
 							</div>
 							<div
