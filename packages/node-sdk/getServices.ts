@@ -8,6 +8,8 @@ import {
 import { SecretData } from './SecretDataTypes.js';
 import { getAlpacaBrokerApiClient } from './alpaca/index.js';
 import { getAlphaVantageClient } from './alphaVantage/index.js';
+import { encryptString } from './crypto/encryptString.js';
+import { decryptString } from './crypto/decryptString.js';
 import { log } from './log.js';
 
 export const getServices = (secrets: SecretData) => ({
@@ -17,6 +19,14 @@ export const getServices = (secrets: SecretData) => ({
 	bucket: getCloudStorageBucket(
 		secrets.SECRET_CRED_FIREBASE_PROJECT_STORAGE_BUCKET_NAME,
 	),
+	crypto: {
+		encrypt: encryptString(
+			secrets.SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY,
+		),
+		decrypt: decryptString(
+			secrets.SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY,
+		),
+	},
 	db: getFirestoreDB(secrets),
 	log: log(secrets.SECRET_CRED_SERVER_PROTOCOL),
 	openAI: new OpenAI({
