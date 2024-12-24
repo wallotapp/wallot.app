@@ -217,7 +217,9 @@ export const connectBankAccounts = async (
 		}
 		// Add the BankAccount to the batch
 		const bankAccountsCollectionId = bankAccountsApi.collectionId;
-		const bankAccountDoc = db.collection(bankAccountsCollectionId).doc();
+		const bankAccountDoc = db
+			.collection(bankAccountsCollectionId)
+			.doc(bankAccount._id);
 		batch.set(bankAccountDoc, bankAccount);
 	}
 	log({
