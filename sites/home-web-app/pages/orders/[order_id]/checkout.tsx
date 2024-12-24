@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -40,7 +40,7 @@ import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/Lite
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { FiChevronDown, FiChevronLeft } from 'react-icons/fi';
-import { GoCheckCircle } from 'react-icons/go';
+import { GoCheckCircle, GoPlus } from 'react-icons/go';
 import {
 	useCreateStripeFinancialConnectionSessionMutation,
 	useQueryBankAccountsForLoggedInUser,
@@ -49,7 +49,6 @@ import {
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { stripePromise } from 'ergonomic-react/src/lib/stripe';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
-import { BankIcon } from '@wallot/react/src/components/BankIcon';
 
 const BillingInformationSectionEnum = getEnum([
 	'Contact Details',
@@ -849,68 +848,44 @@ const Page: NextPage = () => {
 									</div>
 								</div>
 								<div className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200'>
-									<div>
-										<p className='font-semibold text-xl'>Payment</p>
-									</div>
-									{isBankAccountPageLoading && (
+									<div className='flex justify-between'>
 										<div>
-											<Skeleton className='w-full h-8' />
+											<p className='font-semibold text-xl'>Payment</p>
 										</div>
-									)}
-									<div>
-										{bankAccountsForLoggedInUser.map((bankAccount) => (
-											<div
-												className={cn(
-													'py-4 px-4 rounded-md border border-slate-200 mt-4',
-												)}
-												key={bankAccount._id}
-											>
-												<div className='flex items-center justify-between'>
-													<div className='flex items-center space-x-4'>
-														<BankIcon bankName={bankAccount.institution_name} />
-														<div className=''>
-															<p className='font-medium text-sm'>
-																{bankAccount.name}{' '}
-																<span className='font-light text-xs'>
-																	(········{bankAccount.last_4})
-																</span>
+										{isBankAccountPageLoading ? (
+											<div>
+												<Skeleton className='w-36 h-8' />
+											</div>
+										) : (
+											<div>
+												<button
+													className={cn(
+														'bg-slate-50 border border-slate-300',
+														'flex items-center justify-center space-x-2',
+														'rounded-md text-center p-2 w-fit',
+													)}
+													type='button'
+													disabled={isConnectBankButtonDisabled}
+													onClick={() =>
+														createStripeFinancialConnectionSession({})
+													}
+												>
+													<Fragment>
+														<div>
+															<GoPlus />
+														</div>
+														<div>
+															<p className='font-normal text-sm'>
+																Add
+																{userHasAtLeastOneBankAccount ? ' another' : ''}{' '}
+																account
 															</p>
 														</div>
-													</div>
-												</div>
+													</Fragment>
+												</button>
 											</div>
-										))}
+										)}
 									</div>
-									{bankAccountsForLoggedInUser.length === 0 && (
-										<button
-											className={cn(
-												'py-2.5 px-10 rounded-md flex items-center justify-center space-x-2 w-full',
-												isConnectBankButtonDisabled
-													? 'bg-slate-500'
-													: 'bg-black',
-											)}
-											onClick={() => createStripeFinancialConnectionSession({})}
-											disabled={isConnectBankButtonDisabled}
-										>
-											{isConnectBankButtonDisabled ? (
-												<div className='flex items-center justify-center space-x-2'>
-													<div
-														className={cn(
-															'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
-															'border-t-brand border-r-brand border-b-brand',
-														)}
-													></div>
-													<p className='font-normal text-sm text-white'>
-														Connecting...
-													</p>
-												</div>
-											) : (
-												<p className='font-normal text-sm text-white'>
-													Add a Bank Account
-												</p>
-											)}
-										</button>
-									)}
 								</div>
 							</div>
 							<div
