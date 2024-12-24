@@ -98,12 +98,12 @@ export const BankIcon: React.FC<BankIconProps> = ({
 
 	if (bankLogo == null) {
 		return (
-			<div className={cn('flex items-center space-x-2', className)}>
+			<div className={cn('flex flex-col items-center space-y-0.5', className)}>
 				<div>
-					<BsBank className='text-base' />
+					<BsBank className='text-xl' />
 				</div>
 				<div className=''>
-					<p className='font-light text-sm'>{bankName}</p>
+					<p className='font-light text-xs'>{bankName}</p>
 				</div>
 			</div>
 		);
