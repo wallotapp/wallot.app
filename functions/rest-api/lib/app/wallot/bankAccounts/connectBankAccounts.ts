@@ -224,6 +224,12 @@ export const connectBankAccounts = async (
 			.collection(bankAccountsCollectionId)
 			.doc(bankAccount._id);
 		batch.set(bankAccountDoc, bankAccount);
+
+		// Log the BankAccount
+		log({
+			message: 'Bank account created with _id ' + bankAccount._id,
+			bankAccount,
+		});
 	}
 	log({
 		message: 'Default bank account ID',
