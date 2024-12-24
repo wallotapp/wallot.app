@@ -264,6 +264,11 @@ export const connectBankAccounts = async (
 					default_payment_method: defaultPaymentMethodId,
 				},
 			});
+
+			// Log the success
+			log(
+				`Default payment method with ID ${defaultPaymentMethodId} set on Stripe customer with ID ${stripe_customer_id}`,
+			);
 		},
 	};
 };
