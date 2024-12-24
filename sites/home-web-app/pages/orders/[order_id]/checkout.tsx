@@ -125,14 +125,13 @@ const Page: NextPage = () => {
 	const userHasAtLeastOneBankAccount = bankAccountsForLoggedInUser.length > 0;
 	const userHasAtLeastOneTokenizedBankAccount =
 		tokenizedBankAccountsForLoggedInUser.length > 0;
-	const [institutionAccordionsOpen, setInstitutionAccordionsOpen] = useState<
-		string[]
-	>([]);
-	const isInstitutionAccordionOpen = (institutionName: string) => {
-		return institutionAccordionsOpen.includes(institutionName);
+	const [institutionAccordionsClosed, setInstitutionAccordionsClosed] =
+		useState<string[]>([]);
+	const isInstitutionAccordionClosed = (institutionName: string) => {
+		return institutionAccordionsClosed.includes(institutionName);
 	};
 	const toggleInstitutionAccordion = (institutionName: string) => () => {
-		setInstitutionAccordionsOpen((prev) =>
+		setInstitutionAccordionsClosed((prev) =>
 			prev.includes(institutionName)
 				? prev.filter((x) => x !== institutionName)
 				: [...prev, institutionName],
@@ -949,7 +948,7 @@ const Page: NextPage = () => {
 													{Object.entries(bankAccountsByInstitution).map(
 														([institutionName, bankAccounts = []]) => {
 															const isOpen =
-																isInstitutionAccordionOpen(institutionName);
+																!isInstitutionAccordionClosed(institutionName);
 															return (
 																<div key={institutionName}>
 																	<div
