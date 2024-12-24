@@ -89,40 +89,49 @@ export const connectBankAccounts = async (
 	});
 
 	for (const unlinkedAccountId of unlinkedAccountIds) {
-		// Create a PaymentMethod directly from the financial connections account
-		const paymentMethod = await stripe.paymentMethods.create({
-			type: 'us_bank_account',
-			us_bank_account: {
-				financial_connections_account: unlinkedAccountId,
-			},
-		});
-		log({
-			message:
-				'PaymentMethod created from array loop over unlinked account IDs',
-			paymentMethod,
-			unlinkedAccountId,
-		});
+		try {
+			// Create a PaymentMethod directly from the financial connections account
+			const paymentMethod = await stripe.paymentMethods.create({
+				type: 'us_bank_account',
+				us_bank_account: {
+					financial_connections_account: unlinkedAccountId,
+				},
+			});
+			log({
+				message:
+					'PaymentMethod created from array loop over unlinked account IDs',
+				paymentMethod,
+				unlinkedAccountId,
+			});
 
-		// Attach the newly created PaymentMethod to the Stripe customer
-		const attachedPaymentMethod = await stripe.paymentMethods.attach(
-			paymentMethod.id,
-			{
-				customer: stripe_customer_id,
-			},
-		);
-		log({
-			message:
-				'PaymentMethod attached to Stripe customer from array loop over unlinked account IDs',
-			attachedPaymentMethod,
-			unlinkedAccountId,
-		});
+			// Attach the newly created PaymentMethod to the Stripe customer
+			const attachedPaymentMethod = await stripe.paymentMethods.attach(
+				paymentMethod.id,
+				{
+					customer: stripe_customer_id,
+				},
+			);
+			log({
+				message:
+					'PaymentMethod attached to Stripe customer from array loop over unlinked account IDs',
+				attachedPaymentMethod,
+				unlinkedAccountId,
+			});
 
-		// Add the new PaymentMethod to the mapping
-		paymentMethodDataByAccountId[unlinkedAccountId] = {
-			description: paymentMethod.us_bank_account?.account_type ?? 'Account',
-			id: paymentMethod.id,
-			name: paymentMethod.us_bank_account?.last4 ?? '****',
-		};
+			// Add the new PaymentMethod to the mapping
+			paymentMethodDataByAccountId[unlinkedAccountId] = {
+				description: paymentMethod.us_bank_account?.account_type ?? 'Account',
+				id: paymentMethod.id,
+				name: paymentMethod.us_bank_account?.last4 ?? '****',
+			};
+		} catch (error) {
+			// Log the error and continue with the next iteration
+			log({
+				message: 'Error processing unlinkedAccountId',
+				error,
+				unlinkedAccountId,
+			});
+		}
 	}
 	log({
 		message: 'PaymentMethod data by Account ID at step 2',
