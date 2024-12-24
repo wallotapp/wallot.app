@@ -50,7 +50,7 @@ import {
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { stripePromise } from 'ergonomic-react/src/lib/stripe';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
-import { BsFillCaretDownFill } from 'react-icons/bs';
+import { BsFillCaretDownFill, BsFillCaretRightFill } from 'react-icons/bs';
 import { BankIcon } from '@wallot/react/src/components/BankIcon';
 
 const BillingInformationSectionEnum = getEnum([
@@ -947,64 +947,70 @@ const Page: NextPage = () => {
 												</div>
 												<div className='mt-4'>
 													{Object.entries(bankAccountsByInstitution).map(
-														([institutionName, bankAccounts = []]) => (
-															<div key={institutionName}>
-																<div
-																	className={cn(
-																		'flex items-center space-x-3',
-																		'cursor-pointer',
-																	)}
-																	onClick={toggleInstitutionAccordion(
-																		institutionName,
-																	)}
-																>
-																	<div>
-																		<BsFillCaretDownFill className='text-gray-400 text-xs' />
-																	</div>
-																	<div>
-																		<BankIcon
-																			bankName={institutionName}
-																			showBankNameAsTitle
-																			subtitle={`${
-																				bankAccounts.length
-																			} linked account${
-																				bankAccounts.length > 1 ? 's' : ''
-																			}`}
-																		/>
-																	</div>
-																</div>
-																<div
-																	className={cn(
-																		'border-t border-slate-200',
-																		'overflow-hidden',
-																		isInstitutionAccordionOpen(institutionName)
-																			? ''
-																			: 'hidden',
-																	)}
-																>
-																	{bankAccounts.map((bankAccount) => (
-																		<div
-																			key={bankAccount._id}
-																			className={cn(
-																				'flex items-center justify-between',
-																				'cursor-pointer',
+														([institutionName, bankAccounts = []]) => {
+															const isOpen =
+																isInstitutionAccordionOpen(institutionName);
+															return (
+																<div key={institutionName}>
+																	<div
+																		className={cn(
+																			'flex items-center space-x-3',
+																			'cursor-pointer',
+																		)}
+																		onClick={toggleInstitutionAccordion(
+																			institutionName,
+																		)}
+																	>
+																		<div>
+																			{isOpen ? (
+																				<BsFillCaretDownFill className='text-gray-400 text-xs' />
+																			) : (
+																				<BsFillCaretRightFill className='text-gray-400 text-xs' />
 																			)}
-																		>
-																			<div>
-																				<p className='font-semibold text-sm'>
-																					{bankAccount.name}
-																				</p>
-																			</div>
-																			<div>
-																				<p className='font-normal text-sm'>
-																					{bankAccount.last_4}
-																				</p>
-																			</div>
 																		</div>
-																	))}
+																		<div>
+																			<BankIcon
+																				bankName={institutionName}
+																				showBankNameAsTitle
+																				subtitle={`${
+																					bankAccounts.length
+																				} linked account${
+																					bankAccounts.length > 1 ? 's' : ''
+																				}`}
+																			/>
+																		</div>
+																	</div>
+																	<div
+																		className={cn(
+																			'border-t border-slate-200',
+																			'overflow-hidden',
+																			isOpen ? '' : 'hidden',
+																		)}
+																	>
+																		{bankAccounts.map((bankAccount) => (
+																			<div
+																				key={bankAccount._id}
+																				className={cn(
+																					'flex items-center justify-between',
+																					'cursor-pointer',
+																				)}
+																			>
+																				<div>
+																					<p className='font-semibold text-sm'>
+																						{bankAccount.name}
+																					</p>
+																				</div>
+																				<div>
+																					<p className='font-normal text-sm'>
+																						{bankAccount.last_4}
+																					</p>
+																				</div>
+																			</div>
+																		))}
+																	</div>
 																</div>
-															</div>
-														),
+															);
+														},
 													)}
 												</div>
 											</div>
