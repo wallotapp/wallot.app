@@ -1,3 +1,4 @@
+export * from '@wallot/react/src/features/bankAccounts/hooks/useConnectBankAccountsMutation';
 export * from '@wallot/react/src/features/bankAccounts/hooks/useCreateBankAccountMutation';
 export * from '@wallot/react/src/features/bankAccounts/hooks/useCreateStripeFinancialConnectionsSessionMutation';
 export * from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountPage';
