@@ -19,7 +19,7 @@ import {
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
 import { variables } from './variables.js';
-import { auth, db } from './services.js';
+import { auth } from './services.js';
 import { directoryPath } from './directoryPath.js';
 
 // ---- Create Express App ---- //
@@ -52,11 +52,9 @@ app.post(
 		corsPolicy(
 			req,
 			res,
-			createRouterFunction(
-				auth,
-				db,
-				secrets,
-			)(registerUser, { requiresAuth: false })(req, res, next),
+			createRouterFunction(auth, secrets)(registerUser, {
+				requiresAuth: false,
+			})(req, res, next),
 		);
 	},
 );
@@ -81,7 +79,7 @@ app.post(
 		corsPolicy(
 			req,
 			res,
-			createRouterFunction(auth, db, secrets)(activateUser)(req, res, next),
+			createRouterFunction(auth, secrets)(activateUser)(req, res, next),
 		);
 	},
 );
@@ -109,7 +107,7 @@ app.post(
 		corsPolicy(
 			req,
 			res,
-			createRouterFunction(auth, db, secrets)(createFirebaseAuthCustomToken)(
+			createRouterFunction(auth, secrets)(createFirebaseAuthCustomToken)(
 				req,
 				res,
 				next,

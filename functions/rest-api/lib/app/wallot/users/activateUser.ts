@@ -29,10 +29,9 @@ export const activateUser = async (
 	}: ActivateUserParams,
 	_params: Record<string, never>,
 	_query: Record<string, never>,
-	_firebaseUser: FirebaseUser | null,
-	userId: string | null,
+	firebaseUser: FirebaseUser | null,
 ): Promise<FunctionResponse<ActivateUserResponse>> => {
-	if (!userId) throw new Error('Unauthorized');
+	if (firebaseUser == null) throw new Error('Unauthorized');
 
 	// Initialize a Firestore batch transaction
 	const batch = db.batch();
@@ -51,7 +50,7 @@ export const activateUser = async (
 		parameters: compatibleParameterIds,
 	};
 	batch.update(
-		db.collection(usersApi.collectionId).doc(userId),
+		db.collection(usersApi.collectionId).doc(firebaseUser.uid),
 		updateUserParams,
 	);
 
@@ -61,7 +60,7 @@ export const activateUser = async (
 		capital_level,
 		investing_goals,
 		risk_preference,
-		userId,
+		userId: firebaseUser.uid,
 		compatibleParameters,
 	});
 	batch.set(
@@ -76,7 +75,7 @@ export const activateUser = async (
 			_id: orderDocId,
 			category: 'default',
 			name: '',
-			user: userId,
+			user: firebaseUser.uid,
 		},
 	});
 	batch.set(db.collection(ordersApi.collectionId).doc(orderDocId), orderDoc);
@@ -110,16 +109,16 @@ export const activateUser = async (
 	// Construct the post-response callback
 	const onFinished = async () => {
 		// Cancel activation reminder emails for USER (if any are remaining)
-		await cancelActivationReminderEmails({ userId });
+		await cancelActivationReminderEmails({ userId: firebaseUser.uid });
 
 		// Place USER in email cohorts best fit for her PARAMETERs
-		await placeUserInEmailCohorts({ userId });
+		await placeUserInEmailCohorts({ userId: firebaseUser.uid });
 
 		// Schedule order completion reminder email for USER
-		await scheduleOrderCompletionReminderEmail({ userId });
+		await scheduleOrderCompletionReminderEmail({ userId: firebaseUser.uid });
 
 		// Schedule week-1 retention email for USER
-		await scheduleWeek1RetentionEmail({ userId });
+		await scheduleWeek1RetentionEmail({ userId: firebaseUser.uid });
 	};
 
 	// Construct the redirect URL using ORDER
