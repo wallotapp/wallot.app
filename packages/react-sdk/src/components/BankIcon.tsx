@@ -86,15 +86,15 @@ const BANK_LOGOS: Record<string, string> = {
 };
 
 type BankIconProps = BaseComponent & {
-	bankName: string;
+	bankName: string | null;
 };
 export const BankIcon: React.FC<BankIconProps> = ({
 	bankName,
 	className = '',
 }) => {
-	const bankLogo = BANK_LOGOS[bankName];
+	const bankLogo = bankName == null ? null : BANK_LOGOS[bankName];
 
-	if (!bankLogo) {
+	if (bankLogo == null) {
 		return (
 			<div className={cn('flex items-center space-x-2', className)}>
 				<div>
