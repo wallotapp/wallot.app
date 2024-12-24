@@ -14,6 +14,7 @@ import {
 	kycFormDataSchemaFieldSpecByFieldKey,
 	getHomeWebAppRoute,
 	HomeWebAppRouteQueryParams,
+	getSsoWebAppRoute,
 } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
@@ -47,6 +48,7 @@ import {
 } from '@wallot/react/src/features/bankAccounts';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { stripePromise } from 'ergonomic-react/src/lib/stripe';
+import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 
 const BillingInformationSectionEnum = getEnum([
 	'Contact Details',
@@ -76,14 +78,25 @@ const Page: NextPage = () => {
 
 	// ==== Hooks ==== //
 
+	// Site Origin by Target
+	const siteOriginByTarget = useSiteOriginByTarget();
+
+	// Auth
+	useAuthenticatedRouteRedirect({
+		authSiteOrigin: siteOriginByTarget.SSO_WEB_APP,
+		loginRoutePath: getSsoWebAppRoute({
+			includeOrigin: false,
+			origin: null,
+			queryParams: {},
+			routeStaticId: 'SSO_WEB_APP__/LOGIN',
+		}),
+	});
+
 	// Router
 	const router = useRouter();
 
 	// Toaster
 	const { toast } = useToast();
-
-	// Site Origin by Target
-	const siteOriginByTarget = useSiteOriginByTarget();
 
 	// Form Resolver
 	const resolver = useYupValidationResolver(kycFormDataSchema, {

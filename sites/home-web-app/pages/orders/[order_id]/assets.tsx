@@ -7,7 +7,11 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
-import { getHomeWebAppRoute, HomeWebAppRouteQueryParams } from '@wallot/js';
+import {
+	getHomeWebAppRoute,
+	HomeWebAppRouteQueryParams,
+	getSsoWebAppRoute,
+} from '@wallot/js';
 import { AssetOrder, Recommendation } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { useQueryRecommendationPage } from '@wallot/react/src/features/recommendations';
@@ -18,6 +22,7 @@ import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import Link from 'next/link';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { FiShoppingCart } from 'react-icons/fi';
+import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 
 const AssetOrderCard: React.FC<{
 	assetOrder: AssetOrder;
@@ -85,11 +90,22 @@ type RouteQueryParams = HomeWebAppRouteQueryParams[typeof ROUTE_STATIC_ID];
 const Page: NextPage = () => {
 	// ==== Hooks ==== //
 
-	// Router
-	const router = useRouter();
-
 	// Site Origin by Target
 	const siteOriginByTarget = useSiteOriginByTarget();
+
+	// Auth
+	useAuthenticatedRouteRedirect({
+		authSiteOrigin: siteOriginByTarget.SSO_WEB_APP,
+		loginRoutePath: getSsoWebAppRoute({
+			includeOrigin: false,
+			origin: null,
+			queryParams: {},
+			routeStaticId: 'SSO_WEB_APP__/LOGIN',
+		}),
+	});
+
+	// Router
+	const router = useRouter();
 
 	// ==== Constants ==== //
 
