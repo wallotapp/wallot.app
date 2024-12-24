@@ -6,7 +6,6 @@ import {
 	AvatarFallback,
 	AvatarImage,
 } from 'ergonomic-react/src/components/ui/avatar';
-import { useQueryAuthCredentialPage } from '@wallot/react/src/features/authCredentials';
 
 export type UserNameTagProps = BaseComponent & {
 	user: User | undefined;
@@ -17,15 +16,6 @@ export const UserNameTag: React.FC<UserNameTagProps> = ({
 	user,
 	showSubtitle = false,
 }) => {
-	const { data: authCredential } = useQueryAuthCredentialPage({
-		firestoreQueryOptions: {
-			whereClauses: [['user', '==', user?._id]],
-		},
-		reactQueryOptions: {
-			enabled: user?._id != null && showSubtitle === 'email',
-		},
-	});
-
 	return (
 		<div
 			className={cn('flex items-center px-4 py-3 space-x-2 w-full', className)}
@@ -53,7 +43,7 @@ export const UserNameTag: React.FC<UserNameTagProps> = ({
 				{showSubtitle === 'email' && (
 					<div>
 						<p className={cn('text-gray-500 text-[0.75rem]')}>
-							{authCredential?.documents?.[0]?.emails?.[0]}
+							{user?.firebase_auth_emails?.[0]}
 						</p>
 					</div>
 				)}

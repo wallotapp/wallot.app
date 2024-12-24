@@ -9,7 +9,6 @@ import {
 import cn from 'ergonomic-react/src/lib/cn';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import { useQueryCurrentUser } from '@wallot/react/src/features/users';
-import { useQueryCurrentAuthCredential } from '@wallot/react/src/features/authCredentials';
 import Link from 'next/link';
 import { useState } from 'react';
 import { getHomeWebAppRoute } from '@wallot/js';
@@ -23,7 +22,6 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 	className = '',
 }) => {
 	const [isLoggingOut, setIsLoggingOut] = useState(false);
-	const { currentAuthCredential } = useQueryCurrentAuthCredential();
 	const { currentUser } = useQueryCurrentUser();
 	// Site Origin by Target
 	const siteOriginByTarget = useSiteOriginByTarget();
@@ -54,7 +52,7 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 					</div>
 					<div>
 						<p className='text-gray-500 text-[0.66rem]'>
-							{currentAuthCredential?.emails?.[0]}
+							{currentUser?.firebase_auth_emails?.[0]}
 						</p>
 					</div>
 				</div>

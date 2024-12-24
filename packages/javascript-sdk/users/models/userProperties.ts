@@ -35,6 +35,7 @@ export type UserCategory = keyof typeof UserCategoryEnum.obj;
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
 	'activation_reminder_task_id',
+	'firebase_auth_emails',
 	'stripe_customer_id',
 	'username',
 ] as const);
@@ -70,6 +71,9 @@ const properties = {
 		.default(null)
 		.nullable()
 		.meta({ unique_key: true }),
+	firebase_auth_emails: YupHelpers.array(YupHelpers.emailAddress())
+		.defined()
+		.min(1),
 	investing_goals: YupHelpers.array(InvestingGoalEnum.getDefinedSchema()).meta({
 		label_message_user_text:
 			'Tell us a bit about your goals, for example, retirement or purchasing a home',

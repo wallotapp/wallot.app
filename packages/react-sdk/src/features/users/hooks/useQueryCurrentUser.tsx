@@ -1,14 +1,16 @@
+import { AuthContext } from 'ergonomic-react/src/features/authentication/providers/AuthProvider';
+import { useContext } from 'react';
 import { useQueryUserPage } from '@wallot/react/src/features/users/hooks/useQueryUserPage';
-import { useQueryCurrentAuthCredential } from '@wallot/react/src/features/authCredentials/hooks/useQueryCurrentAuthCredential';
 
 export const useQueryCurrentUser = () => {
-	const { currentAuthCredential } = useQueryCurrentAuthCredential();
-	const isUserSignedIn = currentAuthCredential != null;
+	const { user } = useContext(AuthContext);
+
+	const isUserSignedIn = user?.uid != null;
 
 	const isUserPageQueryEnabled = isUserSignedIn;
 	const userPageQueryObserver = useQueryUserPage({
 		firestoreQueryOptions: {
-			whereClauses: [['_id', '==', currentAuthCredential?.user]],
+			whereClauses: [['_id', '==', user?.uid]],
 		},
 		reactQueryOptions: {
 			enabled: isUserPageQueryEnabled,
