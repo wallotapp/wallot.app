@@ -8,6 +8,7 @@ import {
 	usersApi,
 } from '@wallot/js';
 import { db, log, stripe } from '../../../services.js';
+import { variables } from '../../../variables.js';
 
 export const createStripeFinancialConnectionsSession = async (
 	_body: CreateStripeFinancialConnectionsSessionParams,
@@ -33,12 +34,17 @@ export const createStripeFinancialConnectionsSession = async (
 			type: 'customer',
 		},
 		permissions: [
-			'account_numbers' as unknown as Stripe.FinancialConnections.SessionCreateParams.Permission,
-			'balances',
-			'ownership',
-			'payment_method',
-			'transactions',
-		],
+			'balances' as const,
+			'ownership' as const,
+			'payment_method' as const,
+			'transactions' as const,
+			variables.SERVER_VAR_FEATURE_FLAGS.ENABLE_ACCOUNT_NUMBERS_STRIPE_PERMISSION
+				? ('account_numbers' as unknown as Stripe.FinancialConnections.SessionCreateParams.Permission)
+				: null,
+		].filter(
+			(permission): permission is Exclude<typeof permission, null> =>
+				permission != null,
+		),
 	});
 	log({
 		message: 'Stripe Financial Connections session created',
