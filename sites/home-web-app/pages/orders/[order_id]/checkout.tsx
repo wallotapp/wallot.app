@@ -50,6 +50,8 @@ import {
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { stripePromise } from 'ergonomic-react/src/lib/stripe';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
+import { BsFillCaretDownFill } from 'react-icons/bs';
+import { BankIcon } from '@wallot/react/src/components/BankIcon';
 
 const BillingInformationSectionEnum = getEnum([
 	'Contact Details',
@@ -949,7 +951,7 @@ const Page: NextPage = () => {
 															<div key={institutionName}>
 																<div
 																	className={cn(
-																		'flex items-center justify-between',
+																		'flex items-center space-x-2',
 																		'cursor-pointer',
 																	)}
 																	onClick={toggleInstitutionAccordion(
@@ -957,12 +959,10 @@ const Page: NextPage = () => {
 																	)}
 																>
 																	<div>
-																		<p className='font-semibold text-base'>
-																			{institutionName}
-																		</p>
+																		<BsFillCaretDownFill className='text-gray-300 text-sm' />
 																	</div>
 																	<div>
-																		<FiChevronDown />
+																		<BankIcon bankName={institutionName} />
 																	</div>
 																</div>
 																<div
