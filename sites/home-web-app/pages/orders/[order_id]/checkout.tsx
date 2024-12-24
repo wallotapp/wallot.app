@@ -123,6 +123,23 @@ const Page: NextPage = () => {
 	const userHasAtLeastOneBankAccount = bankAccountsForLoggedInUser.length > 0;
 	const userHasAtLeastOneTokenizedBankAccount =
 		tokenizedBankAccountsForLoggedInUser.length > 0;
+	const [institutionAccordionsOpen, setInstitutionAccordionsOpen] = useState<
+		string[]
+	>([]);
+	const isInstitutionAccordionOpen = (institutionName: string) => {
+		return institutionAccordionsOpen.includes(institutionName);
+	};
+	const toggleInstitutionAccordion = (institutionName: string) => () => {
+		setInstitutionAccordionsOpen((prev) =>
+			prev.includes(institutionName)
+				? prev.filter((x) => x !== institutionName)
+				: [...prev, institutionName],
+		);
+	};
+	const bankAccountsByInstitution = R.groupBy(
+		({ institution_name }) => institution_name ?? 'Bank',
+		bankAccountsForLoggedInUser,
+	);
 
 	// Form
 	const initialFormData = kycFormDataSchema.getDefault() as KycFormDataParams;
@@ -911,6 +928,80 @@ const Page: NextPage = () => {
 											</div>
 										)}
 									</div>
+									{userHasAtLeastOneBankAccount && (
+										<Fragment>
+											<Separator className='my-5' />
+											<div className=''>
+												<div>
+													<p className='font-semibold text-base'>
+														Linked Accounts
+													</p>
+												</div>
+												<div>
+													<p className='font-light text-sm'>
+														Manage the linked accounts that fund your Wallot
+														account
+													</p>
+												</div>
+												<div className='mt-4'>
+													{Object.entries(bankAccountsByInstitution).map(
+														([institutionName, bankAccounts = []]) => (
+															<div key={institutionName}>
+																<div
+																	className={cn(
+																		'flex items-center justify-between',
+																		'cursor-pointer',
+																	)}
+																	onClick={toggleInstitutionAccordion(
+																		institutionName,
+																	)}
+																>
+																	<div>
+																		<p className='font-semibold text-base'>
+																			{institutionName}
+																		</p>
+																	</div>
+																	<div>
+																		<FiChevronDown />
+																	</div>
+																</div>
+																<div
+																	className={cn(
+																		'border-t border-slate-200',
+																		'overflow-hidden',
+																		isInstitutionAccordionOpen(institutionName)
+																			? ''
+																			: 'hidden',
+																	)}
+																>
+																	{bankAccounts.map((bankAccount) => (
+																		<div
+																			key={bankAccount._id}
+																			className={cn(
+																				'flex items-center justify-between',
+																				'cursor-pointer',
+																			)}
+																		>
+																			<div>
+																				<p className='font-semibold text-sm'>
+																					{bankAccount.name}
+																				</p>
+																			</div>
+																			<div>
+																				<p className='font-normal text-sm'>
+																					{bankAccount.last_4}
+																				</p>
+																			</div>
+																		</div>
+																	))}
+																</div>
+															</div>
+														),
+													)}
+												</div>
+											</div>
+										</Fragment>
+									)}
 								</div>
 							</div>
 							<div
