@@ -6,7 +6,6 @@ import { useUpdateAchTransferMutation } from '@wallot/react/src/features/achTran
 import { useUpdateAssetMutation } from '@wallot/react/src/features/assets';
 import { useUpdateAssetOrderMutation } from '@wallot/react/src/features/assetOrders';
 import { useUpdateAssetPriceMutation } from '@wallot/react/src/features/assetPrices';
-import { useUpdateAuthCredentialMutation } from '@wallot/react/src/features/authCredentials';
 import { useUpdateBankAccountMutation } from '@wallot/react/src/features/bankAccounts';
 import { useUpdateIdentityVerificationDocumentMutation } from '@wallot/react/src/features/identityVerificationDocuments';
 import { useUpdateInvoiceMutation } from '@wallot/react/src/features/invoices';
@@ -32,7 +31,6 @@ const updateOperationMutationMap = {
 	asset: useUpdateAssetMutation,
 	asset_order: useUpdateAssetOrderMutation,
 	asset_price: useUpdateAssetPriceMutation,
-	auth_credential: useUpdateAuthCredentialMutation,
 	bank_account: useUpdateBankAccountMutation,
 	identity_verification_document: useUpdateIdentityVerificationDocumentMutation,
 	invoice: useUpdateInvoiceMutation,

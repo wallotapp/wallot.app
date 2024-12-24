@@ -4,7 +4,6 @@ import { achTransfersApi } from '../achTransfers/index.js';
 import { assetsApi } from '../assets/index.js';
 import { assetOrdersApi } from '../assetOrders/index.js';
 import { assetPricesApi } from '../assetPrices/index.js';
-import { authCredentialsApi } from '../authCredentials/index.js';
 import { bankAccountsApi } from '../bankAccounts/index.js';
 import { identityVerificationDocumentsApi } from '../identityVerificationDocuments/index.js';
 import { invoicesApi } from '../invoices/index.js';
@@ -32,8 +31,6 @@ export const getApiResourceSpec = (
 			return assetOrdersApi as unknown as GeneralizedApiResourceSpec;
 		case 'asset_price':
 			return assetPricesApi as unknown as GeneralizedApiResourceSpec;
-		case 'auth_credential':
-			return authCredentialsApi as unknown as GeneralizedApiResourceSpec;
 		case 'bank_account':
 			return bankAccountsApi as unknown as GeneralizedApiResourceSpec;
 		case 'identity_verification_document':

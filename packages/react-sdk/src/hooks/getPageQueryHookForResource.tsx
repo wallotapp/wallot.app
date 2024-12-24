@@ -8,7 +8,6 @@ import { useQueryAchTransferPage } from '@wallot/react/src/features/achTransfers
 import { useQueryAssetPage } from '@wallot/react/src/features/assets';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { useQueryAssetPricePage } from '@wallot/react/src/features/assetPrices';
-import { useQueryAuthCredentialPage } from '@wallot/react/src/features/authCredentials';
 import { useQueryBankAccountPage } from '@wallot/react/src/features/bankAccounts';
 import { useQueryIdentityVerificationDocumentPage } from '@wallot/react/src/features/identityVerificationDocuments';
 import { useQueryInvoicePage } from '@wallot/react/src/features/invoices';
@@ -34,7 +33,6 @@ const queryHookMap = {
 	asset: useQueryAssetPage,
 	asset_order: useQueryAssetOrderPage,
 	asset_price: useQueryAssetPricePage,
-	auth_credential: useQueryAuthCredentialPage,
 	bank_account: useQueryBankAccountPage,
 	identity_verification_document: useQueryIdentityVerificationDocumentPage,
 	invoice: useQueryInvoicePage,

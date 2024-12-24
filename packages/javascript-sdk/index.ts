@@ -3,7 +3,6 @@ export * from './achTransfers/index.js';
 export * from './assets/index.js';
 export * from './assetOrders/index.js';
 export * from './assetPrices/index.js';
-export * from './authCredentials/index.js';
 export * from './bankAccounts/index.js';
 export * from './identityVerificationDocuments/index.js';
 export * from './invoices/index.js';
