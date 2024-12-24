@@ -24,6 +24,8 @@ export type BankAccountCategory = keyof typeof BankAccountCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'institution_name',
+	'routing_number',
 	'stripe_financial_connections_account_id',
 	'stripe_payment_method_id',
 	'user',
@@ -36,6 +38,12 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: BankAccountCategoryEnum.getDefinedSchema(),
+	institution_name: yup.string().nullable().default(null).meta({
+		type: GeneralizedFieldTypeEnum.obj.short_text,
+	}),
+	routing_number: yup.string().nullable().default(null).meta({
+		type: GeneralizedFieldTypeEnum.obj.short_text,
+	}),
 	stripe_financial_connections_account_id: yup.string().defined().min(1).meta({
 		unique_key: true,
 		type: GeneralizedFieldTypeEnum.obj.short_text,
