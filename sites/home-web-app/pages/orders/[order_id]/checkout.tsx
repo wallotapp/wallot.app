@@ -49,6 +49,7 @@ import {
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { stripePromise } from 'ergonomic-react/src/lib/stripe';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
+import { BsBank } from 'react-icons/bs';
 
 const BillingInformationSectionEnum = getEnum([
 	'Contact Details',
@@ -849,7 +850,7 @@ const Page: NextPage = () => {
 								</div>
 								<div className='mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200'>
 									<div>
-										<p>Payment</p>
+										<p className='font-semibold text-xl'>Payment</p>
 									</div>
 									{isBankAccountPageLoading && (
 										<div>
@@ -858,16 +859,31 @@ const Page: NextPage = () => {
 									)}
 									<div>
 										{bankAccountsForLoggedInUser.map((bankAccount) => (
-											<div key={bankAccount._id}>
-												<div>
-													<p className='font-semibold text-sm'>
-														{bankAccount.name}
-													</p>
-												</div>
-												<div className='mt-2'>
-													<p className='font-normal text-sm'>
-														{bankAccount.alpaca_ach_relationship_status}
-													</p>
+											<div
+												className={cn(
+													'py-4 px-4 rounded-md border border-slate-200 mt-4',
+												)}
+												key={bankAccount._id}
+											>
+												<div className='flex items-center space-x-4'>
+													<div className='flex items-center space-x-2'>
+														<div>
+															<BsBank className='text-base' />
+														</div>
+														<div className=''>
+															<p className='font-light text-sm'>
+																{bankAccount.institution_name}
+															</p>
+														</div>
+													</div>
+													<div className=''>
+														<p className='font-medium text-sm'>
+															{bankAccount.name}{' '}
+															<span className='font-light text-xs'>
+																(#{bankAccount.last_4})
+															</span>
+														</p>
+													</div>
 												</div>
 											</div>
 										))}
