@@ -899,7 +899,7 @@ const Page: NextPage = () => {
 														</div>
 														<div>
 															<p className='font-normal text-sm'>
-																Connect
+																Add
 																{userHasAtLeastOneBankAccount
 																	? ' another'
 																	: ' a'}{' '}
