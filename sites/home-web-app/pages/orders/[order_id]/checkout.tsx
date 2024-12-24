@@ -38,7 +38,6 @@ import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
-import { useQueryCurrentAuthCredential } from '@wallot/react/src/features/authCredentials';
 import { FiChevronDown, FiChevronLeft } from 'react-icons/fi';
 import { GoCheckCircle } from 'react-icons/go';
 import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts';
@@ -93,10 +92,6 @@ const Page: NextPage = () => {
 		isUserPageLoading,
 		refetch: refetchUser,
 	} = useQueryCurrentUser();
-
-	// Current Auth Credential
-	const { currentAuthCredential, isAuthCredentialPageLoading } =
-		useQueryCurrentAuthCredential();
 
 	// Bank Accounts for Logged In User
 	const { bankAccountsForLoggedInUser, isBankAccountPageLoading } =
@@ -337,10 +332,9 @@ const Page: NextPage = () => {
 		useState(false);
 	useEffect(() => {
 		if (hasInitializedDefaultValues) return;
-		if (isAuthCredentialPageLoading) return;
 		if (isUserPageLoading) return;
-		const { emails = [] } = currentAuthCredential ?? {};
-		const fallbackEmail = emails[0];
+		const { firebase_auth_emails = [] } = currentUser ?? {};
+		const fallbackEmail = firebase_auth_emails[0];
 		const defaultValues: KycFormDataParams = {
 			city: currentUser?.alpaca_account_contact?.city ?? initialFormData.city,
 			email_address:
@@ -425,13 +419,7 @@ const Page: NextPage = () => {
 		}
 		reset(defaultValues);
 		setHasInitializedDefaultValues(true);
-	}, [
-		currentAuthCredential,
-		currentUser,
-		isAuthCredentialPageLoading,
-		isUserPageLoading,
-		hasInitializedDefaultValues,
-	]);
+	}, [currentUser, isUserPageLoading, hasInitializedDefaultValues]);
 
 	// ==== Complete Purchase ==== //
 	const isCompletePurchaseButtonDisabled =
