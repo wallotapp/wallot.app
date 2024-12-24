@@ -43,6 +43,7 @@ import { GoCheckCircle } from 'react-icons/go';
 import {
 	useCreateStripeFinancialConnectionSessionMutation,
 	useQueryBankAccountsForLoggedInUser,
+	useConnectBankAccountsMutation,
 } from '@wallot/react/src/features/bankAccounts';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { stripePromise } from 'ergonomic-react/src/lib/stripe';
@@ -147,7 +148,10 @@ const Page: NextPage = () => {
 		});
 
 	// Mutation
-	const connectBankAccounts = (_params: unknown) => void 0; // <== Fix this
+	const {
+		mutate: connectBankAccounts,
+		isLoading: isConnectBankAccountsRunning,
+	} = useConnectBankAccountsMutation();
 	const {
 		mutate: createStripeFinancialConnectionSession,
 		isLoading: isCreateStripeFinancialConnectionSessionRunning,
@@ -187,14 +191,11 @@ const Page: NextPage = () => {
 			const { accounts } = financialConnectionsSession;
 			const accountIds: string[] = accounts.map((account) => account.id);
 			connectBankAccounts({
-				stripe_financial_connections_account_ids: accountIds.map((id) => ({
-					stripe_financial_account_id: id,
-				})),
+				stripe_financial_connections_account_ids: accountIds,
 			});
 		},
 	});
 	createStripeFinancialConnectionSession; // <== Use this
-	isCreateStripeFinancialConnectionSessionRunning; // <== Use this
 
 	// ==== Constants ==== //
 
@@ -309,6 +310,8 @@ const Page: NextPage = () => {
 		isContactDetailsSectionComplete && isTaxDetailsSectionComplete;
 	const isContinueButtonDisabled =
 		isFormSubmitting ||
+		isConnectBankAccountsRunning ||
+		isCreateStripeFinancialConnectionSessionRunning ||
 		(activeBillingInformationSection === 'Contact Details'
 			? !isContactDetailsSectionComplete
 			: activeBillingInformationSection === 'Tax Details'
@@ -480,7 +483,7 @@ const Page: NextPage = () => {
 
 	// ==== Complete Purchase ==== //
 	const isCompletePurchaseButtonDisabled =
-		isFormSubmitting ||
+		isContinueButtonDisabled ||
 		!isBillingInformationSectionComplete ||
 		!userHasAtLeastOneBankAccount;
 
@@ -790,7 +793,10 @@ const Page: NextPage = () => {
 																						: 'text-white',
 																				)}
 																			>
-																				Continue
+																				{activeBillingInformationSection ===
+																				'Disclosures'
+																					? 'Save Responses'
+																					: 'Continue'}
 																			</p>
 																		)}
 																	</div>
