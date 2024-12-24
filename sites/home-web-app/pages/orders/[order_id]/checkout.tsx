@@ -40,7 +40,7 @@ import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/Lite
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { FiChevronDown, FiChevronLeft } from 'react-icons/fi';
-import { GoCheckCircle, GoPlus } from 'react-icons/go';
+import { GoCheckCircle, GoCheckCircleFill, GoPlus } from 'react-icons/go';
 import {
 	useCreateStripeFinancialConnectionSessionMutation,
 	useQueryBankAccountsForLoggedInUser,
@@ -565,10 +565,13 @@ const Page: NextPage = () => {
 								</div>
 								<div
 									className={cn(
-										'mt-8 rounded-xl bg-white px-5 py-6 border border-slate-200 w-full text-left',
+										'mt-8 rounded-xl bg-white border px-5 py-6 w-full text-left',
 										activeBillingInformationSection == null
 											? 'cursor-pointer'
 											: '',
+										isBillingInformationSectionComplete
+											? 'border-slate-400'
+											: 'border-slate-200',
 									)}
 									onClick={() => {
 										if (activeBillingInformationSection != null) {
@@ -595,10 +598,17 @@ const Page: NextPage = () => {
 											}}
 										>
 											<div>
-												<div>
-													<p className='font-semibold text-xl'>
-														Billing Information
-													</p>
+												<div className='flex items-center space-x-2'>
+													{isBillingInformationSectionComplete && (
+														<div>
+															<GoCheckCircleFill className='text-2xl text-slate-700 font-semibold' />
+														</div>
+													)}
+													<div>
+														<p className='font-semibold text-xl'>
+															Billing Information
+														</p>
+													</div>
 												</div>
 												{activeBillingInformationSection == null && (
 													<div className='mt-2 font-semibold text-sm'>
@@ -623,11 +633,6 @@ const Page: NextPage = () => {
 										</div>
 										{activeBillingInformationSection == null && (
 											<div>
-												{isBillingInformationSectionComplete && (
-													<div className='mb-3'>
-														<GoCheckCircle className='text-brand-dark text-xl' />
-													</div>
-												)}
 												<div>
 													<p className='font-semibold text-sm underline'>
 														Edit
@@ -877,7 +882,9 @@ const Page: NextPage = () => {
 														<div>
 															<p className='font-normal text-sm'>
 																Add
-																{userHasAtLeastOneBankAccount ? ' another' : ''}{' '}
+																{userHasAtLeastOneBankAccount
+																	? ' another'
+																	: ''}{' '}
 																account
 															</p>
 														</div>
