@@ -214,6 +214,9 @@ export const connectBankAccounts = async (
 				defaultBankAccountId = bankAccount._id;
 				defaultPaymentMethodId = paymentMethod.id;
 			}
+		} else if (account.id === accountIdWithHighestBalance) {
+			defaultBankAccountId = bankAccount._id;
+			defaultPaymentMethodId = paymentMethod.id;
 		}
 		// Add the BankAccount to the batch
 		const bankAccountsCollectionId = bankAccountsApi.collectionId;
