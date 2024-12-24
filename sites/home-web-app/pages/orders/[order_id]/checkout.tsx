@@ -1179,6 +1179,52 @@ const Page: NextPage = () => {
 																								}
 																							/>
 																						</div>
+																						<div className='mt-3.5 text-right'>
+																							<button
+																								className={cn(
+																									'w-fit text-center py-1.5 px-6 rounded-md border',
+																									isContinueButtonDisabled
+																										? 'bg-slate-500'
+																										: 'bg-black',
+																								)}
+																								type='button'
+																								onClick={() => {
+																									console.log(
+																										'save account tapped',
+																									);
+																									return;
+																								}}
+																								disabled={
+																									isContinueButtonDisabled
+																								}
+																							>
+																								<div>
+																									{isFormSubmitting ? (
+																										<>
+																											<div className='flex items-center justify-center space-x-2 min-w-16 py-0.5'>
+																												<div
+																													className={cn(
+																														'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
+																														'border-t-brand border-r-brand border-b-brand',
+																													)}
+																												></div>
+																											</div>
+																										</>
+																									) : (
+																										<p
+																											className={cn(
+																												'font-normal text-xs',
+																												isContinueButtonDisabled
+																													? 'text-slate-300'
+																													: 'text-white',
+																											)}
+																										>
+																											Save
+																										</p>
+																									)}
+																								</div>
+																							</button>
+																						</div>
 																					</div>
 																				</div>
 																			);
