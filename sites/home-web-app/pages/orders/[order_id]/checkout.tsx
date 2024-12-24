@@ -113,6 +113,7 @@ const Page: NextPage = () => {
 		isUserPageLoading,
 		refetch: refetchUser,
 	} = useQueryCurrentUser();
+	const defaultBankAccountId = currentUser?.default_bank_account ?? 'null';
 
 	// Bank Accounts for Logged In User
 	const {
@@ -989,7 +990,7 @@ const Page: NextPage = () => {
 																			<div
 																				key={bankAccount._id}
 																				className={cn(
-																					'flex items-center border border-slate-200 rounded-md p-4 mt-2 bg-slate-50/10',
+																					'flex items-center border border-slate-200 rounded-md p-4 mt-2 bg-slate-50/10 space-x-3',
 																				)}
 																			>
 																				<div>
@@ -1003,6 +1004,19 @@ const Page: NextPage = () => {
 																						</span>
 																					</p>
 																				</div>
+																				{defaultBankAccountId ===
+																					bankAccount._id && (
+																					<div
+																						className={cn(
+																							'flex items-center space-x-2',
+																							'bg-green-800 py-0.5 px-2.5 rounded-full',
+																						)}
+																					>
+																						<p className='font-light text-xs text-white'>
+																							Default
+																						</p>
+																					</div>
+																				)}
 																			</div>
 																		))}
 																	</div>
