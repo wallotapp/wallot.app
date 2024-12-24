@@ -18,6 +18,8 @@ import {
 	CreateStripeFinancialConnectionsSessionResponse,
 	RegisterUserParams,
 	RegisterUserResponse,
+	TokenizeBankAccountParams,
+	TokenizeBankAccountResponse,
 	User,
 	usersApi as apiResourceSpec,
 } from '@wallot/js';
@@ -58,6 +60,31 @@ app.post(
 			req,
 			res,
 			createRouterFunction(auth, secrets)(connectBankAccounts)(req, res, next),
+		);
+	},
+);
+
+import { tokenizeBankAccount } from './app/wallot/bankAccounts/tokenizeBankAccount.js';
+app.options('*/v0/bank-accounts/tokenize', corsPolicy);
+app.post(
+	'*/v0/bank-accounts/tokenize',
+	(
+		req: express.Request<
+			Record<string, never>,
+			TokenizeBankAccountResponse,
+			TokenizeBankAccountParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			TokenizeBankAccountResponse,
+			GeneralizedResLocals<TokenizeBankAccountResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(tokenizeBankAccount)(req, res, next),
 		);
 	},
 );
