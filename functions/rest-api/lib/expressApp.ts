@@ -65,12 +65,12 @@ app.post(
 );
 
 import { tokenizeBankAccount } from './app/wallot/bankAccounts/tokenizeBankAccount.js';
-app.options('*/v0/bank-accounts/tokenize', corsPolicy);
+app.options('*/v0/bank-accounts/:bankAccountId/tokenize', corsPolicy);
 app.post(
-	'*/v0/bank-accounts/tokenize',
+	'*/v0/bank-accounts/:bankAccountId/tokenize',
 	(
 		req: express.Request<
-			Record<string, never>,
+			{ bankAccountId: string },
 			TokenizeBankAccountResponse,
 			TokenizeBankAccountParams,
 			Record<string, never>

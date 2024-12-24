@@ -2,6 +2,7 @@ import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { FunctionResponse } from '@wallot/node';
 import {
 	TokenizeBankAccountParams,
+	TokenizeBankAccountRouteParams,
 	TokenizeBankAccountResponse,
 	UpdateBankAccountParams,
 	bankAccountsApi,
@@ -9,11 +10,8 @@ import {
 import { crypto, db } from '../../../services.js';
 
 export const tokenizeBankAccount = async (
-	{
-		_id: bankAccountId,
-		account_number: accountNumber,
-	}: TokenizeBankAccountParams,
-	_params: Record<string, never>,
+	{ account_number: accountNumber }: TokenizeBankAccountParams,
+	{ bankAccountId }: TokenizeBankAccountRouteParams,
 	_query: Record<string, never>,
 	firebaseUser: FirebaseUser | null,
 ): Promise<FunctionResponse<TokenizeBankAccountResponse>> => {
