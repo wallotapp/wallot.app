@@ -974,11 +974,19 @@ const Page: NextPage = () => {
 												</div>
 												<div className='mt-4'>
 													{Object.entries(bankAccountsByInstitution).map(
-														([institutionName, bankAccounts = []]) => {
+														(
+															[institutionName, bankAccounts = []],
+															institutionGroupIdx,
+														) => {
 															const isOpen =
 																!isInstitutionAccordionClosed(institutionName);
 															return (
-																<div key={institutionName}>
+																<div
+																	className={cn(
+																		institutionGroupIdx > 0 ? 'mt-6' : '',
+																	)}
+																	key={institutionName}
+																>
 																	<div
 																		className={cn(
 																			'flex items-center space-x-3',
