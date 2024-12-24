@@ -981,8 +981,7 @@ const Page: NextPage = () => {
 																	</div>
 																	<div
 																		className={cn(
-																			'border-t border-slate-200',
-																			'overflow-hidden',
+																			'overflow-hidden mt-4 px-6',
 																			isOpen ? '' : 'hidden',
 																		)}
 																	>
@@ -990,18 +989,18 @@ const Page: NextPage = () => {
 																			<div
 																				key={bankAccount._id}
 																				className={cn(
-																					'flex items-center justify-between',
-																					'cursor-pointer',
+																					'flex items-center border border-slate-200 rounded-md p-4 mt-2 bg-slate-50/10',
 																				)}
 																			>
 																				<div>
-																					<p className='font-semibold text-sm'>
-																						{bankAccount.name}
-																					</p>
-																				</div>
-																				<div>
 																					<p className='font-normal text-sm'>
-																						{bankAccount.last_4}
+																						{bankAccount.name} &nbsp;
+																						<span className='font-extrabold monospace text-gray-600'>
+																							· · · ·
+																						</span>{' '}
+																						<span className='font-extralight monospace text-gray-600 text-xs'>
+																							{bankAccount.last_4}
+																						</span>
 																					</p>
 																				</div>
 																			</div>
