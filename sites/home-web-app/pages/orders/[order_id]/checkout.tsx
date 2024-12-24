@@ -1003,33 +1003,39 @@ const Page: NextPage = () => {
 																			<div
 																				key={bankAccount._id}
 																				className={cn(
-																					'flex items-center border border-slate-200 rounded-md p-4 mt-2 bg-slate-50/10 space-x-3',
+																					'flex items-center justify-between border border-slate-200 rounded-md p-4 mt-2 bg-slate-50/10',
 																				)}
 																			>
-																				<div>
-																					<p className='font-normal text-sm'>
-																						{bankAccount.name} &nbsp;
-																						<span className='font-extrabold monospace text-gray-600'>
-																							· · · ·
-																						</span>{' '}
-																						<span className='font-extralight monospace text-gray-600 text-xs'>
-																							{bankAccount.last_4}
-																						</span>
-																					</p>
-																				</div>
-																				{defaultBankAccountId ===
-																					bankAccount._id && (
-																					<div
-																						className={cn(
-																							'flex items-center space-x-2',
-																							'bg-green-800 py-0.5 px-2.5 rounded-full',
-																						)}
-																					>
-																						<p className='font-light text-xs text-white'>
-																							Default
+																				<div className='flex items-center space-x-3'>
+																					<div>
+																						<p className='font-normal text-sm'>
+																							{bankAccount.name} &nbsp;
+																							<span className='font-extrabold monospace text-gray-600'>
+																								· · · ·
+																							</span>{' '}
+																							<span className='font-extralight monospace text-gray-600 text-xs'>
+																								{bankAccount.last_4}
+																							</span>
 																						</p>
 																					</div>
-																				)}
+																					{defaultBankAccountId ===
+																						bankAccount._id && (
+																						<div
+																							className={cn(
+																								'flex items-center space-x-2',
+																								'bg-green-800 py-0.5 px-2.5 rounded-full',
+																							)}
+																						>
+																							<p className='font-light text-xs text-white'>
+																								Default
+																							</p>
+																						</div>
+																					)}
+																				</div>
+																				<input
+																					className='border border-slate-300 h-10 rounded-md w-1/2 text-sm px-2'
+																					placeholder='Enter account number'
+																				/>
 																			</div>
 																		))}
 																	</div>
