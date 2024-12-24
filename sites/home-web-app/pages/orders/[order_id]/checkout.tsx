@@ -117,10 +117,23 @@ const Page: NextPage = () => {
 
 	// Bank Accounts for Logged In User
 	const {
-		bankAccountsForLoggedInUser,
+		bankAccountsForLoggedInUser: bankAccountsForLoggedInUserUnsorted,
 		isBankAccountPageLoading,
 		refetch: refetchBankAccountsForLoggedInUser,
 	} = useQueryBankAccountsForLoggedInUser();
+	const bankAccountsForLoggedInUser =
+		bankAccountsForLoggedInUserUnsorted.toSorted(
+			// Put the default bank account first
+			(a, b) => {
+				if (a._id === defaultBankAccountId) {
+					return -1;
+				}
+				if (b._id === defaultBankAccountId) {
+					return 1;
+				}
+				return 0;
+			},
+		);
 	const tokenizedBankAccountsForLoggedInUser =
 		bankAccountsForLoggedInUser.filter(isBankAccountTokenized);
 	const userHasAtLeastOneBankAccount = bankAccountsForLoggedInUser.length > 0;
