@@ -3,5 +3,6 @@ export * from '@wallot/react/src/features/bankAccounts/hooks/useCreateBankAccoun
 export * from '@wallot/react/src/features/bankAccounts/hooks/useCreateStripeFinancialConnectionsSessionMutation';
 export * from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountPage';
 export * from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountsForLoggedInUser';
+export * from '@wallot/react/src/features/bankAccounts/hooks/useTokenizeBankAccountMutation';
 export * from '@wallot/react/src/features/bankAccounts/hooks/useUpdateBankAccountMutation';
 export * from '@wallot/react/src/features/bankAccounts/types/BankAccountReactTypes';
