@@ -211,10 +211,9 @@ const Page: NextPage = () => {
 				'Financial connections session:',
 				financialConnectionsSession,
 			);
-			const { accounts } = financialConnectionsSession;
-			const accountIds: string[] = accounts.map((account) => account.id);
 			connectBankAccounts({
-				stripe_financial_connections_account_ids: accountIds,
+				stripe_financial_connections_accounts:
+					financialConnectionsSession.accounts,
 			});
 		},
 	});

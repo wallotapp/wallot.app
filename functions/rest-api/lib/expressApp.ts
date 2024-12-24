@@ -1,6 +1,7 @@
 import * as cors from 'cors';
 import * as express from 'express';
 import { statSync } from 'fs';
+import { Stripe } from 'stripe';
 import { FirebaseUserCustomTokenResponse } from 'ergonomic';
 import {
 	GeneralizedResLocals,
@@ -44,7 +45,7 @@ app.post(
 		req: express.Request<
 			Record<string, never>,
 			ConnectBankAccountsResponse,
-			ConnectBankAccountsParams,
+			ConnectBankAccountsParams<Stripe.FinancialConnections.Account>,
 			Record<string, never>
 		>,
 		res: express.Response<

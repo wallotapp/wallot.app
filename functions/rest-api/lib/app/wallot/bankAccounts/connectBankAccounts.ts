@@ -1,3 +1,4 @@
+import { Stripe } from 'stripe';
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { FunctionResponse } from '@wallot/node';
 import {
@@ -12,8 +13,19 @@ import {
 } from '@wallot/js';
 import { db, log, stripe } from '../../../services.js';
 
+type BankAccountSourceData = {
+	account: Stripe.FinancialConnections.Account;
+	paymentMethod: Stripe.PaymentMethod | null;
+};
+type BankAccountSourceDataAttached = {
+	account: Stripe.FinancialConnections.Account;
+	paymentMethod: Stripe.PaymentMethod;
+};
+
 export const connectBankAccounts = async (
-	{ stripe_financial_connections_account_ids }: ConnectBankAccountsParams,
+	{
+		stripe_financial_connections_accounts: stripeFinancialConnectionsAccounts,
+	}: ConnectBankAccountsParams<Stripe.FinancialConnections.Account>,
 	_params: Record<string, never>,
 	_query: Record<string, never>,
 	firebaseUser: FirebaseUser | null,
@@ -27,74 +39,96 @@ export const connectBankAccounts = async (
 	).data() as User;
 	const { stripe_customer_id } = user;
 
-	// Save the first account ID for the default payment method
-	const firstAccountId = stripe_financial_connections_account_ids[0];
-	if (firstAccountId == null) {
-		throw new Error('No financial connections account IDs provided');
-	}
-
-	// Create an object mapping from the financial connections account ID to the payment method ID
-	const paymentMethodDataByAccountId: Record<
-		string,
-		{ description: string; id: string; name: string }
-	> = {};
-
-	// Get all the PaymentMethods that already exist
+	// Get all the PaymentMethods derived from a bank account that already exist
 	const stripeCustomerPaymentMethods =
 		await stripe.customers.listPaymentMethods(stripe_customer_id, {
 			limit: 99,
 		});
-	const attachedPaymentMethodsWithBankAccount =
-		stripeCustomerPaymentMethods.data
-			.map(({ id, us_bank_account }) =>
-				us_bank_account?.financial_connections_account
-					? {
-							paymentMethodData: {
-								description: us_bank_account?.account_type ?? 'Account',
-								id,
-								name: us_bank_account?.last4 ?? '****',
-							},
-							financialConnectionsAccountId:
-								us_bank_account?.financial_connections_account,
-					  }
-					: null,
-			)
-			.filter((data): data is Exclude<typeof data, null> => !!data);
-	log({
-		message: 'Attached PaymentMethods with BankAccounts',
-		stripeCustomerPaymentMethods,
-		attachedPaymentMethodsWithBankAccount,
-	});
 
-	// For each existing PaymentMethod, add it to the mapping
-	for (const {
-		paymentMethodData,
-		financialConnectionsAccountId,
-	} of attachedPaymentMethodsWithBankAccount) {
-		paymentMethodDataByAccountId[financialConnectionsAccountId] =
-			paymentMethodData;
-	}
-	log({
-		message: 'PaymentMethod data by Account ID at step 1',
-		paymentMethodDataByAccountId,
-	});
+	// Create a mapping of source data by Account ID
+	let highestBalanceSoFar = 0;
+	let accountIdWithHighestBalance: string | null = null;
+	const sourceDataByAccountId = stripeFinancialConnectionsAccounts.reduce(
+		(acc, stripeFinancialConnectionsAccount) => {
+			if (stripeFinancialConnectionsAccount.status !== 'active') {
+				return acc;
+			}
+			if (
+				!stripeFinancialConnectionsAccount.supported_payment_method_types.includes(
+					'us_bank_account',
+				)
+			) {
+				return acc;
+			}
 
-	// Create a list of the account IDs that are not already attached to the customer
-	const unlinkedAccountIds = stripe_financial_connections_account_ids.filter(
-		(id) => !paymentMethodDataByAccountId[id],
+			const balance = stripeFinancialConnectionsAccount.balance;
+			if (balance != null) {
+				/**
+				 * The funds available to the account holder. Typically this is the current balance less any holds.
+				 * Each key is a three-letter ISO currency code, in lowercase.
+				 * Each value is a integer amount. A positive amount indicates money owed to the account holder. A negative amount indicates money owed by the account holder.
+				 */
+				const balanceAmount = balance.cash?.available;
+				const usdBalance = balanceAmount?.usd ?? balanceAmount?.USD ?? 0;
+				if (usdBalance > highestBalanceSoFar) {
+					highestBalanceSoFar = usdBalance;
+					accountIdWithHighestBalance = stripeFinancialConnectionsAccount.id;
+				}
+			}
+
+			const matchingPaymentMethod = stripeCustomerPaymentMethods.data.find(
+				(paymentMethod) => {
+					return (
+						paymentMethod.us_bank_account?.financial_connections_account ===
+						stripeFinancialConnectionsAccount.id
+					);
+				},
+			);
+			acc[stripeFinancialConnectionsAccount.id] = {
+				account: stripeFinancialConnectionsAccount,
+				paymentMethod: matchingPaymentMethod ?? null,
+			};
+			return acc;
+		},
+		{} as Record<string, BankAccountSourceData>,
 	);
 	log({
-		message: 'Unlinked account IDs',
-		unlinkedAccountIds,
+		message: 'Bank account source data',
+		stripeCustomerPaymentMethods,
+		sourceDataByAccountId,
 	});
+
+	// If the source data is empty, there was a problem with the source data
+	if (Object.keys(sourceDataByAccountId).length === 0) {
+		throw new Error('No bank accounts were successfully connected');
+	}
+
+	const unlinkedAccountIds = Object.keys(sourceDataByAccountId).filter(
+		(accountId) => sourceDataByAccountId[accountId]?.paymentMethod == null,
+	);
 
 	for (const unlinkedAccountId of unlinkedAccountIds) {
 		try {
+			const sourceData = sourceDataByAccountId[unlinkedAccountId];
+			if (!sourceData) {
+				throw new Error('Account not found');
+			}
+
+			const userFullName = (
+				(user.alpaca_account_identity?.given_name ?? '') +
+				' ' +
+				(user.alpaca_account_identity?.family_name ?? '')
+			).trim();
+
 			// Create a PaymentMethod directly from the financial connections account
 			const paymentMethod = await stripe.paymentMethods.create({
 				type: 'us_bank_account',
 				us_bank_account: {
 					financial_connections_account: unlinkedAccountId,
+				},
+				billing_details: {
+					email: user.firebase_auth_email,
+					name: userFullName || user.username,
 				},
 			});
 			log({
@@ -119,10 +153,9 @@ export const connectBankAccounts = async (
 			});
 
 			// Add the new PaymentMethod to the mapping
-			paymentMethodDataByAccountId[unlinkedAccountId] = {
-				description: paymentMethod.us_bank_account?.account_type ?? 'Account',
-				id: paymentMethod.id,
-				name: paymentMethod.us_bank_account?.last4 ?? '****',
+			sourceDataByAccountId[unlinkedAccountId] = {
+				...sourceData,
+				paymentMethod: attachedPaymentMethod,
 			};
 		} catch (error) {
 			// Log the error and continue with the next iteration
@@ -131,11 +164,14 @@ export const connectBankAccounts = async (
 				error,
 				unlinkedAccountId,
 			});
+
+			// Remove the unlinked account ID from the source data
+			delete sourceDataByAccountId[unlinkedAccountId];
 		}
 	}
 	log({
-		message: 'PaymentMethod data by Account ID at step 2',
-		paymentMethodDataByAccountId,
+		message: 'Bank account source data after processing unlinked accounts',
+		bankAccountSourceData: sourceDataByAccountId,
 	});
 
 	// Create a batch
@@ -143,25 +179,41 @@ export const connectBankAccounts = async (
 
 	// Initialize the default payment method ID
 	let defaultBankAccountId: string | undefined;
+	let defaultPaymentMethodId: string | undefined;
 
-	for (const [accountId, paymentMethodData] of Object.entries(
-		paymentMethodDataByAccountId,
+	// Type cast
+	const attachedSourceDataByAccountId = sourceDataByAccountId as Record<
+		string,
+		BankAccountSourceDataAttached
+	>;
+
+	// If the object is empty, there was a problem with the source data
+	if (Object.keys(attachedSourceDataByAccountId).length === 0) {
+		throw new Error('No bank accounts were successfully connected');
+	}
+
+	// Loop over the source data and create BankAccounts
+	for (const { account, paymentMethod } of Object.values(
+		attachedSourceDataByAccountId,
 	)) {
 		// Create a BankAccount
 		const bankAccountParams: CreateBankAccountParams = {
 			user: user._id,
-			description: paymentMethodData.description,
-			name: paymentMethodData.name,
+			name: account.display_name ?? account.last4 ?? 'Bank Account',
+			description: account.institution_name,
 			category: 'default',
-			stripe_financial_connections_account_id: accountId,
-			stripe_payment_method_id: paymentMethodData.id,
+			stripe_financial_connections_account_id: account.id,
+			stripe_payment_method_id: paymentMethod.id,
 		};
 		const bankAccount: BankAccount = bankAccountsApi.mergeCreateParams({
 			createParams: bankAccountParams,
 		});
 		// Set the default payment method ID
-		if (accountId === firstAccountId) {
-			defaultBankAccountId = bankAccount._id;
+		if (accountIdWithHighestBalance == null) {
+			if (defaultBankAccountId == null) {
+				defaultBankAccountId = bankAccount._id;
+				defaultPaymentMethodId = paymentMethod.id;
+			}
 		}
 		// Add the BankAccount to the batch
 		const bankAccountsCollectionId = bankAccountsApi.collectionId;
@@ -177,6 +229,9 @@ export const connectBankAccounts = async (
 	if (defaultBankAccountId == null) {
 		throw new Error('No default bank account ID was set');
 	}
+	if (defaultPaymentMethodId == null) {
+		throw new Error('No default payment method ID was set');
+	}
 	const updateUserParams: UpdateUserParams = {
 		default_bank_account: defaultBankAccountId,
 	};
@@ -187,5 +242,15 @@ export const connectBankAccounts = async (
 	await batch.commit();
 
 	// Return
-	return { json: {} };
+	return {
+		json: {},
+		onFinished: async () => {
+			// Set default payment method
+			await stripe.customers.update(stripe_customer_id, {
+				invoice_settings: {
+					default_payment_method: defaultPaymentMethodId,
+				},
+			});
+		},
+	};
 };

@@ -38,7 +38,8 @@ export const createStripeFinancialConnectionsSession = async (
 			'ownership' as const,
 			'payment_method' as const,
 			'transactions' as const,
-			variables.SERVER_VAR_FEATURE_FLAGS.ENABLE_ACCOUNT_NUMBERS_STRIPE_PERMISSION
+			variables.SERVER_VAR_FEATURE_FLAGS
+				.ENABLE_ACCOUNT_NUMBERS_STRIPE_PERMISSION
 				? ('account_numbers' as unknown as Stripe.FinancialConnections.SessionCreateParams.Permission)
 				: null,
 		].filter(
