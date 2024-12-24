@@ -3,7 +3,6 @@ import {
 	RegisterUserParams,
 	RegisterUserResponse,
 	usersApi,
-	authCredentialsApi,
 	licensesApi,
 	getHomeWebAppRoute,
 } from '@wallot/js';
@@ -30,8 +29,8 @@ export const registerUser = async ({
 
 	// Check that the email is not already registered
 	const emailDoc = await db
-		.collection(authCredentialsApi.collectionId)
-		.where('emails', 'array-contains', email)
+		.collection(usersApi.collectionId)
+		.where('firebase_auth_emails', 'array-contains', email)
 		.get();
 	if (!emailDoc.empty) {
 		throw new Error('Email already registered');
@@ -39,7 +38,6 @@ export const registerUser = async ({
 
 	// Initialize Firestore document IDs
 	const userDocId = usersApi.generateId();
-	const authCredentialDocId = authCredentialsApi.generateId();
 	const licenseDocId = licensesApi.generateId();
 
 	// Initialize a Firestore batch transaction
@@ -49,7 +47,7 @@ export const registerUser = async ({
 	const firebaseUser = await auth.createUser({
 		email,
 		password,
-		uid: authCredentialDocId,
+		uid: userDocId,
 	});
 
 	// Create a Stripe Customer
@@ -66,27 +64,13 @@ export const registerUser = async ({
 			_id: userDocId,
 			activation_reminder_task_id: activationReminderTaskId,
 			category: 'default',
+			firebase_auth_emails: [email],
 			name: '',
 			stripe_customer_id: stripeCustomer.id,
 			username,
 		},
 	});
 	batch.set(db.collection(usersApi.collectionId).doc(userDocId), userDoc);
-
-	// Create an AUTH_CREDENTIAL Firestore document
-	const authCredentialDoc = authCredentialsApi.mergeCreateParams({
-		createParams: {
-			_id: authCredentialDocId,
-			category: 'default',
-			emails: [email],
-			name: '',
-			user: userDocId,
-		},
-	});
-	batch.set(
-		db.collection(authCredentialsApi.collectionId).doc(authCredentialDocId),
-		authCredentialDoc,
-	);
 
 	// Create a LICENSE Firestore document
 	const licenseDoc = licensesApi.mergeCreateParams({
