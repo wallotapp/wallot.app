@@ -43,7 +43,7 @@ export const UserNameTag: React.FC<UserNameTagProps> = ({
 				{showSubtitle === 'email' && (
 					<div>
 						<p className={cn('text-gray-500 text-[0.75rem]')}>
-							{user?.firebase_auth_emails?.[0]}
+							{user?.firebase_auth_email ?? ''}
 						</p>
 					</div>
 				)}

@@ -52,7 +52,7 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 					</div>
 					<div>
 						<p className='text-gray-500 text-[0.66rem]'>
-							{currentUser?.firebase_auth_emails?.[0]}
+							{currentUser?.firebase_auth_email ?? ''}
 						</p>
 					</div>
 				</div>

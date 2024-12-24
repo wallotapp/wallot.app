@@ -333,8 +333,7 @@ const Page: NextPage = () => {
 	useEffect(() => {
 		if (hasInitializedDefaultValues) return;
 		if (isUserPageLoading) return;
-		const { firebase_auth_emails = [] } = currentUser ?? {};
-		const fallbackEmail = firebase_auth_emails[0];
+		const { firebase_auth_email: fallbackEmail } = currentUser ?? {};
 		const defaultValues: KycFormDataParams = {
 			city: currentUser?.alpaca_account_contact?.city ?? initialFormData.city,
 			email_address:

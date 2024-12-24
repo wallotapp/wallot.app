@@ -30,7 +30,7 @@ export const registerUser = async ({
 	// Check that the email is not already registered
 	const emailDoc = await db
 		.collection(usersApi.collectionId)
-		.where('firebase_auth_emails', 'array-contains', email)
+		.where('firebase_auth_email', '==', email)
 		.get();
 	if (!emailDoc.empty) {
 		throw new Error('Email already registered');
@@ -64,7 +64,7 @@ export const registerUser = async ({
 			_id: userDocId,
 			activation_reminder_task_id: activationReminderTaskId,
 			category: 'default',
-			firebase_auth_emails: [email],
+			firebase_auth_email: email,
 			name: '',
 			stripe_customer_id: stripeCustomer.id,
 			username,

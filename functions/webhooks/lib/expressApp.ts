@@ -32,7 +32,7 @@ const mockApiResource: User = {
 	category: 'default',
 	name: 'My User',
 	alpaca_account_id: '...',
-	firebase_auth_emails: [],
+	firebase_auth_email: '...',
 	investing_goals: [],
 	parameters: [],
 	stripe_customer_id: '...',
