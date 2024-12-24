@@ -16,7 +16,7 @@ export const PageActionHeader: React.FC<PageActionHeaderProps> = ({
 			className={cn(
 				'h-10 items-center justify-between px-6 fixed top-12 left-0 w-full z-10',
 				'lg:px-28',
-				'bg-brand-extralight',
+				'bg-brand-dark',
 				'hidden md:flex',
 				className,
 			)}
@@ -31,7 +31,7 @@ export const PageActionHeader: React.FC<PageActionHeaderProps> = ({
 					<p className='font-light text-xs text-white'>New</p>
 				</div>
 				<div>
-					<p className='font-light text-xs text-gray-800'>
+					<p className='font-light text-xs text-white'>
 						Introducing Wallot's brand new digital trading platform powered by
 						AI
 					</p>
