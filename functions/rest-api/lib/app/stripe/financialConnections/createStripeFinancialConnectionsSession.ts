@@ -7,7 +7,7 @@ import {
 	User,
 	usersApi,
 } from '@wallot/js';
-import { db, stripe } from '../../../services.js';
+import { db, log, stripe } from '../../../services.js';
 
 export const createStripeFinancialConnectionsSession = async (
 	_body: CreateStripeFinancialConnectionsSessionParams,
@@ -39,6 +39,10 @@ export const createStripeFinancialConnectionsSession = async (
 			'payment_method',
 			'transactions',
 		],
+	});
+	log({
+		message: 'Stripe Financial Connections session created',
+		session,
 	});
 	if (session.client_secret == null)
 		throw new Error('Session does not have a client secret');

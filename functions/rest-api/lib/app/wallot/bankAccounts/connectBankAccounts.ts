@@ -10,7 +10,7 @@ import {
 	User,
 	usersApi,
 } from '@wallot/js';
-import { db, stripe } from '../../../services.js';
+import { db, log, stripe } from '../../../services.js';
 
 export const connectBankAccounts = async (
 	{ stripe_financial_connections_account_ids }: ConnectBankAccountsParams,
@@ -40,23 +40,31 @@ export const connectBankAccounts = async (
 	> = {};
 
 	// Get all the PaymentMethods that already exist
-	const attachedPaymentMethodsWithBankAccount = (
-		await stripe.customers.listPaymentMethods(stripe_customer_id, { limit: 99 })
-	).data
-		.map(({ id, us_bank_account }) =>
-			us_bank_account?.financial_connections_account
-				? {
-						paymentMethodData: {
-							description: us_bank_account?.account_type ?? 'Account',
-							id,
-							name: us_bank_account?.last4 ?? '****',
-						},
-						financialConnectionsAccountId:
-							us_bank_account?.financial_connections_account,
-				  }
-				: null,
-		)
-		.filter((data): data is Exclude<typeof data, null> => !!data);
+	const stripeCustomerPaymentMethods =
+		await stripe.customers.listPaymentMethods(stripe_customer_id, {
+			limit: 99,
+		});
+	const attachedPaymentMethodsWithBankAccount =
+		stripeCustomerPaymentMethods.data
+			.map(({ id, us_bank_account }) =>
+				us_bank_account?.financial_connections_account
+					? {
+							paymentMethodData: {
+								description: us_bank_account?.account_type ?? 'Account',
+								id,
+								name: us_bank_account?.last4 ?? '****',
+							},
+							financialConnectionsAccountId:
+								us_bank_account?.financial_connections_account,
+					  }
+					: null,
+			)
+			.filter((data): data is Exclude<typeof data, null> => !!data);
+	log({
+		message: 'Attached PaymentMethods with BankAccounts',
+		stripeCustomerPaymentMethods,
+		attachedPaymentMethodsWithBankAccount,
+	});
 
 	// For each existing PaymentMethod, add it to the mapping
 	for (const {
@@ -66,11 +74,19 @@ export const connectBankAccounts = async (
 		paymentMethodDataByAccountId[financialConnectionsAccountId] =
 			paymentMethodData;
 	}
+	log({
+		message: 'PaymentMethod data by Account ID at step 1',
+		paymentMethodDataByAccountId,
+	});
 
 	// Create a list of the account IDs that are not already attached to the customer
 	const unlinkedAccountIds = stripe_financial_connections_account_ids.filter(
 		(id) => !paymentMethodDataByAccountId[id],
 	);
+	log({
+		message: 'Unlinked account IDs',
+		unlinkedAccountIds,
+	});
 
 	for (const unlinkedAccountId of unlinkedAccountIds) {
 		// Create a PaymentMethod directly from the financial connections account
@@ -80,10 +96,25 @@ export const connectBankAccounts = async (
 				financial_connections_account: unlinkedAccountId,
 			},
 		});
+		log({
+			message:
+				'PaymentMethod created from array loop over unlinked account IDs',
+			paymentMethod,
+			unlinkedAccountId,
+		});
 
 		// Attach the newly created PaymentMethod to the Stripe customer
-		await stripe.paymentMethods.attach(paymentMethod.id, {
-			customer: stripe_customer_id,
+		const attachedPaymentMethod = await stripe.paymentMethods.attach(
+			paymentMethod.id,
+			{
+				customer: stripe_customer_id,
+			},
+		);
+		log({
+			message:
+				'PaymentMethod attached to Stripe customer from array loop over unlinked account IDs',
+			attachedPaymentMethod,
+			unlinkedAccountId,
 		});
 
 		// Add the new PaymentMethod to the mapping
@@ -93,6 +124,10 @@ export const connectBankAccounts = async (
 			name: paymentMethod.us_bank_account?.last4 ?? '****',
 		};
 	}
+	log({
+		message: 'PaymentMethod data by Account ID at step 2',
+		paymentMethodDataByAccountId,
+	});
 
 	// Create a batch
 	const batch = db.batch();
@@ -124,6 +159,10 @@ export const connectBankAccounts = async (
 		const bankAccountDoc = db.collection(bankAccountsCollectionId).doc();
 		batch.set(bankAccountDoc, bankAccount);
 	}
+	log({
+		message: 'Default bank account ID',
+		defaultBankAccountId,
+	});
 
 	// Add the USER update operation to the batch
 	if (defaultBankAccountId == null) {
