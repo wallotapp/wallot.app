@@ -584,6 +584,27 @@ const Page: NextPage = () => {
 		setHasInitializedDefaultValues(true);
 	}, [currentUser, isUserPageLoading, hasInitializedDefaultValues]);
 
+	const [
+		isBankAccountInterfaceInitialized,
+		setIsBankAccountInterfaceInitialized,
+	] = useState(false);
+	useEffect(() => {
+		if (isBankAccountInterfaceInitialized) return;
+		if (isBankAccountPageLoading) return;
+		if (isUserPageLoading) return;
+		if (defaultBankAccount == null) return;
+		if (isDefaultBankAccountTokenized) return;
+
+		setIsBankAccountInterfaceInitialized(true);
+		setBankAccountIdsWithTokenizationFormShown([defaultBankAccount._id]);
+	}, [
+		isUserPageLoading,
+		isBankAccountPageLoading,
+		defaultBankAccount,
+		isDefaultBankAccountTokenized,
+		isBankAccountInterfaceInitialized,
+	]);
+
 	// ==== Complete Purchase ==== //
 	const isCompletePurchaseButtonDisabled =
 		isContinueButtonDisabled ||
