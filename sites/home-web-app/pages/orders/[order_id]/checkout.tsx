@@ -951,7 +951,7 @@ const Page: NextPage = () => {
 															<div key={institutionName}>
 																<div
 																	className={cn(
-																		'flex items-center space-x-2',
+																		'flex items-center space-x-3',
 																		'cursor-pointer',
 																	)}
 																	onClick={toggleInstitutionAccordion(
@@ -959,10 +959,18 @@ const Page: NextPage = () => {
 																	)}
 																>
 																	<div>
-																		<BsFillCaretDownFill className='text-gray-300 text-sm' />
+																		<BsFillCaretDownFill className='text-gray-400 text-xs' />
 																	</div>
 																	<div>
-																		<BankIcon bankName={institutionName} />
+																		<BankIcon
+																			bankName={institutionName}
+																			showBankNameAsTitle
+																			subtitle={`${
+																				bankAccounts.length
+																			} linked account${
+																				bankAccounts.length > 1 ? 's' : ''
+																			}`}
+																		/>
 																	</div>
 																</div>
 																<div

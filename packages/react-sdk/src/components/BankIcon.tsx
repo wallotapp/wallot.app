@@ -87,35 +87,86 @@ const BANK_LOGOS: Record<string, string> = {
 
 type BankIconProps = BaseComponent & {
 	bankName: string | null;
+	showBankNameAsTitle?: boolean;
 	size?: number;
+	subtitle?: string;
 };
 export const BankIcon: React.FC<BankIconProps> = ({
 	bankName,
 	className = '',
+	showBankNameAsTitle = false,
 	size = 32,
+	subtitle = '',
 }) => {
 	const bankLogo = bankName == null ? null : BANK_LOGOS[bankName];
 
 	if (bankLogo == null) {
 		return (
-			<div className={cn('flex flex-col items-center space-y-0.5', className)}>
+			<div
+				className={cn(
+					className,
+					showBankNameAsTitle && 'flex items-center space-x-3',
+				)}
+			>
 				<div>
-					<BsBank className='text-xl' />
+					{showBankNameAsTitle ? (
+						<div>
+							<BsBank className='text-3xl' />
+						</div>
+					) : (
+						<div className={cn('flex flex-col items-center space-y-0.5')}>
+							<div>
+								<BsBank className='text-xl' />
+							</div>
+							<div className=''>
+								<p className='font-light text-xs'>{bankName}</p>
+							</div>
+						</div>
+					)}
 				</div>
-				<div className=''>
-					<p className='font-light text-xs'>{bankName}</p>
-				</div>
+				{showBankNameAsTitle && (
+					<div>
+						<div>
+							<p className='font-semibold text-sm'>{bankName}</p>
+						</div>
+						{Boolean(subtitle) && (
+							<div className=''>
+								<p className='font-extralight text-xs'>{subtitle}</p>
+							</div>
+						)}
+					</div>
+				)}
 			</div>
 		);
 	}
 
 	return (
-		<Image
-			className={className}
-			src={bankLogo}
-			alt={`${bankName} logo`}
-			width={size}
-			height={size}
-		/>
+		<div
+			className={cn(
+				className,
+				showBankNameAsTitle && 'flex items-center space-x-3',
+			)}
+		>
+			<div>
+				<Image
+					src={bankLogo}
+					alt={`${bankName} logo`}
+					width={size}
+					height={size}
+				/>
+			</div>
+			{showBankNameAsTitle && (
+				<div>
+					<div>
+						<p className='font-semibold text-sm'>{bankName}</p>
+					</div>
+					{Boolean(subtitle) && (
+						<div className=''>
+							<p className='font-extralight text-xs'>{subtitle}</p>
+						</div>
+					)}
+				</div>
+			)}
+		</div>
 	);
 };
