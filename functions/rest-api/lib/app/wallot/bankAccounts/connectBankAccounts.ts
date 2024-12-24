@@ -199,9 +199,10 @@ export const connectBankAccounts = async (
 		// Create a BankAccount
 		const bankAccountParams: CreateBankAccountParams = {
 			user: user._id,
-			name: account.display_name ?? account.last4 ?? 'Bank Account',
+			name: account.display_name ?? 'Bank Account',
 			category: 'default',
 			institution_name: account.institution_name,
+			last_4: account.last4,
 			routing_number: paymentMethod.us_bank_account?.routing_number ?? null,
 			stripe_financial_connections_account_id: account.id,
 			stripe_payment_method_id: paymentMethod.id,
