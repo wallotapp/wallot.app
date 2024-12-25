@@ -222,15 +222,15 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 						</p>
 						<input {...accountNumberField} className='border border-amber-900 h-8 rounded-md text-xs px-2 w-full' placeholder={'Account number ending in ····' + bankAccount.last_4} required />
 					</div>
-					<div className='mt-3.5 text-right space-x-2'>
+					<div className='mt-3.5 text-right space-x-2 items-center flex justify-end'>
 						<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' disabled={isTokenizeButtonDisabled} type='button' onClick={handleToggleTokenizationForm}>
 							<p className='font-normal text-xs'>Back</p>
 						</button>
-						<button className={cn('w-fit text-center py-1.5 px-6 rounded-md border', isTokenizeButtonDisabled ? 'bg-slate-500' : 'bg-black')} type='submit' disabled={isTokenizeButtonDisabled}>
+						<button className={cn('w-fit text-center py-1.5 px-6 rounded-md border', isAccountNumberInputComplete ? 'bg-black' : 'bg-slate-500')} type='submit' disabled={isTokenizeButtonDisabled}>
 							<div>
 								{isTokenizeFormSubmitting ? (
 									<>
-										<div className='flex items-center justify-center space-x-2 min-w-16 py-0.5'>
+										<div className='flex items-center justify-center min-w-8'>
 											<div className={cn('w-4 h-4 border-2 border-gray-200 rounded-full animate-spin', 'border-t-brand border-r-brand border-b-brand')}></div>
 										</div>
 									</>
