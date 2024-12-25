@@ -4,7 +4,7 @@ import {
 	RegisterUserResponse,
 	usersApi,
 	licensesApi,
-	getHomeWebAppRoute,
+	getHomeSiteRoute,
 } from '@wallot/js';
 import { FunctionResponse } from '@wallot/node';
 import { auth, db } from '../../../services.js';
@@ -93,11 +93,11 @@ export const registerUser = async ({
 	const customToken = await auth.createCustomToken(firebaseUser.uid);
 
 	// Construct the redirect URL using custom token
-	const redirectUrl = getHomeWebAppRoute({
+	const redirectUrl = getHomeSiteRoute({
 		includeOrigin: true,
-		origin: siteOriginByTarget.HOME_WEB_APP,
+		origin: siteOriginByTarget.HOME_SITE,
 		queryParams: { client_token: customToken },
-		routeStaticId: 'HOME_WEB_APP__/GET_STARTED',
+		routeStaticId: 'HOME_SITE__/GET_STARTED',
 	});
 
 	// Construct the post-response callback

@@ -11,7 +11,7 @@ import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import { useQueryCurrentUser } from '@wallot/react/src/features/users';
 import Link from 'next/link';
 import { useState } from 'react';
-import { getHomeWebAppRoute } from '@wallot/js';
+import { getHomeSiteRoute } from '@wallot/js';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 
 export type UserMenuPopover = BaseComponent & {
@@ -62,20 +62,20 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 				<div>
 					{[
 						{
-							href: getHomeWebAppRoute({
+							href: getHomeSiteRoute({
 								includeOrigin: true,
-								origin: siteOriginByTarget['HOME_WEB_APP'],
+								origin: siteOriginByTarget['HOME_SITE'],
 								queryParams: {},
-								routeStaticId: 'HOME_WEB_APP__/INDEX',
+								routeStaticId: 'HOME_SITE__/INDEX',
 							}),
 							title: 'Terms of Service',
 						},
 						{
-							href: getHomeWebAppRoute({
+							href: getHomeSiteRoute({
 								includeOrigin: true,
-								origin: siteOriginByTarget['HOME_WEB_APP'],
+								origin: siteOriginByTarget['HOME_SITE'],
 								queryParams: {},
-								routeStaticId: 'HOME_WEB_APP__/INDEX',
+								routeStaticId: 'HOME_SITE__/INDEX',
 							}),
 							title: 'Privacy Policy',
 						},

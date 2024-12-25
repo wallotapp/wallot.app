@@ -4,7 +4,7 @@ import {
 	ActivateUserResponse,
 	UpdateUserParams,
 	assetOrdersApi,
-	getHomeWebAppRoute,
+	getHomeSiteRoute,
 	ordersApi,
 	recommendationsApi,
 	usersApi,
@@ -99,11 +99,11 @@ export const activateUser = async (
 	await batch.commit();
 
 	// Construct the redirect URL using ORDER
-	const redirectUrl = getHomeWebAppRoute({
+	const redirectUrl = getHomeSiteRoute({
 		includeOrigin: true,
-		origin: siteOriginByTarget.HOME_WEB_APP,
+		origin: siteOriginByTarget.HOME_SITE,
 		queryParams: { order_id: orderDocId },
-		routeStaticId: 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/ASSETS',
+		routeStaticId: 'HOME_SITE__/ORDERS/[ORDER_ID]/ASSETS',
 	});
 
 	// Construct the post-response callback

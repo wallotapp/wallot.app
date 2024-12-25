@@ -1,6 +1,6 @@
 import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
-import { getBlogWebAppRoute } from '@wallot/js';
+import { getBlogSiteRoute } from '@wallot/js';
 import Link from 'next/link';
 import { GoChevronRight } from 'react-icons/go';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
@@ -39,11 +39,11 @@ export const PageActionHeader: React.FC<PageActionHeaderProps> = ({
 			</div>
 			<div className='flex items-center space-x-3'>
 				<Link
-					href={getBlogWebAppRoute({
+					href={getBlogSiteRoute({
 						includeOrigin: true,
-						origin: siteOriginByTarget['BLOG_WEB_APP'],
+						origin: siteOriginByTarget['BLOG_SITE'],
 						queryParams: {},
-						routeStaticId: 'BLOG_WEB_APP__/INDEX',
+						routeStaticId: 'BLOG_SITE__/INDEX',
 					})}
 					target='_blank'
 				>

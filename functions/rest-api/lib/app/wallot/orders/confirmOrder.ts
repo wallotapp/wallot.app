@@ -9,7 +9,7 @@ const serviceAccountPath = `${directoryPath}/../gmailApiServiceAccount.json`;
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { FunctionResponse } from '@wallot/node';
 import {
-	getHomeWebAppRoute, // route function
+	getHomeSiteRoute, // route function
 	ConfirmOrderParams,
 	ConfirmOrderRouteParams,
 	ConfirmOrderResponse,
@@ -105,11 +105,11 @@ export const confirmOrder = async (
 	await batch.commit();
 
 	// Construct redirect URL
-	const redirectUrl = getHomeWebAppRoute({
-		origin: siteOriginByTarget.HOME_WEB_APP,
+	const redirectUrl = getHomeSiteRoute({
+		origin: siteOriginByTarget.HOME_SITE,
 		includeOrigin: true,
 		queryParams: { order_id: orderId },
-		routeStaticId: 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONGRATULATIONS',
+		routeStaticId: 'HOME_SITE__/ORDERS/[ORDER_ID]/CONGRATULATIONS',
 	});
 
 	const onFinished = async () => {

@@ -282,10 +282,10 @@
 		],
 		"hosting_sites": [
 			{
-				"name": "Home Web App",
+				"name": "Home Site",
 				"description": "Stock trading for absolutely everyone",
-				"workspace_package_package_name": "@wallot/home-web-app",
-				"workspace_package_relative_path": "sites/home-web-app",
+				"workspace_package_package_name": "@wallot/home-site",
+				"workspace_package_relative_path": "sites/home-site",
 				"homepage": "https://wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-production\",\"local_development_port\":\"17150\",\"public_url\":\"https://wallot.app\",\"firebase_config_api_key\":\"AIzaSyDEpPRtu66q92D40CrluYqCbe6yTXcLC3U\",\"firebase_config_app_id\":\"1:315699416195:web:56cfd999d2495e8d385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-00F2CDJXCH\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
@@ -299,10 +299,10 @@
 				"visibility": "public"
 			},
 			{
-				"name": "Admin Web App",
+				"name": "Admin Site",
 				"description": "Wallot internal platform management",
-				"workspace_package_package_name": "@wallot/admin-web-app",
-				"workspace_package_relative_path": "sites/admin-web-app",
+				"workspace_package_package_name": "@wallot/admin-site",
+				"workspace_package_relative_path": "sites/admin-site",
 				"homepage": "https://admin.wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-admin-production\",\"local_development_port\":\"17159\",\"public_url\":\"https://admin.wallot.app\",\"firebase_config_api_key\":\"AIzaSyDEpPRtu66q92D40CrluYqCbe6yTXcLC3U\",\"firebase_config_app_id\":\"1:315699416195:web:3070c57219994fb3385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-31R749GZ0Y\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
@@ -317,10 +317,10 @@
 				"visibility": "public"
 			},
 			{
-				"name": "Blog Web App",
+				"name": "Blog Site",
 				"description": "The latest news and updates on all things AI and Finance from the Wallot Editorial team",
-				"workspace_package_package_name": "@wallot/blog-web-app",
-				"workspace_package_relative_path": "sites/blog-web-app",
+				"workspace_package_package_name": "@wallot/blog-site",
+				"workspace_package_relative_path": "sites/blog-site",
 				"homepage": "https://blog.wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-blog-production\",\"local_development_port\":\"17157\",\"public_url\":\"https://blog.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:b57b38b14a9d3ad7385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-6RGT4E9K2Q\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
@@ -333,10 +333,10 @@
 				"visibility": "public"
 			},
 			{
-				"name": "Knowledge Base Web App",
+				"name": "Knowledge Base Site",
 				"description": "Build expertise in AI and Finance with Wallot's comprehensive Knowledge Base",
-				"workspace_package_package_name": "@wallot/knowledge-base-web-app",
-				"workspace_package_relative_path": "sites/knowledge-base-web-app",
+				"workspace_package_package_name": "@wallot/knowledge-base-site",
+				"workspace_package_relative_path": "sites/knowledge-base-site",
 				"homepage": "https://learn.wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-learn-production\",\"local_development_port\":\"17152\",\"public_url\":\"https://learn.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:2aa55b9fc0acf9d0385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-5LBL089NCZ\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
@@ -349,10 +349,10 @@
 				"visibility": "public"
 			},
 			{
-				"name": "Referrals Web App",
+				"name": "Referrals Site",
 				"description": "Stock trading for absolutely everyone",
-				"workspace_package_package_name": "@wallot/referrals-web-app",
-				"workspace_package_relative_path": "sites/referrals-web-app",
+				"workspace_package_package_name": "@wallot/referrals-site",
+				"workspace_package_relative_path": "sites/referrals-site",
 				"homepage": "https://signup.wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-signup-production\",\"local_development_port\":\"17153\",\"public_url\":\"https://signup.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:d05521b123993980385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-M3G3R22V5S\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
@@ -365,10 +365,10 @@
 				"visibility": "public"
 			},
 			{
-				"name": "SSO Web App",
+				"name": "SSO Site",
 				"description": "Stock trading for absolutely everyone",
-				"workspace_package_package_name": "@wallot/sso-web-app",
-				"workspace_package_relative_path": "sites/sso-web-app",
+				"workspace_package_package_name": "@wallot/sso-site",
+				"workspace_package_relative_path": "sites/sso-site",
 				"homepage": "https://sso.wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-sso-production\",\"local_development_port\":\"17154\",\"public_url\":\"https://sso.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:3da315ad246a07fa385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-R3Y10Z6H2T\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
@@ -381,10 +381,10 @@
 				"visibility": "public"
 			},
 			{
-				"name": "Status Web App",
+				"name": "Status Site",
 				"description": "Real-time updates on Wallot's system status and availability",
-				"workspace_package_package_name": "@wallot/status-web-app",
-				"workspace_package_relative_path": "sites/status-web-app",
+				"workspace_package_package_name": "@wallot/status-site",
+				"workspace_package_relative_path": "sites/status-site",
 				"homepage": "https://status.wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-status-production\",\"local_development_port\":\"17158\",\"public_url\":\"https://status.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:e8460d228d660ae4385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-DRBY7H6J7D\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
@@ -397,10 +397,10 @@
 				"visibility": "public"
 			},
 			{
-				"name": "Support Web App",
+				"name": "Support Site",
 				"description": "Get fast, friendly help with your Wallot account from our team of customer success experts",
-				"workspace_package_package_name": "@wallot/support-web-app",
-				"workspace_package_relative_path": "sites/support-web-app",
+				"workspace_package_package_name": "@wallot/support-site",
+				"workspace_package_relative_path": "sites/support-site",
 				"homepage": "https://support.wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-support-production\",\"local_development_port\":\"17151\",\"public_url\":\"https://support.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:dfa43aa56b541d79385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-8K8D5DSR12\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",

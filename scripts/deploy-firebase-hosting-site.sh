@@ -3,12 +3,12 @@
 # Exit on error
 set -e
 
-# Usage: ./deploy-firebase-hosting-site.sh <web_app_name> <firebase_site_id>
-WEB_APP_NAME=$1
+# Usage: ./deploy-firebase-hosting-site.sh <site_name> <firebase_site_id>
+SITE_NAME=$1
 FIREBASE_SITE_ID=$2
 
-if [[ -z "$WEB_APP_NAME" ]]; then
-  echo "Usage: $0 <web_app_name>"
+if [[ -z "$SITE_NAME" ]]; then
+  echo "Usage: $0 <site_name>"
   exit 1
 fi
 
@@ -24,6 +24,6 @@ docker run --rm \
     cd ~ &&
     npm install -g firebase-tools@13.0.2 &&
     cd - &&
-    npm run build-web-app --web_app_name=${WEB_APP_NAME} --deployment_environment=${SECRET_CRED_DEPLOYMENT_ENVIRONMENT} &&
-    npm run deploy-web-app --web_app_name=${WEB_APP_NAME} --firebase_site_id=${FIREBASE_SITE_ID} --firebase_project_id=${SECRET_CRED_FIREBASE_ADMIN_SERVICE_ACCOUNT_PROJECT_ID}
+    npm run build-site --site_name=${SITE_NAME} --deployment_environment=${SECRET_CRED_DEPLOYMENT_ENVIRONMENT} &&
+    npm run deploy-site --site_name=${SITE_NAME} --firebase_site_id=${FIREBASE_SITE_ID} --firebase_project_id=${SECRET_CRED_FIREBASE_ADMIN_SERVICE_ACCOUNT_PROJECT_ID}
   "

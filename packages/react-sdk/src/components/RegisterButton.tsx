@@ -2,17 +2,17 @@ import Link from 'next/link';
 import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { SITE_ORIGIN } from 'ergonomic-react/src/config/originConfig';
-import { getSsoWebAppRoute } from '@wallot/js';
+import { getSsoSiteRoute } from '@wallot/js';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 
 export const RegisterButton: React.FC<BaseComponent> = ({ className = '' }) => {
 	const siteOriginByTarget = useSiteOriginByTarget();
-	const ssoWebAppOrigin = siteOriginByTarget['SSO_WEB_APP'];
-	const registerHref = getSsoWebAppRoute({
-		includeOrigin: SITE_ORIGIN !== ssoWebAppOrigin,
-		origin: ssoWebAppOrigin,
+	const ssoSiteOrigin = siteOriginByTarget['SSO_SITE'];
+	const registerHref = getSsoSiteRoute({
+		includeOrigin: SITE_ORIGIN !== ssoSiteOrigin,
+		origin: ssoSiteOrigin,
 		queryParams: {},
-		routeStaticId: 'SSO_WEB_APP__/REGISTER',
+		routeStaticId: 'SSO_SITE__/REGISTER',
 	});
 	return (
 		<Link className={className} href={registerHref} target='_blank'>
