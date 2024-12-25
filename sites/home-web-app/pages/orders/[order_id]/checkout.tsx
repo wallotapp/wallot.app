@@ -165,8 +165,16 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 	});
 
 	return (
-		<div key={bankAccount._id} className={cn('flex justify-between border rounded-md p-4 mt-2 bg-slate-50/10', !isTokenized && isDefault ? 'border-amber-900' : 'border-slate-200', showTokenizationForm ? 'items-start' : 'items-center')}>
-			<div className='flex items-center space-x-2'>
+		<div
+			key={bankAccount._id}
+			className={cn(
+				'flex justify-between border rounded-md p-4 mt-2 bg-slate-50/10',
+				!isTokenized && isDefault ? 'border-amber-900' : 'border-slate-200',
+				showTokenizationForm ? 'items-start' : 'items-center',
+				'transition-all duration-200 grid grid-cols-2 gap-4',
+			)}
+		>
+			<div className='flex items-center space-x-2 col-span-2 xl:col-span-1'>
 				<div>
 					<p className='font-normal text-sm'>
 						{bankAccount.name} &nbsp;
@@ -190,7 +198,7 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 					)}
 				</div>
 			</div>
-			<div className={cn('w-1/2', showTokenizationForm ? '' : 'hidden')}>
+			<div className={cn('col-span-2 xl:col-span-1', showTokenizationForm ? '' : 'hidden')}>
 				<form onSubmit={handleSubmit(onSubmit) as () => void}>
 					<div className='text-right'>
 						<p className='font-semibold text-xs text-right'>
@@ -252,7 +260,7 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 					</div>
 				</form>
 			</div>
-			<div className={cn('w-1/2 flex items-center space-x-3 justify-end', showTokenizationForm ? 'hidden' : '')}>
+			<div className={cn('col-span-2 xl:col-span-1 flex items-center space-x-3 justify-end', showTokenizationForm ? 'hidden' : '')}>
 				{!isDefault && (
 					<div>
 						<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' type='button' onClick={setBankAccountAsUserDefault} disabled={isMakeDefaultButtonDisabled}>
