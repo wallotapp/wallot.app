@@ -4,7 +4,18 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Page as PageComponent, PageStaticProps, PageProps } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
-import { KycFormDataParams, kycFormDataSchema, kycFormDataSchemaFieldSpecByFieldKey, getHomeWebAppRoute, HomeWebAppRouteQueryParams, getSsoWebAppRoute, isBankAccountTokenized, BankAccount } from '@wallot/js';
+import {
+	KycFormDataParams,
+	kycFormDataSchema,
+	kycFormDataSchemaFieldSpecByFieldKey,
+	getHomeWebAppRoute,
+	HomeWebAppRouteQueryParams,
+	getSsoWebAppRoute,
+	isBankAccountTokenized,
+	BankAccount,
+	TokenizeBankAccountParams,
+	tokenizeBankAccountSchema,
+} from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
@@ -14,7 +25,7 @@ import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTa
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
-import { useForm } from 'react-hook-form';
+import { useController, useForm } from 'react-hook-form';
 import { useQueryCurrentUser, useUpdateUserMutation } from '@wallot/react/src/features/users';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
@@ -47,7 +58,6 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 	// Current User
 	const { currentUser, isUserPageLoading, refetch: refetchUser } = useQueryCurrentUser();
 	const defaultBankAccountId = currentUser?.default_bank_account ?? 'null';
-	isUserPageLoading; // <== use this
 
 	const showTokenizationForm = isTokenizationFormShown(bankAccount._id);
 	const handleToggleTokenizationForm = toggleTokenizationFormShown(bankAccount._id);
@@ -56,8 +66,17 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 	const isTokenized = isBankAccountTokenized(bankAccount);
 	const isDefault = defaultBankAccountId === bankAccount._id;
 
-	const isContinueButtonDisabled = Math.random() > 1;
-	const isFormSubmitting = Math.random() > 1;
+	// Form Resolver
+	const resolver = useYupValidationResolver(tokenizeBankAccountSchema, defaultGeneralizedFormDataTransformationOptions);
+	const initialFormData = tokenizeBankAccountSchema.getDefault() as TokenizeBankAccountParams;
+	const { control, formState, handleSubmit, reset, setError, watch } = useForm<TokenizeBankAccountParams>({
+		defaultValues: initialFormData,
+		resolver,
+		shouldUnregister: false,
+	});
+	const liveData = watch();
+	const isAccountNumberInputComplete = Boolean(liveData.account_number);
+
 	const { mutate: tokenizeBankAccount, isLoading: isTokenizeBankAccountRunning } = useTokenizeBankAccountMutation(bankAccount._id, {
 		onError: ({ error: { message } }) => {
 			// Show the error message
@@ -65,13 +84,13 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 				title: 'Error',
 				description: message,
 			});
-			// setError('root', {
-			// 	type: 'manual',
-			// 	message: 'An error occurred. Please try again.',
-			// });
+			setError('root', {
+				type: 'manual',
+				message: 'An error occurred. Please try again.',
+			});
 
-			// // Reset form
-			// reset();
+			// Reset form
+			reset();
 		},
 		onSuccess: async () => {
 			// Show success toast
@@ -120,6 +139,25 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 		updateUser({ _id: currentUser._id, default_bank_account: bankAccount._id });
 	};
 
+	const onSubmit = (data: TokenizeBankAccountParams) => {
+		console.log('Tokenizing bank account with following data:', data);
+		toast({
+			title: 'Saving your bank account information',
+			description: 'This may take a few moments...',
+		});
+		tokenizeBankAccount(data);
+	};
+
+	const isTokenizeFormSubmitting = formState.isSubmitting || isTokenizeBankAccountRunning;
+	const isTokenizeButtonDisabled = isUserPageLoading || isTokenizeFormSubmitting || !isAccountNumberInputComplete;
+	const isMakeDefaultButtonDisabled = isUserPageLoading || isTokenizeFormSubmitting || isUpdateUserRunning;
+
+	const { field: accountNumberField } = useController({
+		control,
+		disabled: isTokenizeFormSubmitting,
+		name: 'account_number',
+	});
+
 	return (
 		<div key={bankAccount._id} className={cn('flex justify-between border rounded-md p-4 mt-2 bg-slate-50/10', !isTokenized && isDefault ? 'border-amber-900' : 'border-slate-200', showTokenizationForm ? 'items-start' : 'items-center')}>
 			<div className='flex items-center space-x-2'>
@@ -147,67 +185,66 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 				</div>
 			</div>
 			<div className={cn('w-1/2', showTokenizationForm ? '' : 'hidden')}>
-				<div className='text-right'>
-					<p className='font-semibold text-xs text-right'>
-						Routing Number
-						<span className='text-amber-900'>*</span>
-					</p>
-					<div className='flex items-center space-x-2 justify-end'>
-						<div>
-							<button className='font-light text-xs' type='button' onClick={handleToggleRoutingNumber}>
-								{showRoutingNumber ? <p className=''>Hide</p> : <p className=''>Show</p>}
-							</button>
-						</div>
-						<div className='font-light text-sm'>
-							{showRoutingNumber ? (
-								<p className=''>{bankAccount.routing_number}</p>
-							) : (
-								<p className=''>
-									·····
-									{bankAccount.routing_number?.slice(-4) ?? ''}
-								</p>
-							)}
+				<form onSubmit={handleSubmit(onSubmit) as () => void}>
+					<div className='text-right'>
+						<p className='font-semibold text-xs text-right'>
+							Routing Number
+							<span className='text-amber-900'>*</span>
+						</p>
+						<div className='flex items-center space-x-2 justify-end'>
+							<div>
+								<button className='font-light text-xs' type='button' onClick={handleToggleRoutingNumber}>
+									{showRoutingNumber ? <p className=''>Hide</p> : <p className=''>Show</p>}
+								</button>
+							</div>
+							<div className='font-light text-sm'>
+								{showRoutingNumber ? (
+									<p className=''>{bankAccount.routing_number}</p>
+								) : (
+									<p className=''>
+										·····
+										{bankAccount.routing_number?.slice(-4) ?? ''}
+									</p>
+								)}
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className='mt-2'>
-					<p className='font-semibold text-xs text-right'>
-						Confirm Account Number
-						<span className='text-amber-900'>*</span>
-					</p>
-					<input className='border border-amber-900 h-8 rounded-md text-xs px-2 w-full' placeholder={'Account number ending in ····' + bankAccount.last_4} />
-				</div>
-				<div className='mt-3.5 text-right space-x-2'>
-					<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' type='button' onClick={handleToggleTokenizationForm}>
-						<p className='font-normal text-xs'>Back</p>
-					</button>
-					<button
-						className={cn('w-fit text-center py-1.5 px-6 rounded-md border', isContinueButtonDisabled ? 'bg-slate-500' : 'bg-black')}
-						type='button'
-						onClick={() => {
-							console.log('save account tapped');
-							return;
-						}}
-						disabled={isContinueButtonDisabled}
-					>
-						<div>
-							{isFormSubmitting ? (
-								<>
-									<div className='flex items-center justify-center space-x-2 min-w-16 py-0.5'>
-										<div className={cn('w-4 h-4 border-2 border-gray-200 rounded-full animate-spin', 'border-t-brand border-r-brand border-b-brand')}></div>
-									</div>
-								</>
-							) : (
-								<p className={cn('font-normal text-xs', isContinueButtonDisabled ? 'text-slate-300' : 'text-white')}>Save</p>
-							)}
-						</div>
-					</button>
-				</div>
+					<div className='mt-2'>
+						<p className='font-semibold text-xs text-right'>
+							Confirm Account Number
+							<span className='text-amber-900'>*</span>
+						</p>
+						<input {...accountNumberField} className='border border-amber-900 h-8 rounded-md text-xs px-2 w-full' placeholder={'Account number ending in ····' + bankAccount.last_4} required />
+					</div>
+					<div className='mt-3.5 text-right space-x-2'>
+						<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' disabled={isTokenizeButtonDisabled} type='button' onClick={handleToggleTokenizationForm}>
+							<p className='font-normal text-xs'>Back</p>
+						</button>
+						<button className={cn('w-fit text-center py-1.5 px-6 rounded-md border', isTokenizeButtonDisabled ? 'bg-slate-500' : 'bg-black')} type='submit' disabled={isTokenizeButtonDisabled}>
+							<div>
+								{isTokenizeFormSubmitting ? (
+									<>
+										<div className='flex items-center justify-center space-x-2 min-w-16 py-0.5'>
+											<div className={cn('w-4 h-4 border-2 border-gray-200 rounded-full animate-spin', 'border-t-brand border-r-brand border-b-brand')}></div>
+										</div>
+									</>
+								) : (
+									<p className={cn('font-normal text-xs', isTokenizeButtonDisabled ? 'text-slate-300' : 'text-white')}>Save</p>
+								)}
+							</div>
+						</button>
+						{Boolean(formState.errors['root']?.message) && (
+							<div className='mt-4'>
+								<LiteFormFieldError fieldErrorMessage={formState.errors['root']?.message ?? ''} />
+							</div>
+						)}
+					</div>
+				</form>
 			</div>
 			<div className={cn('w-1/2 flex items-center space-x-3 justify-end', showTokenizationForm ? 'hidden' : '')}>
 				{!isDefault && (
 					<div>
-						<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' type='button' onClick={setBankAccountAsUserDefault}>
+						<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' type='button' onClick={setBankAccountAsUserDefault} disabled={isMakeDefaultButtonDisabled}>
 							<p className='font-normal text-xs'>Make Default</p>
 						</button>
 					</div>
