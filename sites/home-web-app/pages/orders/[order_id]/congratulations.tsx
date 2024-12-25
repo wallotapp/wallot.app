@@ -22,6 +22,7 @@ import {
 	AssetOrderCartItem,
 	useQueryAssetOrderPage,
 } from '@wallot/react/src/features/assetOrders';
+import { getCurrencyUsdStringFromCents } from 'ergonomic';
 
 // ==== Static Page Props ==== //
 
@@ -99,22 +100,31 @@ const Page: NextPage = () => {
 			},
 		});
 	const assetOrders = assetOrderPage?.documents ?? [];
-	const firstAsset = assetOrders[0];
-	const firstAssetId = firstAsset?._id ?? '';
-	const hasOneAsset = assetOrders.length === 1;
-	const hasTwoAssets = assetOrders.length === 2;
-	const hasThreeOrMoreAssets = assetOrders.length >= 3;
-	const assetNames = assetOrders.map(
+	const firstAssetOrder = assetOrders[0];
+	const firstAssetOrderAssetId = firstAssetOrder?.asset ?? '';
+	const hasOneAssetOrder = assetOrders.length === 1;
+	const hasTwoAssetOrders = assetOrders.length === 2;
+	const hasThreeOrMoreAssetOrders = assetOrders.length >= 3;
+	const assetSymbols = assetOrders.map(
 		(assetOrder) => assetOrder.alpaca_order_symbol,
 	);
-	const firstAssetName = assetNames[0] ?? '';
-	const assetCongratulationText = hasOneAsset // 1
-		? `${firstAssetName} is yours!`
-		: hasTwoAssets // 2
-		? `${assetNames.join(' and ')} are yours!`
-		: hasThreeOrMoreAssets // 4+
-		? `${assetNames.slice(0, 2).join(', ')} and more are yours!`
+	const firstAssetSymbol = assetSymbols[0] ?? '';
+	const assetOrdersCongratulationText = hasOneAssetOrder // 1
+		? `${firstAssetSymbol} is yours!`
+		: hasTwoAssetOrders // 2
+		? `${assetSymbols.join(' and ')} are yours!`
+		: hasThreeOrMoreAssetOrders // 4+
+		? `${assetSymbols.slice(0, 2).join(', ')} and more are yours!`
 		: '';
+	const orderSubtotalAmount = assetOrders.reduce((acc, assetOrder) => {
+		return acc + Number(assetOrder.amount);
+	}, 0);
+	const taxesAndFeesAmount = 2499;
+	const taxesAndFeesAmountUsdString =
+		getCurrencyUsdStringFromCents(taxesAndFeesAmount);
+	const assetTotalAmountUsdString = getCurrencyUsdStringFromCents(
+		orderSubtotalAmount + taxesAndFeesAmount,
+	);
 
 	// ==== Effects ==== //
 	useEffect(() => {
@@ -161,7 +171,7 @@ const Page: NextPage = () => {
 						<div className='flex flex-col items-center'>
 							<div className='mt-8'>
 								<p className='font-normal text-4xl'>
-									{assetCongratulationText}
+									{assetOrdersCongratulationText}
 								</p>
 							</div>
 							<div className='mt-3'>
@@ -170,7 +180,7 @@ const Page: NextPage = () => {
 								</p>
 							</div>
 							<div className='mt-8'>
-								<Link href={`/assets/${firstAssetId}/track`}>
+								<Link href={`/assets/${firstAssetOrderAssetId}/track`}>
 									<div className='bg-black text-white rounded-md py-4 px-8 cursor-pointer w-fit'>
 										<p className='font-light'>Continue</p>
 									</div>
@@ -204,7 +214,7 @@ const Page: NextPage = () => {
 												assetOrderIdx > 0
 													? '!border-t !border-t-gray-200 !border-b-0 !border-l-0 !border-r-0'
 													: '!border-0',
-												'!rounded-none !rounded-t-md !rounded-b-md !rounded-l-none !rounded-r-none !shadow-none',
+												'!rounded-none !shadow-none',
 												'p-6',
 											)}
 											key={assetOrder._id}
@@ -212,15 +222,26 @@ const Page: NextPage = () => {
 									);
 								})}
 							</div>
-							<div>
-								<p>Taxes and fees: $24.99</p>
+							<div className='border-t border-t-gray-200 pt-4 flex justify-between items-center w-full px-4'>
+								<div>
+									<p className='font-light text-lg'>Taxes and fees</p>
+								</div>
+								<div>
+									<p className='font-light text-lg'>
+										{taxesAndFeesAmountUsdString}
+									</p>
+								</div>
 							</div>
-							<div>
-								<p>Total: $124.99</p>
+							<div className='mt-8 flex justify-between items-center w-full px-4'>
+								<div>
+									<p className='font-normal text-3xl'>Total</p>
+								</div>
+								<div>
+									<p className='font-normal text-3xl text-green-600'>
+										{assetTotalAmountUsdString}
+									</p>
+								</div>
 							</div>
-							<p>
-								Height {height} Width {width}
-							</p>
 							<div className='min-h-[60vh]' />
 						</div>
 					</div>
