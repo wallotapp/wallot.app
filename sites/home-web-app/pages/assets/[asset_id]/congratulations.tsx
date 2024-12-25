@@ -7,7 +7,7 @@ import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/auth
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { useWindowSize } from '@wallot/react/src/hooks/useWindowSize';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
-import { PlatformLogo } from 'ergonomic-react/src/components/brand/PlatformLogo';
+import { PlatformIcon } from 'ergonomic-react/src/components/brand/PlatformIcon';
 import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
 import Link from 'next/link';
 import { GoCheck } from 'react-icons/go';
@@ -85,35 +85,39 @@ const Page: NextPage = () => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<div className={cn('min-h-screen relative', 'px-8 pt-24')}>
+			<div className={cn('min-h-screen relative', 'px-8 pt-12')}>
 				<div className='mb-10 flex items-center justify-center'>
-					{OPEN_GRAPH_CONFIG.siteBrandLogoDarkMode && OPEN_GRAPH_CONFIG.siteBrandLogoLightMode && (
-						<PlatformLogo
+					{OPEN_GRAPH_CONFIG.siteBrandIconDarkMode && OPEN_GRAPH_CONFIG.siteBrandIconLightMode && (
+						<PlatformIcon
 							height={380}
-							size='xl'
+							size='lg'
 							srcMap={{
-								dark: OPEN_GRAPH_CONFIG.siteBrandLogoDarkMode,
-								light: OPEN_GRAPH_CONFIG.siteBrandLogoLightMode,
+								dark: OPEN_GRAPH_CONFIG.siteBrandIconDarkMode,
+								light: OPEN_GRAPH_CONFIG.siteBrandIconLightMode,
 							}}
 							width={2048}
 						/>
 					)}
-					{!(OPEN_GRAPH_CONFIG.siteBrandLogoDarkMode && OPEN_GRAPH_CONFIG.siteBrandLogoLightMode) && (
+					{!(OPEN_GRAPH_CONFIG.siteBrandIconDarkMode && OPEN_GRAPH_CONFIG.siteBrandIconLightMode) && (
 						<div>
 							<p className={cn('text-2xl font-bold', 'lg:text-3xl')}>{OPEN_GRAPH_CONFIG.siteName}</p>
 						</div>
 					)}
 				</div>
-				<div>
-					<p>AAPL is yours!</p>
-				</div>
-				<div>
-					<p>Stock purchase in progress. Sit back and let your money work for you.</p>
-				</div>
-				<div>
-					<Link href={`/assets/${asset_id}/track`}>
-						<p>Continue</p>
-					</Link>
+				<div className='flex flex-col items-center'>
+					<div className='mt-7'>
+						<p className='font-normal text-4xl'>AAPL is yours!</p>
+					</div>
+					<div className='mt-3'>
+						<p className='font-light text-base'>Stock purchase in progress. We'll take it from here.</p>
+					</div>
+					<div className='mt-8'>
+						<Link href={`/assets/${asset_id}/track`}>
+							<div className='bg-black text-white rounded-md py-4 px-8 cursor-pointer w-fit'>
+								<p className='font-light'>Continue</p>
+							</div>
+						</Link>
+					</div>
 				</div>
 				<div>
 					<div>
