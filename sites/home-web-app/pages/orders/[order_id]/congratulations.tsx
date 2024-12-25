@@ -85,6 +85,18 @@ const Page: NextPage = () => {
 	const assetOrders = assetOrderPage?.documents ?? [];
 	const firstAsset = assetOrders[0];
 	const firstAssetId = firstAsset?._id ?? '';
+	const hasOneAsset = assetOrders.length === 1;
+	const hasTwoAssets = assetOrders.length === 2;
+	const hasThreeOrMoreAssets = assetOrders.length >= 3;
+	const assetNames = assetOrders.map((assetOrder) => assetOrder.alpaca_order_symbol);
+	const firstAssetName = assetNames[0] ?? '';
+	const assetCongratulationText = hasOneAsset // 1
+		? `${firstAssetName} is yours!`
+		: hasTwoAssets // 2
+		? `${assetNames.join(' and ')} are yours!`
+		: hasThreeOrMoreAssets // 4+
+		? `${assetNames.slice(0, 2).join(', ')} and more are yours!`
+		: '';
 
 	// ==== Effects ==== //
 	useEffect(() => {
@@ -122,7 +134,7 @@ const Page: NextPage = () => {
 						</div>
 						<div className='flex flex-col items-center'>
 							<div className='mt-7'>
-								<p className='font-normal text-4xl'>AAPL is yours!</p>
+								<p className='font-normal text-4xl'>{assetCongratulationText}</p>
 							</div>
 							<div className='mt-3'>
 								<p className='font-light text-base'>Stock purchase in progress. We'll take it from here.</p>
