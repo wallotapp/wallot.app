@@ -1,15 +1,18 @@
+import { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Page as PageComponent, PageStaticProps, PageProps } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { HomeWebAppRouteQueryParams, getSsoWebAppRoute } from '@wallot/js';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
+import { useWindowSize } from '@wallot/react/src/hooks/useWindowSize';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { PlatformLogo } from 'ergonomic-react/src/components/brand/PlatformLogo';
 import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
 import Link from 'next/link';
 import { GoCheck } from 'react-icons/go';
 import { useQueryCurrentUser } from '@wallot/react/src/features/users';
+import Confetti from 'react-confetti';
 
 // ==== Static Page Props ==== //
 
@@ -26,6 +29,9 @@ const ROUTE_STATIC_PROPS: PageStaticProps = {
 type RouteQueryParams = HomeWebAppRouteQueryParams[typeof ROUTE_STATIC_ID];
 
 const Page: NextPage = () => {
+	// ==== State ==== //
+	const [recycle, setRecycle] = useState(true);
+
 	// ==== Hooks ==== //
 
 	// Site Origin by Target
@@ -48,6 +54,9 @@ const Page: NextPage = () => {
 	// Current User
 	const { currentUser } = useQueryCurrentUser();
 
+	// Window size
+	const { height, width } = useWindowSize();
+
 	// ==== Constants ==== //
 
 	// Router Query
@@ -64,6 +73,14 @@ const Page: NextPage = () => {
 		...ROUTE_STATIC_PROPS,
 		routeId: ROUTE_RUNTIME_ID,
 	};
+
+	// ==== Effects ==== //
+	useEffect(() => {
+		if (height == null || width == null) return;
+
+		const timer = setTimeout(() => setRecycle(false), 3000);
+		return () => clearTimeout(timer); // Cleanup timeout when the component unmounts
+	}, [height, width]);
 
 	// ==== Render ==== //
 	return (
@@ -107,8 +124,12 @@ const Page: NextPage = () => {
 					<div>AAPL shares: $100.00</div>
 					<div>Taxes and fees: $24.99</div>
 					<div>Total: $124.99</div>
+					<p>
+						Height {height} Width {width}
+					</p>
 				</div>
 			</div>
+			{height != null && width != null && <Confetti height={height} recycle={recycle} width={width} />}
 		</PageComponent>
 	);
 };

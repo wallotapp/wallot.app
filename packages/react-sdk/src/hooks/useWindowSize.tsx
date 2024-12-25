@@ -50,30 +50,33 @@ const isBrowser = typeof window !== 'undefined';
 
 // Define the type for options that can be passed to the hook
 interface Options {
-	initialWidth?: number; // Initial width of the window (Default value is Infinity)
-	initialHeight?: number; // Initial height of the window (Default value is Infinity)
 	onChange?: (width: number, height: number) => void; // Callback function to execute on window resize (optional)
 }
 
-export const useWindowSize = ({ initialWidth = Infinity, initialHeight = Infinity, onChange }: Options = {}) => {
+export const useWindowSize = ({ onChange }: Options = {}) => {
 	// Use the useRafState hook to maintain the current window size (width and height)
-	const [state, setState] = useRafState<{ width: number; height: number }>({
-		width: isBrowser ? window.innerWidth : initialWidth,
-		height: isBrowser ? window.innerHeight : initialHeight,
-	});
+	const [state, setState] = useRafState<{ width: number | null; height: number | null }>({ height: null, width: null });
 
 	useEffect((): (() => void) | void => {
 		// Only run the effect on the browser (to avoid issues with SSR)
 		if (isBrowser) {
+			if (state.width === null || state.height === null) {
+				// Update the state with the current window size
+				setState({
+					width: window.innerWidth,
+					height: window.innerHeight,
+				});
+			}
+
 			const handler = () => {
 				const width = window.innerWidth;
 				const height = window.innerHeight;
 
 				// Update the state with the new window size
-				setState({
+				setState(() => ({
 					width,
 					height,
-				});
+				}));
 
 				// If an onChange callback is provided, call it with the new dimensions
 				if (onChange) onChange(width, height);
@@ -87,7 +90,7 @@ export const useWindowSize = ({ initialWidth = Infinity, initialHeight = Infinit
 				off(window, 'resize', handler);
 			};
 		}
-	}, []);
+	}, [isBrowser, state.height, state.width]);
 
 	// Return the current window size (width and height)
 	return state;
