@@ -844,8 +844,8 @@ const Page: NextPage = () => {
 															</div>
 															<div className='flex-1'>
 																<button
-																	className={cn('w-full text-center py-2 rounded-md border', isContinueButtonDisabled ? 'bg-slate-500' : 'bg-black')}
-																	type={activeBillingInformationSection === 'Disclosures' ? 'submit' : 'button'}
+																	className={cn('w-full text-center py-2 rounded-md border', isContinueButtonDisabled ? 'bg-slate-500' : 'bg-black', activeBillingInformationSection === 'Disclosures' ? 'hidden' : '')}
+																	type={'button'}
 																	onClick={() => {
 																		if (activeBillingInformationSection === 'Contact Details') {
 																			setActiveBillingInformationSection('Tax Details');
@@ -864,7 +864,24 @@ const Page: NextPage = () => {
 																				</div>
 																			</>
 																		) : (
-																			<p className={cn('font-normal text-sm', isContinueButtonDisabled ? 'text-slate-300' : 'text-white')}>{activeBillingInformationSection === 'Disclosures' ? 'Save Responses' : 'Continue'}</p>
+																			<p className={cn('font-normal text-sm', isContinueButtonDisabled ? 'text-slate-300' : 'text-white')}>Continue</p>
+																		)}
+																	</div>
+																</button>
+																<button
+																	className={cn('w-full text-center py-2 rounded-md border', isContinueButtonDisabled ? 'bg-slate-500' : 'bg-black', activeBillingInformationSection === 'Disclosures' ? '' : 'hidden')}
+																	type={'submit'}
+																	disabled={isContinueButtonDisabled}
+																>
+																	<div>
+																		{isFormSubmitting ? (
+																			<>
+																				<div className='flex items-center justify-center space-x-2 min-w-16 py-0.5'>
+																					<div className={cn('w-4 h-4 border-2 border-gray-200 rounded-full animate-spin', 'border-t-brand border-r-brand border-b-brand')}></div>
+																				</div>
+																			</>
+																		) : (
+																			<p className={cn('font-normal text-sm', isContinueButtonDisabled ? 'text-slate-300' : 'text-white')}>Save Responses</p>
 																		)}
 																	</div>
 																</button>
