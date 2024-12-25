@@ -1,3 +1,4 @@
+export * from '@wallot/react/src/features/assetOrders/components/AssetOrderCartItem';
 export * from '@wallot/react/src/features/assetOrders/hooks/useCreateAssetOrderMutation';
 export * from '@wallot/react/src/features/assetOrders/hooks/useQueryAssetOrderPage';
 export * from '@wallot/react/src/features/assetOrders/hooks/useUpdateAssetOrderMutation';

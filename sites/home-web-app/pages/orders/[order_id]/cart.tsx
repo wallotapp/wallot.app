@@ -4,7 +4,7 @@ import { Page as PageComponent, PageStaticProps, PageProps } from 'ergonomic-rea
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getHomeWebAppRoute, HomeWebAppRouteQueryParams, getSsoWebAppRoute } from '@wallot/js';
-import { AssetOrder } from '@wallot/js';
+import { AssetOrderCartItem } from '@wallot/react/src/features/assetOrders';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
@@ -13,37 +13,8 @@ import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import Link from 'next/link';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
-import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
-import { FiChevronLeft, FiTrendingUp } from 'react-icons/fi';
+import { FiChevronLeft } from 'react-icons/fi';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
-
-const AssetOrderCartItem: React.FC<
-	{
-		assetOrder: AssetOrder;
-	} & BaseComponent
-> = ({ assetOrder: { alpaca_order_symbol, amount }, className = '' }) => {
-	const amountUsdString = getCurrencyUsdStringFromCents(amount);
-
-	return (
-		<div className={cn('bg-white border border-gray-200 rounded-md shadow-md p-6', className)}>
-			<div className='flex justify-between items-end'>
-				<div className='flex items-start space-x-4'>
-					<div className='bg-black p-5 rounded-lg w-fit h-fit'>
-						<FiTrendingUp className='text-white text-4xl' />
-					</div>
-					<div>
-						<p className='font-bold text-base'>{alpaca_order_symbol}</p>
-						<p className={cn('text-sm font-light text-gray-600', 'mt-1')}>US Securities Purchase</p>
-					</div>
-				</div>
-				<div>
-					<p>Order</p>
-					<p>{amountUsdString}</p>
-				</div>
-			</div>
-		</div>
-	);
-};
 
 // ==== Static Page Props ==== //
 
