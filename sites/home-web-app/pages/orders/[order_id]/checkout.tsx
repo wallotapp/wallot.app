@@ -221,6 +221,11 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 							<span className='text-amber-900'>*</span>
 						</p>
 						<input {...accountNumberField} className='border border-amber-900 h-8 rounded-md text-xs px-2 w-full' placeholder={'Account number ending in ····' + bankAccount.last_4} required />
+						{Boolean(formState.errors['account_number']?.message) && (
+							<div className='mt-4'>
+								<LiteFormFieldError fieldErrorMessage={formState.errors['account_number']?.message ?? ''} />
+							</div>
+						)}
 					</div>
 					<div className='mt-3.5 text-right space-x-2 items-center flex justify-end'>
 						<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' disabled={isTokenizeButtonDisabled} type='button' onClick={handleToggleTokenizationForm}>
