@@ -141,7 +141,10 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, de
 					</p>
 					<input className='border border-amber-900 h-8 rounded-md text-xs px-2 w-full' placeholder={'Account number ending in ····' + bankAccount.last_4} />
 				</div>
-				<div className='mt-3.5 text-right'>
+				<div className='mt-3.5 text-right space-x-2'>
+					<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' type='button' onClick={handleToggleTokenizationForm}>
+						<p className='font-normal text-xs'>Back</p>
+					</button>
 					<button
 						className={cn('w-fit text-center py-1.5 px-6 rounded-md border', isContinueButtonDisabled ? 'bg-slate-500' : 'bg-black')}
 						type='button'
