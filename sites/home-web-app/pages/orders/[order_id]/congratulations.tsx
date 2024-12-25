@@ -168,7 +168,7 @@ const Page: NextPage = () => {
 								</div>
 							)}
 						</div>
-						<div className='flex flex-col items-center'>
+						<div className='flex flex-col items-center text-center'>
 							<div className='mt-8'>
 								<p className='font-normal text-4xl'>
 									{assetOrdersCongratulationText}
@@ -193,13 +193,13 @@ const Page: NextPage = () => {
 								'overflow-y-auto h-screen',
 							)}
 						>
-							<div className='mt-4'>
+							<div className='mt-4 text-center'>
 								<GoCheck className='text-green-600 text-5xl' />
 							</div>
-							<div className='mt-6'>
+							<div className='mt-6 text-center'>
 								<p className='font-normal text-xl'>Thank you for your order!</p>
 							</div>
-							<div className='mt-0.5'>
+							<div className='mt-0.5 text-center'>
 								<p className='font-light text-base'>
 									We've emailed your receipt to{' '}
 									<span className='font-semibold'>{receiptEmail}</span>
