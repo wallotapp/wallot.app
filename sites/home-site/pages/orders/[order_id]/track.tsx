@@ -17,6 +17,7 @@ import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
+import { GoCheckCircleFill, GoCircle } from 'react-icons/go';
 
 // ==== Static Page Props ==== //
 
@@ -89,16 +90,27 @@ const Page: NextPage = () => {
 
 	type OrderStep =
 		| 'Account Verification'
-		| 'Processing Bank Payment'
-		| 'Filling Stock Purchase/s'
-		| 'Complete';
+		| 'Funds Transfer'
+		| 'Stock Purchases';
 	const orderSteps: OrderStep[] = [
 		'Account Verification',
-		'Processing Bank Payment',
-		'Filling Stock Purchase/s',
-		'Complete',
+		'Funds Transfer',
+		'Stock Purchases',
 	];
-	const currentOrderStep: OrderStep = orderSteps[2] as OrderStep;
+	// const completedSteps: OrderStep[] = [];
+	// const completedSteps: OrderStep[] = ['Account Verification'];
+	// const completedSteps: OrderStep[] = [
+	// 	'Account Verification',
+	// 	'Funds Transfer',
+	// ];
+	const completedSteps: OrderStep[] = [
+		'Account Verification',
+		'Funds Transfer',
+		'Stock Purchases',
+	];
+	const nextStepToComplete = orderSteps.find(
+		(step) => !completedSteps.includes(step),
+	);
 
 	// ==== Render ==== //
 	return (
@@ -179,13 +191,11 @@ const Page: NextPage = () => {
 								</div>
 								<div className='bg-white border border-gray-200 shadow-sm px-10 py-10 rounded-xl h-fit mt-8'>
 									<div>
-										<p className='font-normal text-sm'>Order Status</p>
+										<p className='font-semibold text-xl'>Order Status</p>
 									</div>
 									{orderSteps.map((step, index) => {
-										const isCurrentStep = step === currentOrderStep;
-										const isCompletedStep =
-											orderSteps.indexOf(step) <
-											orderSteps.indexOf(currentOrderStep);
+										const isCurrentStep = step === nextStepToComplete;
+										const isCompletedStep = completedSteps.includes(step);
 										return (
 											<div
 												className={cn(
@@ -194,29 +204,51 @@ const Page: NextPage = () => {
 												)}
 												key={index}
 											>
-												<div className='flex justify-between'>
+												<div className='flex items-center space-x-2.5'>
 													<div>
 														{isCurrentStep ? (
 															<div className='flex items-center'>
-																<div className='w-4 h-4 rounded-full bg-brand-dark mr-2' />
-																<p className='font-light text-sm'>
-																	In Progress
-																</p>
+																<GoCircle className='text-gray-800 text-2xl' />
 															</div>
 														) : isCompletedStep ? (
 															<div className='flex items-center'>
-																<div className='w-4 h-4 rounded-full bg-green-500 mr-2' />
-																<p className='font-light text-sm'>Completed</p>
+																<GoCheckCircleFill className='text-blue-700 text-2xl' />
 															</div>
 														) : (
 															<div className='flex items-center'>
-																<div className='w-4 h-4 rounded-full bg-gray-500 mr-2' />
-																<p className='font-light text-sm'>Pending</p>
+																<GoCircle className='text-gray-300 text-2xl' />
 															</div>
 														)}
 													</div>
-													<div>
-														<p className='font-normal text-lg'>{step}</p>
+													<div className='flex items-center space-x-2.5'>
+														<div>
+															<p
+																className={cn(
+																	'text-base',
+																	isCompletedStep
+																		? 'font-medium text-gray-800'
+																		: isCurrentStep
+																		? 'font-light text-gray-800'
+																		: 'font-light text-gray-400',
+																)}
+															>
+																{step}
+															</p>
+														</div>
+														{isCompletedStep && (
+															<div className='bg-blue-300 rounded-lg px-1.5 py-0.5 w-fit'>
+																<p className='text-blue-800 text-[0.6rem]'>
+																	COMPLETE
+																</p>
+															</div>
+														)}
+														{isCurrentStep && (
+															<div className='bg-gray-300 rounded-lg px-1.5 py-0.5 w-fit animate-pulse'>
+																<p className='text-gray-800 text-[0.6rem]'>
+																	IN PROGRESS
+																</p>
+															</div>
+														)}
 													</div>
 												</div>
 											</div>
