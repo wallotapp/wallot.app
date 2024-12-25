@@ -7,10 +7,7 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
-import {
-	HomeSiteRouteQueryParams,
-	getSsoSiteRoute
-} from '@wallot/js';
+import { HomeSiteRouteQueryParams, getSsoSiteRoute } from '@wallot/js';
 import { AssetOrderCartItem } from '@wallot/react/src/features/assetOrders';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
@@ -139,34 +136,38 @@ const Page: NextPage = () => {
 									)}
 								</div>
 							</div>
-							<div
-								className={cn(
-									'bg-slate-100 mt-8 px-10 py-10 rounded-xl h-fit',
-									'lg:w-2/5',
-								)}
-							>
-								<div>
-									<p className='font-semibold text-xl'>Order Summary</p>
-								</div>
-								<div className='mt-2.5'>
-									<p className='font-medium text-base'>
-										{assetOrders.length} item{assetOrders.length > 1 ? 's' : ''}
-									</p>
-								</div>
-								<div className='mt-4'>
-									<Separator />
-								</div>
-								<div className='mt-6 flex justify-between'>
+							<div className={cn('mt-8 lg:w-2/5')}>
+								<div className='bg-white border-gray-300 shadow-md px-10 py-10 rounded-xl h-fit'>
 									<div>
-										<p className='font-semibold text-xl'>
-											Subtotal{' '}
-											<span className='text-sm text-brand-dark'>(USD)</span>
+										<p className='font-normal text-sm'>Order Status</p>
+									</div>
+									<p className='font-medium text-3xl'>In progress</p>
+								</div>
+								<div className='bg-slate-100 px-10 py-10 rounded-xl h-fit mt-8'>
+									<div>
+										<p className='font-semibold text-xl'>Order Summary</p>
+									</div>
+									<div className='mt-2.5'>
+										<p className='font-medium text-base'>
+											{assetOrders.length} item
+											{assetOrders.length > 1 ? 's' : ''}
 										</p>
 									</div>
-									<div>
-										<p className='font-medium text-xl'>
-											{assetTotalAmountUsdString}
-										</p>
+									<div className='mt-4'>
+										<Separator />
+									</div>
+									<div className='mt-6 flex justify-between'>
+										<div>
+											<p className='font-semibold text-xl'>
+												Subtotal{' '}
+												<span className='text-sm text-brand-dark'>(USD)</span>
+											</p>
+										</div>
+										<div>
+											<p className='font-medium text-xl'>
+												{assetTotalAmountUsdString}
+											</p>
+										</div>
 									</div>
 								</div>
 							</div>
