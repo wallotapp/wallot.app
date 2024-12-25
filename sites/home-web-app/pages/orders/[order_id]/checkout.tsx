@@ -986,7 +986,7 @@ const Page: NextPage = () => {
 									<button
 										className={cn('py-2.5 px-10 rounded-md flex items-center justify-center space-x-2 w-full', isCompletePurchaseButtonDisabled ? 'bg-slate-500' : 'bg-black')}
 										disabled={isCompletePurchaseButtonDisabled}
-										onClick={() => confirmOrder({})}
+										onClick={() => confirmOrder({ bank_account: defaultBankAccountId })}
 									>
 										{isConfirmOrderRunning ? (
 											<div className='flex items-center justify-center space-x-2 min-w-16 py-0.5'>
