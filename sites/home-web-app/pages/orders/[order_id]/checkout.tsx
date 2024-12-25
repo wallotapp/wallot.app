@@ -22,7 +22,7 @@ import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/compon
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { FiChevronDown, FiChevronLeft } from 'react-icons/fi';
 import { GoCheckCircleFill, GoPlus } from 'react-icons/go';
-import { useCreateStripeFinancialConnectionSessionMutation, useQueryBankAccountsForLoggedInUser, useConnectBankAccountsMutation } from '@wallot/react/src/features/bankAccounts';
+import { useCreateStripeFinancialConnectionSessionMutation, useQueryBankAccountsForLoggedInUser, useConnectBankAccountsMutation, useTokenizeBankAccountMutation } from '@wallot/react/src/features/bankAccounts';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { stripePromise } from 'ergonomic-react/src/lib/stripe';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
@@ -37,19 +37,53 @@ type BankAccountManagerProps = {
 	defaultBankAccountId: string | null;
 	isRoutingNumberShown: (bankAccountId: string) => boolean;
 	isTokenizationFormShown: (bankAccountId: string) => boolean;
+	refetchBankAccountsForLoggedInUser: () => Promise<unknown>;
 	toggleRoutingNumberShown: (bankAccountId: string) => () => void;
 	toggleTokenizationFormShown: (bankAccountId: string) => () => void;
 };
-const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, defaultBankAccountId, isRoutingNumberShown, isTokenizationFormShown, toggleRoutingNumberShown, toggleTokenizationFormShown }) => {
+const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, defaultBankAccountId, isRoutingNumberShown, isTokenizationFormShown, refetchBankAccountsForLoggedInUser, toggleRoutingNumberShown, toggleTokenizationFormShown }) => {
+	// Toaster
+	const { toast } = useToast();
+
 	const showTokenizationForm = isTokenizationFormShown(bankAccount._id);
 	const handleToggleTokenizationForm = toggleTokenizationFormShown(bankAccount._id);
-	handleToggleTokenizationForm; // <== use this in a toggler
+	handleToggleTokenizationForm; // <== use this
 	const showRoutingNumber = isRoutingNumberShown(bankAccount._id);
 	const handleToggleRoutingNumber = toggleRoutingNumberShown(bankAccount._id);
 	const isTokenized = isBankAccountTokenized(bankAccount);
 	const isDefault = defaultBankAccountId === bankAccount._id;
+
 	const isContinueButtonDisabled = Math.random() > 1;
 	const isFormSubmitting = Math.random() > 1;
+	const { mutate: tokenizeBankAccount, isLoading: isTokenizeBankAccountRunning } = useTokenizeBankAccountMutation(bankAccount._id, {
+		onError: ({ error: { message } }) => {
+			// Show the error message
+			toast({
+				title: 'Error',
+				description: message,
+			});
+			// setError('root', {
+			// 	type: 'manual',
+			// 	message: 'An error occurred. Please try again.',
+			// });
+
+			// // Reset form
+			// reset();
+		},
+		onSuccess: async () => {
+			// Show success toast
+			toast({
+				title: 'Success',
+				description: 'Saved your bank account information...',
+			});
+
+			// Refetch the bank accounts
+			await refetchBankAccountsForLoggedInUser();
+		},
+	});
+	tokenizeBankAccount; // <== use this
+	isTokenizeBankAccountRunning; // <== use this
+
 	return (
 		<div key={bankAccount._id} className={cn('flex items-start justify-between border rounded-md p-4 mt-2 bg-slate-50/10', !isTokenized && isDefault ? 'border-amber-900' : 'border-slate-200')}>
 			<div className='flex items-center space-x-3'>
@@ -762,6 +796,8 @@ const Page: NextPage = () => {
 																				defaultBankAccountId={defaultBankAccountId}
 																				isRoutingNumberShown={isRoutingNumberShown}
 																				isTokenizationFormShown={isTokenizationFormShown}
+																				key={bankAccount._id}
+																				refetchBankAccountsForLoggedInUser={refetchBankAccountsForLoggedInUser}
 																				toggleRoutingNumberShown={toggleRoutingNumberShown}
 																				toggleTokenizationFormShown={toggleTokenizationFormShown}
 																			/>
