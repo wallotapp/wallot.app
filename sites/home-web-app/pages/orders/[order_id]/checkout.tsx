@@ -94,14 +94,14 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 			reset();
 		},
 		onSuccess: async () => {
+			// Refetch the bank accounts
+			await refetchBankAccountsForLoggedInUser();
+
 			// Show success toast
 			toast({
 				title: 'Success',
 				description: 'Saved your bank account information...',
 			});
-
-			// Refetch the bank accounts
-			await refetchBankAccountsForLoggedInUser();
 
 			// Reset form
 			reset();
@@ -123,14 +123,14 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 			});
 		},
 		onSuccess: async () => {
+			// Refetch the user
+			await refetchUser();
+
 			// Show success toast
 			toast({
 				title: 'Success',
 				description: 'Saved your default bank account...',
 			});
-
-			// Refetch the user
-			await refetchUser();
 		},
 	});
 	isUpdateUserRunning; // <== use this
@@ -401,17 +401,17 @@ const Page: NextPage = () => {
 			reset();
 		},
 		onSuccess: async () => {
+			// Refetch the user
+			await refetchUser();
+
+			// Close the billing information section
+			setActiveBillingInformationSection(null);
+
 			// Show success toast
 			toast({
 				title: 'Success',
 				description: 'Saved your billing information...',
 			});
-
-			// Close the billing information section
-			setActiveBillingInformationSection(null);
-
-			// Refetch the user
-			await refetchUser();
 		},
 	});
 
@@ -429,14 +429,14 @@ const Page: NextPage = () => {
 			});
 		},
 		onSuccess: async () => {
+			// Refetch the bank accounts
+			await refetchBankAccountsForLoggedInUser();
+
 			// Show success toast
 			toast({
 				title: 'Success',
 				description: 'Connecting your bank accounts...',
 			});
-
-			// Refetch the bank accounts
-			await refetchBankAccountsForLoggedInUser();
 		},
 	});
 	const { mutate: createStripeFinancialConnectionSession, isLoading: isCreateStripeFinancialConnectionSessionRunning } = useCreateStripeFinancialConnectionSessionMutation({
