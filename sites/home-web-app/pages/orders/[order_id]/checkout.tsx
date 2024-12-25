@@ -101,6 +101,12 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 
 			// Refetch the bank accounts
 			await refetchBankAccountsForLoggedInUser();
+
+			// Reset form
+			reset();
+
+			// Close the tokenization form
+			handleToggleTokenizationForm();
 		},
 	});
 	tokenizeBankAccount; // <== use this
