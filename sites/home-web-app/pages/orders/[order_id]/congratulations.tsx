@@ -55,6 +55,7 @@ const Page: NextPage = () => {
 
 	// Current User
 	const { currentUser } = useQueryCurrentUser();
+	const receiptEmail = currentUser?.alpaca_account_contact?.email_address ?? currentUser?.firebase_auth_email ?? 'your email on file';
 
 	// Window size
 	const { height, width } = useWindowSize();
@@ -148,14 +149,26 @@ const Page: NextPage = () => {
 							</div>
 						</div>
 						<div className={cn('mt-10 flex flex-col items-center bg-white p-4 rounded-md max-w-4xl mx-auto shadow-xl border border-gray-200', 'overflow-y-auto h-screen')}>
-							<div>
-								<GoCheck />
+							<div className='mt-4'>
+								<GoCheck className='text-green-600 text-5xl' />
 							</div>
-							<div>Thank you for your order!</div>
-							<div>We've emailed your receipt to {currentUser?.firebase_auth_email ?? 'your email on file'}</div>
-							<div>AAPL shares: $100.00</div>
-							<div>Taxes and fees: $24.99</div>
-							<div>Total: $124.99</div>
+							<div className='mt-6'>
+								<p className='font-normal text-xl'>Thank you for your order!</p>
+							</div>
+							<div className='mt-0.5'>
+								<p className='font-light text-base'>
+									We've emailed your receipt to <span className='font-semibold'>{receiptEmail}</span>
+								</p>
+							</div>
+							<div className='mt-8'>
+								<p>AAPL shares: $100.00</p>
+							</div>
+							<div>
+								<p>Taxes and fees: $24.99</p>
+							</div>
+							<div>
+								<p>Total: $124.99</p>
+							</div>
 							<p>
 								Height {height} Width {width}
 							</p>
