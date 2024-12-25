@@ -18,6 +18,7 @@ const properties = {
 	_object: YupHelpers.constant(_object),
 	bank_account: apiYupHelpers.idRef(['bank_account']).default(null).nullable().meta({ unique_key: false }),
 	category: OrderCategoryEnum.getDefinedSchema(),
+	fill_task_id: yup.string().nullable().default(null),
 	status: OrderStatusEnum.getDefinedSchema().default('pending'),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: false }),
 } as const;

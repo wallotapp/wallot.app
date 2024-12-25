@@ -3,6 +3,7 @@ import { YupHelpers } from 'ergonomic';
 import { Order, OrderStatusEnum } from '../models/orderProperties.js';
 
 export const orderConfirmedByUserProperties = {
+	fill_task_id: yup.string().defined().nullable(false).min(1),
 	status: YupHelpers.constant(OrderStatusEnum.obj.confirmed_by_user),
 };
 export const orderConfirmedByUserSchema = yup.object(orderConfirmedByUserProperties);
@@ -21,5 +22,5 @@ export const isOrderConfirmedByUser = (order: Order): order is OrderConfirmedByU
 };
 
 export type ConfirmOrderRouteParams = { orderId: string };
-export type ConfirmOrderParams = Record<string, never>;
+export type ConfirmOrderParams = { bank_account: string };
 export type ConfirmOrderResponse = { redirect_url: string };

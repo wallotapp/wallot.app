@@ -8,6 +8,7 @@ describe('Order', () => {
 			category: 'default',
 			name: 'My Order',
 			bank_account: '',
+			fill_task_id: null,
 			status: 'pending',
 			user: '',
 		};
@@ -23,6 +24,7 @@ describe('Order', () => {
 			description: '',
 			name: 'My Order',
 			bank_account: '',
+			fill_task_id: null,
 			status: 'pending',
 			user: '',
 		});
