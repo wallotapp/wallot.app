@@ -12,7 +12,7 @@ import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTa
 // ==== Static Page Props ==== //
 
 // Route Static ID
-const ROUTE_STATIC_ID = 'HOME_SITE__/ASSETS/[ASSET_ID]/TRACK' as const;
+const ROUTE_STATIC_ID = 'HOME_SITE__/ORDERS/[ORDER_ID]/TRACK' as const;
 
 // Route Static Props
 const ROUTE_STATIC_PROPS: PageStaticProps = {
@@ -49,12 +49,12 @@ const Page: NextPage = () => {
 	const query = (router?.query as RouteQueryParams) ?? {};
 
 	// Router Query Param Values
-	const { asset_id } = query;
+	const { order_id } = query;
 
 	// Runtime Route ID
 	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace(
-		'[ASSET_ID]',
-		asset_id || '',
+		'[ORDER_ID]',
+		order_id || '',
 	);
 
 	// Runtime Page Props

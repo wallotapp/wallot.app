@@ -2,23 +2,19 @@ import { getEnum, EnumMember } from 'ergonomic';
 
 // Home Site
 export const HomeSiteRouteStaticIdEnum = getEnum([
-	'HOME_SITE__/ASSETS/[ASSET_ID]/TRACK',
 	'HOME_SITE__/INDEX',
 	'HOME_SITE__/GET_STARTED',
 	'HOME_SITE__/ORDERS/[ORDER_ID]/ASSETS',
 	'HOME_SITE__/ORDERS/[ORDER_ID]/CART',
 	'HOME_SITE__/ORDERS/[ORDER_ID]/CHECKOUT',
 	'HOME_SITE__/ORDERS/[ORDER_ID]/CONGRATULATIONS',
+	'HOME_SITE__/ORDERS/[ORDER_ID]/TRACK',
 ]);
 export type HomeSiteRouteStaticId = EnumMember<
 	typeof HomeSiteRouteStaticIdEnum
 >;
 
 export type HomeSiteRouteQueryParams = {
-	'HOME_SITE__/ASSETS/[ASSET_ID]/TRACK': {
-		asset_id: string | undefined;
-		client_token?: string | undefined;
-	};
 	'HOME_SITE__/INDEX': {
 		client_token?: string | undefined;
 	};
@@ -38,6 +34,10 @@ export type HomeSiteRouteQueryParams = {
 		order_id: string | undefined;
 	};
 	'HOME_SITE__/ORDERS/[ORDER_ID]/CONGRATULATIONS': {
+		client_token?: string | undefined;
+		order_id: string | undefined;
+	};
+	'HOME_SITE__/ORDERS/[ORDER_ID]/TRACK': {
 		client_token?: string | undefined;
 		order_id: string | undefined;
 	};
