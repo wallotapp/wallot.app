@@ -2,7 +2,9 @@ import * as yup from 'yup';
 import { BankAccount } from '../models/bankAccountProperties.js';
 import { Keys, getFieldSpecByFieldKey } from 'ergonomic';
 
-export const tokenizeBankAccountProperties = { account_number: yup.string().required().defined().default('') } as const;
+export const tokenizeBankAccountProperties = {
+	account_number: yup.string().required().defined().default('').min(7).max(17),
+} as const;
 export const tokenizeBankAccountSchema = yup.object(tokenizeBankAccountProperties);
 export const tokenizeBankAccountSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(tokenizeBankAccountSchema, Keys(tokenizeBankAccountProperties));
 
