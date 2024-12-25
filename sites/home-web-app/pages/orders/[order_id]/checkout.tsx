@@ -34,16 +34,20 @@ type BillingInformationSection = keyof typeof BillingInformationSectionEnum.obj;
 
 type BankAccountManagerProps = {
 	bankAccount: BankAccount;
-	defaultBankAccountId: string | null;
 	isRoutingNumberShown: (bankAccountId: string) => boolean;
 	isTokenizationFormShown: (bankAccountId: string) => boolean;
 	refetchBankAccountsForLoggedInUser: () => Promise<unknown>;
 	toggleRoutingNumberShown: (bankAccountId: string) => () => void;
 	toggleTokenizationFormShown: (bankAccountId: string) => () => void;
 };
-const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, defaultBankAccountId, isRoutingNumberShown, isTokenizationFormShown, refetchBankAccountsForLoggedInUser, toggleRoutingNumberShown, toggleTokenizationFormShown }) => {
+const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, isRoutingNumberShown, isTokenizationFormShown, refetchBankAccountsForLoggedInUser, toggleRoutingNumberShown, toggleTokenizationFormShown }) => {
 	// Toaster
 	const { toast } = useToast();
+
+	// Current User
+	const { currentUser, isUserPageLoading, refetch: refetchUser } = useQueryCurrentUser();
+	const defaultBankAccountId = currentUser?.default_bank_account ?? 'null';
+	isUserPageLoading; // <== use this
 
 	const showTokenizationForm = isTokenizationFormShown(bankAccount._id);
 	const handleToggleTokenizationForm = toggleTokenizationFormShown(bankAccount._id);
@@ -83,6 +87,29 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, de
 	});
 	tokenizeBankAccount; // <== use this
 	isTokenizeBankAccountRunning; // <== use this
+
+	// Mutation
+	const { mutate: updateUser, isLoading: isUpdateUserRunning } = useUpdateUserMutation({
+		onError: ({ error: { message } }) => {
+			// Show the error message
+			toast({
+				title: 'Error',
+				description: message,
+			});
+		},
+		onSuccess: async () => {
+			// Show success toast
+			toast({
+				title: 'Success',
+				description: 'Saved your default bank account...',
+			});
+
+			// Refetch the user
+			await refetchUser();
+		},
+	});
+	updateUser; // <== use this
+	isUpdateUserRunning; // <== use this
 
 	return (
 		<div key={bankAccount._id} className={cn('flex justify-between border rounded-md p-4 mt-2 bg-slate-50/10', !isTokenized && isDefault ? 'border-amber-900' : 'border-slate-200', showTokenizationForm ? 'items-start' : 'items-center')}>
@@ -171,7 +198,16 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, de
 			<div className={cn('w-1/2 flex items-center space-x-3 justify-end', showTokenizationForm ? 'hidden' : '')}>
 				{!isDefault && (
 					<div>
-						<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' type='button' onClick={handleToggleTokenizationForm}>
+						<button
+							className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300'
+							type='button'
+							onClick={() => {
+								if (currentUser?._id == null) {
+									return;
+								}
+								updateUser({ _id: currentUser._id, default_bank_account: bankAccount._id });
+							}}
+						>
 							<p className='font-normal text-xs'>Make Default</p>
 						</button>
 					</div>
@@ -821,7 +857,6 @@ const Page: NextPage = () => {
 																		return (
 																			<BankAccountManager
 																				bankAccount={bankAccount}
-																				defaultBankAccountId={defaultBankAccountId}
 																				isRoutingNumberShown={isRoutingNumberShown}
 																				isTokenizationFormShown={isTokenizationFormShown}
 																				key={bankAccount._id}
