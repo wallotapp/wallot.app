@@ -228,7 +228,7 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 						)}
 					</div>
 					<div className='mt-3.5 text-right space-x-2 items-center flex justify-end'>
-						<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' disabled={isTokenizeButtonDisabled} type='button' onClick={handleToggleTokenizationForm}>
+						<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' disabled={isTokenizeBankAccountRunning} type='button' onClick={handleToggleTokenizationForm}>
 							<p className='font-normal text-xs'>Back</p>
 						</button>
 						<button className={cn('w-fit text-center py-1.5 px-6 rounded-md border', isAccountNumberInputComplete ? 'bg-black' : 'bg-slate-500')} type='submit' disabled={isTokenizeButtonDisabled}>
