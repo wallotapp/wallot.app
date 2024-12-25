@@ -16,6 +16,7 @@ import {
 	HomeWebAppRouteQueryParams,
 	getSsoWebAppRoute,
 	isBankAccountTokenized,
+	BankAccount,
 } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
@@ -59,6 +60,149 @@ const BillingInformationSectionEnum = getEnum([
 	'Disclosures',
 ]);
 type BillingInformationSection = keyof typeof BillingInformationSectionEnum.obj;
+
+type BankAccountManagerProps = {
+	bankAccount: BankAccount;
+	defaultBankAccountId: string | null;
+	isRoutingNumberShown: (bankAccountId: string) => boolean;
+	isTokenizationFormShown: (bankAccountId: string) => boolean;
+	toggleRoutingNumberShown: (bankAccountId: string) => () => void;
+	toggleTokenizationFormShown: (bankAccountId: string) => () => void;
+};
+const BankAccountManager: React.FC<BankAccountManagerProps> = ({
+	bankAccount,
+	defaultBankAccountId,
+	isRoutingNumberShown,
+	isTokenizationFormShown,
+	toggleRoutingNumberShown,
+	toggleTokenizationFormShown,
+}) => {
+	const showTokenizationForm = isTokenizationFormShown(bankAccount._id);
+	const handleToggleTokenizationForm = toggleTokenizationFormShown(
+		bankAccount._id,
+	);
+	handleToggleTokenizationForm; // <== use this in a toggler
+	const showRoutingNumber = isRoutingNumberShown(bankAccount._id);
+	const handleToggleRoutingNumber = toggleRoutingNumberShown(bankAccount._id);
+	const isTokenized = isBankAccountTokenized(bankAccount);
+	const isDefault = defaultBankAccountId === bankAccount._id;
+	const isContinueButtonDisabled = Math.random() > 1;
+	const isFormSubmitting = Math.random() > 1;
+	return (
+		<div
+			key={bankAccount._id}
+			className={cn(
+				'flex items-start justify-between border rounded-md p-4 mt-2 bg-slate-50/10',
+				!isTokenized && isDefault ? 'border-amber-900' : 'border-slate-200',
+			)}
+		>
+			<div className='flex items-center space-x-3'>
+				<div>
+					<p className='font-normal text-sm'>
+						{bankAccount.name} &nbsp;
+						<span className='font-extrabold monospace text-gray-600'>
+							· · · ·
+						</span>{' '}
+						<span className='font-extralight monospace text-gray-600 text-xs'>
+							{bankAccount.last_4}
+						</span>
+					</p>
+				</div>
+				{isDefault && (
+					<div
+						className={cn(
+							'flex items-center space-x-2',
+							'bg-green-800 py-0.5 px-2.5 rounded-full',
+						)}
+					>
+						<p className='font-light text-xs text-white'>Default</p>
+					</div>
+				)}
+			</div>
+			<div className={cn('w-1/2', showTokenizationForm ? '' : 'hidden')}>
+				<div className='text-right'>
+					<p className='font-semibold text-xs text-right'>
+						Routing Number
+						<span className='text-amber-900'>*</span>
+					</p>
+					<div className='flex items-center space-x-2 justify-end'>
+						<div>
+							<button
+								className='font-light text-xs'
+								type='button'
+								onClick={handleToggleRoutingNumber}
+							>
+								{showRoutingNumber ? (
+									<p className=''>Hide</p>
+								) : (
+									<p className=''>Show</p>
+								)}
+							</button>
+						</div>
+						<div>
+							{showRoutingNumber ? (
+								<p className=''>{bankAccount.routing_number}</p>
+							) : (
+								<p className=''>
+									·····
+									{bankAccount.routing_number?.slice(-4) ?? ''}
+								</p>
+							)}
+						</div>
+					</div>
+				</div>
+				<div className='mt-2'>
+					<p className='font-semibold text-xs text-right'>
+						Confirm Account Number
+						<span className='text-amber-900'>*</span>
+					</p>
+					<input
+						className='border border-amber-900 h-8 rounded-md text-xs px-2 w-full'
+						placeholder={'Account number ending in ····' + bankAccount.last_4}
+					/>
+				</div>
+				<div className='mt-3.5 text-right'>
+					<button
+						className={cn(
+							'w-fit text-center py-1.5 px-6 rounded-md border',
+							isContinueButtonDisabled ? 'bg-slate-500' : 'bg-black',
+						)}
+						type='button'
+						onClick={() => {
+							console.log('save account tapped');
+							return;
+						}}
+						disabled={isContinueButtonDisabled}
+					>
+						<div>
+							{isFormSubmitting ? (
+								<>
+									<div className='flex items-center justify-center space-x-2 min-w-16 py-0.5'>
+										<div
+											className={cn(
+												'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
+												'border-t-brand border-r-brand border-b-brand',
+											)}
+										></div>
+									</div>
+								</>
+							) : (
+								<p
+									className={cn(
+										'font-normal text-xs',
+										isContinueButtonDisabled ? 'text-slate-300' : 'text-white',
+									)}
+								>
+									Save
+								</p>
+							)}
+						</div>
+					</button>
+				</div>
+			</div>
+		</div>
+	);
+};
 
 // ==== Static Page Props ==== //
 
@@ -1060,173 +1204,25 @@ const Page: NextPage = () => {
 																		)}
 																	>
 																		{bankAccounts.map((bankAccount) => {
-																			const showTokenizationForm =
-																				isTokenizationFormShown(
-																					bankAccount._id,
-																				);
-																			const handleToggleTokenizationForm =
-																				toggleTokenizationFormShown(
-																					bankAccount._id,
-																				);
-																			handleToggleTokenizationForm; // <== use this in a toggler
-																			const showRoutingNumber =
-																				isRoutingNumberShown(bankAccount._id);
-																			const handleToggleRoutingNumber =
-																				toggleRoutingNumberShown(
-																					bankAccount._id,
-																				);
-																			const isTokenized =
-																				isBankAccountTokenized(bankAccount);
-																			const isDefault =
-																				defaultBankAccountId ===
-																				bankAccount._id;
 																			return (
-																				<div
-																					key={bankAccount._id}
-																					className={cn(
-																						'flex items-start justify-between border rounded-md p-4 mt-2 bg-slate-50/10',
-																						!isTokenized && isDefault
-																							? 'border-amber-900'
-																							: 'border-slate-200',
-																					)}
-																				>
-																					<div className='flex items-center space-x-3'>
-																						<div>
-																							<p className='font-normal text-sm'>
-																								{bankAccount.name} &nbsp;
-																								<span className='font-extrabold monospace text-gray-600'>
-																									· · · ·
-																								</span>{' '}
-																								<span className='font-extralight monospace text-gray-600 text-xs'>
-																									{bankAccount.last_4}
-																								</span>
-																							</p>
-																						</div>
-																						{isDefault && (
-																							<div
-																								className={cn(
-																									'flex items-center space-x-2',
-																									'bg-green-800 py-0.5 px-2.5 rounded-full',
-																								)}
-																							>
-																								<p className='font-light text-xs text-white'>
-																									Default
-																								</p>
-																							</div>
-																						)}
-																					</div>
-																					<div
-																						className={cn(
-																							'w-1/2',
-																							showTokenizationForm
-																								? ''
-																								: 'hidden',
-																						)}
-																					>
-																						<div className='text-right'>
-																							<p className='font-semibold text-xs text-right'>
-																								Routing Number
-																								<span className='text-amber-900'>
-																									*
-																								</span>
-																							</p>
-																							<div className='flex items-center space-x-2 justify-end'>
-																								<div>
-																									<button
-																										className='font-light text-xs'
-																										type='button'
-																										onClick={
-																											handleToggleRoutingNumber
-																										}
-																									>
-																										{showRoutingNumber ? (
-																											<p className=''>Hide</p>
-																										) : (
-																											<p className=''>Show</p>
-																										)}
-																									</button>
-																								</div>
-																								<div>
-																									{showRoutingNumber ? (
-																										<p className=''>
-																											{
-																												bankAccount.routing_number
-																											}
-																										</p>
-																									) : (
-																										<p className=''>
-																											·····
-																											{bankAccount.routing_number?.slice(
-																												-4,
-																											) ?? ''}
-																										</p>
-																									)}
-																								</div>
-																							</div>
-																						</div>
-																						<div className='mt-2'>
-																							<p className='font-semibold text-xs text-right'>
-																								Confirm Account Number
-																								<span className='text-amber-900'>
-																									*
-																								</span>
-																							</p>
-																							<input
-																								className='border border-amber-900 h-8 rounded-md text-xs px-2 w-full'
-																								placeholder={
-																									'Account number ending in ····' +
-																									bankAccount.last_4
-																								}
-																							/>
-																						</div>
-																						<div className='mt-3.5 text-right'>
-																							<button
-																								className={cn(
-																									'w-fit text-center py-1.5 px-6 rounded-md border',
-																									isContinueButtonDisabled
-																										? 'bg-slate-500'
-																										: 'bg-black',
-																								)}
-																								type='button'
-																								onClick={() => {
-																									console.log(
-																										'save account tapped',
-																									);
-																									return;
-																								}}
-																								disabled={
-																									isContinueButtonDisabled
-																								}
-																							>
-																								<div>
-																									{isFormSubmitting ? (
-																										<>
-																											<div className='flex items-center justify-center space-x-2 min-w-16 py-0.5'>
-																												<div
-																													className={cn(
-																														'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
-																														'border-t-brand border-r-brand border-b-brand',
-																													)}
-																												></div>
-																											</div>
-																										</>
-																									) : (
-																										<p
-																											className={cn(
-																												'font-normal text-xs',
-																												isContinueButtonDisabled
-																													? 'text-slate-300'
-																													: 'text-white',
-																											)}
-																										>
-																											Save
-																										</p>
-																									)}
-																								</div>
-																							</button>
-																						</div>
-																					</div>
-																				</div>
+																				<BankAccountManager
+																					bankAccount={bankAccount}
+																					defaultBankAccountId={
+																						defaultBankAccountId
+																					}
+																					isRoutingNumberShown={
+																						isRoutingNumberShown
+																					}
+																					isTokenizationFormShown={
+																						isTokenizationFormShown
+																					}
+																					toggleRoutingNumberShown={
+																						toggleRoutingNumberShown
+																					}
+																					toggleTokenizationFormShown={
+																						toggleTokenizationFormShown
+																					}
+																				/>
 																			);
 																		})}
 																	</div>
