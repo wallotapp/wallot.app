@@ -85,7 +85,7 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, de
 	isTokenizeBankAccountRunning; // <== use this
 
 	return (
-		<div key={bankAccount._id} className={cn('flex items-start justify-between border rounded-md p-4 mt-2 bg-slate-50/10', !isTokenized && isDefault ? 'border-amber-900' : 'border-slate-200')}>
+		<div key={bankAccount._id} className={cn('flex justify-between border rounded-md p-4 mt-2 bg-slate-50/10', !isTokenized && isDefault ? 'border-amber-900' : 'border-slate-200', showTokenizationForm ? 'items-start' : 'items-center')}>
 			<div className='flex items-center space-x-2'>
 				<div>
 					<p className='font-normal text-sm'>
@@ -162,6 +162,13 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, de
 								<p className={cn('font-normal text-xs', isContinueButtonDisabled ? 'text-slate-300' : 'text-white')}>Save</p>
 							)}
 						</div>
+					</button>
+				</div>
+			</div>
+			<div className={cn('w-1/2 text-right', showTokenizationForm ? 'hidden' : '')}>
+				<div>
+					<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' type='button' onClick={handleToggleTokenizationForm}>
+						<p className='font-normal text-sm'>Manage</p>
 					</button>
 				</div>
 			</div>
