@@ -22,4 +22,4 @@ export const isOrderConfirmedByUser = (order: Order): order is OrderConfirmedByU
 
 export type ConfirmOrderRouteParams = { orderId: string };
 export type ConfirmOrderParams = Record<string, never>;
-export type ConfirmOrderResponse = Record<string, never>;
+export type ConfirmOrderResponse = { redirect_url: string };

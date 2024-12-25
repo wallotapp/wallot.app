@@ -39,6 +39,7 @@ import { stripePromise } from 'ergonomic-react/src/lib/stripe';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 import { BsFillCaretDownFill, BsFillCaretRightFill } from 'react-icons/bs';
 import { BankIcon } from '@wallot/react/src/components/BankIcon';
+import { useConfirmOrderMutation } from '@wallot/react/src/features/orders';
 
 const BillingInformationSectionEnum = getEnum(['Contact Details', 'Tax Details', 'Disclosures']);
 type BillingInformationSection = keyof typeof BillingInformationSectionEnum.obj;
@@ -667,7 +668,26 @@ const Page: NextPage = () => {
 	}, [isUserPageLoading, isBankAccountPageLoading, defaultBankAccount, isDefaultBankAccountTokenized, isBankAccountInterfaceInitialized]);
 
 	// ==== Complete Purchase ==== //
-	const isCompletePurchaseButtonDisabled = isContinueButtonDisabled || !isBillingInformationSectionComplete || !isDefaultBankAccountTokenized;
+	const { mutate: confirmOrder, isLoading: isConfirmOrderRunning } = useConfirmOrderMutation(order_id, {
+		onError: ({ error: { message } }) => {
+			// Show the error message
+			toast({
+				title: 'Error',
+				description: message,
+			});
+		},
+		onSuccess: async ({ redirect_url }) => {
+			// Show success toast
+			toast({
+				title: 'Success',
+				description: 'Confirmed your order...',
+			});
+
+			// Redirect to the order page
+			await router.push(redirect_url);
+		},
+	});
+	const isCompletePurchaseButtonDisabled = isContinueButtonDisabled || !isBillingInformationSectionComplete || !isDefaultBankAccountTokenized || isConfirmOrderRunning;
 
 	// ==== Render ==== //
 	return (
@@ -966,11 +986,15 @@ const Page: NextPage = () => {
 									<button
 										className={cn('py-2.5 px-10 rounded-md flex items-center justify-center space-x-2 w-full', isCompletePurchaseButtonDisabled ? 'bg-slate-500' : 'bg-black')}
 										disabled={isCompletePurchaseButtonDisabled}
-										onClick={() => {
-											console.log('Complete Purchase');
-										}}
+										onClick={() => confirmOrder({})}
 									>
-										<p className={cn('font-medium text-sm', isCompletePurchaseButtonDisabled ? 'text-slate-300' : 'text-white')}>Complete Purchase</p>
+										{isConfirmOrderRunning ? (
+											<div className='flex items-center justify-center space-x-2 min-w-16 py-0.5'>
+												<div className={cn('w-4 h-4 border-2 border-gray-200 rounded-full animate-spin', 'border-t-brand border-r-brand border-b-brand')}></div>
+											</div>
+										) : (
+											<p className={cn('font-medium text-sm', isCompletePurchaseButtonDisabled ? 'text-slate-300' : 'text-white')}>Complete Purchase</p>
+										)}
 									</button>
 								</div>
 								<div className='mt-6'>
