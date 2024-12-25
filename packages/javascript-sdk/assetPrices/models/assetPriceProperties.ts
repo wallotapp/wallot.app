@@ -1,17 +1,6 @@
 import * as yup from 'yup';
-import {
-	GeneralizedApiResourceCreateParamsRequiredFieldEnum,
-	GeneralizedApiResourceProperties,
-	CreateParams,
-	UpdateParams,
-	YupHelpers,
-	getApiResourceSpec,
-	getEnum,
-} from 'ergonomic';
-import {
-	apiYupHelpers,
-	idPrefixByResourceName,
-} from '../../utils/apiYupHelpers.js';
+import { GeneralizedApiResourceCreateParamsRequiredFieldEnum, GeneralizedApiResourceProperties, CreateParams, UpdateParams, YupHelpers, getApiResourceSpec, getEnum } from 'ergonomic';
+import { apiYupHelpers, idPrefixByResourceName } from '../../utils/apiYupHelpers.js';
 
 export const AssetPriceCategoryEnum = getEnum(['daily_ohlcv']);
 export type AssetPriceCategory = keyof typeof AssetPriceCategoryEnum.obj;
@@ -66,8 +55,6 @@ export const assetPricesApi = getApiResourceSpec<keyof U, U, T>({
 	idPrefix: idPrefixByResourceName[_object],
 	properties,
 } as const);
-export type AssetPrice = yup.InferType<
-	typeof assetPricesApi.apiResourceJsonSchema
->;
+export type AssetPrice = yup.InferType<typeof assetPricesApi.apiResourceJsonSchema>;
 export type CreateAssetPriceParams = CreateParams<AssetPrice, T>;
 export type UpdateAssetPriceParams = UpdateParams<AssetPrice>;

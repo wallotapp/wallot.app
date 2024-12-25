@@ -10,7 +10,7 @@
 			"options": { "parser": "markdown" }
 		}
 	],
-	"printWidth": 80,
+	"printWidth": 250,
 	"quoteProps": "as-needed",
 	"semi": true,
 	"singleQuote": true,

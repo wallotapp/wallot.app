@@ -2,20 +2,8 @@ import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { signInWithCustomToken } from 'firebase/auth';
 import { firebaseAuthInstance as auth } from 'ergonomic-react/src/lib/firebase';
-import {
-	PageStaticProps,
-	PageProps,
-	Page as PageComponent,
-} from 'ergonomic-react/src/components/nextjs-pages/Page';
-import {
-	RegisterUserParams,
-	SsoWebAppRouteQueryParams,
-	getSsoWebAppRoute,
-	passwordRules,
-	registerUserSchema,
-	registerUserSchemaFieldSpecByFieldKey,
-	usernameRules,
-} from '@wallot/js';
+import { PageStaticProps, PageProps, Page as PageComponent } from 'ergonomic-react/src/components/nextjs-pages/Page';
+import { RegisterUserParams, SsoWebAppRouteQueryParams, getSsoWebAppRoute, passwordRules, registerUserSchema, registerUserSchemaFieldSpecByFieldKey, usernameRules } from '@wallot/js';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { useForm } from 'react-hook-form';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
@@ -50,71 +38,63 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const { toast } = useToast();
 
 	// Form Resolver
-	const resolver = useYupValidationResolver(
-		registerUserSchema,
-		defaultGeneralizedFormDataTransformationOptions,
-	);
+	const resolver = useYupValidationResolver(registerUserSchema, defaultGeneralizedFormDataTransformationOptions);
 
 	// Form
 	const initialFormData = registerUserSchema.getDefault();
-	const { control, formState, handleSubmit, reset, setError } =
-		useForm<RegisterUserParams>({
-			defaultValues: initialFormData,
-			resolver,
-			shouldUnregister: false,
-		});
+	const { control, formState, handleSubmit, reset, setError } = useForm<RegisterUserParams>({
+		defaultValues: initialFormData,
+		resolver,
+		shouldUnregister: false,
+	});
 
 	// Mutation
-	const { mutate: registerUser, isLoading: isRegisterUserRunning } =
-		useRegisterUserMutation({
-			onError: ({ error: { message } }) => {
-				// Show the error message
+	const { mutate: registerUser, isLoading: isRegisterUserRunning } = useRegisterUserMutation({
+		onError: ({ error: { message } }) => {
+			// Show the error message
+			toast({
+				title: 'Error',
+				description: message,
+			});
+			setError('root', {
+				type: 'manual',
+				message: 'An error occurred. Please try again.',
+			});
+
+			// Reset form
+			reset();
+		},
+		onSuccess: async ({ custom_token: customToken, redirect_url: redirectUrl }) => {
+			try {
+				// Log in user
+				await signInWithCustomToken(auth, customToken);
+
+				// Show success toast
+				toast({
+					title: 'Success',
+					description: 'Your account has been created.',
+				});
+
+				// Redirect to next page
+				await router.push(redirectUrl);
+			} catch (err) {
+				console.error('Error:', err);
 				toast({
 					title: 'Error',
-					description: message,
-				});
-				setError('root', {
-					type: 'manual',
-					message: 'An error occurred. Please try again.',
+					description: 'An error occurred. Please try again.',
 				});
 
 				// Reset form
 				reset();
-			},
-			onSuccess: async ({
-				custom_token: customToken,
-				redirect_url: redirectUrl,
-			}) => {
-				try {
-					// Log in user
-					await signInWithCustomToken(auth, customToken);
 
-					// Show success toast
-					toast({
-						title: 'Success',
-						description: 'Your account has been created.',
-					});
-
-					// Redirect to next page
-					await router.push(redirectUrl);
-				} catch (err) {
-					console.error('Error:', err);
-					toast({
-						title: 'Error',
-						description: 'An error occurred. Please try again.',
-					});
-
-					// Reset form
-					reset();
-
-					// Set error
-					setError('root', {
-						type: 'manual',
-						message: 'An error occurred. Please try again.',
-					});
-				}
-			},
-		});
+				// Set error
+				setError('root', {
+					type: 'manual',
+					message: 'An error occurred. Please try again.',
+				});
+			}
+		},
+	});
 
 	// ==== Constants ==== //
 
@@ -133,8 +113,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	});
 
 	// Form
-	const formStatus =
-		formState.isSubmitting || isRegisterUserRunning ? 'running' : 'idle';
+	const formStatus = formState.isSubmitting || isRegisterUserRunning ? 'running' : 'idle';
 	const isFormSubmitting = formStatus === 'running';
 	const fields: LiteFormFieldProps<RegisterUserParams>[] = [
 		{
@@ -204,40 +183,25 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	return (
 		<PageComponent {...pageProps}>
 			<div className={cn('min-h-screen relative', 'px-8 pt-24')}>
-				<OnboardingCard
-					step={0}
-					subtitle='Enter a username, email and password to create a free account'
-					title='Welcome to the community'
-				>
+				<OnboardingCard step={0} subtitle='Enter a username, email and password to create a free account' title='Welcome to the community'>
 					<form onSubmit={handleSubmit(onSubmit) as () => void}>
 						<div>
 							{fields.map((fieldProps) => (
-								<LiteFormFieldContainer
-									key={fieldProps.fieldKey}
-									{...fieldProps}
-								/>
+								<LiteFormFieldContainer key={fieldProps.fieldKey} {...fieldProps} />
 							))}
 						</div>
 						<div className='mt-4 text-right w-full'>
-							<SubmitButton
-								className='w-full'
-								isSubmitting={isFormSubmitting}
-							/>
+							<SubmitButton className='w-full' isSubmitting={isFormSubmitting} />
 						</div>
 						{Boolean(formState.errors['root']?.message) && (
 							<div className='mt-4'>
-								<LiteFormFieldError
-									fieldErrorMessage={formState.errors['root']?.message ?? ''}
-								/>
+								<LiteFormFieldError fieldErrorMessage={formState.errors['root']?.message ?? ''} />
 							</div>
 						)}
 						<AuthenticationLegalNotice />
 					</form>
 				</OnboardingCard>
-				<ChangeAuthenticationRoute
-					oppositeRoute={loginRoute}
-					text='Have an account? Login'
-				/>
+				<ChangeAuthenticationRoute oppositeRoute={loginRoute} text='Have an account? Login' />
 			</div>
 		</PageComponent>
 	);

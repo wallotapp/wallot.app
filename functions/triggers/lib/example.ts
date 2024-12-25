@@ -5,14 +5,9 @@ import {
 } from 'firebase-functions/v2/firestore';
 import { firebaseFunctions } from 'ergonomic-node';
 
-export const onUserCreated = firebaseFunctions.firestore.onDocumentCreated(
-	'users/{userId}',
-	handleUserCreated,
-);
+export const onUserCreated = firebaseFunctions.firestore.onDocumentCreated('users/{userId}', handleUserCreated);
 
-async function handleUserCreated(
-	event: FirestoreEvent<QueryDocumentSnapshot | undefined, { userId: string }>,
-) {
+async function handleUserCreated(event: FirestoreEvent<QueryDocumentSnapshot | undefined, { userId: string }>) {
 	const snapshot = event.data;
 	if (!snapshot) {
 		throw new Error('Document does not exist.');

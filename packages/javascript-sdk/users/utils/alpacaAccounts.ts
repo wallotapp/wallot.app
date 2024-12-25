@@ -21,19 +21,9 @@ export const AlpacaAccountStatusEnum = getEnum([
 export type AlpacaAccountStatus = keyof typeof AlpacaAccountStatusEnum.obj;
 
 // Tax ID Type
-export const AlpacaAccountTaxIdTypeEnum = getEnum([
-	'DRIVER_LICENSE',
-	'PASSPORT',
-	'USA_SSN',
-	'NATIONAL_ID',
-	'PERMANENT_RESIDENT',
-]);
-export type AlpacaAccountTaxIdType =
-	keyof typeof AlpacaAccountTaxIdTypeEnum.obj;
-export const alpacaAccountTaxIdLabelDictionary: Record<
-	AlpacaAccountTaxIdType,
-	string
-> = {
+export const AlpacaAccountTaxIdTypeEnum = getEnum(['DRIVER_LICENSE', 'PASSPORT', 'USA_SSN', 'NATIONAL_ID', 'PERMANENT_RESIDENT']);
+export type AlpacaAccountTaxIdType = keyof typeof AlpacaAccountTaxIdTypeEnum.obj;
+export const alpacaAccountTaxIdLabelDictionary: Record<AlpacaAccountTaxIdType, string> = {
 	DRIVER_LICENSE: 'Drivers license number',
 	PASSPORT: 'Passport number',
 	USA_SSN: 'United States Social Security Number',
@@ -88,23 +78,17 @@ export const alpacaAccountIdentityProperties = {
 	family_name: yup.string().nullable().default(null),
 	given_name: yup.string().nullable().default(null),
 	tax_id: yup.string().nullable().default(null), // "123-55-4321"
-	tax_id_type: AlpacaAccountTaxIdTypeEnum.getOptionalSchema()
-		.nullable()
-		.default(null)
-		.meta({
-			label_by_enum_option: alpacaAccountTaxIdLabelDictionary,
-		}),
+	tax_id_type: AlpacaAccountTaxIdTypeEnum.getOptionalSchema().nullable().default(null).meta({
+		label_by_enum_option: alpacaAccountTaxIdLabelDictionary,
+	}),
 } as const;
 
 // KYC Results
 export const AlpacaAccountKycResultsSummaryEnum = getEnum(['pass', 'fail']);
-export type AlpacaAccountKycResultsSummary =
-	keyof typeof AlpacaAccountKycResultsSummaryEnum.obj;
+export type AlpacaAccountKycResultsSummary = keyof typeof AlpacaAccountKycResultsSummaryEnum.obj;
 export const alpacaAccountKycResultsProperties = {
 	additional_information: yup.string().optional().nullable().default(null),
-	summary: AlpacaAccountKycResultsSummaryEnum.getOptionalSchema()
-		.nullable()
-		.default(null),
+	summary: AlpacaAccountKycResultsSummaryEnum.getOptionalSchema().nullable().default(null),
 } as const;
 
 // Trading Configurations
@@ -121,67 +105,32 @@ export const alpacaAccountTrustedContactProperties = {
 
 export const alpacaAccountProperties = {
 	alpaca_account_account_number: yup.string().nullable().default(null), // "689760856"
-	alpaca_account_agreements: yup
-		.array()
-		.of(yup.object(alpacaAccountAgreementsProperties))
-		.nullable()
-		.default(null), // { "agreement": "customer_agreement", "signed_at": "2024-12-12T01:59:15.126099757Z", "ip_address": "127.0.0.1" }
+	alpaca_account_agreements: yup.array().of(yup.object(alpacaAccountAgreementsProperties)).nullable().default(null), // { "agreement": "customer_agreement", "signed_at": "2024-12-12T01:59:15.126099757Z", "ip_address": "127.0.0.1" }
 	alpaca_account_auto_approve: yup.boolean().nullable().default(null), // `null`
-	alpaca_account_contact: yup
-		.object(alpacaAccountContactProperties)
-		.nullable()
-		.default(null),
+	alpaca_account_contact: yup.object(alpacaAccountContactProperties).nullable().default(null),
 	alpaca_account_crypto_status: yup.string().nullable().default(null), // "INACTIVE" or (presumably) "ACTIVE"
 	alpaca_account_currency: yup.string().nullable().default(null), // "USD"
-	alpaca_account_disclosures: yup
-		.object(alpacaAccountDisclosuresProperties)
-		.nullable()
-		.default(null),
-	alpaca_account_documents: yup
-		.array()
-		.of(yup.object(alpacaAccountDocumentsProperties))
-		.nullable()
-		.default(null),
+	alpaca_account_disclosures: yup.object(alpacaAccountDisclosuresProperties).nullable().default(null),
+	alpaca_account_documents: yup.array().of(yup.object(alpacaAccountDocumentsProperties)).nullable().default(null),
 	// { "document_type": "identity_verification", "document_sub_type": "passport", "id": "44c...daf", "content": "https://s3....d77", "created_at": "2024-..." }
 	// { "document_type": "identity_verification", "document_sub_type": "passport", "content": "/9j/4AA..==", "content_data": null, "mime_type": "image/jpeg" }
-	alpaca_account_enabled_assets: yup
-		.array()
-		.of(yup.string())
-		.nullable()
-		.default(null), // ["us_equity"]
+	alpaca_account_enabled_assets: yup.array().of(yup.string()).nullable().default(null), // ["us_equity"]
 	alpaca_account_id: yup.string().nullable().default(null).meta({
 		unique_key: true,
 	}), // v4 uuid
-	alpaca_account_identity: yup
-		.object(alpacaAccountIdentityProperties)
-		.nullable()
-		.default(null),
-	alpaca_account_kyc_results: yup
-		.object(alpacaAccountKycResultsProperties)
-		.nullable()
-		.default(null),
+	alpaca_account_identity: yup.object(alpacaAccountIdentityProperties).nullable().default(null),
+	alpaca_account_kyc_results: yup.object(alpacaAccountKycResultsProperties).nullable().default(null),
 	// { "summary": "pass" } or { "summary": "fail", "additional_information": "..." }
 	alpaca_account_last_equity: yup.number().nullable().default(null), // "0" or "1236.31"
 	alpaca_account_minor_identity: yup.string().nullable().default(null), // `null`
-	alpaca_account_status: AlpacaAccountStatusEnum.getOptionalSchema()
-		.nullable()
-		.default(null),
-	alpaca_account_trading_configurations: yup
-		.object(alpacaAccountTradingConfigurationsProperties)
-		.nullable()
-		.default(null), // `null` or { "fractional_trading": true }
+	alpaca_account_status: AlpacaAccountStatusEnum.getOptionalSchema().nullable().default(null),
+	alpaca_account_trading_configurations: yup.object(alpacaAccountTradingConfigurationsProperties).nullable().default(null), // `null` or { "fractional_trading": true }
 	alpaca_account_trading_type: yup.string().nullable().default(null), // "margin"
-	alpaca_account_trusted_contact: yup
-		.object(alpacaAccountTrustedContactProperties)
-		.nullable()
-		.default(null),
+	alpaca_account_trusted_contact: yup.object(alpacaAccountTrustedContactProperties).nullable().default(null),
 } as const;
 
-export const AlpacaAccountPropertyNameEnum = getEnum(
-	Keys(alpacaAccountProperties),
-);
-export type AlpacaAccountPropertyName =
-	keyof typeof AlpacaAccountPropertyNameEnum.obj;
+export const AlpacaAccountPropertyNameEnum = getEnum(Keys(alpacaAccountProperties));
+export type AlpacaAccountPropertyName = keyof typeof AlpacaAccountPropertyNameEnum.obj;
 
 export type RemoveAlpacaAccountPrefix<T> = {
 	[K in keyof T as K extends `alpaca_account_${infer Rest}` ? Rest : K]: T[K];

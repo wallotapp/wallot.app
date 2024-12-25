@@ -15,8 +15,7 @@ export const useQueryBankAccountsForLoggedInUser = () => {
 	});
 	const isBankAccountPageDataLoaded = bankAccountPageQueryObserver.data != null;
 
-	const bankAccountsForLoggedInUser =
-		bankAccountPageQueryObserver.data?.documents ?? [];
+	const bankAccountsForLoggedInUser = bankAccountPageQueryObserver.data?.documents ?? [];
 
 	return {
 		bankAccountsForLoggedInUser,

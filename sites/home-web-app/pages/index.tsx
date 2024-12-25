@@ -1,11 +1,7 @@
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import {
-	PageStaticProps,
-	PageProps,
-	Page as PageComponent,
-} from 'ergonomic-react/src/components/nextjs-pages/Page';
+import { PageStaticProps, PageProps, Page as PageComponent } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { HomeWebAppRouteQueryParams, getHomeWebAppRoute } from '@wallot/js';
 import { SuspensePage } from '@wallot/react/src/components/SuspensePage';
 

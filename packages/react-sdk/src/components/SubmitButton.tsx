@@ -8,25 +8,14 @@ export type SubmitButtonProps = BaseComponent & {
 	textClassName?: string;
 	type?: 'submit' | 'button';
 };
-export const SubmitButton: React.FC<SubmitButtonProps> = ({
-	className = '',
-	isSubmitting,
-	text = 'Continue',
-	textClassName = '',
-	type = 'submit',
-}) => {
+export const SubmitButton: React.FC<SubmitButtonProps> = ({ className = '', isSubmitting, text = 'Continue', textClassName = '', type = 'submit' }) => {
 	return (
 		<Button className={className} disabled={isSubmitting} type={type}>
 			<div>
 				{isSubmitting ? (
 					<>
 						<div className='flex items-center justify-center space-x-2 min-w-16'>
-							<div
-								className={cn(
-									'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
-									'border-t-brand border-r-brand border-b-brand',
-								)}
-							></div>
+							<div className={cn('w-4 h-4 border-2 border-gray-200 rounded-full animate-spin', 'border-t-brand border-r-brand border-b-brand')}></div>
 						</div>
 					</>
 				) : (

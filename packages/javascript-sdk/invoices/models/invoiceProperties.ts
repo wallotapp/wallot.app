@@ -1,29 +1,11 @@
 import * as yup from 'yup';
-import {
-	GeneralizedApiResourceCreateParamsRequiredFieldEnum,
-	GeneralizedApiResourceProperties,
-	CreateParams,
-	UpdateParams,
-	YupHelpers,
-	getApiResourceSpec,
-	getEnum,
-	GeneralizedFieldTypeEnum,
-} from 'ergonomic';
-import {
-	apiYupHelpers,
-	idPrefixByResourceName,
-} from '../../utils/apiYupHelpers.js';
+import { GeneralizedApiResourceCreateParamsRequiredFieldEnum, GeneralizedApiResourceProperties, CreateParams, UpdateParams, YupHelpers, getApiResourceSpec, getEnum, GeneralizedFieldTypeEnum } from 'ergonomic';
+import { apiYupHelpers, idPrefixByResourceName } from '../../utils/apiYupHelpers.js';
 
 export const InvoiceCategoryEnum = getEnum(['default']);
 export type InvoiceCategory = keyof typeof InvoiceCategoryEnum.obj;
 
-const createParamsRequiredFieldEnum = getEnum([
-	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
-	'amount',
-	'bank_account',
-	'license',
-	'stripe_invoice_id',
-] as const);
+const createParamsRequiredFieldEnum = getEnum([...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr, 'amount', 'bank_account', 'license', 'stripe_invoice_id'] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
 const _object = 'invoice';
@@ -32,10 +14,7 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	amount: YupHelpers.usd(),
-	bank_account: apiYupHelpers
-		.idRef(['bank_account'])
-		.min(1)
-		.meta({ unique_key: false }),
+	bank_account: apiYupHelpers.idRef(['bank_account']).min(1).meta({ unique_key: false }),
 	category: InvoiceCategoryEnum.getDefinedSchema(),
 	license: apiYupHelpers.idRef(['license']).min(1).meta({ unique_key: false }),
 	stripe_invoice_id: yup.string().defined().min(1).meta({

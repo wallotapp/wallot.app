@@ -17,18 +17,11 @@ export const RejectedAlpacaOrderStatusEnum = getEnum([
 export const assetOrderRejectedByAlpacaProperties = {
 	alpaca_order_status: RejectedAlpacaOrderStatusEnum.getDefinedSchema(),
 };
-export const assetOrderRejectedByAlpacaSchema = yup.object(
-	assetOrderRejectedByAlpacaProperties,
-);
-export type AssetOrderRejectedByAlpacaParams = yup.InferType<
-	typeof assetOrderRejectedByAlpacaSchema
->;
+export const assetOrderRejectedByAlpacaSchema = yup.object(assetOrderRejectedByAlpacaProperties);
+export type AssetOrderRejectedByAlpacaParams = yup.InferType<typeof assetOrderRejectedByAlpacaSchema>;
 
-export type AssetOrderRejectedByAlpaca = AssetOrderPendingAlpacaFill &
-	AssetOrderRejectedByAlpacaParams;
-export const isAssetOrderRejectedByAlpaca = (
-	assetOrder: AssetOrder,
-): assetOrder is AssetOrderRejectedByAlpaca => {
+export type AssetOrderRejectedByAlpaca = AssetOrderPendingAlpacaFill & AssetOrderRejectedByAlpacaParams;
+export const isAssetOrderRejectedByAlpaca = (assetOrder: AssetOrder): assetOrder is AssetOrderRejectedByAlpaca => {
 	try {
 		assetOrderRejectedByAlpacaSchema.validateSync(assetOrder);
 		return true;

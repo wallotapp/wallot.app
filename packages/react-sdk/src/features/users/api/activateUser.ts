@@ -3,10 +3,7 @@ import { handleKyError } from 'ergonomic';
 import { getAuthenticatedKyInstance } from '@wallot/react/src/lib/ky';
 import { ActivateUserParams, ActivateUserResponse } from '@wallot/js';
 
-export const activateUser = async (
-	firebaseUser: FirebaseUser | null,
-	params: ActivateUserParams,
-) => {
+export const activateUser = async (firebaseUser: FirebaseUser | null, params: ActivateUserParams) => {
 	try {
 		if (!firebaseUser) {
 			throw new Error('User is not authenticated');

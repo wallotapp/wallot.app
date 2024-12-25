@@ -1,16 +1,7 @@
 import { Stripe } from 'stripe';
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { FunctionResponse } from '@wallot/node';
-import {
-	BankAccount,
-	bankAccountsApi,
-	ConnectBankAccountsParams,
-	ConnectBankAccountsResponse,
-	CreateBankAccountParams,
-	UpdateUserParams,
-	User,
-	usersApi,
-} from '@wallot/js';
+import { BankAccount, bankAccountsApi, ConnectBankAccountsParams, ConnectBankAccountsResponse, CreateBankAccountParams, UpdateUserParams, User, usersApi } from '@wallot/js';
 import { db, log, stripe } from '../../../services.js';
 
 type BankAccountSourceData = {
@@ -23,9 +14,7 @@ type BankAccountSourceDataAttached = {
 };
 
 export const connectBankAccounts = async (
-	{
-		stripe_financial_connections_accounts: stripeFinancialConnectionsAccounts,
-	}: ConnectBankAccountsParams<Stripe.FinancialConnections.Account>,
+	{ stripe_financial_connections_accounts: stripeFinancialConnectionsAccounts }: ConnectBankAccountsParams<Stripe.FinancialConnections.Account>,
 	_params: Record<string, never>,
 	_query: Record<string, never>,
 	firebaseUser: FirebaseUser | null,
@@ -34,64 +23,49 @@ export const connectBankAccounts = async (
 
 	// Locate USER by Firebase UID
 	const usersCollectionId = usersApi.collectionId;
-	const user = (
-		await db.collection(usersCollectionId).doc(firebaseUser.uid).get()
-	).data() as User;
+	const user = (await db.collection(usersCollectionId).doc(firebaseUser.uid).get()).data() as User;
 	const { stripe_customer_id } = user;
 
 	// Get all the PaymentMethods derived from a bank account that already exist
-	const stripeCustomerPaymentMethods =
-		await stripe.customers.listPaymentMethods(stripe_customer_id, {
-			limit: 99,
-		});
+	const stripeCustomerPaymentMethods = await stripe.customers.listPaymentMethods(stripe_customer_id, {
+		limit: 99,
+	});
 
 	// Create a mapping of source data by Account ID
 	let highestBalanceSoFar = 0;
 	let accountIdWithHighestBalance: string | null = null;
-	const sourceDataByAccountId = stripeFinancialConnectionsAccounts.reduce(
-		(acc, stripeFinancialConnectionsAccount) => {
-			if (stripeFinancialConnectionsAccount.status !== 'active') {
-				return acc;
-			}
-			if (
-				!stripeFinancialConnectionsAccount.supported_payment_method_types.includes(
-					'us_bank_account',
-				)
-			) {
-				return acc;
-			}
-
-			const balance = stripeFinancialConnectionsAccount.balance;
-			if (balance != null) {
-				/**
-				 * The funds available to the account holder. Typically this is the current balance less any holds.
-				 * Each key is a three-letter ISO currency code, in lowercase.
-				 * Each value is a integer amount. A positive amount indicates money owed to the account holder. A negative amount indicates money owed by the account holder.
-				 */
-				const balanceAmount = balance.cash?.available;
-				const usdBalance = balanceAmount?.usd ?? balanceAmount?.USD ?? 0;
-				if (usdBalance > highestBalanceSoFar) {
-					highestBalanceSoFar = usdBalance;
-					accountIdWithHighestBalance = stripeFinancialConnectionsAccount.id;
-				}
-			}
-
-			const matchingPaymentMethod = stripeCustomerPaymentMethods.data.find(
-				(paymentMethod) => {
-					return (
-						paymentMethod.us_bank_account?.financial_connections_account ===
-						stripeFinancialConnectionsAccount.id
-					);
-				},
-			);
-			acc[stripeFinancialConnectionsAccount.id] = {
-				account: stripeFinancialConnectionsAccount,
-				paymentMethod: matchingPaymentMethod ?? null,
-			};
+	const sourceDataByAccountId = stripeFinancialConnectionsAccounts.reduce((acc, stripeFinancialConnectionsAccount) => {
+		if (stripeFinancialConnectionsAccount.status !== 'active') {
 			return acc;
-		},
-		{} as Record<string, BankAccountSourceData>,
-	);
+		}
+		if (!stripeFinancialConnectionsAccount.supported_payment_method_types.includes('us_bank_account')) {
+			return acc;
+		}
+
+		const balance = stripeFinancialConnectionsAccount.balance;
+		if (balance != null) {
+			/**
+			 * The funds available to the account holder. Typically this is the current balance less any holds.
+			 * Each key is a three-letter ISO currency code, in lowercase.
+			 * Each value is a integer amount. A positive amount indicates money owed to the account holder. A negative amount indicates money owed by the account holder.
+			 */
+			const balanceAmount = balance.cash?.available;
+			const usdBalance = balanceAmount?.usd ?? balanceAmount?.USD ?? 0;
+			if (usdBalance > highestBalanceSoFar) {
+				highestBalanceSoFar = usdBalance;
+				accountIdWithHighestBalance = stripeFinancialConnectionsAccount.id;
+			}
+		}
+
+		const matchingPaymentMethod = stripeCustomerPaymentMethods.data.find((paymentMethod) => {
+			return paymentMethod.us_bank_account?.financial_connections_account === stripeFinancialConnectionsAccount.id;
+		});
+		acc[stripeFinancialConnectionsAccount.id] = {
+			account: stripeFinancialConnectionsAccount,
+			paymentMethod: matchingPaymentMethod ?? null,
+		};
+		return acc;
+	}, {} as Record<string, BankAccountSourceData>);
 	log({
 		message: 'Bank account source data',
 		stripeCustomerPaymentMethods,
@@ -103,9 +77,7 @@ export const connectBankAccounts = async (
 		throw new Error('No bank accounts were successfully connected');
 	}
 
-	const unlinkedAccountIds = Object.keys(sourceDataByAccountId).filter(
-		(accountId) => sourceDataByAccountId[accountId]?.paymentMethod == null,
-	);
+	const unlinkedAccountIds = Object.keys(sourceDataByAccountId).filter((accountId) => sourceDataByAccountId[accountId]?.paymentMethod == null);
 
 	for (const unlinkedAccountId of unlinkedAccountIds) {
 		try {
@@ -114,11 +86,7 @@ export const connectBankAccounts = async (
 				throw new Error('Account not found');
 			}
 
-			const userFullName = (
-				(user.alpaca_account_identity?.given_name ?? '') +
-				' ' +
-				(user.alpaca_account_identity?.family_name ?? '')
-			).trim();
+			const userFullName = ((user.alpaca_account_identity?.given_name ?? '') + ' ' + (user.alpaca_account_identity?.family_name ?? '')).trim();
 
 			// Create a PaymentMethod directly from the financial connections account
 			const paymentMethod = await stripe.paymentMethods.create({
@@ -132,22 +100,17 @@ export const connectBankAccounts = async (
 				},
 			});
 			log({
-				message:
-					'PaymentMethod created from array loop over unlinked account IDs',
+				message: 'PaymentMethod created from array loop over unlinked account IDs',
 				paymentMethod,
 				unlinkedAccountId,
 			});
 
 			// Attach the newly created PaymentMethod to the Stripe customer
-			const attachedPaymentMethod = await stripe.paymentMethods.attach(
-				paymentMethod.id,
-				{
-					customer: stripe_customer_id,
-				},
-			);
+			const attachedPaymentMethod = await stripe.paymentMethods.attach(paymentMethod.id, {
+				customer: stripe_customer_id,
+			});
 			log({
-				message:
-					'PaymentMethod attached to Stripe customer from array loop over unlinked account IDs',
+				message: 'PaymentMethod attached to Stripe customer from array loop over unlinked account IDs',
 				attachedPaymentMethod,
 				unlinkedAccountId,
 			});
@@ -182,10 +145,7 @@ export const connectBankAccounts = async (
 	let defaultPaymentMethodId: string | undefined;
 
 	// Type cast
-	const attachedSourceDataByAccountId = sourceDataByAccountId as Record<
-		string,
-		BankAccountSourceDataAttached
-	>;
+	const attachedSourceDataByAccountId = sourceDataByAccountId as Record<string, BankAccountSourceDataAttached>;
 
 	// If the object is empty, there was a problem with the source data
 	if (Object.keys(attachedSourceDataByAccountId).length === 0) {
@@ -193,9 +153,7 @@ export const connectBankAccounts = async (
 	}
 
 	// Loop over the source data and create BankAccounts
-	for (const { account, paymentMethod } of Object.values(
-		attachedSourceDataByAccountId,
-	)) {
+	for (const { account, paymentMethod } of Object.values(attachedSourceDataByAccountId)) {
 		// Create a BankAccount
 		const bankAccountParams: CreateBankAccountParams = {
 			user: user._id,
@@ -222,9 +180,7 @@ export const connectBankAccounts = async (
 		}
 		// Add the BankAccount to the batch
 		const bankAccountsCollectionId = bankAccountsApi.collectionId;
-		const bankAccountDoc = db
-			.collection(bankAccountsCollectionId)
-			.doc(bankAccount._id);
+		const bankAccountDoc = db.collection(bankAccountsCollectionId).doc(bankAccount._id);
 		batch.set(bankAccountDoc, bankAccount);
 
 		// Log the BankAccount
@@ -266,9 +222,7 @@ export const connectBankAccounts = async (
 			});
 
 			// Log the success
-			log(
-				`Default payment method with ID ${defaultPaymentMethodId} set on Stripe customer with ID ${stripe_customer_id}`,
-			);
+			log(`Default payment method with ID ${defaultPaymentMethodId} set on Stripe customer with ID ${stripe_customer_id}`);
 		},
 	};
 };

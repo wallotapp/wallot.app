@@ -19,9 +19,7 @@ import { positionsApi } from '../positions/index.js';
 import { recommendationsApi } from '../recommendations/index.js';
 import { usersApi } from '../users/index.js';
 
-export const getApiResourceSpec = (
-	resourceName: WallotResourceName,
-): GeneralizedApiResourceSpec => {
+export const getApiResourceSpec = (resourceName: WallotResourceName): GeneralizedApiResourceSpec => {
 	switch (resourceName) {
 		case 'ach_transfer':
 			return achTransfersApi as unknown as GeneralizedApiResourceSpec;

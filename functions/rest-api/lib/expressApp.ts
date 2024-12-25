@@ -3,12 +3,7 @@ import * as express from 'express';
 import { statSync } from 'fs';
 import { Stripe } from 'stripe';
 import { FirebaseUserCustomTokenResponse } from 'ergonomic';
-import {
-	GeneralizedResLocals,
-	addHealthRoutesToExpressApp,
-	logExpressInvocation,
-	sendExpressResponse,
-} from 'ergonomic-node';
+import { GeneralizedResLocals, addHealthRoutesToExpressApp, logExpressInvocation, sendExpressResponse } from 'ergonomic-node';
 import {
 	ActivateUserResponse,
 	ActivateUserParams,
@@ -44,23 +39,11 @@ app.options('*/v0/bank-accounts/connect', corsPolicy);
 app.post(
 	'*/v0/bank-accounts/connect',
 	(
-		req: express.Request<
-			Record<string, never>,
-			ConnectBankAccountsResponse,
-			ConnectBankAccountsParams<Stripe.FinancialConnections.Account>,
-			Record<string, never>
-		>,
-		res: express.Response<
-			ConnectBankAccountsResponse,
-			GeneralizedResLocals<ConnectBankAccountsResponse>
-		>,
+		req: express.Request<Record<string, never>, ConnectBankAccountsResponse, ConnectBankAccountsParams<Stripe.FinancialConnections.Account>, Record<string, never>>,
+		res: express.Response<ConnectBankAccountsResponse, GeneralizedResLocals<ConnectBankAccountsResponse>>,
 		next,
 	) => {
-		corsPolicy(
-			req,
-			res,
-			createRouterFunction(auth, secrets)(connectBankAccounts)(req, res, next),
-		);
+		corsPolicy(req, res, createRouterFunction(auth, secrets)(connectBankAccounts)(req, res, next));
 	},
 );
 
@@ -68,79 +51,29 @@ import { tokenizeBankAccount } from './app/wallot/bankAccounts/tokenizeBankAccou
 app.options('*/v0/bank-accounts/:bankAccountId/tokenize', corsPolicy);
 app.post(
 	'*/v0/bank-accounts/:bankAccountId/tokenize',
-	(
-		req: express.Request<
-			{ bankAccountId: string },
-			TokenizeBankAccountResponse,
-			TokenizeBankAccountParams,
-			Record<string, never>
-		>,
-		res: express.Response<
-			TokenizeBankAccountResponse,
-			GeneralizedResLocals<TokenizeBankAccountResponse>
-		>,
-		next,
-	) => {
-		corsPolicy(
-			req,
-			res,
-			createRouterFunction(auth, secrets)(tokenizeBankAccount)(req, res, next),
-		);
+	(req: express.Request<{ bankAccountId: string }, TokenizeBankAccountResponse, TokenizeBankAccountParams, Record<string, never>>, res: express.Response<TokenizeBankAccountResponse, GeneralizedResLocals<TokenizeBankAccountResponse>>, next) => {
+		corsPolicy(req, res, createRouterFunction(auth, secrets)(tokenizeBankAccount)(req, res, next));
 	},
 );
 
 // Users
 import { registerUser } from './app/wallot/users/registerUser.js';
 app.options('*/v0/users', corsPolicy);
-app.post(
-	'*/v0/users',
-	(
-		req: express.Request<
-			Record<string, never>,
-			RegisterUserResponse,
-			RegisterUserParams,
-			Record<string, never>
-		>,
-		res: express.Response<
-			RegisterUserResponse,
-			GeneralizedResLocals<RegisterUserResponse>
-		>,
-		next,
-	) => {
-		corsPolicy(
-			req,
-			res,
-			createRouterFunction(auth, secrets)(registerUser, {
-				requiresAuth: false,
-			})(req, res, next),
-		);
-	},
-);
+app.post('*/v0/users', (req: express.Request<Record<string, never>, RegisterUserResponse, RegisterUserParams, Record<string, never>>, res: express.Response<RegisterUserResponse, GeneralizedResLocals<RegisterUserResponse>>, next) => {
+	corsPolicy(
+		req,
+		res,
+		createRouterFunction(auth, secrets)(registerUser, {
+			requiresAuth: false,
+		})(req, res, next),
+	);
+});
 
 import { activateUser } from './app/wallot/users/activateUser.js';
 app.options('*/v0/users/activate', corsPolicy);
-app.post(
-	'*/v0/users/activate',
-	(
-		req: express.Request<
-			Record<string, never>,
-			ActivateUserResponse,
-			ActivateUserParams,
-			Record<string, never>
-		>,
-		res: express.Response<
-			ActivateUserResponse,
-			GeneralizedResLocals<ActivateUserResponse>
-		>,
-		next,
-	) => {
-		corsPolicy(
-			req,
-			res,
-			createRouterFunction(auth, secrets)(activateUser)(req, res, next),
-		);
-	},
-);
+app.post('*/v0/users/activate', (req: express.Request<Record<string, never>, ActivateUserResponse, ActivateUserParams, Record<string, never>>, res: express.Response<ActivateUserResponse, GeneralizedResLocals<ActivateUserResponse>>, next) => {
+	corsPolicy(req, res, createRouterFunction(auth, secrets)(activateUser)(req, res, next));
+});
 
 // ---- Application Routes: Firebase ---- //
 
@@ -149,28 +82,8 @@ import { createFirebaseAuthCustomToken } from './app/firebase/auth/createFirebas
 app.options('*/v0/firebase/auth/custom-tokens', corsPolicy);
 app.post(
 	'*/v0/firebase/auth/custom-tokens',
-	(
-		req: express.Request<
-			Record<string, never>,
-			FirebaseUserCustomTokenResponse,
-			Record<string, never>,
-			Record<string, never>
-		>,
-		res: express.Response<
-			FirebaseUserCustomTokenResponse,
-			GeneralizedResLocals<FirebaseUserCustomTokenResponse>
-		>,
-		next,
-	) => {
-		corsPolicy(
-			req,
-			res,
-			createRouterFunction(auth, secrets)(createFirebaseAuthCustomToken)(
-				req,
-				res,
-				next,
-			),
-		);
+	(req: express.Request<Record<string, never>, FirebaseUserCustomTokenResponse, Record<string, never>, Record<string, never>>, res: express.Response<FirebaseUserCustomTokenResponse, GeneralizedResLocals<FirebaseUserCustomTokenResponse>>, next) => {
+		corsPolicy(req, res, createRouterFunction(auth, secrets)(createFirebaseAuthCustomToken)(req, res, next));
 	},
 );
 
@@ -182,26 +95,11 @@ app.options('*/v0/stripe/financial-connections/sessions', corsPolicy);
 app.post(
 	'*/v0/stripe/financial-connections/sessions',
 	(
-		req: express.Request<
-			CreateStripeFinancialConnectionsSessionParams,
-			CreateStripeFinancialConnectionsSessionResponse,
-			Record<string, never>,
-			Record<string, never>
-		>,
-		res: express.Response<
-			CreateStripeFinancialConnectionsSessionResponse,
-			GeneralizedResLocals<CreateStripeFinancialConnectionsSessionResponse>
-		>,
+		req: express.Request<CreateStripeFinancialConnectionsSessionParams, CreateStripeFinancialConnectionsSessionResponse, Record<string, never>, Record<string, never>>,
+		res: express.Response<CreateStripeFinancialConnectionsSessionResponse, GeneralizedResLocals<CreateStripeFinancialConnectionsSessionResponse>>,
 		next,
 	) => {
-		corsPolicy(
-			req,
-			res,
-			createRouterFunction(
-				auth,
-				secrets,
-			)(createStripeFinancialConnectionsSession)(req, res, next),
-		);
+		corsPolicy(req, res, createRouterFunction(auth, secrets)(createStripeFinancialConnectionsSession)(req, res, next));
 	},
 );
 

@@ -1,11 +1,7 @@
 import * as cors from 'cors';
 import * as express from 'express';
 import { statSync } from 'fs';
-import {
-	addHealthRoutesToExpressApp,
-	logExpressInvocation,
-	sendExpressResponse,
-} from 'ergonomic-node';
+import { addHealthRoutesToExpressApp, logExpressInvocation, sendExpressResponse } from 'ergonomic-node';
 import { User, usersApi as apiResourceSpec } from '@wallot/js';
 import { secrets } from './secrets.js';
 import { variables } from './variables.js';

@@ -9,54 +9,32 @@ export type OnboardingCardProps = BaseComponentWithChildren & {
 	subtitle: string;
 	title: string;
 };
-export const OnboardingCard: React.FC<OnboardingCardProps> = ({
-	children,
-	step,
-	subtitle,
-	title,
-}) => {
+export const OnboardingCard: React.FC<OnboardingCardProps> = ({ children, step, subtitle, title }) => {
 	return (
 		<Fragment>
 			<div className='mb-10 flex items-center justify-center'>
-				{OPEN_GRAPH_CONFIG.siteBrandLogoDarkMode &&
-					OPEN_GRAPH_CONFIG.siteBrandLogoLightMode && (
-						<PlatformLogo
-							height={380}
-							size='xl'
-							srcMap={{
-								dark: OPEN_GRAPH_CONFIG.siteBrandLogoDarkMode,
-								light: OPEN_GRAPH_CONFIG.siteBrandLogoLightMode,
-							}}
-							width={2048}
-						/>
-					)}
-				{!(
-					OPEN_GRAPH_CONFIG.siteBrandLogoDarkMode &&
-					OPEN_GRAPH_CONFIG.siteBrandLogoLightMode
-				) && (
+				{OPEN_GRAPH_CONFIG.siteBrandLogoDarkMode && OPEN_GRAPH_CONFIG.siteBrandLogoLightMode && (
+					<PlatformLogo
+						height={380}
+						size='xl'
+						srcMap={{
+							dark: OPEN_GRAPH_CONFIG.siteBrandLogoDarkMode,
+							light: OPEN_GRAPH_CONFIG.siteBrandLogoLightMode,
+						}}
+						width={2048}
+					/>
+				)}
+				{!(OPEN_GRAPH_CONFIG.siteBrandLogoDarkMode && OPEN_GRAPH_CONFIG.siteBrandLogoLightMode) && (
 					<div>
-						<p className={cn('text-2xl font-bold', 'lg:text-3xl')}>
-							{OPEN_GRAPH_CONFIG.siteName}
-						</p>
+						<p className={cn('text-2xl font-bold', 'lg:text-3xl')}>{OPEN_GRAPH_CONFIG.siteName}</p>
 					</div>
 				)}
 			</div>
-			<div
-				className={cn(
-					'bg-white border border-gray-200 rounded-md shadow-lg flex flex-col items-center justify-evenly py-14 px-8 mx-auto relative',
-					'w-full',
-					'md:w-[28rem]',
-				)}
-			>
+			<div className={cn('bg-white border border-gray-200 rounded-md shadow-lg flex flex-col items-center justify-evenly py-14 px-8 mx-auto relative', 'w-full', 'md:w-[28rem]')}>
 				{step !== null && (
 					<div className='flex justify-center mb-8 space-x-5'>
 						<div className='w-16 h-2 rounded-md bg-brand'></div>
-						<div
-							className={cn(
-								'w-16 h-2 rounded-md',
-								step === 0 ? 'bg-gray-200' : 'bg-brand',
-							)}
-						></div>
+						<div className={cn('w-16 h-2 rounded-md', step === 0 ? 'bg-gray-200' : 'bg-brand')}></div>
 					</div>
 				)}
 				<div className='text-center max-w-[75%] mx-auto'>

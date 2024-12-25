@@ -2,7 +2,4 @@ import { generalizedFirestoreDocumentCreateOperation } from 'ergonomic-react/src
 import { CreatePositionParams, Position, positionsApi } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const createPosition = generalizedFirestoreDocumentCreateOperation<
-	CreatePositionParams,
-	Position
->(positionsApi as unknown as GeneralizedApiResourceSpec);
+export const createPosition = generalizedFirestoreDocumentCreateOperation<CreatePositionParams, Position>(positionsApi as unknown as GeneralizedApiResourceSpec);

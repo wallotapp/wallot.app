@@ -5,22 +5,13 @@ import { UserPendingAlpacaAccount } from './userPendingAlpacaAccountSchema.js';
 import { YupHelpers } from 'ergonomic';
 
 export const userActivatedByAlpacaProperties = {
-	alpaca_account_status: YupHelpers.constant(
-		AlpacaAccountStatusEnum.obj.ACTIVE,
-	),
+	alpaca_account_status: YupHelpers.constant(AlpacaAccountStatusEnum.obj.ACTIVE),
 };
-export const userActivatedByAlpacaSchema = yup.object(
-	userActivatedByAlpacaProperties,
-);
-export type UserActivatedByAlpacaParams = yup.InferType<
-	typeof userActivatedByAlpacaSchema
->;
+export const userActivatedByAlpacaSchema = yup.object(userActivatedByAlpacaProperties);
+export type UserActivatedByAlpacaParams = yup.InferType<typeof userActivatedByAlpacaSchema>;
 
-export type UserActivatedByAlpaca = UserPendingAlpacaAccount &
-	UserActivatedByAlpacaParams;
-export const isUserActivatedByAlpaca = (
-	user: User,
-): user is UserActivatedByAlpaca => {
+export type UserActivatedByAlpaca = UserPendingAlpacaAccount & UserActivatedByAlpacaParams;
+export const isUserActivatedByAlpaca = (user: User): user is UserActivatedByAlpaca => {
 	try {
 		userActivatedByAlpacaSchema.validateSync(user);
 		return true;

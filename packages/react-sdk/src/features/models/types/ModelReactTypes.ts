@@ -8,11 +8,7 @@ import {
 	GeneralizedUseCreateDocumentsMutationOptions,
 	GeneralizedUseUpdateDocumentsMutationOptions,
 } from 'ergonomic-react/src/lib/tanstackQuery';
-import {
-	FirestoreDocumentCreateParams,
-	FirestoreDocumentUpdateParams,
-	GeneralizedFirestoreCollectionPage,
-} from 'ergonomic-react/src/features/data';
+import { FirestoreDocumentCreateParams, FirestoreDocumentUpdateParams, GeneralizedFirestoreCollectionPage } from 'ergonomic-react/src/features/data';
 import { Model, CreateModelParams, UpdateModelParams } from '@wallot/js';
 
 export type ModelPageQueryResponse = GeneralizedFirestoreCollectionPage<Model>;
@@ -27,16 +23,12 @@ export type UseQueryModelPageOptionsFn = GeneralizedUseQueryOptionsFn<Model>;
 
 export type UseQueryModelPageObserver = GeneralizedUseQueryPageObserver<Model>;
 
-export type UseCreateModelMutationOptions =
-	GeneralizedUseCreateDocumentsMutationOptions<Model, CreateModelParams>;
+export type UseCreateModelMutationOptions = GeneralizedUseCreateDocumentsMutationOptions<Model, CreateModelParams>;
 export type CreateModelMutationData = Model[];
 export type CreateModelMutationError = GeneralizedError;
-export type CreateModelMutationParams =
-	FirestoreDocumentCreateParams<CreateModelParams>;
+export type CreateModelMutationParams = FirestoreDocumentCreateParams<CreateModelParams>;
 
-export type UseUpdateModelMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<UpdateModelParams>;
+export type UseUpdateModelMutationOptions = GeneralizedUseUpdateDocumentsMutationOptions<UpdateModelParams>;
 export type UpdateModelMutationData = unknown;
 export type UpdateModelMutationError = GeneralizedError;
-export type UpdateModelMutationParams =
-	FirestoreDocumentUpdateParams<UpdateModelParams>;
+export type UpdateModelMutationParams = FirestoreDocumentUpdateParams<UpdateModelParams>;

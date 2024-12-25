@@ -4,10 +4,7 @@ import { License, licensesApi } from '../models/licenseProperties.js';
 
 export const proLicenseProperties = {
 	plan: YupHelpers.constant('pro'),
-	stripe_subscription_id: licensesApi.properties.stripe_subscription_id
-		.nullable(false)
-		.defined()
-		.min(1),
+	stripe_subscription_id: licensesApi.properties.stripe_subscription_id.nullable(false).defined().min(1),
 };
 export const proLicenseSchema = yup.object(proLicenseProperties);
 

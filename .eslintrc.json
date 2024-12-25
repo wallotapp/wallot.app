@@ -10,22 +10,12 @@
 		"plugin:promise/recommended",
 		"prettier"
 	],
-	"ignorePatterns": [
-		"**/*.test.js",
-		"**/*.test.jsx",
-		"**/*.test.ts",
-		"**/*.test.tsx"
-	],
+	"ignorePatterns": ["**/*.test.js", "**/*.test.jsx", "**/*.test.ts", "**/*.test.tsx"],
 	"overrides": [],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"tsconfigRootDir": ".",
-		"project": [
-			"./tsconfig.json",
-			"./functions/*/tsconfig.json",
-			"./sites/*/tsconfig.json",
-			"./packages/*/tsconfig.json"
-		]
+		"project": ["./tsconfig.json", "./functions/*/tsconfig.json", "./sites/*/tsconfig.json", "./packages/*/tsconfig.json"]
 	},
 	"plugins": ["@typescript-eslint"],
 	"root": true,
@@ -61,12 +51,7 @@
 		"import/resolver": {
 			"typescript": {
 				"alwaysTryTypes": true,
-				"project": [
-					"./tsconfig.json",
-					"./functions/*/tsconfig.json",
-					"./sites/*/tsconfig.json",
-					"./packages/*/tsconfig.json"
-				]
+				"project": ["./tsconfig.json", "./functions/*/tsconfig.json", "./sites/*/tsconfig.json", "./packages/*/tsconfig.json"]
 			}
 		},
 		"node": {

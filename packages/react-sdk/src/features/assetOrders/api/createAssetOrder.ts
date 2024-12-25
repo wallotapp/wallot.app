@@ -2,7 +2,4 @@ import { generalizedFirestoreDocumentCreateOperation } from 'ergonomic-react/src
 import { CreateAssetOrderParams, AssetOrder, assetOrdersApi } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const createAssetOrder = generalizedFirestoreDocumentCreateOperation<
-	CreateAssetOrderParams,
-	AssetOrder
->(assetOrdersApi as unknown as GeneralizedApiResourceSpec);
+export const createAssetOrder = generalizedFirestoreDocumentCreateOperation<CreateAssetOrderParams, AssetOrder>(assetOrdersApi as unknown as GeneralizedApiResourceSpec);

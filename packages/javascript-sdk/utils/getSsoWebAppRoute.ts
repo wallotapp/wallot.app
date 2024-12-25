@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import {
-	SsoWebAppRouteStaticId,
-	SsoWebAppRouteQueryParams,
-} from './routeDefinitions.js';
+import { SsoWebAppRouteStaticId, SsoWebAppRouteQueryParams } from './routeDefinitions.js';
 
 export type GetSsoWebAppRouteOptions<T extends SsoWebAppRouteStaticId> = {
 	includeOrigin?: boolean;
@@ -11,17 +8,14 @@ export type GetSsoWebAppRouteOptions<T extends SsoWebAppRouteStaticId> = {
 	routeStaticId: T;
 };
 
-export const getSsoWebAppRoute = <T extends SsoWebAppRouteStaticId>(
-	options: GetSsoWebAppRouteOptions<T>,
-) => {
+export const getSsoWebAppRoute = <T extends SsoWebAppRouteStaticId>(options: GetSsoWebAppRouteOptions<T>) => {
 	const { includeOrigin = false, origin, routeStaticId } = options;
 	if (includeOrigin && !origin) {
 		console.error('Origin is required');
 		return '/';
 	}
 	if (routeStaticId === 'SSO_WEB_APP__/INDEX') {
-		const queryParams =
-			options.queryParams as SsoWebAppRouteQueryParams['SSO_WEB_APP__/INDEX'];
+		const queryParams = options.queryParams as SsoWebAppRouteQueryParams['SSO_WEB_APP__/INDEX'];
 		const dest = queryParams.dest;
 		const destQuery = dest ? `dest=${encodeURIComponent(dest)}` : '';
 		const queries = [destQuery].filter(Boolean);
@@ -30,8 +24,7 @@ export const getSsoWebAppRoute = <T extends SsoWebAppRouteStaticId>(
 		return path;
 	}
 	if (routeStaticId === 'SSO_WEB_APP__/LOGIN') {
-		const queryParams =
-			options.queryParams as SsoWebAppRouteQueryParams['SSO_WEB_APP__/LOGIN'];
+		const queryParams = options.queryParams as SsoWebAppRouteQueryParams['SSO_WEB_APP__/LOGIN'];
 		const dest = queryParams.dest;
 		const destQuery = dest ? `dest=${encodeURIComponent(dest)}` : '';
 		const queries = [destQuery].filter(Boolean);
@@ -45,8 +38,7 @@ export const getSsoWebAppRoute = <T extends SsoWebAppRouteStaticId>(
 		return path;
 	}
 	if (routeStaticId === 'SSO_WEB_APP__/REGISTER') {
-		const queryParams =
-			options.queryParams as SsoWebAppRouteQueryParams['SSO_WEB_APP__/REGISTER'];
+		const queryParams = options.queryParams as SsoWebAppRouteQueryParams['SSO_WEB_APP__/REGISTER'];
 		const dest = queryParams.dest;
 		const destQuery = dest ? `dest=${encodeURIComponent(dest)}` : '';
 		const queries = [destQuery].filter(Boolean);

@@ -18,18 +18,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 		<AuthProvider>
 			<RouteStateProvider>
 				<QueryClientProvider client={queryClient}>
-					<ThemeProvider
-						attribute='class'
-						defaultTheme='light'
-						disableTransitionOnChange
-					>
+					<ThemeProvider attribute='class' defaultTheme='light' disableTransitionOnChange>
 						<Elements stripe={stripePromise} options={undefined}>
 							<>
 								<InitializeGoogleAnalytics />
-								<a
-									href='#main'
-									className='fixed p-2 top-0 left-0 -translate-y-full focus:translate-y-0'
-								>
+								<a href='#main' className='fixed p-2 top-0 left-0 -translate-y-full focus:translate-y-0'>
 									Skip to main content
 								</a>
 								<div>
@@ -38,18 +31,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 									</main>
 								</div>
 								<Toaster />
-								{NODE_ENV !== 'test' && (
-									<ReactQueryDevtools
-										position={
-											(process.env.NEXT_PUBLIC_REACT_QUERY_DEVTOOLS_POSITION as
-												| 'top-right'
-												| 'bottom-right'
-												| 'top-left'
-												| 'bottom-left'
-												| undefined) ?? 'bottom-right'
-										}
-									/>
-								)}
+								{NODE_ENV !== 'test' && <ReactQueryDevtools position={(process.env.NEXT_PUBLIC_REACT_QUERY_DEVTOOLS_POSITION as 'top-right' | 'bottom-right' | 'top-left' | 'bottom-left' | undefined) ?? 'bottom-right'} />}
 							</>
 						</Elements>
 					</ThemeProvider>

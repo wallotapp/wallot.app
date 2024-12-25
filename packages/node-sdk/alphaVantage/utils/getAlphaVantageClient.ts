@@ -28,9 +28,7 @@ import { SecretData } from '../../SecretDataTypes.js';
  *```
  *
  */
-export const getAlphaVantageClient = ({
-	SECRET_CRED_ALPHA_VANTAGE_API_KEY,
-}: SecretData) =>
+export const getAlphaVantageClient = ({ SECRET_CRED_ALPHA_VANTAGE_API_KEY }: SecretData) =>
 	ky.create({
 		prefixUrl: 'https://www.alphavantage.co/query',
 		searchParams: {

@@ -21,9 +21,7 @@ import { useUpdatePositionMutation } from '@wallot/react/src/features/positions'
 import { useUpdateRecommendationMutation } from '@wallot/react/src/features/recommendations';
 import { useUpdateUserMutation } from '@wallot/react/src/features/users';
 
-type MutationHook = (
-	options: UseMutationOptions<unknown, GeneralizedError>,
-) => UseMutationResult;
+type MutationHook = (options: UseMutationOptions<unknown, GeneralizedError>) => UseMutationResult;
 
 // Map of resource names to their respective mutations
 const updateOperationMutationMap = {
@@ -62,14 +60,10 @@ const updateOperationMutationMap = {
  * 	// Other options
  * });
  */
-export function getUpdateOperationMutationForResource<
-	TResourceName extends WallotResourceName,
->(resourceName: TResourceName): MutationHook {
+export function getUpdateOperationMutationForResource<TResourceName extends WallotResourceName>(resourceName: TResourceName): MutationHook {
 	const mutation = updateOperationMutationMap[resourceName];
 	if (!mutation) {
-		throw new Error(
-			`No update operation mutation found for resource: ${resourceName}`,
-		);
+		throw new Error(`No update operation mutation found for resource: ${resourceName}`);
 	}
 	return mutation;
 }

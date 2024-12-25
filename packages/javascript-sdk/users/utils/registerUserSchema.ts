@@ -9,10 +9,7 @@ export const registerUserProperties = {
 	username: usernameSchema().required().default(''),
 } as const;
 export const registerUserSchema = yup.object(registerUserProperties);
-export const registerUserSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
-	registerUserSchema,
-	Keys(registerUserProperties),
-);
+export const registerUserSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(registerUserSchema, Keys(registerUserProperties));
 
 export type RegisterUserParams = yup.InferType<typeof registerUserSchema>;
 export type RegisterUserResponse = {

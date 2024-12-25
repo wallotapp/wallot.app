@@ -2,7 +2,4 @@ import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src
 import { UpdateAchTransferParams, achTransfersApi } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const updateAchTransfer =
-	generalizedFirestoreDocumentUpdateOperation<UpdateAchTransferParams>(
-		achTransfersApi as unknown as GeneralizedApiResourceSpec,
-	);
+export const updateAchTransfer = generalizedFirestoreDocumentUpdateOperation<UpdateAchTransferParams>(achTransfersApi as unknown as GeneralizedApiResourceSpec);

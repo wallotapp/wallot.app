@@ -1,26 +1,11 @@
 import * as yup from 'yup';
-import {
-	GeneralizedApiResourceCreateParamsRequiredFieldEnum,
-	GeneralizedApiResourceProperties,
-	CreateParams,
-	UpdateParams,
-	YupHelpers,
-	getApiResourceSpec,
-	getEnum,
-} from 'ergonomic';
-import {
-	apiYupHelpers,
-	idPrefixByResourceName,
-} from '../../utils/apiYupHelpers.js';
+import { GeneralizedApiResourceCreateParamsRequiredFieldEnum, GeneralizedApiResourceProperties, CreateParams, UpdateParams, YupHelpers, getApiResourceSpec, getEnum } from 'ergonomic';
+import { apiYupHelpers, idPrefixByResourceName } from '../../utils/apiYupHelpers.js';
 
 export const PositionCategoryEnum = getEnum(['default']);
 export type PositionCategory = keyof typeof PositionCategoryEnum.obj;
 
-const createParamsRequiredFieldEnum = getEnum([
-	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
-	'asset',
-	'user',
-] as const);
+const createParamsRequiredFieldEnum = getEnum([...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr, 'asset', 'user'] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
 const _object = 'position';

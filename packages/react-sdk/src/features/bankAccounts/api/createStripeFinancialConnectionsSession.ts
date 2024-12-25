@@ -1,15 +1,9 @@
 import { User as FirebaseUser } from 'firebase/auth';
 import { handleKyError } from 'ergonomic';
 import { getAuthenticatedKyInstance } from '@wallot/react/src/lib/ky';
-import {
-	CreateStripeFinancialConnectionsSessionParams,
-	CreateStripeFinancialConnectionsSessionResponse,
-} from '@wallot/js';
+import { CreateStripeFinancialConnectionsSessionParams, CreateStripeFinancialConnectionsSessionResponse } from '@wallot/js';
 
-export const createStripeFinancialConnectionSession = async (
-	firebaseUser: FirebaseUser | null,
-	params: CreateStripeFinancialConnectionsSessionParams,
-) => {
+export const createStripeFinancialConnectionSession = async (firebaseUser: FirebaseUser | null, params: CreateStripeFinancialConnectionsSessionParams) => {
 	try {
 		if (!firebaseUser) {
 			throw new Error('User is not authenticated');

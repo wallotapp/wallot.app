@@ -1,19 +1,7 @@
-import {
-	Recommendation,
-	CreateAssetOrderParams,
-	AssetOrder,
-	assetOrdersApi,
-	assetsApi,
-} from '@wallot/js';
+import { Recommendation, CreateAssetOrderParams, AssetOrder, assetOrdersApi, assetsApi } from '@wallot/js';
 import { db } from '../../../services.js';
 
-export const createAssetOrdersFromRecommendation = async ({
-	orderId,
-	recommendation,
-}: {
-	orderId: string;
-	recommendation: Recommendation;
-}): Promise<AssetOrder[]> => {
+export const createAssetOrdersFromRecommendation = async ({ orderId, recommendation }: { orderId: string; recommendation: Recommendation }): Promise<AssetOrder[]> => {
 	const { best_investments } = recommendation;
 
 	if (!best_investments || best_investments.length === 0) {
@@ -25,10 +13,7 @@ export const createAssetOrdersFromRecommendation = async ({
 
 		// Fetch asset information from Firestore
 		const assetCollectionId = assetsApi.collectionId;
-		const assetQuerySnapshot = await db
-			.collection(assetCollectionId)
-			.where('symbol', '==', symbol)
-			.get();
+		const assetQuerySnapshot = await db.collection(assetCollectionId).where('symbol', '==', symbol).get();
 
 		if (assetQuerySnapshot.empty) {
 			throw new Error(`Asset not found for symbol: ${symbol}`);
@@ -58,9 +43,7 @@ export const createAssetOrdersFromRecommendation = async ({
 	});
 
 	// Wait for all promises to resolve
-	const assetOrdersMappedFromRecommendationBestChoices = await Promise.all(
-		assetOrdersPromises,
-	);
+	const assetOrdersMappedFromRecommendationBestChoices = await Promise.all(assetOrdersPromises);
 
 	return assetOrdersMappedFromRecommendationBestChoices;
 };

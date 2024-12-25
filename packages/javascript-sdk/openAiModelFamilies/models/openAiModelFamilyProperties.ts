@@ -1,25 +1,11 @@
 import * as yup from 'yup';
-import {
-	GeneralizedApiResourceCreateParamsRequiredFieldEnum,
-	GeneralizedApiResourceProperties,
-	CreateParams,
-	UpdateParams,
-	YupHelpers,
-	getApiResourceSpec,
-	getEnum,
-} from 'ergonomic';
-import {
-	apiYupHelpers,
-	idPrefixByResourceName,
-} from '../../utils/apiYupHelpers.js';
+import { GeneralizedApiResourceCreateParamsRequiredFieldEnum, GeneralizedApiResourceProperties, CreateParams, UpdateParams, YupHelpers, getApiResourceSpec, getEnum } from 'ergonomic';
+import { apiYupHelpers, idPrefixByResourceName } from '../../utils/apiYupHelpers.js';
 
 export const OpenAiModelFamilyCategoryEnum = getEnum(['default']);
-export type OpenAiModelFamilyCategory =
-	keyof typeof OpenAiModelFamilyCategoryEnum.obj;
+export type OpenAiModelFamilyCategory = keyof typeof OpenAiModelFamilyCategoryEnum.obj;
 
-const createParamsRequiredFieldEnum = getEnum([
-	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
-] as const);
+const createParamsRequiredFieldEnum = getEnum([...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
 const _object = 'open_ai_model_family';
@@ -38,8 +24,6 @@ export const openAiModelFamiliesApi = getApiResourceSpec<keyof U, U, T>({
 	properties,
 	resourceNamePlural: 'open_ai_model_families',
 } as const);
-export type OpenAiModelFamily = yup.InferType<
-	typeof openAiModelFamiliesApi.apiResourceJsonSchema
->;
+export type OpenAiModelFamily = yup.InferType<typeof openAiModelFamiliesApi.apiResourceJsonSchema>;
 export type CreateOpenAiModelFamilyParams = CreateParams<OpenAiModelFamily, T>;
 export type UpdateOpenAiModelFamilyParams = UpdateParams<OpenAiModelFamily>;

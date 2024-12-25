@@ -1,10 +1,6 @@
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import {
-	PageStaticProps,
-	PageProps,
-	Page as PageComponent,
-} from 'ergonomic-react/src/components/nextjs-pages/Page';
+import { PageStaticProps, PageProps, Page as PageComponent } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { StatusWebAppRouteQueryParams } from '@wallot/js';
 
 const Page: NextPage<PageStaticProps> = (props) => {
@@ -36,12 +32,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<p className='font-medium text-xl'>
-				Hello, and welcome to Wallot's Status Web App! 🚀
-			</p>
-			<p className='font-light text-sm'>
-				Almost before we knew it, we had left the ground.
-			</p>
+			<p className='font-medium text-xl'>Hello, and welcome to Wallot's Status Web App! 🚀</p>
+			<p className='font-light text-sm'>Almost before we knew it, we had left the ground.</p>
 		</PageComponent>
 	);
 };

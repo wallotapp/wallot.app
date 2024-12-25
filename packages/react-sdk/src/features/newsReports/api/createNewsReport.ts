@@ -2,7 +2,4 @@ import { generalizedFirestoreDocumentCreateOperation } from 'ergonomic-react/src
 import { CreateNewsReportParams, NewsReport, newsReportsApi } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const createNewsReport = generalizedFirestoreDocumentCreateOperation<
-	CreateNewsReportParams,
-	NewsReport
->(newsReportsApi as unknown as GeneralizedApiResourceSpec);
+export const createNewsReport = generalizedFirestoreDocumentCreateOperation<CreateNewsReportParams, NewsReport>(newsReportsApi as unknown as GeneralizedApiResourceSpec);

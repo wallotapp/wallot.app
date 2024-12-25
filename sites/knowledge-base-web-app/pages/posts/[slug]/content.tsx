@@ -1,17 +1,12 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import {
-	Page as PageComponent,
-	PageStaticProps,
-	PageProps,
-} from 'ergonomic-react/src/components/nextjs-pages/Page';
+import { Page as PageComponent, PageStaticProps, PageProps } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { KnowledgeBaseWebAppRouteQueryParams } from '@wallot/js';
 
 // ==== Static Page Props ==== //
 
 // Route Static ID
-const ROUTE_STATIC_ID =
-	'KNOWLEDGE_BASE_WEB_APP__/POSTS/[SLUG]/CONTENT' as const;
+const ROUTE_STATIC_ID = 'KNOWLEDGE_BASE_WEB_APP__/POSTS/[SLUG]/CONTENT' as const;
 
 // Route Static Props
 const ROUTE_STATIC_PROPS: PageStaticProps = {
@@ -20,8 +15,7 @@ const ROUTE_STATIC_PROPS: PageStaticProps = {
 };
 
 // Route Query Params Type
-type RouteQueryParams =
-	KnowledgeBaseWebAppRouteQueryParams[typeof ROUTE_STATIC_ID];
+type RouteQueryParams = KnowledgeBaseWebAppRouteQueryParams[typeof ROUTE_STATIC_ID];
 
 const Page: NextPage = () => {
 	// ==== Hooks ==== //
@@ -49,10 +43,7 @@ const Page: NextPage = () => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<p className='font-medium text-xl'>
-				Hello, and welcome to a dynamic route in Wallot's Knowledge Base Web
-				App! 🚀
-			</p>
+			<p className='font-medium text-xl'>Hello, and welcome to a dynamic route in Wallot's Knowledge Base Web App! 🚀</p>
 			<p className='font-light text-sm'>The slug for this page is: {slug}</p>
 		</PageComponent>
 	);

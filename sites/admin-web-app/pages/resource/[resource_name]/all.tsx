@@ -1,17 +1,7 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import {
-	PageStaticProps,
-	PageProps,
-	Page as PageComponent,
-} from 'ergonomic-react/src/components/nextjs-pages/Page';
-import {
-	AdminWebAppRouteQueryParams,
-	getAdminWebAppRoute,
-	getApiResourceSpec,
-	getSsoWebAppRoute,
-	idPrefixByResourceName,
-} from '@wallot/js';
+import { PageStaticProps, PageProps, Page as PageComponent } from 'ergonomic-react/src/components/nextjs-pages/Page';
+import { AdminWebAppRouteQueryParams, getAdminWebAppRoute, getApiResourceSpec, getSsoWebAppRoute, idPrefixByResourceName } from '@wallot/js';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { GeneralizedAdminResourceTablePage } from 'ergonomic-react/src/features/data/components/GeneralizedAdminCollectionTablePage';
@@ -62,10 +52,7 @@ const Page: NextPage = () => {
 	// ==== Constants ==== //
 
 	// Runtime Route ID
-	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace(
-		'[RESOURCE_NAME]',
-		resource_name || '',
-	);
+	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace('[RESOURCE_NAME]', resource_name || '');
 
 	// Runtime Page Props
 	const pageProps: PageProps = {
@@ -77,9 +64,7 @@ const Page: NextPage = () => {
 	return (
 		<PageComponent {...pageProps}>
 			<GeneralizedAdminResourceTablePage
-				getAdminWebAppRoute={
-					getAdminWebAppRoute as (options: unknown) => string
-				}
+				getAdminWebAppRoute={getAdminWebAppRoute as (options: unknown) => string}
 				getApiResourceSpec={getApiResourceSpec}
 				getPageQueryHookForResource={getPageQueryHookForResource}
 				idPrefixByResourceName={idPrefixByResourceName}

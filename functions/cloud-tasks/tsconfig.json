@@ -28,10 +28,7 @@
 		"outDir": "./dist",
 		"paths": {
 			"*": ["node_modules", "../../node_modules"],
-			"firebase-admin/*": [
-				"node_modules/firebase-admin/lib/*",
-				"../../node_modules/firebase-admin/lib/*"
-			]
+			"firebase-admin/*": ["node_modules/firebase-admin/lib/*", "../../node_modules/firebase-admin/lib/*"]
 		},
 		"rootDir": "./lib"
 		// End -- Compiler options for Cloud Functions

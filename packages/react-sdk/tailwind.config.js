@@ -1,40 +1,15 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 const brandShades = ['brand', 'brand-light', 'brand-extralight', 'brand-dark']; // Define shades
-const utilities = [
-	'bg',
-	'text',
-	'border',
-	'fill',
-	'stroke',
-	'placeholder',
-	'ring',
-	'ring-offset',
-	'divide',
-	'shadow',
-	'decoration',
-	'accent',
-	'caret',
-	'outline',
-]; // Define common utilities
-const states = [
-	'hover',
-	'focus',
-	'active',
-	'disabled',
-	'group-hover',
-	'focus-visible',
-	'checked',
-]; // Define states
+const utilities = ['bg', 'text', 'border', 'fill', 'stroke', 'placeholder', 'ring', 'ring-offset', 'divide', 'shadow', 'decoration', 'accent', 'caret', 'outline']; // Define common utilities
+const states = ['hover', 'focus', 'active', 'disabled', 'group-hover', 'focus-visible', 'checked']; // Define states
 
 const safelist = brandShades.reduce((classes, shade) => {
 	// Base utilities (e.g., bg-brand, text-brand)
 	utilities.forEach((util) => classes.push(`${util}-${shade}`));
 
 	// State-based utilities (e.g., hover:bg-brand, focus:text-brand)
-	states.forEach((state) =>
-		utilities.forEach((util) => classes.push(`${state}:${util}-${shade}`)),
-	);
+	states.forEach((state) => utilities.forEach((util) => classes.push(`${state}:${util}-${shade}`)));
 
 	// Add opacity-based utilities (e.g., bg-brand/50)
 	classes.push(`${shade}/50`, `${shade}/70`, `${shade}/25`);
@@ -43,12 +18,7 @@ const safelist = brandShades.reduce((classes, shade) => {
 }, []);
 
 module.exports = {
-	content: [
-		'./pages/**/*.{js,ts,jsx,tsx}',
-		'./src/**/*.{js,ts,jsx,tsx}',
-		'../../packages/javascript-sdk/**/*.{js,ts}',
-		'../../node_modules/ergonomic-react/**/*.{js,ts,jsx,tsx}',
-	],
+	content: ['./pages/**/*.{js,ts,jsx,tsx}', './src/**/*.{js,ts,jsx,tsx}', '../../packages/javascript-sdk/**/*.{js,ts}', '../../node_modules/ergonomic-react/**/*.{js,ts,jsx,tsx}'],
 	darkMode: 'class',
 	mode: 'jit',
 	safelist,

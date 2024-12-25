@@ -9,11 +9,7 @@ export const decryptString =
 	(encryptionKey: string) =>
 	({ data, ivHex }: EncryptedData) => {
 		const iv = Buffer.from(ivHex, 'hex');
-		const decipher = crypto.createDecipheriv(
-			encryptionAlgorithm,
-			encryptionKey,
-			iv,
-		);
+		const decipher = crypto.createDecipheriv(encryptionAlgorithm, encryptionKey, iv);
 		let decrypted = decipher.update(data, 'hex', 'utf8');
 		decrypted += decipher.final('utf8');
 		return decrypted;

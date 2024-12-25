@@ -2,7 +2,4 @@ import { generalizedFirestoreDocumentCreateOperation } from 'ergonomic-react/src
 import { CreateLicenseParams, License, licensesApi } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const createLicense = generalizedFirestoreDocumentCreateOperation<
-	CreateLicenseParams,
-	License
->(licensesApi as unknown as GeneralizedApiResourceSpec);
+export const createLicense = generalizedFirestoreDocumentCreateOperation<CreateLicenseParams, License>(licensesApi as unknown as GeneralizedApiResourceSpec);

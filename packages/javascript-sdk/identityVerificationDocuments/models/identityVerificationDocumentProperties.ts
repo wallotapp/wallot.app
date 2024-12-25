@@ -1,32 +1,11 @@
 import * as yup from 'yup';
-import {
-	GeneralizedApiResourceCreateParamsRequiredFieldEnum,
-	GeneralizedApiResourceProperties,
-	CreateParams,
-	UpdateParams,
-	YupHelpers,
-	getApiResourceSpec,
-	getEnum,
-} from 'ergonomic';
-import {
-	apiYupHelpers,
-	idPrefixByResourceName,
-} from '../../utils/apiYupHelpers.js';
+import { GeneralizedApiResourceCreateParamsRequiredFieldEnum, GeneralizedApiResourceProperties, CreateParams, UpdateParams, YupHelpers, getApiResourceSpec, getEnum } from 'ergonomic';
+import { apiYupHelpers, idPrefixByResourceName } from '../../utils/apiYupHelpers.js';
 
-export const IdentityVerificationDocumentCategoryEnum = getEnum([
-	'drivers_license',
-	'passport',
-	'state_id',
-]);
-export type IdentityVerificationDocumentCategory =
-	keyof typeof IdentityVerificationDocumentCategoryEnum.obj;
+export const IdentityVerificationDocumentCategoryEnum = getEnum(['drivers_license', 'passport', 'state_id']);
+export type IdentityVerificationDocumentCategory = keyof typeof IdentityVerificationDocumentCategoryEnum.obj;
 
-const createParamsRequiredFieldEnum = getEnum([
-	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
-	'image_front',
-	'image_back',
-	'user',
-] as const);
+const createParamsRequiredFieldEnum = getEnum([...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr, 'image_front', 'image_back', 'user'] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
 const _object = 'identity_verification_document';
@@ -41,21 +20,11 @@ const properties = {
 } as const;
 type U = typeof properties;
 
-export const identityVerificationDocumentsApi = getApiResourceSpec<
-	keyof U,
-	U,
-	T
->({
+export const identityVerificationDocumentsApi = getApiResourceSpec<keyof U, U, T>({
 	createParamsRequiredFieldEnum,
 	idPrefix: idPrefixByResourceName[_object],
 	properties,
 } as const);
-export type IdentityVerificationDocument = yup.InferType<
-	typeof identityVerificationDocumentsApi.apiResourceJsonSchema
->;
-export type CreateIdentityVerificationDocumentParams = CreateParams<
-	IdentityVerificationDocument,
-	T
->;
-export type UpdateIdentityVerificationDocumentParams =
-	UpdateParams<IdentityVerificationDocument>;
+export type IdentityVerificationDocument = yup.InferType<typeof identityVerificationDocumentsApi.apiResourceJsonSchema>;
+export type CreateIdentityVerificationDocumentParams = CreateParams<IdentityVerificationDocument, T>;
+export type UpdateIdentityVerificationDocumentParams = UpdateParams<IdentityVerificationDocument>;
