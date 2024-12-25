@@ -6,7 +6,11 @@ import {
 	PageStaticProps,
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { HomeSiteRouteQueryParams, getSsoSiteRoute } from '@wallot/js';
+import {
+	HomeSiteRouteQueryParams,
+	getHomeSiteRoute,
+	getSsoSiteRoute,
+} from '@wallot/js';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { useWindowSize } from '@wallot/react/src/hooks/useWindowSize';
@@ -100,8 +104,6 @@ const Page: NextPage = () => {
 			},
 		});
 	const assetOrders = assetOrderPage?.documents ?? [];
-	const firstAssetOrder = assetOrders[0];
-	const firstAssetOrderAssetId = firstAssetOrder?.asset ?? '';
 	const hasOneAssetOrder = assetOrders.length === 1;
 	const hasTwoAssetOrders = assetOrders.length === 2;
 	const hasThreeOrMoreAssetOrders = assetOrders.length >= 3;
@@ -180,7 +182,14 @@ const Page: NextPage = () => {
 								</p>
 							</div>
 							<div className='mt-8'>
-								<Link href={`/assets/${firstAssetOrderAssetId}/track`}>
+								<Link
+									href={getHomeSiteRoute({
+										includeOrigin: false,
+										origin: null,
+										queryParams: { order_id },
+										routeStaticId: 'HOME_SITE__/ORDERS/[ORDER_ID]/TRACK',
+									})}
+								>
 									<div className='bg-black text-white rounded-md py-4 px-8 cursor-pointer w-fit'>
 										<p className='font-light'>Continue</p>
 									</div>
