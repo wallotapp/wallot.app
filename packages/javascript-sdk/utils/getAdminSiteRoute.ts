@@ -50,8 +50,7 @@ export const getAdminSiteRoute = <T extends AdminSiteRouteStaticId>(
 	}
 
 	if (
-		routeStaticId ===
-		'ADMIN_SITE__/RESOURCE/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT'
+		routeStaticId === 'ADMIN_SITE__/RESOURCE/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT'
 	) {
 		const resourceRouteQueryParams =
 			options.queryParams as AdminSiteRouteQueryParams['ADMIN_SITE__/RESOURCE/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT'];

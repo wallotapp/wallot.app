@@ -131,9 +131,7 @@ export const SsoSiteRouteStaticIdEnum = getEnum([
 	'SSO_SITE__/LOGOUT',
 	'SSO_SITE__/REGISTER',
 ]);
-export type SsoSiteRouteStaticId = EnumMember<
-	typeof SsoSiteRouteStaticIdEnum
->;
+export type SsoSiteRouteStaticId = EnumMember<typeof SsoSiteRouteStaticIdEnum>;
 
 export type SsoSiteRouteQueryParams = {
 	'SSO_SITE__/INDEX': {

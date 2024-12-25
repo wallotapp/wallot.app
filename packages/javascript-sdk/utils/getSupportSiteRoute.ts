@@ -4,13 +4,12 @@ import {
 	SupportSiteRouteQueryParams,
 } from './routeDefinitions.js';
 
-export type GetSupportSiteRouteOptions<T extends SupportSiteRouteStaticId> =
-	{
-		includeOrigin?: boolean;
-		origin: string | null | undefined;
-		queryParams: SupportSiteRouteQueryParams[T];
-		routeStaticId: T;
-	};
+export type GetSupportSiteRouteOptions<T extends SupportSiteRouteStaticId> = {
+	includeOrigin?: boolean;
+	origin: string | null | undefined;
+	queryParams: SupportSiteRouteQueryParams[T];
+	routeStaticId: T;
+};
 
 export const getSupportSiteRoute = <T extends SupportSiteRouteStaticId>(
 	options: GetSupportSiteRouteOptions<T>,

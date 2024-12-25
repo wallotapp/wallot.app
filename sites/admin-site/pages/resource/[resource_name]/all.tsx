@@ -77,9 +77,7 @@ const Page: NextPage = () => {
 	return (
 		<PageComponent {...pageProps}>
 			<GeneralizedAdminResourceTablePage
-				getAdminSiteRoute={
-					getAdminSiteRoute as (options: unknown) => string
-				}
+				getAdminSiteRoute={getAdminSiteRoute as (options: unknown) => string}
 				getApiResourceSpec={getApiResourceSpec}
 				getPageQueryHookForResource={getPageQueryHookForResource}
 				idPrefixByResourceName={idPrefixByResourceName}

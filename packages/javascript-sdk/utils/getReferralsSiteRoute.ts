@@ -4,14 +4,13 @@ import {
 	ReferralsSiteRouteQueryParams,
 } from './routeDefinitions.js';
 
-export type GetReferralsSiteRouteOptions<
-	T extends ReferralsSiteRouteStaticId,
-> = {
-	includeOrigin?: boolean;
-	origin: string | null | undefined;
-	queryParams: ReferralsSiteRouteQueryParams[T];
-	routeStaticId: T;
-};
+export type GetReferralsSiteRouteOptions<T extends ReferralsSiteRouteStaticId> =
+	{
+		includeOrigin?: boolean;
+		origin: string | null | undefined;
+		queryParams: ReferralsSiteRouteQueryParams[T];
+		routeStaticId: T;
+	};
 
 export const getReferralsSiteRoute = <T extends ReferralsSiteRouteStaticId>(
 	options: GetReferralsSiteRouteOptions<T>,

@@ -13,8 +13,7 @@ export const KnowledgeBaseLink: React.FC<BaseComponent> = ({
 		routeState: { currentRouteStaticId },
 	} = useRouteStateContext();
 	const siteOriginByTarget = useSiteOriginByTarget();
-	const knowledgeBaseSiteOrigin =
-		siteOriginByTarget['KNOWLEDGE_BASE_SITE'];
+	const knowledgeBaseSiteOrigin = siteOriginByTarget['KNOWLEDGE_BASE_SITE'];
 	const knowledgeBaseHref = getKnowledgeBaseSiteRoute({
 		includeOrigin: SITE_ORIGIN !== knowledgeBaseSiteOrigin,
 		origin: knowledgeBaseSiteOrigin,

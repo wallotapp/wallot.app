@@ -204,8 +204,7 @@ const Page: NextPage = () => {
 											includeOrigin: true,
 											origin: siteOriginByTarget.HOME_SITE,
 											queryParams: { order_id },
-											routeStaticId:
-												'HOME_SITE__/ORDERS/[ORDER_ID]/CHECKOUT',
+											routeStaticId: 'HOME_SITE__/ORDERS/[ORDER_ID]/CHECKOUT',
 										})}
 									>
 										<button className='w-full'>

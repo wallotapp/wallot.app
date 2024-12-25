@@ -30,9 +30,7 @@ export const getKnowledgeBaseSiteRoute = <
 		}
 		return path;
 	}
-	if (
-		options.routeStaticId === 'KNOWLEDGE_BASE_SITE__/POSTS/[SLUG]/CONTENT'
-	) {
+	if (options.routeStaticId === 'KNOWLEDGE_BASE_SITE__/POSTS/[SLUG]/CONTENT') {
 		const queryParams =
 			options.queryParams as KnowledgeBaseSiteRouteQueryParams['KNOWLEDGE_BASE_SITE__/POSTS/[SLUG]/CONTENT'];
 		const slug = queryParams.slug;

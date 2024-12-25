@@ -22,8 +22,7 @@ import { getUpdateOperationMutationForResource } from '@wallot/react/src/hooks/g
 // ==== Static Page Props ==== //
 
 // Route Static ID
-const ROUTE_STATIC_ID =
-	'ADMIN_SITE__/RESOURCE/[RESOURCE_NAME]/CREATE' as const;
+const ROUTE_STATIC_ID = 'ADMIN_SITE__/RESOURCE/[RESOURCE_NAME]/CREATE' as const;
 
 // Route Static Props
 const ROUTE_STATIC_PROPS: PageStaticProps = {
@@ -80,9 +79,7 @@ const Page: NextPage = () => {
 	return (
 		<PageComponent {...pageProps}>
 			<GeneralizedAdminCreateOperationPage
-				getAdminSiteRoute={
-					getAdminSiteRoute as (options: unknown) => string
-				}
+				getAdminSiteRoute={getAdminSiteRoute as (options: unknown) => string}
 				getApiResourceSpec={getApiResourceSpec}
 				getCreateOperationMutationForResource={
 					getCreateOperationMutationForResource

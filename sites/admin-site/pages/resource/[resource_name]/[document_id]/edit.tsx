@@ -80,9 +80,7 @@ const Page: NextPage = () => {
 	return (
 		<PageComponent {...pageProps}>
 			<GeneralizedAdminUpdateOperationPage
-				getAdminSiteRoute={
-					getAdminSiteRoute as (options: unknown) => string
-				}
+				getAdminSiteRoute={getAdminSiteRoute as (options: unknown) => string}
 				getApiResourceSpec={getApiResourceSpec}
 				getCreateOperationMutationForResource={
 					getCreateOperationMutationForResource

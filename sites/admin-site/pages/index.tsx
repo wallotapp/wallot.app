@@ -60,9 +60,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	return (
 		<PageComponent {...pageProps}>
 			<GeneralizedAdminIndexPage
-				getAdminSiteRoute={
-					getAdminSiteRoute as (options: unknown) => string
-				}
+				getAdminSiteRoute={getAdminSiteRoute as (options: unknown) => string}
 				getApiResourceSpec={getApiResourceSpec}
 				idPrefixByResourceName={idPrefixByResourceName}
 			/>
