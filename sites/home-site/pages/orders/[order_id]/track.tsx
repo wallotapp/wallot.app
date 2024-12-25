@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -7,7 +8,13 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
-import { HomeSiteRouteQueryParams, getSsoSiteRoute } from '@wallot/js';
+import {
+	HomeSiteRouteQueryParams,
+	getSsoSiteRoute,
+	isAchTransferWithFundsReceivedByAlpaca,
+	isAssetOrderFilledByAlpaca,
+	isUserActivatedByAlpaca,
+} from '@wallot/js';
 import { AssetOrderCartItem } from '@wallot/react/src/features/assetOrders';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
@@ -18,6 +25,8 @@ import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTa
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 import { GoCheckCircleFill, GoCircle } from 'react-icons/go';
+import { useQueryCurrentUser } from '@wallot/react/src/features/users';
+import { useQueryAchTransferPage } from '@wallot/react/src/features/achTransfers';
 
 // ==== Static Page Props ==== //
 
@@ -74,6 +83,8 @@ const Page: NextPage = () => {
 	};
 
 	// ==== Hooks ==== //
+
+	// Asset Orders
 	const { data: assetOrderPage, isLoading: isAssetOrderPageLoading } =
 		useQueryAssetOrderPage({
 			firestoreQueryOptions: {
@@ -86,7 +97,35 @@ const Page: NextPage = () => {
 	}, 0);
 	const assetTotalAmountUsdString =
 		getCurrencyUsdStringFromCents(assetTotalAmount);
-	const isDataLoading = isAssetOrderPageLoading;
+	const unfilledAssetOrders = assetOrders.filter(
+		R.complement(isAssetOrderFilledByAlpaca),
+	);
+	const isStockPurchasesStepCompleted = unfilledAssetOrders.length === 0;
+
+	// Current User
+	const { currentUser, isUserPageLoading } = useQueryCurrentUser();
+	const isAccountVerified =
+		currentUser != null && isUserActivatedByAlpaca(currentUser);
+
+	// ACH Transfer
+	const { data: achTransferPage, isLoading: isAchTransferPageLoading } =
+		useQueryAchTransferPage({
+			firestoreQueryOptions: {
+				whereClauses: [
+					[
+						'alpaca_ach_transfer_account_id',
+						'==',
+						currentUser?.alpaca_account_id,
+					],
+				],
+			},
+		});
+	const achTransfers = achTransferPage?.documents ?? [];
+	const achTransfersWithFundsReceivedByAlpaca = achTransfers.filter(
+		isAchTransferWithFundsReceivedByAlpaca,
+	);
+	const isFundsTransferStepCompleted =
+		achTransfersWithFundsReceivedByAlpaca.length > 0;
 
 	type OrderStep =
 		| 'Account Verification'
@@ -97,20 +136,20 @@ const Page: NextPage = () => {
 		'Funds Transfer',
 		'Stock Purchases',
 	];
-	const completedSteps: OrderStep[] = [];
-	// const completedSteps: OrderStep[] = ['Account Verification'];
-	// const completedSteps: OrderStep[] = [
-	// 	'Account Verification',
-	// 	'Funds Transfer',
-	// ];
-	// const completedSteps: OrderStep[] = [
-	// 	'Account Verification',
-	// 	'Funds Transfer',
-	// 	'Stock Purchases',
-	// ];
+	const completedSteps: OrderStep[] = [
+		isAccountVerified ? ('Account Verification' as const) : null,
+		isFundsTransferStepCompleted ? ('Funds Transfer' as const) : null,
+		isStockPurchasesStepCompleted ? ('Stock Purchases' as const) : null,
+	].filter((x): x is Exclude<typeof x, null> => x !== null);
 	const nextStepToComplete = orderSteps.find(
 		(step) => !completedSteps.includes(step),
 	);
+
+	const isAnyQueryLoading = [
+		isAssetOrderPageLoading,
+		isUserPageLoading,
+		isAchTransferPageLoading,
+	].some(Boolean);
 
 	// ==== Render ==== //
 	return (
@@ -135,7 +174,7 @@ const Page: NextPage = () => {
 									</p>
 								</div>
 								<div className='mt-6'>
-									{isDataLoading ? (
+									{isAssetOrderPageLoading ? (
 										<Fragment>
 											{[1, 2, 3, 4].map((_, index) => (
 												<div className=''>
@@ -193,70 +232,82 @@ const Page: NextPage = () => {
 									<div className='mb-4'>
 										<p className='font-semibold text-xl'>Order Status</p>
 									</div>
-									<div className='px-4'>
-										{orderSteps.map((step, index) => {
-											const isCurrentStep = step === nextStepToComplete;
-											const isCompletedStep = completedSteps.includes(step);
-											return (
-												<div
-													className={cn(
-														isCurrentStep ? 'text-brand-dark' : 'text-gray-500',
-														index === 1 && 'border-l border-l-gray-400 py-4',
-														index !== 1 && 'border-l border-l-transparent',
-													)}
-													key={index}
-												>
-													<div className='flex items-center space-x-2.5'>
-														<div className='-ml-[0.8rem]'>
-															{isCurrentStep ? (
-																<div className='flex items-center'>
-																	<GoCircle className='text-gray-800 w-6 h-6 bg-white rounded-full' />
-																</div>
-															) : isCompletedStep ? (
-																<div className='flex items-center'>
-																	<GoCheckCircleFill className='text-blue-700 w-6 h-6 bg-white rounded-full' />
-																</div>
-															) : (
-																<div className='flex items-center'>
-																	<GoCircle className='text-gray-300 w-6 h-6 bg-white rounded-full' />
-																</div>
-															)}
-														</div>
+									{isAnyQueryLoading ? (
+										<div className='flex flex-col space-y-2.5'>
+											{[1, 2, 3].map((_, index) => (
+												<div className=''>
+													<Skeleton className='h-8 !bg-gray-300' key={index} />
+												</div>
+											))}
+										</div>
+									) : (
+										<div className='px-4'>
+											{orderSteps.map((step, index) => {
+												const isCurrentStep = step === nextStepToComplete;
+												const isCompletedStep = completedSteps.includes(step);
+												return (
+													<div
+														className={cn(
+															isCurrentStep
+																? 'text-brand-dark'
+																: 'text-gray-500',
+															index === 1 && 'border-l border-l-gray-400 py-4',
+															index !== 1 && 'border-l border-l-transparent',
+														)}
+														key={index}
+													>
 														<div className='flex items-center space-x-2.5'>
-															<div>
-																<p
-																	className={cn(
-																		'text-base',
-																		isCompletedStep
-																			? 'font-medium text-gray-800'
-																			: isCurrentStep
-																			? 'font-light text-gray-800'
-																			: 'font-light text-gray-400',
-																	)}
-																>
-																	{step}
-																</p>
+															<div className='-ml-[0.8rem]'>
+																{isCurrentStep ? (
+																	<div className='flex items-center'>
+																		<GoCircle className='text-gray-800 w-6 h-6 bg-white rounded-full' />
+																	</div>
+																) : isCompletedStep ? (
+																	<div className='flex items-center'>
+																		<GoCheckCircleFill className='text-blue-700 w-6 h-6 bg-white rounded-full' />
+																	</div>
+																) : (
+																	<div className='flex items-center'>
+																		<GoCircle className='text-gray-300 w-6 h-6 bg-white rounded-full' />
+																	</div>
+																)}
 															</div>
-															{isCompletedStep && (
-																<div className='bg-blue-300 rounded-lg px-1.5 py-0.5 w-fit'>
-																	<p className='text-blue-800 text-[0.6rem]'>
-																		COMPLETE
+															<div className='flex items-center space-x-2.5'>
+																<div>
+																	<p
+																		className={cn(
+																			'text-base',
+																			isCompletedStep
+																				? 'font-medium text-gray-800'
+																				: isCurrentStep
+																				? 'font-light text-gray-800'
+																				: 'font-light text-gray-400',
+																		)}
+																	>
+																		{step}
 																	</p>
 																</div>
-															)}
-															{isCurrentStep && (
-																<div className='bg-gray-300 rounded-lg px-1.5 py-0.5 w-fit animate-pulse'>
-																	<p className='text-gray-800 text-[0.6rem]'>
-																		IN PROGRESS
-																	</p>
-																</div>
-															)}
+																{isCompletedStep && (
+																	<div className='bg-blue-300 rounded-lg px-1.5 py-0.5 w-fit'>
+																		<p className='text-blue-800 text-[0.6rem]'>
+																			COMPLETE
+																		</p>
+																	</div>
+																)}
+																{isCurrentStep && (
+																	<div className='bg-gray-300 rounded-lg px-1.5 py-0.5 w-fit animate-pulse'>
+																		<p className='text-gray-800 text-[0.6rem]'>
+																			IN PROGRESS
+																		</p>
+																	</div>
+																)}
+															</div>
 														</div>
 													</div>
-												</div>
-											);
-										})}
-									</div>
+												);
+											})}
+										</div>
+									)}
 								</div>
 							</div>
 						</div>
