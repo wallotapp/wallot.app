@@ -1,7 +1,14 @@
+import * as yup from 'yup';
 import { BankAccount } from '../models/bankAccountProperties.js';
+import { Keys, getFieldSpecByFieldKey } from 'ergonomic';
+
+export const tokenizeBankAccountProperties = { account_number: yup.string().required().defined().default('') } as const;
+export const tokenizeBankAccountSchema = yup.object(tokenizeBankAccountProperties);
+export const tokenizeBankAccountSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(tokenizeBankAccountSchema, Keys(tokenizeBankAccountProperties));
+
+export type TokenizeBankAccountParams = yup.InferType<typeof tokenizeBankAccountSchema>;
 
 export type TokenizeBankAccountRouteParams = { bankAccountId: string };
-export type TokenizeBankAccountParams = { account_number: string };
 export type TokenizeBankAccountResponse = Record<string, never>;
 
 export const isBankAccountTokenized = (bankAccount: BankAccount) => {
