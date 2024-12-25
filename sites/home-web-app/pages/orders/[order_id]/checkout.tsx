@@ -77,7 +77,7 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, de
 								{showRoutingNumber ? <p className=''>Hide</p> : <p className=''>Show</p>}
 							</button>
 						</div>
-						<div>
+						<div className='font-light text-sm'>
 							{showRoutingNumber ? (
 								<p className=''>{bankAccount.routing_number}</p>
 							) : (
