@@ -97,8 +97,8 @@ const Page: NextPage = () => {
 		'Funds Transfer',
 		'Stock Purchases',
 	];
-	// const completedSteps: OrderStep[] = [];
-	const completedSteps: OrderStep[] = ['Account Verification'];
+	const completedSteps: OrderStep[] = [];
+	// const completedSteps: OrderStep[] = ['Account Verification'];
 	// const completedSteps: OrderStep[] = [
 	// 	'Account Verification',
 	// 	'Funds Transfer',
@@ -202,22 +202,23 @@ const Page: NextPage = () => {
 													className={cn(
 														isCurrentStep ? 'text-brand-dark' : 'text-gray-500',
 														index === 1 && 'border-l border-l-gray-400 py-4',
+														index !== 1 && 'border-l border-l-transparent',
 													)}
 													key={index}
 												>
 													<div className='flex items-center space-x-2.5'>
-														<div className=''>
+														<div className='-ml-[0.8rem]'>
 															{isCurrentStep ? (
-																<div className='flex items-center ml-[-0.80rem]'>
-																	<GoCircle className='text-gray-800 text-2xl bg-white rounded-full' />
+																<div className='flex items-center'>
+																	<GoCircle className='text-gray-800 w-6 h-6 bg-white rounded-full' />
 																</div>
 															) : isCompletedStep ? (
-																<div className='flex items-center ml-[-0.75rem]'>
-																	<GoCheckCircleFill className='text-blue-700 text-2xl bg-white rounded-full' />
+																<div className='flex items-center'>
+																	<GoCheckCircleFill className='text-blue-700 w-6 h-6 bg-white rounded-full' />
 																</div>
 															) : (
-																<div className='flex items-center ml-[-0.65rem]'>
-																	<GoCircle className='text-gray-300 text-2xl bg-white rounded-full' />
+																<div className='flex items-center'>
+																	<GoCircle className='text-gray-300 w-6 h-6 bg-white rounded-full' />
 																</div>
 															)}
 														</div>
