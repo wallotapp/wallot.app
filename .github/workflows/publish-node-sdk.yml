@@ -33,7 +33,7 @@ jobs:
           commit_message: ${{ env.GIT_COMMIT_MESSAGE }}
 
       - name: Build Docker image
-        if: env.SKIP_BUILD == 'false'
+        if: env.SKIP_BUILD == 'false' && (env.PUBLISH_ALL_PACKAGES == 'true' || env.PUBLISH_NODE_SDK == 'true')
         run: docker build -t monorepo-image .
 
       - name: Publish package:node-sdk
