@@ -113,7 +113,7 @@ const Page: NextPage = () => {
 				<SuspensePage />
 			) : (
 				<Fragment>
-					<div className={cn('min-h-screen relative', 'px-8 pt-12')}>
+					<div className={cn('h-screen relative', 'px-8 pt-12 overflow-hidden')}>
 						<div className='mb-10 flex items-center justify-center'>
 							{OPEN_GRAPH_CONFIG.siteBrandIconDarkMode && OPEN_GRAPH_CONFIG.siteBrandIconLightMode && (
 								<PlatformIcon
@@ -147,7 +147,7 @@ const Page: NextPage = () => {
 								</Link>
 							</div>
 						</div>
-						<div>
+						<div className='mt-10 flex flex-col items-center bg-white p-4 rounded-md h-screen max-w-4xl mx-auto shadow-xl border border-gray-200'>
 							<div>
 								<GoCheck />
 							</div>
