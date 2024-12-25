@@ -19,3 +19,7 @@ export const isOrderConfirmedByUser = (order: Order): order is OrderConfirmedByU
 		return false;
 	}
 };
+
+export type ConfirmOrderRouteParams = { orderId: string };
+export type ConfirmOrderParams = Record<string, never>;
+export type ConfirmOrderResponse = Record<string, never>;
