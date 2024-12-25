@@ -21,6 +21,6 @@ export const useUpdateLicenseMutation = (
 		onSuccess: (data: UpdateLicenseMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

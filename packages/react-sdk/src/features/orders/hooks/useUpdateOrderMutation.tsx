@@ -21,6 +21,6 @@ export const useUpdateOrderMutation = (
 		onSuccess: (data: UpdateOrderMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

@@ -29,6 +29,12 @@ runs:
         else
           echo "PUBLISH_JAVASCRIPT_SDK=false" >> $GITHUB_ENV
         fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[publish package:node-sdk\]'
+        then
+          echo "PUBLISH_NODE_SDK=true" >> $GITHUB_ENV
+        else
+          echo "PUBLISH_NODE_SDK=false" >> $GITHUB_ENV
+        fi
         if echo '${{ inputs.commit_message }}' | grep -q '\[publish package:react-sdk\]'
         then
           echo "PUBLISH_REACT_SDK=true" >> $GITHUB_ENV
@@ -41,64 +47,94 @@ runs:
         else
           echo "DEPLOY_ALL_FUNCTIONS=false" >> $GITHUB_ENV
         fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:cloud-tasks\]'
+        then
+          echo "DEPLOY_CLOUD_TASKS=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_CLOUD_TASKS=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:cronjobs\]'
+        then
+          echo "DEPLOY_CRONJOBS=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_CRONJOBS=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:pubsub\]'
+        then
+          echo "DEPLOY_PUBSUB=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_PUBSUB=false" >> $GITHUB_ENV
+        fi
         if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:rest-api\]'
         then
           echo "DEPLOY_REST_API=true" >> $GITHUB_ENV
         else
           echo "DEPLOY_REST_API=false" >> $GITHUB_ENV
         fi
-        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:all\]'
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:triggers\]'
         then
-          echo "DEPLOY_ALL_WEB_APPS=true" >> $GITHUB_ENV
+          echo "DEPLOY_TRIGGERS=true" >> $GITHUB_ENV
         else
-          echo "DEPLOY_ALL_WEB_APPS=false" >> $GITHUB_ENV
+          echo "DEPLOY_TRIGGERS=false" >> $GITHUB_ENV
         fi
-        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:home-web-app\]'
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy function:webhooks\]'
         then
-          echo "DEPLOY_HOME_WEB_APP=true" >> $GITHUB_ENV
+          echo "DEPLOY_WEBHOOKS=true" >> $GITHUB_ENV
         else
-          echo "DEPLOY_HOME_WEB_APP=false" >> $GITHUB_ENV
+          echo "DEPLOY_WEBHOOKS=false" >> $GITHUB_ENV
         fi
-        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:admin-web-app\]'
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy site:all\]'
         then
-          echo "DEPLOY_ADMIN_WEB_APP=true" >> $GITHUB_ENV
+          echo "DEPLOY_ALL_SITES=true" >> $GITHUB_ENV
         else
-          echo "DEPLOY_ADMIN_WEB_APP=false" >> $GITHUB_ENV
+          echo "DEPLOY_ALL_SITES=false" >> $GITHUB_ENV
         fi
-        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:blog-web-app\]'
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy site:home-site\]'
         then
-          echo "DEPLOY_BLOG_WEB_APP=true" >> $GITHUB_ENV
+          echo "DEPLOY_HOME_SITE=true" >> $GITHUB_ENV
         else
-          echo "DEPLOY_BLOG_WEB_APP=false" >> $GITHUB_ENV
+          echo "DEPLOY_HOME_SITE=false" >> $GITHUB_ENV
         fi
-        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:knowledge-base-web-app\]'
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy site:admin-site\]'
         then
-          echo "DEPLOY_KNOWLEDGE_BASE_WEB_APP=true" >> $GITHUB_ENV
+          echo "DEPLOY_ADMIN_SITE=true" >> $GITHUB_ENV
         else
-          echo "DEPLOY_KNOWLEDGE_BASE_WEB_APP=false" >> $GITHUB_ENV
+          echo "DEPLOY_ADMIN_SITE=false" >> $GITHUB_ENV
         fi
-        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:referrals-web-app\]'
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy site:blog-site\]'
         then
-          echo "DEPLOY_REFERRALS_WEB_APP=true" >> $GITHUB_ENV
+          echo "DEPLOY_BLOG_SITE=true" >> $GITHUB_ENV
         else
-          echo "DEPLOY_REFERRALS_WEB_APP=false" >> $GITHUB_ENV
+          echo "DEPLOY_BLOG_SITE=false" >> $GITHUB_ENV
         fi
-        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:sso-web-app\]'
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy site:knowledge-base-site\]'
         then
-          echo "DEPLOY_SSO_WEB_APP=true" >> $GITHUB_ENV
+          echo "DEPLOY_KNOWLEDGE_BASE_SITE=true" >> $GITHUB_ENV
         else
-          echo "DEPLOY_SSO_WEB_APP=false" >> $GITHUB_ENV
+          echo "DEPLOY_KNOWLEDGE_BASE_SITE=false" >> $GITHUB_ENV
         fi
-        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:status-web-app\]'
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy site:referrals-site\]'
         then
-          echo "DEPLOY_STATUS_WEB_APP=true" >> $GITHUB_ENV
+          echo "DEPLOY_REFERRALS_SITE=true" >> $GITHUB_ENV
         else
-          echo "DEPLOY_STATUS_WEB_APP=false" >> $GITHUB_ENV
+          echo "DEPLOY_REFERRALS_SITE=false" >> $GITHUB_ENV
         fi
-        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy web-app:support-web-app\]'
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy site:sso-site\]'
         then
-          echo "DEPLOY_SUPPORT_WEB_APP=true" >> $GITHUB_ENV
+          echo "DEPLOY_SSO_SITE=true" >> $GITHUB_ENV
         else
-          echo "DEPLOY_SUPPORT_WEB_APP=false" >> $GITHUB_ENV
+          echo "DEPLOY_SSO_SITE=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy site:status-site\]'
+        then
+          echo "DEPLOY_STATUS_SITE=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_STATUS_SITE=false" >> $GITHUB_ENV
+        fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy site:support-site\]'
+        then
+          echo "DEPLOY_SUPPORT_SITE=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_SUPPORT_SITE=false" >> $GITHUB_ENV
         fi
       shell: bash

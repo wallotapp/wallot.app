@@ -1,21 +1,39 @@
 {
 	"features": [
 		{
-			"id_prefix": "cred",
-			"name_plural": "auth_credentials",
-			"name_singular": "auth_credential",
+			"name_singular": "ach_transfer",
+			"name_plural": "ach_transfers",
+			"id_prefix": "ach_tf",
 			"visibility": "public"
 		},
 		{
-			"id_prefix": "fr",
-			"name_plural": "forecasts",
-			"name_singular": "forecast",
+			"name_singular": "asset",
+			"name_plural": "assets",
+			"id_prefix": "ast",
 			"visibility": "public"
 		},
 		{
-			"id_prefix": "fn",
-			"name_plural": "funding_accounts",
-			"name_singular": "funding_account",
+			"name_singular": "asset_order",
+			"name_plural": "asset_orders",
+			"id_prefix": "ast_ord",
+			"visibility": "public"
+		},
+		{
+			"name_singular": "asset_price",
+			"name_plural": "asset_prices",
+			"id_prefix": "ast_pr",
+			"visibility": "public"
+		},
+		{
+			"name_singular": "bank_account",
+			"name_plural": "bank_accounts",
+			"id_prefix": "bnk",
+			"visibility": "public"
+		},
+		{
+			"name_singular": "identity_verification_document",
+			"name_plural": "identity_verification_documents",
+			"id_prefix": "id_ver",
 			"visibility": "public"
 		},
 		{
@@ -37,15 +55,39 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "model_family",
+			"name_plural": "model_families",
+			"id_prefix": "mod_fm",
+			"visibility": "public"
+		},
+		{
+			"name_singular": "news_report",
+			"name_plural": "news_reports",
+			"id_prefix": "rep",
+			"visibility": "public"
+		},
+		{
+			"name_singular": "open_ai_model",
+			"name_plural": "open_ai_models",
+			"id_prefix": "opai_mod",
+			"visibility": "public"
+		},
+		{
+			"name_singular": "open_ai_model_family",
+			"name_plural": "open_ai_model_families",
+			"id_prefix": "opai_mod_fm",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "ord",
 			"name_plural": "orders",
 			"name_singular": "order",
 			"visibility": "public"
 		},
 		{
-			"id_prefix": "pm",
-			"name_plural": "payment_methods",
-			"name_singular": "payment_method",
+			"name_singular": "parameter",
+			"name_plural": "parameters",
+			"id_prefix": "param",
 			"visibility": "public"
 		},
 		{
@@ -58,42 +100,6 @@
 			"id_prefix": "rec",
 			"name_plural": "recommendations",
 			"name_singular": "recommendation",
-			"visibility": "public"
-		},
-		{
-			"id_prefix": "stck",
-			"name_plural": "stocks",
-			"name_singular": "stock",
-			"visibility": "public"
-		},
-		{
-			"id_prefix": "incd",
-			"name_plural": "system_incidents",
-			"name_singular": "system_incident",
-			"visibility": "public"
-		},
-		{
-			"id_prefix": "incd_up",
-			"name_plural": "system_incident_updates",
-			"name_singular": "system_incident_update",
-			"visibility": "public"
-		},
-		{
-			"id_prefix": "serv",
-			"name_plural": "system_services",
-			"name_singular": "system_service",
-			"visibility": "public"
-		},
-		{
-			"id_prefix": "tm",
-			"name_plural": "teams",
-			"name_singular": "team",
-			"visibility": "public"
-		},
-		{
-			"id_prefix": "tr",
-			"name_plural": "transactions",
-			"name_singular": "transaction",
 			"visibility": "public"
 		},
 		{
@@ -142,15 +148,83 @@
 	"firebase_apps": {
 		"cloud_functions": [
 			{
-				"workspace_package_package_name": "@wallot/rest-api",
+				"workspace_package_package_name": "@wallot/cloud-tasks",
 				"custom_environment_variables": [
+					"SECRET_CRED_ALPACA_BROKER_API_BASE_URL",
+					"SECRET_CRED_ALPACA_BROKER_API_KEY",
+					"SECRET_CRED_ALPACA_BROKER_API_SECRET",
 					"SECRET_CRED_ALPHA_VANTAGE_API_KEY",
-					"SECRET_CRED_ALPACA_API_KEY",
-					"SECRET_CRED_ALPACA_API_SECRET",
+					"SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY",
 					"SECRET_CRED_OPENAI_API_KEY",
 					"SECRET_CRED_STRIPE_API_KEY",
-					"SECRET_CRED_STRIPE_PREMIUM_LICENSE_PRODUCT_ID",
-					"SECRET_CRED_STRIPE_PREMIUM_LICENSE_PRODUCT_MONTHLY_PRICE_ID"
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_ID",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_MONTHLY_PRICE_ID"
+				],
+				"targets": [
+					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"17106\",\"project_id\":\"app-wallot-production\",\"deployment_environment\":\"live\",\"label\":\"cloud_tasks\"}",
+					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support-staging@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Staging Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"7106\",\"project_id\":\"app-wallot-staging\",\"deployment_environment\":\"test\",\"label\":\"cloud_tasks\"}"
+				],
+				"name": "Cloud Tasks",
+				"category": "cloud_task",
+				"workspace_package_relative_path": "functions/cloud-tasks",
+				"visibility": "public"
+			},
+			{
+				"workspace_package_package_name": "@wallot/cronjobs",
+				"custom_environment_variables": [
+					"SECRET_CRED_ALPACA_BROKER_API_BASE_URL",
+					"SECRET_CRED_ALPACA_BROKER_API_KEY",
+					"SECRET_CRED_ALPACA_BROKER_API_SECRET",
+					"SECRET_CRED_ALPHA_VANTAGE_API_KEY",
+					"SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY",
+					"SECRET_CRED_OPENAI_API_KEY",
+					"SECRET_CRED_STRIPE_API_KEY",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_ID",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_MONTHLY_PRICE_ID"
+				],
+				"targets": [
+					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"17104\",\"project_id\":\"app-wallot-production\",\"deployment_environment\":\"live\",\"label\":\"cronjobs\"}",
+					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support-staging@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Staging Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"7104\",\"project_id\":\"app-wallot-staging\",\"deployment_environment\":\"test\",\"label\":\"cronjobs\"}"
+				],
+				"name": "Cronjobs",
+				"category": "cronjob",
+				"workspace_package_relative_path": "functions/cronjobs",
+				"visibility": "public"
+			},
+			{
+				"workspace_package_package_name": "@wallot/pubsub",
+				"custom_environment_variables": [
+					"SECRET_CRED_ALPACA_BROKER_API_BASE_URL",
+					"SECRET_CRED_ALPACA_BROKER_API_KEY",
+					"SECRET_CRED_ALPACA_BROKER_API_SECRET",
+					"SECRET_CRED_ALPHA_VANTAGE_API_KEY",
+					"SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY",
+					"SECRET_CRED_OPENAI_API_KEY",
+					"SECRET_CRED_STRIPE_API_KEY",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_ID",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_MONTHLY_PRICE_ID"
+				],
+				"targets": [
+					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"17105\",\"project_id\":\"app-wallot-production\",\"deployment_environment\":\"live\",\"label\":\"pubsub\"}",
+					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support-staging@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Staging Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"7105\",\"project_id\":\"app-wallot-staging\",\"deployment_environment\":\"test\",\"label\":\"pubsub\"}"
+				],
+				"name": "PubSub",
+				"category": "pubsub",
+				"workspace_package_relative_path": "functions/pubsub",
+				"visibility": "public"
+			},
+			{
+				"workspace_package_package_name": "@wallot/rest-api",
+				"custom_environment_variables": [
+					"SECRET_CRED_ALPACA_BROKER_API_BASE_URL",
+					"SECRET_CRED_ALPACA_BROKER_API_KEY",
+					"SECRET_CRED_ALPACA_BROKER_API_SECRET",
+					"SECRET_CRED_ALPHA_VANTAGE_API_KEY",
+					"SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY",
+					"SECRET_CRED_OPENAI_API_KEY",
+					"SECRET_CRED_STRIPE_API_KEY",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_ID",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_MONTHLY_PRICE_ID"
 				],
 				"targets": [
 					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"17101\",\"project_id\":\"app-wallot-production\",\"deployment_environment\":\"live\",\"label\":\"rest_api\"}",
@@ -158,48 +232,95 @@
 				],
 				"name": "REST API",
 				"category": "rest_api",
-				"workspace_package_relative_path": "expressjs-servers/rest-api",
+				"workspace_package_relative_path": "functions/rest-api",
+				"visibility": "public"
+			},
+			{
+				"workspace_package_package_name": "@wallot/triggers",
+				"custom_environment_variables": [
+					"SECRET_CRED_ALPACA_BROKER_API_BASE_URL",
+					"SECRET_CRED_ALPACA_BROKER_API_KEY",
+					"SECRET_CRED_ALPACA_BROKER_API_SECRET",
+					"SECRET_CRED_ALPHA_VANTAGE_API_KEY",
+					"SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY",
+					"SECRET_CRED_OPENAI_API_KEY",
+					"SECRET_CRED_STRIPE_API_KEY",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_ID",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_MONTHLY_PRICE_ID"
+				],
+				"targets": [
+					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"17103\",\"project_id\":\"app-wallot-production\",\"deployment_environment\":\"live\",\"label\":\"triggers\"}",
+					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support-staging@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Staging Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"7103\",\"project_id\":\"app-wallot-staging\",\"deployment_environment\":\"test\",\"label\":\"triggers\"}"
+				],
+				"name": "Triggers",
+				"category": "trigger",
+				"workspace_package_relative_path": "functions/triggers",
+				"visibility": "public"
+			},
+			{
+				"workspace_package_package_name": "@wallot/webhooks",
+				"custom_environment_variables": [
+					"SECRET_CRED_ALPACA_BROKER_API_BASE_URL",
+					"SECRET_CRED_ALPACA_BROKER_API_KEY",
+					"SECRET_CRED_ALPACA_BROKER_API_SECRET",
+					"SECRET_CRED_ALPHA_VANTAGE_API_KEY",
+					"SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY",
+					"SECRET_CRED_OPENAI_API_KEY",
+					"SECRET_CRED_STRIPE_API_KEY",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_ID",
+					"SECRET_CRED_STRIPE_PRO_LICENSE_PRODUCT_MONTHLY_PRICE_ID"
+				],
+				"targets": [
+					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"17102\",\"project_id\":\"app-wallot-production\",\"deployment_environment\":\"live\",\"label\":\"webhooks\"}",
+					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support-staging@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Staging Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"7102\",\"project_id\":\"app-wallot-staging\",\"deployment_environment\":\"test\",\"label\":\"webhooks\"}"
+				],
+				"name": "Webhooks",
+				"category": "webhook",
+				"workspace_package_relative_path": "functions/webhooks",
 				"visibility": "public"
 			}
 		],
 		"hosting_sites": [
 			{
-				"name": "Home Web App",
+				"name": "Home Site",
 				"description": "Stock trading for absolutely everyone",
-				"workspace_package_package_name": "@wallot/home-web-app",
-				"workspace_package_relative_path": "nextjs-web-apps/home-web-app",
+				"workspace_package_package_name": "@wallot/home-site",
+				"workspace_package_relative_path": "sites/home-site",
 				"homepage": "https://wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-production\",\"local_development_port\":\"17150\",\"public_url\":\"https://wallot.app\",\"firebase_config_api_key\":\"AIzaSyDEpPRtu66q92D40CrluYqCbe6yTXcLC3U\",\"firebase_config_app_id\":\"1:315699416195:web:56cfd999d2495e8d385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-00F2CDJXCH\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
 					"{\"label\":\"app-wallot-staging\",\"local_development_port\":\"7150\",\"public_url\":\"https://app-wallot-staging.web.app\",\"firebase_config_api_key\":\"AIzaSyAWoWzRH01lGIx2jLx5sWPFDdfKsTSNaDc\",\"firebase_config_app_id\":\"1:721995107731:web:a9bdd3b9a3b7501464ac66\",\"firebase_config_auth_domain\":\"app-wallot-staging.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-V7P0JHB26C\",\"firebase_config_messaging_sender_id\":\"721995107731\",\"firebase_config_project_id\":\"app-wallot-staging\",\"firebase_config_storage_bucket\":\"app-wallot-staging.firebasestorage.app\",\"deployment_environment\":\"test\"}"
 				],
 				"rewrites": [
-					"{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"
+					"{\"source\":\"/orders/**/confirm\",\"destination\":\"/orders/[order_id]/confirm.html\"}",
+					"{\"source\":\"/recommendations/**/details\",\"destination\":\"/recommendations/[recommendation_id]/details.html\"}"
 				],
 				"category": "default",
 				"visibility": "public"
 			},
 			{
-				"name": "Admin Web App",
+				"name": "Admin Site",
 				"description": "Wallot internal platform management",
-				"workspace_package_package_name": "@wallot/admin-web-app",
-				"workspace_package_relative_path": "nextjs-web-apps/admin-web-app",
+				"workspace_package_package_name": "@wallot/admin-site",
+				"workspace_package_relative_path": "sites/admin-site",
 				"homepage": "https://admin.wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-admin-production\",\"local_development_port\":\"17159\",\"public_url\":\"https://admin.wallot.app\",\"firebase_config_api_key\":\"AIzaSyDEpPRtu66q92D40CrluYqCbe6yTXcLC3U\",\"firebase_config_app_id\":\"1:315699416195:web:3070c57219994fb3385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-31R749GZ0Y\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
 					"{\"label\":\"app-wallot-admin-staging\",\"local_development_port\":\"7159\",\"public_url\":\"https://app-wallot-admin-staging.web.app\",\"firebase_config_api_key\":\"AIzaSyAWoWzRH01lGIx2jLx5sWPFDdfKsTSNaDc\",\"firebase_config_app_id\":\"1:721995107731:web:b979e23afefb4a5764ac66\",\"firebase_config_auth_domain\":\"app-wallot-staging.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-FC1D4P4C57\",\"firebase_config_messaging_sender_id\":\"721995107731\",\"firebase_config_project_id\":\"app-wallot-staging\",\"firebase_config_storage_bucket\":\"app-wallot-staging.firebasestorage.app\",\"deployment_environment\":\"test\"}"
 				],
 				"rewrites": [
-					"{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"
+					"{\"source\":\"/resource/**/all\",\"destination\":\"/resource/[resource_name]/all.html\"}",
+					"{\"source\":\"/resource/**/create\",\"destination\":\"/resource/[resource_name]/create.html\"}",
+					"{\"source\":\"/resource/**/**/edit\",\"destination\":\"/resource/[resource_name]/[document_id]/edit.html\"}"
 				],
 				"category": "default",
 				"visibility": "public"
 			},
 			{
-				"name": "Blog Web App",
+				"name": "Blog Site",
 				"description": "The latest news and updates on all things AI and Finance from the Wallot Editorial team",
-				"workspace_package_package_name": "@wallot/blog-web-app",
-				"workspace_package_relative_path": "nextjs-web-apps/blog-web-app",
+				"workspace_package_package_name": "@wallot/blog-site",
+				"workspace_package_relative_path": "sites/blog-site",
 				"homepage": "https://blog.wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-blog-production\",\"local_development_port\":\"17157\",\"public_url\":\"https://blog.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:b57b38b14a9d3ad7385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-6RGT4E9K2Q\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
@@ -212,10 +333,10 @@
 				"visibility": "public"
 			},
 			{
-				"name": "Knowledge Base Web App",
+				"name": "Knowledge Base Site",
 				"description": "Build expertise in AI and Finance with Wallot's comprehensive Knowledge Base",
-				"workspace_package_package_name": "@wallot/knowledge-base-web-app",
-				"workspace_package_relative_path": "nextjs-web-apps/knowledge-base-web-app",
+				"workspace_package_package_name": "@wallot/knowledge-base-site",
+				"workspace_package_relative_path": "sites/knowledge-base-site",
 				"homepage": "https://learn.wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-learn-production\",\"local_development_port\":\"17152\",\"public_url\":\"https://learn.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:2aa55b9fc0acf9d0385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-5LBL089NCZ\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
@@ -228,10 +349,10 @@
 				"visibility": "public"
 			},
 			{
-				"name": "Referrals Web App",
+				"name": "Referrals Site",
 				"description": "Stock trading for absolutely everyone",
-				"workspace_package_package_name": "@wallot/referrals-web-app",
-				"workspace_package_relative_path": "nextjs-web-apps/referrals-web-app",
+				"workspace_package_package_name": "@wallot/referrals-site",
+				"workspace_package_relative_path": "sites/referrals-site",
 				"homepage": "https://signup.wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-signup-production\",\"local_development_port\":\"17153\",\"public_url\":\"https://signup.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:d05521b123993980385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-M3G3R22V5S\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
@@ -244,10 +365,10 @@
 				"visibility": "public"
 			},
 			{
-				"name": "SSO Web App",
+				"name": "SSO Site",
 				"description": "Stock trading for absolutely everyone",
-				"workspace_package_package_name": "@wallot/sso-web-app",
-				"workspace_package_relative_path": "nextjs-web-apps/sso-web-app",
+				"workspace_package_package_name": "@wallot/sso-site",
+				"workspace_package_relative_path": "sites/sso-site",
 				"homepage": "https://sso.wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-sso-production\",\"local_development_port\":\"17154\",\"public_url\":\"https://sso.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:3da315ad246a07fa385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-R3Y10Z6H2T\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
@@ -260,10 +381,10 @@
 				"visibility": "public"
 			},
 			{
-				"name": "Status Web App",
+				"name": "Status Site",
 				"description": "Real-time updates on Wallot's system status and availability",
-				"workspace_package_package_name": "@wallot/status-web-app",
-				"workspace_package_relative_path": "nextjs-web-apps/status-web-app",
+				"workspace_package_package_name": "@wallot/status-site",
+				"workspace_package_relative_path": "sites/status-site",
 				"homepage": "https://status.wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-status-production\",\"local_development_port\":\"17158\",\"public_url\":\"https://status.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:e8460d228d660ae4385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-DRBY7H6J7D\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
@@ -276,10 +397,10 @@
 				"visibility": "public"
 			},
 			{
-				"name": "Support Web App",
+				"name": "Support Site",
 				"description": "Get fast, friendly help with your Wallot account from our team of customer success experts",
-				"workspace_package_package_name": "@wallot/support-web-app",
-				"workspace_package_relative_path": "nextjs-web-apps/support-web-app",
+				"workspace_package_package_name": "@wallot/support-site",
+				"workspace_package_relative_path": "sites/support-site",
 				"homepage": "https://support.wallot.app",
 				"targets": [
 					"{\"label\":\"app-wallot-support-production\",\"local_development_port\":\"17151\",\"public_url\":\"https://support.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:dfa43aa56b541d79385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-8K8D5DSR12\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",

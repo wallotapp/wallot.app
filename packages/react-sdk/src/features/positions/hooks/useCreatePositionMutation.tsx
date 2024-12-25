@@ -21,6 +21,6 @@ export const useCreatePositionMutation = (
 		onSuccess: (data: CreatePositionMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

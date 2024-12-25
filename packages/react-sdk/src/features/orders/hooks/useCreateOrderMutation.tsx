@@ -21,6 +21,6 @@ export const useCreateOrderMutation = (
 		onSuccess: (data: CreateOrderMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 };

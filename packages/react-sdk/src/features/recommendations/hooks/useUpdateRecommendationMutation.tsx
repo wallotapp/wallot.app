@@ -24,7 +24,7 @@ export const useUpdateRecommendationMutation = (
 			onSuccess: (data: UpdateRecommendationMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };

@@ -10,8 +10,9 @@ import {
 } from 'ergonomic';
 import {
 	apiYupHelpers,
-	idPrefixByCollection,
+	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
+import { assetOrdersApi } from '../../assetOrders/models/assetOrderProperties.js';
 
 export const RecommendationCategoryEnum = getEnum(['default']);
 export type RecommendationCategory =
@@ -19,6 +20,11 @@ export type RecommendationCategory =
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'best_investments',
+	'model',
+	'news_reports',
+	'open_ai_api_request_ids',
+	'user',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -27,14 +33,29 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
+	best_investments: YupHelpers.array(
+		yup.object({
+			amount: yup.string().defined(), // String number of dollars, e.g. '1000' for $1,000.00
+			rationale: yup.string().defined(), // Reasoning behind the recommendation
+			symbol: yup.string().defined(),
+			side: assetOrdersApi.properties.alpaca_order_side.defined(),
+		}),
+	)
+		.defined()
+		.min(1),
 	category: RecommendationCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	model: apiYupHelpers.idRef(['model']).min(1).meta({ unique_key: false }),
+	news_reports: apiYupHelpers.idRefs(['news_report']).min(1),
+	open_ai_api_request_ids: YupHelpers.array(yup.string().defined())
+		.defined()
+		.min(1),
+	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: false }),
 } as const;
 type U = typeof properties;
 
 export const recommendationsApi = getApiResourceSpec<keyof U, U, T>({
 	createParamsRequiredFieldEnum,
-	idPrefix: idPrefixByCollection[_object],
+	idPrefix: idPrefixByResourceName[_object],
 	properties,
 } as const);
 export type Recommendation = yup.InferType<

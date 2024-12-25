@@ -1,4 +1,4 @@
-name: Publish JavaScript SDK to NPM
+name: Publish JavaScript SDK
 
 'on':
   push:

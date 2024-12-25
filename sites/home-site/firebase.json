@@ -1,0 +1,36 @@
+{
+	"hosting": [
+		{
+			"cleanUrls": true,
+			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+			"public": "out",
+			"rewrites": [
+				{
+					"source": "/orders/**/confirm",
+					"destination": "/orders/[order_id]/confirm.html"
+				},
+				{
+					"source": "/recommendations/**/details",
+					"destination": "/recommendations/[recommendation_id]/details.html"
+				}
+			],
+			"site": "app-wallot-production"
+		},
+		{
+			"cleanUrls": true,
+			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+			"public": "out",
+			"rewrites": [
+				{
+					"source": "/orders/**/confirm",
+					"destination": "/orders/[order_id]/confirm.html"
+				},
+				{
+					"source": "/recommendations/**/details",
+					"destination": "/recommendations/[recommendation_id]/details.html"
+				}
+			],
+			"site": "app-wallot-staging"
+		}
+	]
+}

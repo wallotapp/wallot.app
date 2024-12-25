@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -33,14 +33,14 @@ export type UseQueryInvoicePageObserver =
 
 export type UseCreateInvoiceMutationOptions =
 	GeneralizedUseCreateDocumentsMutationOptions<Invoice, CreateInvoiceParams>;
-export type CreateInvoiceMutationData = GeneralizedResponse<Invoice>;
-export type CreateInvoiceMutationError = GeneralizedResponse<Invoice>;
+export type CreateInvoiceMutationData = Invoice[];
+export type CreateInvoiceMutationError = GeneralizedError;
 export type CreateInvoiceMutationParams =
 	FirestoreDocumentCreateParams<CreateInvoiceParams>;
 
 export type UseUpdateInvoiceMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<Invoice, UpdateInvoiceParams>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateInvoiceParams>;
 export type UpdateInvoiceMutationData = unknown;
-export type UpdateInvoiceMutationError = GeneralizedResponse<Invoice>;
+export type UpdateInvoiceMutationError = GeneralizedError;
 export type UpdateInvoiceMutationParams =
 	FirestoreDocumentUpdateParams<UpdateInvoiceParams>;

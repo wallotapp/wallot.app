@@ -24,7 +24,7 @@ export const useCreateRecommendationMutation = (
 			onSuccess: (data: CreateRecommendationMutationData) => {
 				console.log('Create operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 };
