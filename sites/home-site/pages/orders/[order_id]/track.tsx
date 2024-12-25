@@ -92,11 +92,17 @@ const Page: NextPage = () => {
 			},
 		});
 	const assetOrders = assetOrderPage?.documents ?? [];
-	const assetTotalAmount = assetOrders.reduce((acc, assetOrder) => {
-		return acc + assetOrder.amount;
+	const orderSubtotalAmount = assetOrders.reduce((acc, assetOrder) => {
+		return acc + Number(assetOrder.amount);
 	}, 0);
-	const assetTotalAmountUsdString =
-		getCurrencyUsdStringFromCents(assetTotalAmount);
+	const subtotalAmountUsdString =
+		getCurrencyUsdStringFromCents(orderSubtotalAmount);
+	const taxesAndFeesAmount = 2499;
+	const taxesAndFeesAmountUsdString =
+		getCurrencyUsdStringFromCents(taxesAndFeesAmount);
+	const assetTotalAmountUsdString = getCurrencyUsdStringFromCents(
+		orderSubtotalAmount + taxesAndFeesAmount,
+	);
 	const unfilledAssetOrders = assetOrders.filter(
 		R.complement(isAssetOrderFilledByAlpaca),
 	);
@@ -234,8 +240,28 @@ const Page: NextPage = () => {
 									</div>
 									<div className='mt-6 flex justify-between'>
 										<div>
+											<p className='font-semibold text-sm'>Subtotal</p>
+										</div>
+										<div>
+											<p className='font-medium text-sm'>
+												{subtotalAmountUsdString}
+											</p>
+										</div>
+									</div>
+									<div className='mt-1 flex justify-between'>
+										<div>
+											<p className='font-semibold text-sm'>Taxes and Fees</p>
+										</div>
+										<div>
+											<p className='font-medium text-sm'>
+												{taxesAndFeesAmountUsdString}
+											</p>
+										</div>
+									</div>
+									<div className='mt-6 flex justify-between'>
+										<div>
 											<p className='font-semibold text-xl'>
-												Subtotal{' '}
+												Total{' '}
 												<span className='text-sm text-brand-dark'>(USD)</span>
 											</p>
 										</div>
