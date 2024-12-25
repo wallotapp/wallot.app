@@ -17,6 +17,8 @@ import {
 	TokenizeBankAccountResponse,
 	User,
 	usersApi as apiResourceSpec,
+	ConfirmOrderParams,
+	ConfirmOrderResponse,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -53,6 +55,16 @@ app.post(
 	'*/v0/bank-accounts/:bankAccountId/tokenize',
 	(req: express.Request<{ bankAccountId: string }, TokenizeBankAccountResponse, TokenizeBankAccountParams, Record<string, never>>, res: express.Response<TokenizeBankAccountResponse, GeneralizedResLocals<TokenizeBankAccountResponse>>, next) => {
 		corsPolicy(req, res, createRouterFunction(auth, secrets)(tokenizeBankAccount)(req, res, next));
+	},
+);
+
+// Orders
+import { confirmOrder } from './app/wallot/orders/confirmOrder.js';
+app.options('*/v0/orders/:orderId/confirm', corsPolicy);
+app.post(
+	'*/v0/orders/:orderId/confirm',
+	(req: express.Request<{ orderId: string }, ConfirmOrderResponse, ConfirmOrderParams, Record<string, never>>, res: express.Response<ConfirmOrderResponse, GeneralizedResLocals<ConfirmOrderResponse>>, next) => {
+		corsPolicy(req, res, createRouterFunction(auth, secrets)(confirmOrder)(req, res, next));
 	},
 );
 

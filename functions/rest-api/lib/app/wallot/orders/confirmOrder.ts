@@ -38,8 +38,8 @@ export const confirmOrder = async ({ bank_account }: ConfirmOrderParams, { order
 		routeStaticId: 'HOME_WEB_APP__/ASSETS/[ASSET_ID]/CONGRATULATIONS',
 	});
 
-	// Enqueue fill_order task
 	const onFinished = async () => {
+		// Enqueue fill_order task
 		const queue = getFunctions().taskQueue<FillOrderListenerTaskParams>('fill_order');
 		const targetUri = await getCloudFunctionUrl({
 			...secrets,
