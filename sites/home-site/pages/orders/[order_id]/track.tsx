@@ -87,6 +87,19 @@ const Page: NextPage = () => {
 		getCurrencyUsdStringFromCents(assetTotalAmount);
 	const isDataLoading = isAssetOrderPageLoading;
 
+	type OrderStep =
+		| 'Account Verification'
+		| 'Processing Bank Payment'
+		| 'Filling Stock Purchase/s'
+		| 'Complete';
+	const orderSteps: OrderStep[] = [
+		'Account Verification',
+		'Processing Bank Payment',
+		'Filling Stock Purchase/s',
+		'Complete',
+	];
+	const currentOrderStep: OrderStep = orderSteps[2] as OrderStep;
+
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
@@ -137,13 +150,7 @@ const Page: NextPage = () => {
 								</div>
 							</div>
 							<div className={cn('mt-8 lg:w-2/5')}>
-								<div className='bg-white border-gray-300 shadow-md px-10 py-10 rounded-xl h-fit'>
-									<div>
-										<p className='font-normal text-sm'>Order Status</p>
-									</div>
-									<p className='font-medium text-3xl'>In progress</p>
-								</div>
-								<div className='bg-slate-100 px-10 py-10 rounded-xl h-fit mt-8'>
+								<div className='bg-slate-100 border border-gray-200 shadow-sm px-10 py-10 rounded-xl h-fit'>
 									<div>
 										<p className='font-semibold text-xl'>Order Summary</p>
 									</div>
@@ -169,6 +176,52 @@ const Page: NextPage = () => {
 											</p>
 										</div>
 									</div>
+								</div>
+								<div className='bg-white border border-gray-200 shadow-sm px-10 py-10 rounded-xl h-fit mt-8'>
+									<div>
+										<p className='font-normal text-sm'>Order Status</p>
+									</div>
+									{orderSteps.map((step, index) => {
+										const isCurrentStep = step === currentOrderStep;
+										const isCompletedStep =
+											orderSteps.indexOf(step) <
+											orderSteps.indexOf(currentOrderStep);
+										return (
+											<div
+												className={cn(
+													'mt-6',
+													isCurrentStep ? 'text-brand-dark' : 'text-gray-500',
+												)}
+												key={index}
+											>
+												<div className='flex justify-between'>
+													<div>
+														{isCurrentStep ? (
+															<div className='flex items-center'>
+																<div className='w-4 h-4 rounded-full bg-brand-dark mr-2' />
+																<p className='font-light text-sm'>
+																	In Progress
+																</p>
+															</div>
+														) : isCompletedStep ? (
+															<div className='flex items-center'>
+																<div className='w-4 h-4 rounded-full bg-green-500 mr-2' />
+																<p className='font-light text-sm'>Completed</p>
+															</div>
+														) : (
+															<div className='flex items-center'>
+																<div className='w-4 h-4 rounded-full bg-gray-500 mr-2' />
+																<p className='font-light text-sm'>Pending</p>
+															</div>
+														)}
+													</div>
+													<div>
+														<p className='font-normal text-lg'>{step}</p>
+													</div>
+												</div>
+											</div>
+										);
+									})}
 								</div>
 							</div>
 						</div>
