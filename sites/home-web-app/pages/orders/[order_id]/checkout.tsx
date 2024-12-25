@@ -168,10 +168,17 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, de
 					</button>
 				</div>
 			</div>
-			<div className={cn('w-1/2 text-right', showTokenizationForm ? 'hidden' : '')}>
+			<div className={cn('w-1/2 flex items-center space-x-3 justify-end', showTokenizationForm ? 'hidden' : '')}>
+				{!isDefault && (
+					<div>
+						<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' type='button' onClick={handleToggleTokenizationForm}>
+							<p className='font-normal text-xs'>Make Default</p>
+						</button>
+					</div>
+				)}
 				<div>
 					<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' type='button' onClick={handleToggleTokenizationForm}>
-						<p className='font-normal text-sm'>Manage</p>
+						<p className='font-normal text-xs'>Manage</p>
 					</button>
 				</div>
 			</div>
