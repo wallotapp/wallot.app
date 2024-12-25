@@ -61,12 +61,9 @@ app.post(
 // Orders
 import { confirmOrder } from './app/wallot/orders/confirmOrder.js';
 app.options('*/v0/orders/:orderId/confirm', corsPolicy);
-app.post(
-	'*/v0/orders/:orderId/confirm',
-	(req: express.Request<{ orderId: string }, ConfirmOrderResponse, ConfirmOrderParams, Record<string, never>>, res: express.Response<ConfirmOrderResponse, GeneralizedResLocals<ConfirmOrderResponse>>, next) => {
-		corsPolicy(req, res, createRouterFunction(auth, secrets)(confirmOrder)(req, res, next));
-	},
-);
+app.post('*/v0/orders/:orderId/confirm', (req: express.Request<{ orderId: string }, ConfirmOrderResponse, ConfirmOrderParams, Record<string, never>>, res: express.Response<ConfirmOrderResponse, GeneralizedResLocals<ConfirmOrderResponse>>, next) => {
+	corsPolicy(req, res, createRouterFunction(auth, secrets)(confirmOrder)(req, res, next));
+});
 
 // Users
 import { registerUser } from './app/wallot/users/registerUser.js';
