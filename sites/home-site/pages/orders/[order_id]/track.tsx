@@ -151,6 +151,24 @@ const Page: NextPage = () => {
 		isAchTransferPageLoading,
 	].some(Boolean);
 
+	const accountVerificationStepCopyEdit =
+		"We're verifying your account details to get things started. This ensures a secure and seamless experience for your order.";
+	const fundsTransferStepCopyEdit =
+		"We're processing your funds transfer. Hang tight—this usually doesn't take long.";
+	const purchasingStocksCopyEdit =
+		"We're currently purchasing your selected stocks. You'll receive confirmation once this step is finalized.";
+	const allDoneCopyEdit =
+		'Your order is complete! Congratulations on your new investments.';
+	const copyEdit = isAnyQueryLoading
+		? ''
+		: nextStepToComplete === 'Account Verification'
+		? accountVerificationStepCopyEdit
+		: nextStepToComplete === 'Funds Transfer'
+		? fundsTransferStepCopyEdit
+		: nextStepToComplete === 'Stock Purchases'
+		? purchasingStocksCopyEdit
+		: allDoneCopyEdit;
+
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
@@ -229,8 +247,11 @@ const Page: NextPage = () => {
 									</div>
 								</div>
 								<div className='bg-white border border-gray-200 shadow-sm px-10 py-10 rounded-xl h-fit mt-8'>
-									<div className='mb-4'>
+									<div className=''>
 										<p className='font-semibold text-xl'>Order Status</p>
+									</div>
+									<div className='mt-1 mb-5'>
+										<p className='font-light text-sm'>{copyEdit}</p>
 									</div>
 									{isAnyQueryLoading ? (
 										<div className='flex flex-col space-y-2.5'>
