@@ -14,7 +14,7 @@ import { GoCheck } from 'react-icons/go';
 import { useQueryCurrentUser } from '@wallot/react/src/features/users';
 import Confetti from 'react-confetti';
 import { SuspensePage } from '@wallot/react/src/components/SuspensePage';
-import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
+import { AssetOrderCartItem, useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 
 // ==== Static Page Props ==== //
 
@@ -160,8 +160,20 @@ const Page: NextPage = () => {
 									We've emailed your receipt to <span className='font-semibold'>{receiptEmail}</span>
 								</p>
 							</div>
-							<div className='mt-8'>
-								<p>AAPL shares: $100.00</p>
+							<div className='mt-5 w-full'>
+								{assetOrders.map((assetOrder, assetOrderIdx) => {
+									return (
+										<AssetOrderCartItem
+											assetOrder={assetOrder}
+											className={cn(
+												assetOrderIdx > 0 ? '!border-t !border-t-gray-200 !border-b-0 !border-l-0 !border-r-0' : '!border-0',
+												'!rounded-none !rounded-t-md !rounded-b-md !rounded-l-none !rounded-r-none !shadow-none',
+												'p-6'
+											)}
+											key={assetOrder._id}
+										/>
+									);
+								})}
 							</div>
 							<div>
 								<p>Taxes and fees: $24.99</p>
