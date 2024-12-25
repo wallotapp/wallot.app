@@ -51,7 +51,6 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 
 	const showTokenizationForm = isTokenizationFormShown(bankAccount._id);
 	const handleToggleTokenizationForm = toggleTokenizationFormShown(bankAccount._id);
-	handleToggleTokenizationForm; // <== use this
 	const showRoutingNumber = isRoutingNumberShown(bankAccount._id);
 	const handleToggleRoutingNumber = toggleRoutingNumberShown(bankAccount._id);
 	const isTokenized = isBankAccountTokenized(bankAccount);
@@ -108,8 +107,18 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 			await refetchUser();
 		},
 	});
-	updateUser; // <== use this
 	isUpdateUserRunning; // <== use this
+
+	const setBankAccountAsUserDefault = () => {
+		if (currentUser?._id == null) {
+			toast({
+				title: 'Error',
+				description: 'Try logging in again',
+			});
+			return;
+		}
+		updateUser({ _id: currentUser._id, default_bank_account: bankAccount._id });
+	};
 
 	return (
 		<div key={bankAccount._id} className={cn('flex justify-between border rounded-md p-4 mt-2 bg-slate-50/10', !isTokenized && isDefault ? 'border-amber-900' : 'border-slate-200', showTokenizationForm ? 'items-start' : 'items-center')}>
@@ -198,16 +207,7 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 			<div className={cn('w-1/2 flex items-center space-x-3 justify-end', showTokenizationForm ? 'hidden' : '')}>
 				{!isDefault && (
 					<div>
-						<button
-							className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300'
-							type='button'
-							onClick={() => {
-								if (currentUser?._id == null) {
-									return;
-								}
-								updateUser({ _id: currentUser._id, default_bank_account: bankAccount._id });
-							}}
-						>
+						<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' type='button' onClick={setBankAccountAsUserDefault}>
 							<p className='font-normal text-xs'>Make Default</p>
 						</button>
 					</div>
