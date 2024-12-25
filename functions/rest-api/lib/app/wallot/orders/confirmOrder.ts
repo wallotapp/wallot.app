@@ -15,8 +15,6 @@ import {
 	ConfirmOrderResponse,
 	OrderConfirmedByUserParams,
 	ordersApi,
-	assetOrdersApi,
-	AssetOrder,
 	UpdateOrderParams,
 	licensesApi,
 	License,
@@ -76,13 +74,6 @@ export const confirmOrder = async ({ bank_account }: ConfirmOrderParams, { order
 	log({ message: 'Updating order', orderUpdateParams });
 	batch.update(db.collection(ordersApi.collectionId).doc(orderId), orderUpdateParams);
 
-	// Query ASSET_ORDERs and grab the first one
-	const assetOrdersQuerySnapshot = await db.collection(assetOrdersApi.collectionId).where('order', '==', orderId).get();
-	const assetOrderDoc = assetOrdersQuerySnapshot.docs[0];
-	if (!assetOrderDoc) throw new Error('Asset order not found');
-	const assetOrder = assetOrderDoc.data() as AssetOrder;
-	log({ message: 'Asset order found', assetOrder });
-
 	// Commit batch
 	await batch.commit();
 
@@ -90,8 +81,8 @@ export const confirmOrder = async ({ bank_account }: ConfirmOrderParams, { order
 	const redirectUrl = getHomeWebAppRoute({
 		origin: siteOriginByTarget.HOME_WEB_APP,
 		includeOrigin: true,
-		queryParams: { asset_id: assetOrder.asset },
-		routeStaticId: 'HOME_WEB_APP__/ASSETS/[ASSET_ID]/CONGRATULATIONS',
+		queryParams: { order_id: orderId },
+		routeStaticId: 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONGRATULATIONS',
 	});
 
 	const onFinished = async () => {

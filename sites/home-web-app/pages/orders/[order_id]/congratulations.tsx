@@ -17,7 +17,7 @@ import Confetti from 'react-confetti';
 // ==== Static Page Props ==== //
 
 // Route Static ID
-const ROUTE_STATIC_ID = 'HOME_WEB_APP__/ASSETS/[ASSET_ID]/CONGRATULATIONS' as const;
+const ROUTE_STATIC_ID = 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONGRATULATIONS' as const;
 
 // Route Static Props
 const ROUTE_STATIC_PROPS: PageStaticProps = {
@@ -63,10 +63,10 @@ const Page: NextPage = () => {
 	const query = (router?.query as RouteQueryParams) ?? {};
 
 	// Router Query Param Values
-	const { asset_id } = query;
+	const { order_id } = query;
 
 	// Runtime Route ID
-	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace('[ASSET_ID]', asset_id || '');
+	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace('[ORDER_ID]', order_id || '');
 
 	// Runtime Page Props
 	const pageProps: PageProps = {
@@ -81,6 +81,8 @@ const Page: NextPage = () => {
 		const timer = setTimeout(() => setRecycle(false), 3000);
 		return () => clearTimeout(timer); // Cleanup timeout when the component unmounts
 	}, [height, width]);
+
+	const asset_id = 'todo';
 
 	// ==== Render ==== //
 	return (

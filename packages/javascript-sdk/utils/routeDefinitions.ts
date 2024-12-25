@@ -2,21 +2,17 @@ import { getEnum, EnumMember } from 'ergonomic';
 
 // Home Web App
 export const HomeWebAppRouteStaticIdEnum = getEnum([
-	'HOME_WEB_APP__/ASSETS/[ASSET_ID]/CONGRATULATIONS',
 	'HOME_WEB_APP__/ASSETS/[ASSET_ID]/TRACK',
 	'HOME_WEB_APP__/INDEX',
 	'HOME_WEB_APP__/GET_STARTED',
 	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/ASSETS',
 	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CART',
 	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CHECKOUT',
+	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONGRATULATIONS',
 ]);
 export type HomeWebAppRouteStaticId = EnumMember<typeof HomeWebAppRouteStaticIdEnum>;
 
 export type HomeWebAppRouteQueryParams = {
-	'HOME_WEB_APP__/ASSETS/[ASSET_ID]/CONGRATULATIONS': {
-		asset_id: string | undefined;
-		client_token?: string | undefined;
-	};
 	'HOME_WEB_APP__/ASSETS/[ASSET_ID]/TRACK': {
 		asset_id: string | undefined;
 		client_token?: string | undefined;
@@ -36,6 +32,10 @@ export type HomeWebAppRouteQueryParams = {
 		order_id: string | undefined;
 	};
 	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CHECKOUT': {
+		client_token?: string | undefined;
+		order_id: string | undefined;
+	};
+	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONGRATULATIONS': {
 		client_token?: string | undefined;
 		order_id: string | undefined;
 	};
