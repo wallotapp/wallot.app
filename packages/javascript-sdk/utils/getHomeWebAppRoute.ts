@@ -1,4 +1,7 @@
-import { HomeWebAppRouteStaticId, HomeWebAppRouteQueryParams } from './routeDefinitions.js';
+import {
+	HomeWebAppRouteStaticId,
+	HomeWebAppRouteQueryParams,
+} from './routeDefinitions.js';
 
 export type GetHomeWebAppRouteOptions<T extends HomeWebAppRouteStaticId> = {
 	includeOrigin?: boolean;
@@ -7,7 +10,9 @@ export type GetHomeWebAppRouteOptions<T extends HomeWebAppRouteStaticId> = {
 	routeStaticId: T;
 };
 
-export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(options: GetHomeWebAppRouteOptions<T>) => {
+export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(
+	options: GetHomeWebAppRouteOptions<T>,
+) => {
 	const { includeOrigin = false, origin, routeStaticId } = options;
 	if (includeOrigin && !origin) {
 		console.error('Origin is required');
@@ -19,19 +24,27 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(options: G
 	const queries = [clientTokenQuery].filter(Boolean);
 
 	if (routeStaticId === 'HOME_WEB_APP__/ASSETS/[ASSET_ID]/TRACK') {
-		const assetRouteQueryParams = options.queryParams as HomeWebAppRouteQueryParams['HOME_WEB_APP__/ASSETS/[ASSET_ID]/TRACK'];
+		const assetRouteQueryParams =
+			options.queryParams as HomeWebAppRouteQueryParams['HOME_WEB_APP__/ASSETS/[ASSET_ID]/TRACK'];
 		const assetId = assetRouteQueryParams.asset_id;
 		if (!assetId) {
 			console.error('asset_id is required');
 			return '/';
 		}
-		const path = `/assets/${assetId}/track${queries.length ? `?${queries.join('&')}` : ''}`;
+		const path = `/assets/${assetId}/track${
+			queries.length ? `?${queries.join('&')}` : ''
+		}`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
 
-	if (routeStaticId === 'HOME_WEB_APP__/INDEX' || routeStaticId === 'HOME_WEB_APP__/GET_STARTED') {
-		const path = `${routeStaticId === 'HOME_WEB_APP__/INDEX' ? '/' : '/get-started'}${queries.length ? `?${queries.join('&')}` : ''}`;
+	if (
+		routeStaticId === 'HOME_WEB_APP__/INDEX' ||
+		routeStaticId === 'HOME_WEB_APP__/GET_STARTED'
+	) {
+		const path = `${
+			routeStaticId === 'HOME_WEB_APP__/INDEX' ? '/' : '/get-started'
+		}${queries.length ? `?${queries.join('&')}` : ''}`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
@@ -53,7 +66,13 @@ export const getHomeWebAppRoute = <T extends HomeWebAppRouteStaticId>(options: G
 			return '/';
 		}
 		const path = `/orders/${orderId}${
-			routeStaticId === 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/ASSETS' ? '/assets' : routeStaticId === 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CART' ? '/cart' : routeStaticId === 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CHECKOUT' ? '/checkout' : '/congratulations'
+			routeStaticId === 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/ASSETS'
+				? '/assets'
+				: routeStaticId === 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CART'
+				? '/cart'
+				: routeStaticId === 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CHECKOUT'
+				? '/checkout'
+				: '/congratulations'
 		}${queries.length ? `?${queries.join('&')}` : ''}`;
 		if (includeOrigin) return `${origin as string}${path}`;
 		return path;

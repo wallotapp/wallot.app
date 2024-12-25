@@ -1,6 +1,10 @@
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { PageStaticProps, PageProps, Page as PageComponent } from 'ergonomic-react/src/components/nextjs-pages/Page';
+import {
+	PageStaticProps,
+	PageProps,
+	Page as PageComponent,
+} from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { KnowledgeBaseWebAppRouteQueryParams } from '@wallot/js';
 
 const Page: NextPage<PageStaticProps> = (props) => {
@@ -32,8 +36,12 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<p className='font-medium text-xl'>Hello, and welcome to Wallot's Knowledge Base Web App! 🚀</p>
-			<p className='font-light text-sm'>Almost before we knew it, we had left the ground.</p>
+			<p className='font-medium text-xl'>
+				Hello, and welcome to Wallot's Knowledge Base Web App! 🚀
+			</p>
+			<p className='font-light text-sm'>
+				Almost before we knew it, we had left the ground.
+			</p>
 		</PageComponent>
 	);
 };
@@ -46,7 +54,8 @@ export default Page;
 const ROUTE_STATIC_ID = 'KNOWLEDGE_BASE_WEB_APP__/INDEX' as const;
 
 // Route Query Params Type
-type RouteQueryParams = KnowledgeBaseWebAppRouteQueryParams[typeof ROUTE_STATIC_ID];
+type RouteQueryParams =
+	KnowledgeBaseWebAppRouteQueryParams[typeof ROUTE_STATIC_ID];
 
 export const getStaticProps: GetStaticProps<PageStaticProps> = () => {
 	// Route Static Props

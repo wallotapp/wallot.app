@@ -1,11 +1,24 @@
 import { z } from 'zod';
 import { zodResponseFormat as zodResponseFormatFromOpenAI } from 'openai/helpers/zod.js';
 import { getCurrencyUsdStringFromCents } from 'ergonomic';
-import { ActivateUserParams, CreateRecommendationParams, Model, investingGoalLabelDictionary, OpenAiModel, Recommendation, recommendationsApi, riskPreferenceLabelDictionary, openAiModelsApi } from '@wallot/js';
+import {
+	ActivateUserParams,
+	CreateRecommendationParams,
+	Model,
+	investingGoalLabelDictionary,
+	OpenAiModel,
+	Recommendation,
+	recommendationsApi,
+	riskPreferenceLabelDictionary,
+	openAiModelsApi,
+} from '@wallot/js';
 import { variables } from '../../../variables.js';
 import { db, log, openAI } from '../../../services.js';
 
-const zodResponseFormat = zodResponseFormatFromOpenAI as unknown as (arg1: unknown, arg2: string) => undefined;
+const zodResponseFormat = zodResponseFormatFromOpenAI as unknown as (
+	arg1: unknown,
+	arg2: string,
+) => undefined;
 
 const gptRecommendationSchema = z.object({
 	best_investments: z.array(
@@ -33,7 +46,9 @@ export const promptGptForCustomRecommendation = async ({
 }): Promise<Recommendation> => {
 	// Fetch the OPEN_AI_MODEL associated with the MODEL
 	const { open_ai_model } = model;
-	const openAiModelDocRef = db.collection(openAiModelsApi.collectionId).doc(open_ai_model);
+	const openAiModelDocRef = db
+		.collection(openAiModelsApi.collectionId)
+		.doc(open_ai_model);
 	const openAiModel = (await openAiModelDocRef.get()).data() as OpenAiModel;
 
 	// Construct the GPT prompt
@@ -54,14 +69,21 @@ export const promptGptForCustomRecommendation = async ({
 	- SNOW
 	- DOCU
 	- PLTR`;
-	const stockTradingInstruction = variables.SERVER_VAR_FEATURE_FLAGS.ENABLE_ALL_US_EQUITIES ? fullStockTradingInstruction : limitedStockTradingInstruction;
+	const stockTradingInstruction = variables.SERVER_VAR_FEATURE_FLAGS
+		.ENABLE_ALL_US_EQUITIES
+		? fullStockTradingInstruction
+		: limitedStockTradingInstruction;
 	const prompt = `Act as an expert stock analyst whose goal is to recommend stocks trading on NYSE or NASDAQ for me to purchase that you believe will see an increase in share price.
 	
 Here is a bit of information about me:
 1. I am in the ${age_range} age range.
-2. My investing goals include: ${investing_goals.map((goal) => investingGoalLabelDictionary[goal]).join(', ')}.
+2. My investing goals include: ${investing_goals
+		.map((goal) => investingGoalLabelDictionary[goal])
+		.join(', ')}.
 3. I am investing ${capitalFormatted} of capital.
-4. My risk tolerance is ${risk_preference}, i.e. I prefer a ${riskPreferenceLabelDictionary[risk_preference]} investing strategy. 
+4. My risk tolerance is ${risk_preference}, i.e. I prefer a ${
+		riskPreferenceLabelDictionary[risk_preference]
+	} investing strategy. 
 
 Instructions:
 ${stockTradingInstruction}
@@ -89,7 +111,10 @@ For example, if you were to recommend allocating a $1,000 budget toward investin
 	const completion = await openAI.beta.chat.completions.parse({
 		model: openAiModel.name,
 		messages: [{ role: 'user', content: prompt }],
-		response_format: zodResponseFormat(gptRecommendationSchema, 'investment_recommendation'),
+		response_format: zodResponseFormat(
+			gptRecommendationSchema,
+			'investment_recommendation',
+		),
 	});
 
 	// Log the GPT prompt and completion
@@ -100,7 +125,8 @@ For example, if you were to recommend allocating a $1,000 budget toward investin
 	});
 
 	// Extract the parsed data from the response
-	const gptRecommendation = completion.choices?.[0]?.message.parsed as unknown as GptRecommendation | undefined;
+	const gptRecommendation = completion.choices?.[0]?.message
+		.parsed as unknown as GptRecommendation | undefined;
 
 	if (!gptRecommendation) {
 		throw new Error('Failed to parse GPT response');

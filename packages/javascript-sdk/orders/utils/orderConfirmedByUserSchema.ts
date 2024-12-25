@@ -6,12 +6,18 @@ export const orderConfirmedByUserProperties = {
 	fill_task_id: yup.string().defined().nullable(false).min(1),
 	status: YupHelpers.constant(OrderStatusEnum.obj.confirmed_by_user),
 };
-export const orderConfirmedByUserSchema = yup.object(orderConfirmedByUserProperties);
+export const orderConfirmedByUserSchema = yup.object(
+	orderConfirmedByUserProperties,
+);
 
-export type OrderConfirmedByUserParams = yup.InferType<typeof orderConfirmedByUserSchema>;
+export type OrderConfirmedByUserParams = yup.InferType<
+	typeof orderConfirmedByUserSchema
+>;
 export type OrderConfirmedByUser = Order & OrderConfirmedByUserParams;
 
-export const isOrderConfirmedByUser = (order: Order): order is OrderConfirmedByUser => {
+export const isOrderConfirmedByUser = (
+	order: Order,
+): order is OrderConfirmedByUser => {
 	try {
 		orderConfirmedByUserSchema.validateSync(order);
 		return true;

@@ -2,7 +2,15 @@
  * From: https://github.com/streamich/react-use/tree/master
  */
 
-import { useEffect, Dispatch, SetStateAction, useCallback, useRef, useState, EffectCallback } from 'react';
+import {
+	useEffect,
+	Dispatch,
+	SetStateAction,
+	useCallback,
+	useRef,
+	useState,
+	EffectCallback,
+} from 'react';
 
 const useEffectOnce = (effect: EffectCallback) => {
 	useEffect(effect, []);
@@ -15,7 +23,9 @@ const useUnmount = (fn: () => any): void => {
 	useEffectOnce(() => () => fnRef.current());
 };
 
-function useRafState<S>(initialState: S | (() => S)): [S, Dispatch<SetStateAction<S>>] {
+function useRafState<S>(
+	initialState: S | (() => S),
+): [S, Dispatch<SetStateAction<S>>] {
 	const frame = useRef(0);
 	const [state, setState] = useState(initialState);
 
@@ -34,15 +44,27 @@ function useRafState<S>(initialState: S | (() => S)): [S, Dispatch<SetStateActio
 	return [state, setRafState];
 }
 
-function on<T extends Window | Document | HTMLElement | EventTarget>(obj: T | null, ...args: Parameters<T['addEventListener']> | [string, Function | null, ...any]): void {
+function on<T extends Window | Document | HTMLElement | EventTarget>(
+	obj: T | null,
+	...args: Parameters<T['addEventListener']> | [string, Function | null, ...any]
+): void {
 	if (obj && obj.addEventListener) {
-		obj.addEventListener(...(args as Parameters<HTMLElement['addEventListener']>));
+		obj.addEventListener(
+			...(args as Parameters<HTMLElement['addEventListener']>),
+		);
 	}
 }
 
-function off<T extends Window | Document | HTMLElement | EventTarget>(obj: T | null, ...args: Parameters<T['removeEventListener']> | [string, Function | null, ...any]): void {
+function off<T extends Window | Document | HTMLElement | EventTarget>(
+	obj: T | null,
+	...args:
+		| Parameters<T['removeEventListener']>
+		| [string, Function | null, ...any]
+): void {
 	if (obj && obj.removeEventListener) {
-		obj.removeEventListener(...(args as Parameters<HTMLElement['removeEventListener']>));
+		obj.removeEventListener(
+			...(args as Parameters<HTMLElement['removeEventListener']>),
+		);
 	}
 }
 
@@ -55,7 +77,13 @@ interface Options {
 
 export const useWindowSize = ({ onChange }: Options = {}) => {
 	// Use the useRafState hook to maintain the current window size (width and height)
-	const [state, setState] = useRafState<{ width: number | null; height: number | null }>({ height: null, width: null });
+	const [state, setState] = useRafState<{
+		width: number | null;
+		height: number | null;
+	}>({
+		height: null,
+		width: null,
+	});
 
 	useEffect((): (() => void) | void => {
 		// Only run the effect on the browser (to avoid issues with SSR)

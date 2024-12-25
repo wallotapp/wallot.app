@@ -16,7 +16,11 @@ export const RegisterButton: React.FC<BaseComponent> = ({ className = '' }) => {
 	});
 	return (
 		<Link className={className} href={registerHref} target='_blank'>
-			<button className={cn('bg-brand space-x-2 flex items-center rounded-sm px-4 py-1.5')}>
+			<button
+				className={cn(
+					'bg-brand space-x-2 flex items-center rounded-sm px-4 py-1.5',
+				)}
+			>
 				<p className='text-xs text-white font-light'>Create a free account</p>
 			</button>
 		</Link>

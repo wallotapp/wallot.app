@@ -2,4 +2,7 @@ import { generalizedFirestoreDocumentCreateOperation } from 'ergonomic-react/src
 import { CreateModelParams, Model, modelsApi } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const createModel = generalizedFirestoreDocumentCreateOperation<CreateModelParams, Model>(modelsApi as unknown as GeneralizedApiResourceSpec);
+export const createModel = generalizedFirestoreDocumentCreateOperation<
+	CreateModelParams,
+	Model
+>(modelsApi as unknown as GeneralizedApiResourceSpec);

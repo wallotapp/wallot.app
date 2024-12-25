@@ -23,7 +23,9 @@ import { useQueryPositionPage } from '@wallot/react/src/features/positions';
 import { useQueryRecommendationPage } from '@wallot/react/src/features/recommendations';
 import { useQueryUserPage } from '@wallot/react/src/features/users';
 
-type PageQueryHook = (options: GeneralizedUseQueryPageProps<GeneralizedApiResource>) => UseQueryResult<GeneralizedFirestoreCollectionPage, GeneralizedError>;
+type PageQueryHook = (
+	options: GeneralizedUseQueryPageProps<GeneralizedApiResource>,
+) => UseQueryResult<GeneralizedFirestoreCollectionPage, GeneralizedError>;
 
 // Map of resource names to their respective hooks
 const queryHookMap = {
@@ -64,7 +66,9 @@ const fallbackPageQueryHookForResource = (() => ({
  * const hook = getPageQueryHookForResource(resourceName);
  * const { data, isLoading, error } = hook({ firestoreQueryOptions });
  */
-export const getPageQueryHookForResource = (resourceName: string | null): PageQueryHook => {
+export const getPageQueryHookForResource = (
+	resourceName: string | null,
+): PageQueryHook => {
 	if (resourceName == null) {
 		return fallbackPageQueryHookForResource;
 	}

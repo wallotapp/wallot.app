@@ -1,13 +1,39 @@
 import * as yup from 'yup';
-import { GeneralizedApiResourceCreateParamsRequiredFieldEnum, GeneralizedApiResourceProperties, CreateParams, UpdateParams, YupHelpers, getApiResourceSpec, getEnum } from 'ergonomic';
-import { apiYupHelpers, idPrefixByResourceName } from '../../utils/apiYupHelpers.js';
-import { AlpacaAssetPropertyName, AlpacaAssetPropertyNameEnum, RemoveAlpacaAssetPrefix, alpacaAssetProperties } from '../utils/alpacaAssets.js';
-import { AlphaVantageCompanyPropertyName, AlphaVantageCompanyPropertyNameEnum, RemoveAlphaVantageCompanyPrefix, alphaVantageCompanyProperties } from '../utils/alphaVantageCompanies.js';
+import {
+	GeneralizedApiResourceCreateParamsRequiredFieldEnum,
+	GeneralizedApiResourceProperties,
+	CreateParams,
+	UpdateParams,
+	YupHelpers,
+	getApiResourceSpec,
+	getEnum,
+} from 'ergonomic';
+import {
+	apiYupHelpers,
+	idPrefixByResourceName,
+} from '../../utils/apiYupHelpers.js';
+import {
+	AlpacaAssetPropertyName,
+	AlpacaAssetPropertyNameEnum,
+	RemoveAlpacaAssetPrefix,
+	alpacaAssetProperties,
+} from '../utils/alpacaAssets.js';
+import {
+	AlphaVantageCompanyPropertyName,
+	AlphaVantageCompanyPropertyNameEnum,
+	RemoveAlphaVantageCompanyPrefix,
+	alphaVantageCompanyProperties,
+} from '../utils/alphaVantageCompanies.js';
 
 export const AssetCategoryEnum = getEnum(['default']);
 export type AssetCategory = keyof typeof AssetCategoryEnum.obj;
 
-const createParamsRequiredFieldEnum = getEnum([...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr, 'symbol', ...AlpacaAssetPropertyNameEnum.arr, ...AlphaVantageCompanyPropertyNameEnum.arr] as const);
+const createParamsRequiredFieldEnum = getEnum([
+	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'symbol',
+	...AlpacaAssetPropertyNameEnum.arr,
+	...AlphaVantageCompanyPropertyNameEnum.arr,
+] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
 const _object = 'asset';
@@ -31,5 +57,9 @@ export type Asset = yup.InferType<typeof assetsApi.apiResourceJsonSchema>;
 export type CreateAssetParams = CreateParams<Asset, T>;
 export type UpdateAssetParams = UpdateParams<Asset>;
 
-export type AlpacaAsset = RemoveAlpacaAssetPrefix<Pick<Asset, AlpacaAssetPropertyName>>;
-export type AlphaVantageCompany = RemoveAlphaVantageCompanyPrefix<Pick<Asset, AlphaVantageCompanyPropertyName>>;
+export type AlpacaAsset = RemoveAlpacaAssetPrefix<
+	Pick<Asset, AlpacaAssetPropertyName>
+>;
+export type AlphaVantageCompany = RemoveAlphaVantageCompanyPrefix<
+	Pick<Asset, AlphaVantageCompanyPropertyName>
+>;

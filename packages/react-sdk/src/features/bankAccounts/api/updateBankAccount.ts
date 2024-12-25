@@ -2,4 +2,7 @@ import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src
 import { UpdateBankAccountParams, bankAccountsApi } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const updateBankAccount = generalizedFirestoreDocumentUpdateOperation<UpdateBankAccountParams>(bankAccountsApi as unknown as GeneralizedApiResourceSpec);
+export const updateBankAccount =
+	generalizedFirestoreDocumentUpdateOperation<UpdateBankAccountParams>(
+		bankAccountsApi as unknown as GeneralizedApiResourceSpec,
+	);

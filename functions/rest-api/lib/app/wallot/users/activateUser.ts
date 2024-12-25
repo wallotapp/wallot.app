@@ -1,5 +1,14 @@
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
-import { ActivateUserParams, ActivateUserResponse, UpdateUserParams, assetOrdersApi, getHomeWebAppRoute, ordersApi, recommendationsApi, usersApi } from '@wallot/js';
+import {
+	ActivateUserParams,
+	ActivateUserResponse,
+	UpdateUserParams,
+	assetOrdersApi,
+	getHomeWebAppRoute,
+	ordersApi,
+	recommendationsApi,
+	usersApi,
+} from '@wallot/js';
 import { FunctionResponse } from '@wallot/node';
 import { db } from '../../../services.js';
 import { siteOriginByTarget } from '../../../variables.js';
@@ -12,7 +21,12 @@ import { scheduleOrderCompletionReminderEmail } from './scheduleOrderCompletionR
 import { scheduleWeek1RetentionEmail } from './scheduleWeek1RetentionEmail.js';
 
 export const activateUser = async (
-	{ age_range, capital_level, investing_goals, risk_preference }: ActivateUserParams,
+	{
+		age_range,
+		capital_level,
+		investing_goals,
+		risk_preference,
+	}: ActivateUserParams,
 	_params: Record<string, never>,
 	_query: Record<string, never>,
 	firebaseUser: FirebaseUser | null,
@@ -35,7 +49,10 @@ export const activateUser = async (
 	const updateUserParams: UpdateUserParams = {
 		parameters: compatibleParameterIds,
 	};
-	batch.update(db.collection(usersApi.collectionId).doc(firebaseUser.uid), updateUserParams);
+	batch.update(
+		db.collection(usersApi.collectionId).doc(firebaseUser.uid),
+		updateUserParams,
+	);
 
 	// Create a custom RECOMMENDATION for USER
 	const recommendation = await createRecommendationForUser({
@@ -46,7 +63,10 @@ export const activateUser = async (
 		userId: firebaseUser.uid,
 		compatibleParameters,
 	});
-	batch.set(db.collection(recommendationsApi.collectionId).doc(recommendation._id), recommendation);
+	batch.set(
+		db.collection(recommendationsApi.collectionId).doc(recommendation._id),
+		recommendation,
+	);
 
 	// Create an ORDER for the USER
 	const orderDocId = ordersApi.generateId();
@@ -69,7 +89,10 @@ export const activateUser = async (
 	});
 	assetOrders.forEach((assetOrder) => {
 		const assetOrderDocId = assetOrder._id;
-		batch.set(db.collection(assetOrdersApi.collectionId).doc(assetOrderDocId), assetOrder);
+		batch.set(
+			db.collection(assetOrdersApi.collectionId).doc(assetOrderDocId),
+			assetOrder,
+		);
 	});
 
 	// Commit the batch transaction

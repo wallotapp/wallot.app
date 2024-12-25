@@ -5,9 +5,19 @@ import { AuthContext } from 'ergonomic-react/src/features/authentication/provide
 import { ActivateUserParams, ActivateUserResponse } from '@wallot/js';
 import { activateUser } from '@wallot/react/src/features/users/api/activateUser';
 
-export const useActivateUserMutation = (options?: UseMutationOptions<ActivateUserResponse, GeneralizedError, ActivateUserParams>) => {
+export const useActivateUserMutation = (
+	options?: UseMutationOptions<
+		ActivateUserResponse,
+		GeneralizedError,
+		ActivateUserParams
+	>,
+) => {
 	const { user: firebaseUser } = useContext(AuthContext);
-	return useMutation<ActivateUserResponse, GeneralizedError, ActivateUserParams>((params: ActivateUserParams) => activateUser(firebaseUser, params), {
+	return useMutation<
+		ActivateUserResponse,
+		GeneralizedError,
+		ActivateUserParams
+	>((params: ActivateUserParams) => activateUser(firebaseUser, params), {
 		onError: (error: GeneralizedError) => {
 			console.error('activateUser operation failed:', error);
 		},

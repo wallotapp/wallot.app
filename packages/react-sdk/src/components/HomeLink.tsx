@@ -21,7 +21,15 @@ export const HomeLink: React.FC<BaseComponent> = ({ className = '' }) => {
 	const homeTarget = SITE_ORIGIN !== homeWebAppOrigin ? '_blank' : '';
 	return (
 		<Link className={className} href={homeHref} target={homeTarget}>
-			<p className={cn('font-light text-sm', currentRouteStaticId === 'HOME_WEB_APP__/INDEX' && 'underline underline-offset-4')}>Home</p>
+			<p
+				className={cn(
+					'font-light text-sm',
+					currentRouteStaticId === 'HOME_WEB_APP__/INDEX' &&
+						'underline underline-offset-4',
+				)}
+			>
+				Home
+			</p>
 		</Link>
 	);
 };

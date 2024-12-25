@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { StatusWebAppRouteStaticId, StatusWebAppRouteQueryParams } from './routeDefinitions.js';
+import {
+	StatusWebAppRouteStaticId,
+	StatusWebAppRouteQueryParams,
+} from './routeDefinitions.js';
 
 export type GetStatusWebAppRouteOptions<T extends StatusWebAppRouteStaticId> = {
 	includeOrigin?: boolean;
@@ -8,7 +11,9 @@ export type GetStatusWebAppRouteOptions<T extends StatusWebAppRouteStaticId> = {
 	routeStaticId: T;
 };
 
-export const getStatusWebAppRoute = <T extends StatusWebAppRouteStaticId>(options: GetStatusWebAppRouteOptions<T>) => {
+export const getStatusWebAppRoute = <T extends StatusWebAppRouteStaticId>(
+	options: GetStatusWebAppRouteOptions<T>,
+) => {
 	const { includeOrigin = false, origin } = options;
 	if (options.routeStaticId === 'STATUS_WEB_APP__/INDEX') {
 		const path = `/`;
@@ -22,7 +27,8 @@ export const getStatusWebAppRoute = <T extends StatusWebAppRouteStaticId>(option
 		return path;
 	}
 	if (options.routeStaticId === 'STATUS_WEB_APP__/POSTS/[SLUG]/CONTENT') {
-		const queryParams = options.queryParams as StatusWebAppRouteQueryParams['STATUS_WEB_APP__/POSTS/[SLUG]/CONTENT'];
+		const queryParams =
+			options.queryParams as StatusWebAppRouteQueryParams['STATUS_WEB_APP__/POSTS/[SLUG]/CONTENT'];
 		const slug = queryParams.slug;
 		const path = `/posts/${slug}/content`;
 		if (includeOrigin) {

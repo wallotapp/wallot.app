@@ -91,12 +91,23 @@ type BankIconProps = BaseComponent & {
 	size?: number;
 	subtitle?: string;
 };
-export const BankIcon: React.FC<BankIconProps> = ({ bankName, className = '', showBankNameAsTitle = false, size = 32, subtitle = '' }) => {
+export const BankIcon: React.FC<BankIconProps> = ({
+	bankName,
+	className = '',
+	showBankNameAsTitle = false,
+	size = 32,
+	subtitle = '',
+}) => {
 	const bankLogo = bankName == null ? null : BANK_LOGOS[bankName];
 
 	if (bankLogo == null) {
 		return (
-			<div className={cn(className, showBankNameAsTitle && 'flex items-center space-x-3')}>
+			<div
+				className={cn(
+					className,
+					showBankNameAsTitle && 'flex items-center space-x-3',
+				)}
+			>
 				<div>
 					{showBankNameAsTitle ? (
 						<div>
@@ -130,9 +141,19 @@ export const BankIcon: React.FC<BankIconProps> = ({ bankName, className = '', sh
 	}
 
 	return (
-		<div className={cn(className, showBankNameAsTitle && 'flex items-center space-x-3')}>
+		<div
+			className={cn(
+				className,
+				showBankNameAsTitle && 'flex items-center space-x-3',
+			)}
+		>
 			<div>
-				<Image src={bankLogo} alt={`${bankName} logo`} width={size} height={size} />
+				<Image
+					src={bankLogo}
+					alt={`${bankName} logo`}
+					width={size}
+					height={size}
+				/>
 			</div>
 			{showBankNameAsTitle && (
 				<div>

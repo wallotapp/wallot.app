@@ -3,7 +3,10 @@ import { firebaseFunctions } from 'ergonomic-node';
 
 export const log =
 	(protocol: 'http' | 'https') =>
-	(log: unknown, { type }: { type: 'error' | 'normal' } = { type: 'normal' }) => {
+	(
+		log: unknown,
+		{ type }: { type: 'error' | 'normal' } = { type: 'normal' },
+	) => {
 		if (protocol === 'http') {
 			const logger = type === 'error' ? console.error : console.log;
 			logger(
@@ -14,7 +17,10 @@ export const log =
 				}),
 			);
 		} else {
-			const logger = type === 'error' ? firebaseFunctions.logger.error : firebaseFunctions.logger.log;
+			const logger =
+				type === 'error'
+					? firebaseFunctions.logger.error
+					: firebaseFunctions.logger.log;
 			logger(log);
 		}
 	};

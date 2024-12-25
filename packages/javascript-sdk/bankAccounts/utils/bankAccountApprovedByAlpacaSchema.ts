@@ -5,13 +5,22 @@ import { YupHelpers } from 'ergonomic';
 import { BankAccountPendingAlpacaAchRelationship } from './bankAccountPendingAlpacaAchRelationshipSchema.js';
 
 export const bankAccountApprovedByAlpacaProperties = {
-	alpaca_ach_relationship_status: YupHelpers.constant(AlpacaAchRelationshipStatusEnum.obj.APPROVED),
+	alpaca_ach_relationship_status: YupHelpers.constant(
+		AlpacaAchRelationshipStatusEnum.obj.APPROVED,
+	),
 };
-export const bankAccountApprovedByAlpacaSchema = yup.object(bankAccountApprovedByAlpacaProperties);
-export type BankAccountApprovedByAlpacaParams = yup.InferType<typeof bankAccountApprovedByAlpacaSchema>;
+export const bankAccountApprovedByAlpacaSchema = yup.object(
+	bankAccountApprovedByAlpacaProperties,
+);
+export type BankAccountApprovedByAlpacaParams = yup.InferType<
+	typeof bankAccountApprovedByAlpacaSchema
+>;
 
-export type BankAccountApprovedByAlpaca = BankAccountPendingAlpacaAchRelationship & BankAccountApprovedByAlpacaParams;
-export const isBankAccountApprovedByAlpaca = (bankAccount: BankAccount): bankAccount is BankAccountApprovedByAlpaca => {
+export type BankAccountApprovedByAlpaca =
+	BankAccountPendingAlpacaAchRelationship & BankAccountApprovedByAlpacaParams;
+export const isBankAccountApprovedByAlpaca = (
+	bankAccount: BankAccount,
+): bankAccount is BankAccountApprovedByAlpaca => {
 	try {
 		bankAccountApprovedByAlpacaSchema.validateSync(bankAccount);
 		return true;

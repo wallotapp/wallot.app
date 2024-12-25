@@ -1,6 +1,10 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { Page as PageComponent, PageStaticProps, PageProps } from 'ergonomic-react/src/components/nextjs-pages/Page';
+import {
+	Page as PageComponent,
+	PageStaticProps,
+	PageProps,
+} from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { HomeWebAppRouteQueryParams, getSsoWebAppRoute } from '@wallot/js';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
@@ -48,7 +52,10 @@ const Page: NextPage = () => {
 	const { asset_id } = query;
 
 	// Runtime Route ID
-	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace('[ASSET_ID]', asset_id || '');
+	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace(
+		'[ASSET_ID]',
+		asset_id || '',
+	);
 
 	// Runtime Page Props
 	const pageProps: PageProps = {

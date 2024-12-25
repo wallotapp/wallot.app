@@ -1,7 +1,11 @@
 import { Fragment, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { Page as PageComponent, PageStaticProps, PageProps } from 'ergonomic-react/src/components/nextjs-pages/Page';
+import {
+	Page as PageComponent,
+	PageStaticProps,
+	PageProps,
+} from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { HomeWebAppRouteQueryParams, getSsoWebAppRoute } from '@wallot/js';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
@@ -14,12 +18,16 @@ import { GoCheck } from 'react-icons/go';
 import { useQueryCurrentUser } from '@wallot/react/src/features/users';
 import Confetti from 'react-confetti';
 import { SuspensePage } from '@wallot/react/src/components/SuspensePage';
-import { AssetOrderCartItem, useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
+import {
+	AssetOrderCartItem,
+	useQueryAssetOrderPage,
+} from '@wallot/react/src/features/assetOrders';
 
 // ==== Static Page Props ==== //
 
 // Route Static ID
-const ROUTE_STATIC_ID = 'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONGRATULATIONS' as const;
+const ROUTE_STATIC_ID =
+	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONGRATULATIONS' as const;
 
 // Route Static Props
 const ROUTE_STATIC_PROPS: PageStaticProps = {
@@ -55,7 +63,10 @@ const Page: NextPage = () => {
 
 	// Current User
 	const { currentUser } = useQueryCurrentUser();
-	const receiptEmail = currentUser?.alpaca_account_contact?.email_address ?? currentUser?.firebase_auth_email ?? 'your email on file';
+	const receiptEmail =
+		currentUser?.alpaca_account_contact?.email_address ??
+		currentUser?.firebase_auth_email ??
+		'your email on file';
 
 	// Window size
 	const { height, width } = useWindowSize();
@@ -69,7 +80,10 @@ const Page: NextPage = () => {
 	const { order_id } = query;
 
 	// Runtime Route ID
-	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace('[ORDER_ID]', order_id || '');
+	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace(
+		'[ORDER_ID]',
+		order_id || '',
+	);
 
 	// Runtime Page Props
 	const pageProps: PageProps = {
@@ -78,18 +92,21 @@ const Page: NextPage = () => {
 	};
 
 	// ==== Hooks ==== //
-	const { data: assetOrderPage, isLoading: isAssetOrderPageLoading } = useQueryAssetOrderPage({
-		firestoreQueryOptions: {
-			whereClauses: [['order', '==', order_id]],
-		},
-	});
+	const { data: assetOrderPage, isLoading: isAssetOrderPageLoading } =
+		useQueryAssetOrderPage({
+			firestoreQueryOptions: {
+				whereClauses: [['order', '==', order_id]],
+			},
+		});
 	const assetOrders = assetOrderPage?.documents ?? [];
 	const firstAsset = assetOrders[0];
 	const firstAssetId = firstAsset?._id ?? '';
 	const hasOneAsset = assetOrders.length === 1;
 	const hasTwoAssets = assetOrders.length === 2;
 	const hasThreeOrMoreAssets = assetOrders.length >= 3;
-	const assetNames = assetOrders.map((assetOrder) => assetOrder.alpaca_order_symbol);
+	const assetNames = assetOrders.map(
+		(assetOrder) => assetOrder.alpaca_order_symbol,
+	);
 	const firstAssetName = assetNames[0] ?? '';
 	const assetCongratulationText = hasOneAsset // 1
 		? `${firstAssetName} is yours!`
@@ -114,31 +131,43 @@ const Page: NextPage = () => {
 				<SuspensePage />
 			) : (
 				<Fragment>
-					<div className={cn('h-screen relative', 'px-8 pt-12 overflow-hidden')}>
+					<div
+						className={cn('h-screen relative', 'px-8 pt-12 overflow-hidden')}
+					>
 						<div className='flex items-center justify-center'>
-							{OPEN_GRAPH_CONFIG.siteBrandIconDarkMode && OPEN_GRAPH_CONFIG.siteBrandIconLightMode && (
-								<PlatformIcon
-									height={380}
-									size='md'
-									srcMap={{
-										dark: OPEN_GRAPH_CONFIG.siteBrandIconDarkMode,
-										light: OPEN_GRAPH_CONFIG.siteBrandIconLightMode,
-									}}
-									width={2048}
-								/>
-							)}
-							{!(OPEN_GRAPH_CONFIG.siteBrandIconDarkMode && OPEN_GRAPH_CONFIG.siteBrandIconLightMode) && (
+							{OPEN_GRAPH_CONFIG.siteBrandIconDarkMode &&
+								OPEN_GRAPH_CONFIG.siteBrandIconLightMode && (
+									<PlatformIcon
+										height={380}
+										size='md'
+										srcMap={{
+											dark: OPEN_GRAPH_CONFIG.siteBrandIconDarkMode,
+											light: OPEN_GRAPH_CONFIG.siteBrandIconLightMode,
+										}}
+										width={2048}
+									/>
+								)}
+							{!(
+								OPEN_GRAPH_CONFIG.siteBrandIconDarkMode &&
+								OPEN_GRAPH_CONFIG.siteBrandIconLightMode
+							) && (
 								<div>
-									<p className={cn('text-2xl font-bold', 'lg:text-3xl')}>{OPEN_GRAPH_CONFIG.siteName}</p>
+									<p className={cn('text-2xl font-bold', 'lg:text-3xl')}>
+										{OPEN_GRAPH_CONFIG.siteName}
+									</p>
 								</div>
 							)}
 						</div>
 						<div className='flex flex-col items-center'>
 							<div className='mt-8'>
-								<p className='font-normal text-4xl'>{assetCongratulationText}</p>
+								<p className='font-normal text-4xl'>
+									{assetCongratulationText}
+								</p>
 							</div>
 							<div className='mt-3'>
-								<p className='font-light text-base'>Stock purchase in progress. We'll take it from here.</p>
+								<p className='font-light text-base'>
+									Stock purchase in progress. We'll take it from here.
+								</p>
 							</div>
 							<div className='mt-8'>
 								<Link href={`/assets/${firstAssetId}/track`}>
@@ -148,7 +177,12 @@ const Page: NextPage = () => {
 								</Link>
 							</div>
 						</div>
-						<div className={cn('mt-10 flex flex-col items-center bg-white p-4 rounded-md max-w-4xl mx-auto shadow-xl border border-gray-200', 'overflow-y-auto h-screen')}>
+						<div
+							className={cn(
+								'mt-10 flex flex-col items-center bg-white p-4 rounded-md max-w-4xl mx-auto shadow-xl border border-gray-200',
+								'overflow-y-auto h-screen',
+							)}
+						>
 							<div className='mt-4'>
 								<GoCheck className='text-green-600 text-5xl' />
 							</div>
@@ -157,7 +191,8 @@ const Page: NextPage = () => {
 							</div>
 							<div className='mt-0.5'>
 								<p className='font-light text-base'>
-									We've emailed your receipt to <span className='font-semibold'>{receiptEmail}</span>
+									We've emailed your receipt to{' '}
+									<span className='font-semibold'>{receiptEmail}</span>
 								</p>
 							</div>
 							<div className='mt-5 w-full'>
@@ -166,9 +201,11 @@ const Page: NextPage = () => {
 										<AssetOrderCartItem
 											assetOrder={assetOrder}
 											className={cn(
-												assetOrderIdx > 0 ? '!border-t !border-t-gray-200 !border-b-0 !border-l-0 !border-r-0' : '!border-0',
+												assetOrderIdx > 0
+													? '!border-t !border-t-gray-200 !border-b-0 !border-l-0 !border-r-0'
+													: '!border-0',
 												'!rounded-none !rounded-t-md !rounded-b-md !rounded-l-none !rounded-r-none !shadow-none',
-												'p-6'
+												'p-6',
 											)}
 											key={assetOrder._id}
 										/>
@@ -187,7 +224,9 @@ const Page: NextPage = () => {
 							<div className='min-h-[60vh]' />
 						</div>
 					</div>
-					{height != null && width != null && <Confetti height={height} recycle={recycle} width={width} />}
+					{height != null && width != null && (
+						<Confetti height={height} recycle={recycle} width={width} />
+					)}
 				</Fragment>
 			)}
 		</PageComponent>

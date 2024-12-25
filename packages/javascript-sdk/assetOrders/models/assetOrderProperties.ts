@@ -1,12 +1,31 @@
 import * as yup from 'yup';
-import { GeneralizedApiResourceCreateParamsRequiredFieldEnum, GeneralizedApiResourceProperties, CreateParams, UpdateParams, YupHelpers, getApiResourceSpec, getEnum } from 'ergonomic';
-import { apiYupHelpers, idPrefixByResourceName } from '../../utils/apiYupHelpers.js';
+import {
+	GeneralizedApiResourceCreateParamsRequiredFieldEnum,
+	GeneralizedApiResourceProperties,
+	CreateParams,
+	UpdateParams,
+	YupHelpers,
+	getApiResourceSpec,
+	getEnum,
+} from 'ergonomic';
+import {
+	apiYupHelpers,
+	idPrefixByResourceName,
+} from '../../utils/apiYupHelpers.js';
 import { alpacaOrderProperties } from '../utils/alpacaOrders.js';
 
 export const AssetOrderCategoryEnum = getEnum(['default']);
 export type AssetOrderCategory = keyof typeof AssetOrderCategoryEnum.obj;
 
-const createParamsRequiredFieldEnum = getEnum([...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr, 'amount', 'asset', 'order', 'recommendations', 'alpaca_order_side', 'alpaca_order_symbol'] as const);
+const createParamsRequiredFieldEnum = getEnum([
+	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'amount',
+	'asset',
+	'order',
+	'recommendations',
+	'alpaca_order_side',
+	'alpaca_order_symbol',
+] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
 const _object = 'asset_order';
@@ -24,7 +43,11 @@ const properties = {
 		}),
 	category: AssetOrderCategoryEnum.getDefinedSchema(),
 	order: apiYupHelpers.idRef(['order']).min(1).meta({ unique_key: false }),
-	position: apiYupHelpers.idRef(['position']).default(null).nullable().meta({ unique_key: false }),
+	position: apiYupHelpers
+		.idRef(['position'])
+		.default(null)
+		.nullable()
+		.meta({ unique_key: false }),
 	recommendations: apiYupHelpers.idRefs(['recommendation']).defined().min(1),
 	...alpacaOrderProperties,
 } as const;
@@ -35,6 +58,8 @@ export const assetOrdersApi = getApiResourceSpec<keyof U, U, T>({
 	idPrefix: idPrefixByResourceName[_object],
 	properties,
 } as const);
-export type AssetOrder = yup.InferType<typeof assetOrdersApi.apiResourceJsonSchema>;
+export type AssetOrder = yup.InferType<
+	typeof assetOrdersApi.apiResourceJsonSchema
+>;
 export type CreateAssetOrderParams = CreateParams<AssetOrder, T>;
 export type UpdateAssetOrderParams = UpdateParams<AssetOrder>;

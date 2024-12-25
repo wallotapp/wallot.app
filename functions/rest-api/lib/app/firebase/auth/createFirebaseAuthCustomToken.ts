@@ -19,7 +19,12 @@ import { auth } from '../../../services.js';
  * @param {FirebaseUser | null} firebaseUser The Firebase user.
  * @returns {Promise<FunctionResponse<FirebaseUserCustomTokenResponse>>} The custom token for the user.
  */
-export const createFirebaseAuthCustomToken = async (_body: Record<string, never>, _params: Record<string, never>, _query: Record<string, never>, firebaseUser: FirebaseUser | null): Promise<FunctionResponse<FirebaseUserCustomTokenResponse>> => {
+export const createFirebaseAuthCustomToken = async (
+	_body: Record<string, never>,
+	_params: Record<string, never>,
+	_query: Record<string, never>,
+	firebaseUser: FirebaseUser | null,
+): Promise<FunctionResponse<FirebaseUserCustomTokenResponse>> => {
 	if (!firebaseUser) throw new Error('Unauthorized');
 
 	const customToken = await auth.createCustomToken(firebaseUser.uid);

@@ -21,7 +21,9 @@ import { useCreatePositionMutation } from '@wallot/react/src/features/positions'
 import { useCreateRecommendationMutation } from '@wallot/react/src/features/recommendations';
 import { useCreateUserMutation } from '@wallot/react/src/features/users';
 
-type MutationHook = (options: UseMutationOptions<unknown, GeneralizedError>) => UseMutationResult;
+type MutationHook = (
+	options: UseMutationOptions<unknown, GeneralizedError>,
+) => UseMutationResult;
 
 // Map of resource names to their respective mutations
 const createOperationMutationMap = {
@@ -60,10 +62,14 @@ const createOperationMutationMap = {
  * 	// Other options
  * });
  */
-export function getCreateOperationMutationForResource<TResourceName extends WallotResourceName>(resourceName: TResourceName): MutationHook {
+export function getCreateOperationMutationForResource<
+	TResourceName extends WallotResourceName,
+>(resourceName: TResourceName): MutationHook {
 	const mutation = createOperationMutationMap[resourceName];
 	if (!mutation) {
-		throw new Error(`No create operation mutation found for resource: ${resourceName}`);
+		throw new Error(
+			`No create operation mutation found for resource: ${resourceName}`,
+		);
 	}
 	return mutation;
 }

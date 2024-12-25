@@ -1,7 +1,17 @@
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { PageStaticProps, PageProps, Page as PageComponent } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { ActivateUserParams, HomeWebAppRouteQueryParams, activateUserSchema, activateUserSchemaFieldSpecByFieldKey, getSsoWebAppRoute } from '@wallot/js';
+import {
+	PageStaticProps,
+	PageProps,
+	Page as PageComponent,
+} from 'ergonomic-react/src/components/nextjs-pages/Page';
+import {
+	ActivateUserParams,
+	HomeWebAppRouteQueryParams,
+	activateUserSchema,
+	activateUserSchemaFieldSpecByFieldKey,
+	getSsoWebAppRoute,
+} from '@wallot/js';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { useForm } from 'react-hook-form';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
@@ -40,43 +50,48 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const { toast } = useToast();
 
 	// Form Resolver
-	const resolver = useYupValidationResolver(activateUserSchema, defaultGeneralizedFormDataTransformationOptions);
+	const resolver = useYupValidationResolver(
+		activateUserSchema,
+		defaultGeneralizedFormDataTransformationOptions,
+	);
 
 	// Form
 	const initialFormData = activateUserSchema.getDefault() as ActivateUserParams;
-	const { control, formState, handleSubmit, reset, setError } = useForm<ActivateUserParams>({
-		defaultValues: initialFormData,
-		resolver,
-		shouldUnregister: false,
-	});
+	const { control, formState, handleSubmit, reset, setError } =
+		useForm<ActivateUserParams>({
+			defaultValues: initialFormData,
+			resolver,
+			shouldUnregister: false,
+		});
 
 	// Mutation
-	const { mutate: activateUser, isLoading: isActivateUserRunning } = useActivateUserMutation({
-		onError: ({ error: { message } }) => {
-			// Show the error message
-			toast({
-				title: 'Error',
-				description: message,
-			});
-			setError('root', {
-				type: 'manual',
-				message: 'An error occurred. Please try again.',
-			});
+	const { mutate: activateUser, isLoading: isActivateUserRunning } =
+		useActivateUserMutation({
+			onError: ({ error: { message } }) => {
+				// Show the error message
+				toast({
+					title: 'Error',
+					description: message,
+				});
+				setError('root', {
+					type: 'manual',
+					message: 'An error occurred. Please try again.',
+				});
 
-			// Reset form
-			reset();
-		},
-		onSuccess: async ({ redirect_url: redirectUrl }) => {
-			// Show success toast
-			toast({
-				title: 'Success',
-				description: 'Personalizing your experience...',
-			});
+				// Reset form
+				reset();
+			},
+			onSuccess: async ({ redirect_url: redirectUrl }) => {
+				// Show success toast
+				toast({
+					title: 'Success',
+					description: 'Personalizing your experience...',
+				});
 
-			// Redirect to next page
-			await router.push(redirectUrl);
-		},
-	});
+				// Redirect to next page
+				await router.push(redirectUrl);
+			},
+		});
 
 	// ==== Constants ==== //
 
@@ -88,12 +103,18 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	_;
 
 	// Form
-	const formStatus = formState.isSubmitting || isActivateUserRunning ? 'running' : 'idle';
+	const formStatus =
+		formState.isSubmitting || isActivateUserRunning ? 'running' : 'idle';
 	const isFormSubmitting = formStatus === 'running';
 	const fields: LiteFormFieldProps<ActivateUserParams>[] = [
 		{
 			fieldKey: 'age_range' as const,
-			renderTooltipContent: () => <div>This helps us identify stocks with appropriate liquidation horizons and volatility levels</div>,
+			renderTooltipContent: () => (
+				<div>
+					This helps us identify stocks with appropriate liquidation horizons
+					and volatility levels
+				</div>
+			),
 		},
 		{
 			fieldKey: 'capital_level' as const,
@@ -103,7 +124,12 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		},
 		{
 			fieldKey: 'risk_preference' as const,
-			renderTooltipContent: () => <div>This helps us balance risk with potential returns when recommending a stock</div>,
+			renderTooltipContent: () => (
+				<div>
+					This helps us balance risk with potential returns when recommending a
+					stock
+				</div>
+			),
 		},
 	].map(({ fieldKey, renderTooltipContent }) => ({
 		control,
@@ -145,19 +171,31 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	return (
 		<PageComponent {...pageProps}>
 			<div className={cn('min-h-screen relative', 'px-8 pt-24', 'pb-16')}>
-				<OnboardingCard step={1} subtitle='This helps our AI personalize your portfolio recommendations' title="Let's get to know each other">
+				<OnboardingCard
+					step={1}
+					subtitle='This helps our AI personalize your portfolio recommendations'
+					title="Let's get to know each other"
+				>
 					<form onSubmit={handleSubmit(onSubmit) as () => void}>
 						<div>
 							{fields.map((fieldProps) => (
-								<LiteFormFieldContainer key={fieldProps.fieldKey} {...fieldProps} />
+								<LiteFormFieldContainer
+									key={fieldProps.fieldKey}
+									{...fieldProps}
+								/>
 							))}
 						</div>
 						<div className='mt-4 text-right w-full'>
-							<SubmitButton className='w-full' isSubmitting={isFormSubmitting} />
+							<SubmitButton
+								className='w-full'
+								isSubmitting={isFormSubmitting}
+							/>
 						</div>
 						{Boolean(formState.errors['root']?.message) && (
 							<div className='mt-4'>
-								<LiteFormFieldError fieldErrorMessage={formState.errors['root']?.message ?? ''} />
+								<LiteFormFieldError
+									fieldErrorMessage={formState.errors['root']?.message ?? ''}
+								/>
 							</div>
 						)}
 					</form>

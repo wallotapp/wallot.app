@@ -2,8 +2,20 @@ import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { firebaseAuthInstance as auth } from 'ergonomic-react/src/lib/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { PageStaticProps, PageProps, Page as PageComponent } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { LoginUserParams, SsoWebAppRouteQueryParams, getSsoWebAppRoute, passwordRules, loginUserSchema, loginUserSchemaFieldSpecByFieldKey, getHomeWebAppRoute } from '@wallot/js';
+import {
+	PageStaticProps,
+	PageProps,
+	Page as PageComponent,
+} from 'ergonomic-react/src/components/nextjs-pages/Page';
+import {
+	LoginUserParams,
+	SsoWebAppRouteQueryParams,
+	getSsoWebAppRoute,
+	passwordRules,
+	loginUserSchema,
+	loginUserSchemaFieldSpecByFieldKey,
+	getHomeWebAppRoute,
+} from '@wallot/js';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { useForm } from 'react-hook-form';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
@@ -43,15 +55,19 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const { toast } = useToast();
 
 	// Form Resolver
-	const resolver = useYupValidationResolver(loginUserSchema, defaultGeneralizedFormDataTransformationOptions);
+	const resolver = useYupValidationResolver(
+		loginUserSchema,
+		defaultGeneralizedFormDataTransformationOptions,
+	);
 
 	// Form
 	const initialFormData = loginUserSchema.getDefault();
-	const { control, formState, handleSubmit, reset, setError } = useForm<LoginUserParams>({
-		defaultValues: initialFormData,
-		resolver,
-		shouldUnregister: false,
-	});
+	const { control, formState, handleSubmit, reset, setError } =
+		useForm<LoginUserParams>({
+			defaultValues: initialFormData,
+			resolver,
+			shouldUnregister: false,
+		});
 
 	// ==== Constants ==== //
 
@@ -70,7 +86,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	});
 
 	// Form
-	const formStatus = formState.isSubmitting || isLoginUserRunning ? 'running' : 'idle';
+	const formStatus =
+		formState.isSubmitting || isLoginUserRunning ? 'running' : 'idle';
 	const isFormSubmitting = formStatus === 'running';
 	const fields: LiteFormFieldProps<LoginUserParams>[] = [
 		{
@@ -127,8 +144,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 
 				const { password, email } = data;
 				localStorage.setItem('pause_firebase_auth_redirects', 'true');
-				const { user: firebaseUser } = await signInWithEmailAndPassword(auth, email, password);
-				const { custom_token: clientToken } = await createFirebaseAuthCustomToken(firebaseUser, {});
+				const { user: firebaseUser } = await signInWithEmailAndPassword(
+					auth,
+					email,
+					password,
+				);
+				const { custom_token: clientToken } =
+					await createFirebaseAuthCustomToken(firebaseUser, {});
 				const defaultDestination = getHomeWebAppRoute({
 					routeStaticId: 'HOME_WEB_APP__/INDEX',
 					origin: siteOriginByTarget.HOME_WEB_APP,
@@ -137,13 +159,19 @@ const Page: NextPage<PageStaticProps> = (props) => {
 				});
 				const decodedDest = decodeURIComponent(dest ?? '');
 				const hasQueryParams = decodedDest.includes('?');
-				const destination = dest ? `${decodedDest}${hasQueryParams ? '&' : '?'}client_token=${clientToken}` : defaultDestination;
+				const destination = dest
+					? `${decodedDest}${
+							hasQueryParams ? '&' : '?'
+					  }client_token=${clientToken}`
+					: defaultDestination;
 
 				await router.push(destination);
 				return;
 			} catch (err) {
 				// Show the error message
-				const message = (err as GeneralizedError)?.error?.message ?? 'An error occurred. Please try again.';
+				const message =
+					(err as GeneralizedError)?.error?.message ??
+					'An error occurred. Please try again.';
 				toast({
 					title: 'Error',
 					description: message,
@@ -168,25 +196,40 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	return (
 		<PageComponent {...pageProps}>
 			<div className={cn('min-h-screen relative', 'px-8 pt-24')}>
-				<OnboardingCard step={null} subtitle='Enter your email and password to login' title='Welcome back'>
+				<OnboardingCard
+					step={null}
+					subtitle='Enter your email and password to login'
+					title='Welcome back'
+				>
 					<form onSubmit={handleSubmit(onSubmit) as () => void}>
 						<div>
 							{fields.map((fieldProps) => (
-								<LiteFormFieldContainer key={fieldProps.fieldKey} {...fieldProps} />
+								<LiteFormFieldContainer
+									key={fieldProps.fieldKey}
+									{...fieldProps}
+								/>
 							))}
 						</div>
 						<div className='mt-4 text-right w-full'>
-							<SubmitButton className='w-full' isSubmitting={isFormSubmitting} />
+							<SubmitButton
+								className='w-full'
+								isSubmitting={isFormSubmitting}
+							/>
 						</div>
 						{Boolean(formState.errors['root']?.message) && (
 							<div className='mt-4'>
-								<LiteFormFieldError fieldErrorMessage={formState.errors['root']?.message ?? ''} />
+								<LiteFormFieldError
+									fieldErrorMessage={formState.errors['root']?.message ?? ''}
+								/>
 							</div>
 						)}
 						<AuthenticationLegalNotice />
 					</form>
 				</OnboardingCard>
-				<ChangeAuthenticationRoute oppositeRoute={registerRoute} text='Need an account? Sign up' />
+				<ChangeAuthenticationRoute
+					oppositeRoute={registerRoute}
+					text='Need an account? Sign up'
+				/>
 			</div>
 		</PageComponent>
 	);

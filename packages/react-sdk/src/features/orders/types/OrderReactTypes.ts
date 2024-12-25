@@ -8,7 +8,11 @@ import {
 	GeneralizedUseCreateDocumentsMutationOptions,
 	GeneralizedUseUpdateDocumentsMutationOptions,
 } from 'ergonomic-react/src/lib/tanstackQuery';
-import { FirestoreDocumentCreateParams, FirestoreDocumentUpdateParams, GeneralizedFirestoreCollectionPage } from 'ergonomic-react/src/features/data';
+import {
+	FirestoreDocumentCreateParams,
+	FirestoreDocumentUpdateParams,
+	GeneralizedFirestoreCollectionPage,
+} from 'ergonomic-react/src/features/data';
 import { Order, CreateOrderParams, UpdateOrderParams } from '@wallot/js';
 
 export type OrderPageQueryResponse = GeneralizedFirestoreCollectionPage<Order>;
@@ -23,12 +27,16 @@ export type UseQueryOrderPageOptionsFn = GeneralizedUseQueryOptionsFn<Order>;
 
 export type UseQueryOrderPageObserver = GeneralizedUseQueryPageObserver<Order>;
 
-export type UseCreateOrderMutationOptions = GeneralizedUseCreateDocumentsMutationOptions<Order, CreateOrderParams>;
+export type UseCreateOrderMutationOptions =
+	GeneralizedUseCreateDocumentsMutationOptions<Order, CreateOrderParams>;
 export type CreateOrderMutationData = Order[];
 export type CreateOrderMutationError = GeneralizedError;
-export type CreateOrderMutationParams = FirestoreDocumentCreateParams<CreateOrderParams>;
+export type CreateOrderMutationParams =
+	FirestoreDocumentCreateParams<CreateOrderParams>;
 
-export type UseUpdateOrderMutationOptions = GeneralizedUseUpdateDocumentsMutationOptions<UpdateOrderParams>;
+export type UseUpdateOrderMutationOptions =
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateOrderParams>;
 export type UpdateOrderMutationData = unknown;
 export type UpdateOrderMutationError = GeneralizedError;
-export type UpdateOrderMutationParams = FirestoreDocumentUpdateParams<UpdateOrderParams>;
+export type UpdateOrderMutationParams =
+	FirestoreDocumentUpdateParams<UpdateOrderParams>;

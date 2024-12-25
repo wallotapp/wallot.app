@@ -1,5 +1,10 @@
 import { default as OpenAI } from 'openai';
-import { getCloudStorageBucket, getFirebaseAuth, getFirestoreDB, getStripeInstance } from 'ergonomic-node';
+import {
+	getCloudStorageBucket,
+	getFirebaseAuth,
+	getFirestoreDB,
+	getStripeInstance,
+} from 'ergonomic-node';
 import { SecretData } from './SecretDataTypes.js';
 import { getAlpacaBrokerApiClient } from './alpaca/index.js';
 import { getAlphaVantageClient } from './alphaVantage/index.js';
@@ -11,10 +16,16 @@ export const getServices = (secrets: SecretData) => ({
 	alpaca: { broker: getAlpacaBrokerApiClient(secrets) },
 	alphaVantage: getAlphaVantageClient(secrets),
 	auth: getFirebaseAuth(secrets),
-	bucket: getCloudStorageBucket(secrets.SECRET_CRED_FIREBASE_PROJECT_STORAGE_BUCKET_NAME),
+	bucket: getCloudStorageBucket(
+		secrets.SECRET_CRED_FIREBASE_PROJECT_STORAGE_BUCKET_NAME,
+	),
 	crypto: {
-		encrypt: encryptString(secrets.SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY),
-		decrypt: decryptString(secrets.SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY),
+		encrypt: encryptString(
+			secrets.SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY,
+		),
+		decrypt: decryptString(
+			secrets.SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY,
+		),
 	},
 	db: getFirestoreDB(secrets),
 	log: log(secrets.SECRET_CRED_SERVER_PROTOCOL),

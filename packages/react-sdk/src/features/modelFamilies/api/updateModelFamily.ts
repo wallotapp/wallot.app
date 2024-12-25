@@ -2,4 +2,7 @@ import { generalizedFirestoreDocumentUpdateOperation } from 'ergonomic-react/src
 import { UpdateModelFamilyParams, modelFamiliesApi } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const updateModelFamily = generalizedFirestoreDocumentUpdateOperation<UpdateModelFamilyParams>(modelFamiliesApi as unknown as GeneralizedApiResourceSpec);
+export const updateModelFamily =
+	generalizedFirestoreDocumentUpdateOperation<UpdateModelFamilyParams>(
+		modelFamiliesApi as unknown as GeneralizedApiResourceSpec,
+	);

@@ -1,6 +1,10 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { Page as PageComponent, PageStaticProps, PageProps } from 'ergonomic-react/src/components/nextjs-pages/Page';
+import {
+	Page as PageComponent,
+	PageStaticProps,
+	PageProps,
+} from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { SupportWebAppRouteQueryParams } from '@wallot/js';
 
 // ==== Static Page Props ==== //
@@ -43,7 +47,9 @@ const Page: NextPage = () => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<p className='font-medium text-xl'>Hello, and welcome to a dynamic route in Wallot's Support Web App! 🚀</p>
+			<p className='font-medium text-xl'>
+				Hello, and welcome to a dynamic route in Wallot's Support Web App! 🚀
+			</p>
 			<p className='font-light text-sm'>The slug for this page is: {slug}</p>
 		</PageComponent>
 	);

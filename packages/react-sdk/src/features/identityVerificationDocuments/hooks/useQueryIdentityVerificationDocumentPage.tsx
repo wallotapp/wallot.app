@@ -7,15 +7,27 @@ import {
 	UseQueryIdentityVerificationDocumentPageProps,
 } from '@wallot/react/src/features/identityVerificationDocuments/types/IdentityVerificationDocumentReactTypes';
 
-export const getQueryIdentityVerificationDocumentPageReactQueryKey: UseQueryIdentityVerificationDocumentPageQueryKeyFn = (params) => ['identity_verification_document', JSON.stringify(R.omit(['startAfterDocumentReference'], params))] as const;
+export const getQueryIdentityVerificationDocumentPageReactQueryKey: UseQueryIdentityVerificationDocumentPageQueryKeyFn =
+	(params) =>
+		[
+			'identity_verification_document',
+			JSON.stringify(R.omit(['startAfterDocumentReference'], params)),
+		] as const;
 
-export const getQueryIdentityVerificationDocumentPageReactQueryOptions: UseQueryIdentityVerificationDocumentPageOptionsFn = (props) => ({
-	queryFn: () => queryIdentityVerificationDocumentPage(props.firestoreQueryOptions),
-	queryKey: getQueryIdentityVerificationDocumentPageReactQueryKey(props.firestoreQueryOptions),
-	...(props.reactQueryOptions ?? {}),
-});
+export const getQueryIdentityVerificationDocumentPageReactQueryOptions: UseQueryIdentityVerificationDocumentPageOptionsFn =
+	(props) => ({
+		queryFn: () =>
+			queryIdentityVerificationDocumentPage(props.firestoreQueryOptions),
+		queryKey: getQueryIdentityVerificationDocumentPageReactQueryKey(
+			props.firestoreQueryOptions,
+		),
+		...(props.reactQueryOptions ?? {}),
+	});
 
-export const useQueryIdentityVerificationDocumentPage = ({ firestoreQueryOptions, reactQueryOptions = {} }: UseQueryIdentityVerificationDocumentPageProps) => {
+export const useQueryIdentityVerificationDocumentPage = ({
+	firestoreQueryOptions,
+	reactQueryOptions = {},
+}: UseQueryIdentityVerificationDocumentPageProps) => {
 	return ReactQuery.useQuery(
 		getQueryIdentityVerificationDocumentPageReactQueryOptions({
 			firestoreQueryOptions,

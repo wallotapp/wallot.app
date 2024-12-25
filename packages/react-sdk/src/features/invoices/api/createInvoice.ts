@@ -2,4 +2,7 @@ import { generalizedFirestoreDocumentCreateOperation } from 'ergonomic-react/src
 import { CreateInvoiceParams, Invoice, invoicesApi } from '@wallot/js';
 import { GeneralizedApiResourceSpec } from 'ergonomic';
 
-export const createInvoice = generalizedFirestoreDocumentCreateOperation<CreateInvoiceParams, Invoice>(invoicesApi as unknown as GeneralizedApiResourceSpec);
+export const createInvoice = generalizedFirestoreDocumentCreateOperation<
+	CreateInvoiceParams,
+	Invoice
+>(invoicesApi as unknown as GeneralizedApiResourceSpec);

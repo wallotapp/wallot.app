@@ -15,11 +15,21 @@ export const activateUserProperties = {
 		.required()
 		.nullable(false)
 		.default('' as CapitalLevel),
-	investing_goals: usersApi.properties.investing_goals.defined().required().nullable(false),
-	risk_preference: usersApi.properties.risk_preference.defined().required().nullable(false).default('medium'),
+	investing_goals: usersApi.properties.investing_goals
+		.defined()
+		.required()
+		.nullable(false),
+	risk_preference: usersApi.properties.risk_preference
+		.defined()
+		.required()
+		.nullable(false)
+		.default('medium'),
 } as const;
 export const activateUserSchema = yup.object(activateUserProperties);
-export const activateUserSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(activateUserSchema, Keys(activateUserProperties));
+export const activateUserSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
+	activateUserSchema,
+	Keys(activateUserProperties),
+);
 
 export type ActivateUserParams = yup.InferType<typeof activateUserSchema>;
 export type ActivateUserResponse = {

@@ -27,9 +27,15 @@ import { firebaseFunctions } from 'ergonomic-node';
  * processImageAsynchronously('path/to/image.jpg').catch(console.error);
  * ```
  */
-export const processImage = firebaseFunctions.pubsub.onMessagePublished<ResizeParams>('image-uploads', resizeAndValidateImage);
+export const processImage =
+	firebaseFunctions.pubsub.onMessagePublished<ResizeParams>(
+		'image-uploads',
+		resizeAndValidateImage,
+	);
 
-async function resizeAndValidateImage(event: CloudEvent<MessagePublishedData<ResizeParams>>) {
+async function resizeAndValidateImage(
+	event: CloudEvent<MessagePublishedData<ResizeParams>>,
+) {
 	// Get the `imagePath` attribute of the PubSub message JSON body.
 	let imagePath: string | null = null;
 	try {

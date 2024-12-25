@@ -1,5 +1,21 @@
 {
-	"cSpell.words": ["autochangelog", "doctoc", "expressjs", "firestore", "gtag", "libphonenumber", "luxon", "nextjs", "Parens", "polyfillio", "preconnect", "rrule", "tailwindcss", "tanstack", "wallot"],
+	"cSpell.words": [
+		"autochangelog",
+		"doctoc",
+		"expressjs",
+		"firestore",
+		"gtag",
+		"libphonenumber",
+		"luxon",
+		"nextjs",
+		"Parens",
+		"polyfillio",
+		"preconnect",
+		"rrule",
+		"tailwindcss",
+		"tanstack",
+		"wallot"
+	],
 	"clock.format": "isoUtcDateTime",
 	"cloudcode.project": "app-wallot-staging",
 	"editor.defaultFormatter": "esbenp.prettier-vscode",

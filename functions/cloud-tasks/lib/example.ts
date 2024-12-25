@@ -1,4 +1,8 @@
-import { CloudTaskHandler, firebaseFunctions, getCloudFunctionUrl } from 'ergonomic-node';
+import {
+	CloudTaskHandler,
+	firebaseFunctions,
+	getCloudFunctionUrl,
+} from 'ergonomic-node';
 
 import { getFunctions } from 'firebase-admin/functions';
 import { secrets } from './secrets.js';
@@ -7,7 +11,9 @@ import { v4 } from 'uuid';
 const serviceAccountPath = `${directoryPath}/../gmailApiServiceAccount.json`;
 
 const scheduleAlpacaAccountStatusChecks = async (userId: string) => {
-	const queue = getFunctions().taskQueue<AlpacaListenerTaskParams>('checkAlpacaAccountStatus');
+	const queue = getFunctions().taskQueue<AlpacaListenerTaskParams>(
+		'checkAlpacaAccountStatus',
+	);
 	const targetUri = await getCloudFunctionUrl({
 		...secrets,
 		functionName: 'checkAlpacaAccountStatus',
@@ -36,18 +42,28 @@ const scheduleAlpacaAccountStatusChecks = async (userId: string) => {
 };
 scheduleAlpacaAccountStatusChecks;
 
-const handleCheckAlpacaAccountStatus: CloudTaskHandler<AlpacaListenerTaskParams> = async ({ data: { user_id } }) => {
+const handleCheckAlpacaAccountStatus: CloudTaskHandler<
+	AlpacaListenerTaskParams
+> = async ({ data: { user_id } }) => {
 	if (!user_id || typeof user_id !== 'string') {
-		throw new firebaseFunctions.https.HttpsError('invalid-argument', 'User ID is required');
+		throw new firebaseFunctions.https.HttpsError(
+			'invalid-argument',
+			'User ID is required',
+		);
 	}
 
 	if (Math.random() > 0.5) {
 		const result = {
 			result: 'PENDING',
-			message: 'Try again- still waiting for the order to be filled for customer with id: ' + user_id,
+			message:
+				'Try again- still waiting for the order to be filled for customer with id: ' +
+				user_id,
 		};
 		console.log(result);
-		throw new firebaseFunctions.https.HttpsError('internal', 'Order still pending');
+		throw new firebaseFunctions.https.HttpsError(
+			'internal',
+			'Order still pending',
+		);
 	} else {
 		const result = {
 			result: 'DONE',
@@ -58,18 +74,19 @@ const handleCheckAlpacaAccountStatus: CloudTaskHandler<AlpacaListenerTaskParams>
 	}
 };
 
-export const checkAlpacaAccountStatus = firebaseFunctions.tasks.onTaskDispatched<AlpacaListenerTaskParams>(
-	{
-		retryConfig: {
-			maxAttempts: 5,
-			minBackoffSeconds: 60, // Retry after 1 minute
+export const checkAlpacaAccountStatus =
+	firebaseFunctions.tasks.onTaskDispatched<AlpacaListenerTaskParams>(
+		{
+			retryConfig: {
+				maxAttempts: 5,
+				minBackoffSeconds: 60, // Retry after 1 minute
+			},
+			rateLimits: {
+				maxConcurrentDispatches: 6,
+			},
 		},
-		rateLimits: {
-			maxConcurrentDispatches: 6,
-		},
-	},
-	handleCheckAlpacaAccountStatus,
-);
+		handleCheckAlpacaAccountStatus,
+	);
 
 type AlpacaListenerTaskParams = {
 	user_id: string;

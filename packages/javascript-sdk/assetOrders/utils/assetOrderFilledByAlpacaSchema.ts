@@ -7,11 +7,18 @@ import { AssetOrderPendingAlpacaFill } from './assetOrderPendingAlpacaFillSchema
 export const assetOrderFilledByAlpacaProperties = {
 	alpaca_order_status: YupHelpers.constant(AlpacaOrderStatusEnum.obj.filled),
 };
-export const assetOrderFilledByAlpacaSchema = yup.object(assetOrderFilledByAlpacaProperties);
-export type AssetOrderFilledByAlpacaParams = yup.InferType<typeof assetOrderFilledByAlpacaSchema>;
+export const assetOrderFilledByAlpacaSchema = yup.object(
+	assetOrderFilledByAlpacaProperties,
+);
+export type AssetOrderFilledByAlpacaParams = yup.InferType<
+	typeof assetOrderFilledByAlpacaSchema
+>;
 
-export type AssetOrderFilledByAlpaca = AssetOrderPendingAlpacaFill & AssetOrderFilledByAlpacaParams;
-export const isAssetOrderFilledByAlpaca = (assetOrder: AssetOrder): assetOrder is AssetOrderFilledByAlpaca => {
+export type AssetOrderFilledByAlpaca = AssetOrderPendingAlpacaFill &
+	AssetOrderFilledByAlpacaParams;
+export const isAssetOrderFilledByAlpaca = (
+	assetOrder: AssetOrder,
+): assetOrder is AssetOrderFilledByAlpaca => {
 	try {
 		assetOrderFilledByAlpacaSchema.validateSync(assetOrder);
 		return true;

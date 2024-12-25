@@ -29,11 +29,17 @@ import { SecretData } from '../../SecretDataTypes.js';
  * ```
  *
  */
-export const getAlpacaBrokerApiClient = ({ SECRET_CRED_ALPACA_BROKER_API_BASE_URL, SECRET_CRED_ALPACA_BROKER_API_KEY, SECRET_CRED_ALPACA_BROKER_API_SECRET }: SecretData) =>
+export const getAlpacaBrokerApiClient = ({
+	SECRET_CRED_ALPACA_BROKER_API_BASE_URL,
+	SECRET_CRED_ALPACA_BROKER_API_KEY,
+	SECRET_CRED_ALPACA_BROKER_API_SECRET,
+}: SecretData) =>
 	ky.create({
 		prefixUrl: SECRET_CRED_ALPACA_BROKER_API_BASE_URL,
 		headers: {
 			accept: 'application/json',
-			authorization: `Basic ${Buffer.from(`${SECRET_CRED_ALPACA_BROKER_API_KEY}:${SECRET_CRED_ALPACA_BROKER_API_SECRET}`).toString('base64')}`,
+			authorization: `Basic ${Buffer.from(
+				`${SECRET_CRED_ALPACA_BROKER_API_KEY}:${SECRET_CRED_ALPACA_BROKER_API_SECRET}`,
+			).toString('base64')}`,
 		},
 	});

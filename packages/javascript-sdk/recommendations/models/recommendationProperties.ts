@@ -1,12 +1,31 @@
 import * as yup from 'yup';
-import { GeneralizedApiResourceCreateParamsRequiredFieldEnum, GeneralizedApiResourceProperties, CreateParams, UpdateParams, YupHelpers, getApiResourceSpec, getEnum } from 'ergonomic';
-import { apiYupHelpers, idPrefixByResourceName } from '../../utils/apiYupHelpers.js';
+import {
+	GeneralizedApiResourceCreateParamsRequiredFieldEnum,
+	GeneralizedApiResourceProperties,
+	CreateParams,
+	UpdateParams,
+	YupHelpers,
+	getApiResourceSpec,
+	getEnum,
+} from 'ergonomic';
+import {
+	apiYupHelpers,
+	idPrefixByResourceName,
+} from '../../utils/apiYupHelpers.js';
 import { assetOrdersApi } from '../../assetOrders/models/assetOrderProperties.js';
 
 export const RecommendationCategoryEnum = getEnum(['default']);
-export type RecommendationCategory = keyof typeof RecommendationCategoryEnum.obj;
+export type RecommendationCategory =
+	keyof typeof RecommendationCategoryEnum.obj;
 
-const createParamsRequiredFieldEnum = getEnum([...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr, 'best_investments', 'model', 'news_reports', 'open_ai_api_request_ids', 'user'] as const);
+const createParamsRequiredFieldEnum = getEnum([
+	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'best_investments',
+	'model',
+	'news_reports',
+	'open_ai_api_request_ids',
+	'user',
+] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
 const _object = 'recommendation';
@@ -27,7 +46,9 @@ const properties = {
 	category: RecommendationCategoryEnum.getDefinedSchema(),
 	model: apiYupHelpers.idRef(['model']).min(1).meta({ unique_key: false }),
 	news_reports: apiYupHelpers.idRefs(['news_report']).min(1),
-	open_ai_api_request_ids: YupHelpers.array(yup.string().defined()).defined().min(1),
+	open_ai_api_request_ids: YupHelpers.array(yup.string().defined())
+		.defined()
+		.min(1),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: false }),
 } as const;
 type U = typeof properties;
@@ -37,6 +58,8 @@ export const recommendationsApi = getApiResourceSpec<keyof U, U, T>({
 	idPrefix: idPrefixByResourceName[_object],
 	properties,
 } as const);
-export type Recommendation = yup.InferType<typeof recommendationsApi.apiResourceJsonSchema>;
+export type Recommendation = yup.InferType<
+	typeof recommendationsApi.apiResourceJsonSchema
+>;
 export type CreateRecommendationParams = CreateParams<Recommendation, T>;
 export type UpdateRecommendationParams = UpdateParams<Recommendation>;

@@ -1,9 +1,20 @@
 import { useMutation } from '@tanstack/react-query';
 import { createNewsReport } from '@wallot/react/src/features/newsReports/api/createNewsReport';
-import { CreateNewsReportMutationData, CreateNewsReportMutationError, CreateNewsReportMutationParams, UseCreateNewsReportMutationOptions } from '@wallot/react/src/features/newsReports/types/NewsReportReactTypes';
+import {
+	CreateNewsReportMutationData,
+	CreateNewsReportMutationError,
+	CreateNewsReportMutationParams,
+	UseCreateNewsReportMutationOptions,
+} from '@wallot/react/src/features/newsReports/types/NewsReportReactTypes';
 
-export const useCreateNewsReportMutation = (options?: UseCreateNewsReportMutationOptions) => {
-	return useMutation<CreateNewsReportMutationData, CreateNewsReportMutationError, CreateNewsReportMutationParams>((params: CreateNewsReportMutationParams) => createNewsReport(params), {
+export const useCreateNewsReportMutation = (
+	options?: UseCreateNewsReportMutationOptions,
+) => {
+	return useMutation<
+		CreateNewsReportMutationData,
+		CreateNewsReportMutationError,
+		CreateNewsReportMutationParams
+	>((params: CreateNewsReportMutationParams) => createNewsReport(params), {
 		onError: (error: CreateNewsReportMutationError) => {
 			console.error('Create operation failed:', error);
 		},

@@ -1,4 +1,7 @@
-import { IdentityVerificationDocument, identityVerificationDocumentsApi } from '../models/index.js';
+import {
+	IdentityVerificationDocument,
+	identityVerificationDocumentsApi,
+} from '../models/index.js';
 
 describe('IdentityVerificationDocument', () => {
 	test('exampleIdentityVerificationDocument', () => {
@@ -7,11 +10,15 @@ describe('IdentityVerificationDocument', () => {
 			...apiResourceDefaultJson,
 			category: 'drivers_license',
 			name: 'My IdentityVerificationDocument',
-			image_back: 'gs://my-app.appspot.com/identity_verification_documents/image_back.jpg',
-			image_front: 'gs://my-app.appspot.com/identity_verification_documents/image_front.jpg',
+			image_back:
+				'gs://my-app.appspot.com/identity_verification_documents/image_back.jpg',
+			image_front:
+				'gs://my-app.appspot.com/identity_verification_documents/image_front.jpg',
 			user: '',
 		};
-		expect(exampleIdentityVerificationDocument).toEqual<typeof exampleIdentityVerificationDocument>({
+		expect(exampleIdentityVerificationDocument).toEqual<
+			typeof exampleIdentityVerificationDocument
+		>({
 			_id: expect.any(String),
 			_date_last_modified: expect.any(String),
 			_created_by: expect.any(String),
@@ -22,8 +29,10 @@ describe('IdentityVerificationDocument', () => {
 			_deleted: false,
 			description: '',
 			name: 'My IdentityVerificationDocument',
-			image_back: 'gs://my-app.appspot.com/identity_verification_documents/image_back.jpg',
-			image_front: 'gs://my-app.appspot.com/identity_verification_documents/image_front.jpg',
+			image_back:
+				'gs://my-app.appspot.com/identity_verification_documents/image_back.jpg',
+			image_front:
+				'gs://my-app.appspot.com/identity_verification_documents/image_front.jpg',
 			user: '',
 		});
 	});

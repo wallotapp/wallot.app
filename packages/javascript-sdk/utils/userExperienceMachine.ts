@@ -112,10 +112,14 @@ export type PendingNewAlpacaOrderHadAnErrorContextUpdates = {
 };
 
 // Resolution updates use the same context updates as `UserCompletedKycAndBankContextUpdates`
-export type UserResolvedErrorWithSubmittedAlpacaAccountContextUpdates = UserCompletedKycAndBankContextUpdates;
-export type UserResolvedErrorWithQueuedAlpacaAchRelationshipContextUpdates = UserCompletedKycAndBankContextUpdates;
-export type UserResolvedErrorWithQueuedAlpacaAchTransferContextUpdates = UserCompletedKycAndBankContextUpdates;
-export type UserResolvedErrorWithPendingNewAlpacaOrderContextUpdates = UserCompletedKycAndBankContextUpdates;
+export type UserResolvedErrorWithSubmittedAlpacaAccountContextUpdates =
+	UserCompletedKycAndBankContextUpdates;
+export type UserResolvedErrorWithQueuedAlpacaAchRelationshipContextUpdates =
+	UserCompletedKycAndBankContextUpdates;
+export type UserResolvedErrorWithQueuedAlpacaAchTransferContextUpdates =
+	UserCompletedKycAndBankContextUpdates;
+export type UserResolvedErrorWithPendingNewAlpacaOrderContextUpdates =
+	UserCompletedKycAndBankContextUpdates;
 
 export type UserExperienceState =
 	| 'guest'
@@ -131,7 +135,10 @@ export type UserExperienceState =
 	| 'trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchTransferError'
 	| 'trackingProgress.resolvingProblemWithOrder.resolvingAlpacaOrderError'
 	| 'trackingProgress.homeostasis';
-export const userExperienceMachine = createMachine<UserExperienceContext, UserExperienceEvent>({
+export const userExperienceMachine = createMachine<
+	UserExperienceContext,
+	UserExperienceEvent
+>({
 	context: {},
 	id: 'userExperience',
 	initial: 'guest',
@@ -157,7 +164,8 @@ export const userExperienceMachine = createMachine<UserExperienceContext, UserEx
 					},
 				},
 			},
-			description: 'The user has registered and is awaiting account activation.',
+			description:
+				'The user has registered and is awaiting account activation.',
 		},
 		activated: {
 			initial: 'inputting_kyc_and_bank',
@@ -185,11 +193,13 @@ export const userExperienceMachine = createMachine<UserExperienceContext, UserEx
 					},
 				},
 			},
-			description: 'The user has activated their account and is ready to confirm their order.',
+			description:
+				'The user has activated their account and is ready to confirm their order.',
 		},
 		trackingProgress: {
 			initial: 'waitingForOrderToBeFilled',
-			description: 'The user is tracking the progress of their stock purchase orders.',
+			description:
+				'The user is tracking the progress of their stock purchase orders.',
 			states: {
 				waitingForOrderToBeFilled: {
 					initial: 'waitingForAlpacaAccountToChangeFromSubmittedToActive',
@@ -197,36 +207,42 @@ export const userExperienceMachine = createMachine<UserExperienceContext, UserEx
 						waitingForAlpacaAccountToChangeFromSubmittedToActive: {
 							on: {
 								SUBMITTED_ALPACA_ACCOUNT_BECAME_ACTIVE: {
-									target: 'waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved',
+									target:
+										'waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved',
 									actions: (_context, _event) => {
 										// Queue tasks to approve ACH relationship
 									},
 								},
 								SUBMITTED_ALPACA_ACCOUNT_HAD_AN_ERROR: {
-									target: '#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAccountActivationError',
+									target:
+										'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAccountActivationError',
 									actions: (_context, _event) => {
 										// Notify user of error and prompt to resolve
 									},
 								},
 							},
-							description: 'Waiting for the Alpaca account status to change from Submitted to Active.',
+							description:
+								'Waiting for the Alpaca account status to change from Submitted to Active.',
 						},
 						waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved: {
 							on: {
 								QUEUED_ALPACA_ACH_RELATIONSHIP_BECAME_APPROVED: {
-									target: 'waitingForAlpacaAchTransferToChangeFromQueuedToComplete',
+									target:
+										'waitingForAlpacaAchTransferToChangeFromQueuedToComplete',
 									actions: (_context, _event) => {
 										// Queue tasks to complete ACH transfer
 									},
 								},
 								QUEUED_ALPACA_ACH_RELATIONSHIP_HAD_AN_ERROR: {
-									target: '#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchRelationshipError',
+									target:
+										'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchRelationshipError',
 									actions: (_context, _event) => {
 										// Notify user of error and prompt to resolve
 									},
 								},
 							},
-							description: 'Waiting for the Alpaca ACH relationship status to change from Queued to Approved.',
+							description:
+								'Waiting for the Alpaca ACH relationship status to change from Queued to Approved.',
 						},
 						waitingForAlpacaAchTransferToChangeFromQueuedToComplete: {
 							on: {
@@ -237,13 +253,15 @@ export const userExperienceMachine = createMachine<UserExperienceContext, UserEx
 									},
 								},
 								QUEUED_ALPACA_ACH_TRANSFER_HAD_AN_ERROR: {
-									target: '#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchTransferError',
+									target:
+										'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchTransferError',
 									actions: (_context, _event) => {
 										// Notify user of error and prompt to resolve
 									},
 								},
 							},
-							description: 'Waiting for the Alpaca ACH transfer status to change from Queued to Complete.',
+							description:
+								'Waiting for the Alpaca ACH transfer status to change from Queued to Complete.',
 						},
 						waitingForAlpacaOrderToChangeFromPendingNewToFilled: {
 							on: {
@@ -254,13 +272,15 @@ export const userExperienceMachine = createMachine<UserExperienceContext, UserEx
 									},
 								},
 								PENDING_NEW_ALPACA_ORDER_HAD_AN_ERROR: {
-									target: '#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaOrderError',
+									target:
+										'#userExperience.trackingProgress.resolvingProblemWithOrder.resolvingAlpacaOrderError',
 									actions: (_context, _event) => {
 										// Notify user of error and prompt to resolve
 									},
 								},
 							},
-							description: 'Waiting for the Alpaca order status to change from PendingNew to Filled.',
+							description:
+								'Waiting for the Alpaca order status to change from PendingNew to Filled.',
 						},
 					},
 				},
@@ -269,7 +289,8 @@ export const userExperienceMachine = createMachine<UserExperienceContext, UserEx
 						resolvingAlpacaAccountActivationError: {
 							on: {
 								USER_RESOLVED_ERROR_WITH_SUBMITTED_ALPACA_ACCOUNT: {
-									target: '#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAccountToChangeFromSubmittedToActive',
+									target:
+										'#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAccountToChangeFromSubmittedToActive',
 									actions: (_context, _event) => {
 										// Queue tasks to resubmit Alpaca account
 									},
@@ -280,7 +301,8 @@ export const userExperienceMachine = createMachine<UserExperienceContext, UserEx
 						resolvingAlpacaAchRelationshipError: {
 							on: {
 								USER_RESOLVED_ERROR_WITH_QUEUED_ALPACA_ACH_RELATIONSHIP: {
-									target: '#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved',
+									target:
+										'#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved',
 									actions: (_context, _event) => {
 										// Queue tasks to resubmit ACH relationship
 									},
@@ -291,7 +313,8 @@ export const userExperienceMachine = createMachine<UserExperienceContext, UserEx
 						resolvingAlpacaAchTransferError: {
 							on: {
 								USER_RESOLVED_ERROR_WITH_QUEUED_ALPACA_ACH_TRANSFER: {
-									target: '#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchTransferToChangeFromQueuedToComplete',
+									target:
+										'#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchTransferToChangeFromQueuedToComplete',
 									actions: (_context, _event) => {
 										// Queue tasks to resubmit ACH transfer
 									},
@@ -302,7 +325,8 @@ export const userExperienceMachine = createMachine<UserExperienceContext, UserEx
 						resolvingAlpacaOrderError: {
 							on: {
 								USER_RESOLVED_ERROR_WITH_PENDING_NEW_ALPACA_ORDER: {
-									target: '#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaOrderToChangeFromPendingNewToFilled',
+									target:
+										'#userExperience.trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaOrderToChangeFromPendingNewToFilled',
 									actions: (_context, _event) => {
 										// Queue tasks to resubmit order
 									},
@@ -311,11 +335,13 @@ export const userExperienceMachine = createMachine<UserExperienceContext, UserEx
 							description: 'Resolving issues with order execution',
 						},
 					},
-					description: 'The order was unsuccessful, and the user is resolving the issue.',
+					description:
+						'The order was unsuccessful, and the user is resolving the issue.',
 				},
 				homeostasis: {
 					type: 'final',
-					description: 'The user has successfully purchased stocks and has reached a stable state.',
+					description:
+						'The user has successfully purchased stocks and has reached a stable state.',
 				},
 			},
 		},

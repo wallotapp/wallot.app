@@ -291,7 +291,10 @@
 					"{\"label\":\"app-wallot-production\",\"local_development_port\":\"17150\",\"public_url\":\"https://wallot.app\",\"firebase_config_api_key\":\"AIzaSyDEpPRtu66q92D40CrluYqCbe6yTXcLC3U\",\"firebase_config_app_id\":\"1:315699416195:web:56cfd999d2495e8d385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-00F2CDJXCH\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
 					"{\"label\":\"app-wallot-staging\",\"local_development_port\":\"7150\",\"public_url\":\"https://app-wallot-staging.web.app\",\"firebase_config_api_key\":\"AIzaSyAWoWzRH01lGIx2jLx5sWPFDdfKsTSNaDc\",\"firebase_config_app_id\":\"1:721995107731:web:a9bdd3b9a3b7501464ac66\",\"firebase_config_auth_domain\":\"app-wallot-staging.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-V7P0JHB26C\",\"firebase_config_messaging_sender_id\":\"721995107731\",\"firebase_config_project_id\":\"app-wallot-staging\",\"firebase_config_storage_bucket\":\"app-wallot-staging.firebasestorage.app\",\"deployment_environment\":\"test\"}"
 				],
-				"rewrites": ["{\"source\":\"/orders/**/confirm\",\"destination\":\"/orders/[order_id]/confirm.html\"}", "{\"source\":\"/recommendations/**/details\",\"destination\":\"/recommendations/[recommendation_id]/details.html\"}"],
+				"rewrites": [
+					"{\"source\":\"/orders/**/confirm\",\"destination\":\"/orders/[order_id]/confirm.html\"}",
+					"{\"source\":\"/recommendations/**/details\",\"destination\":\"/recommendations/[recommendation_id]/details.html\"}"
+				],
 				"category": "default",
 				"visibility": "public"
 			},
@@ -323,7 +326,9 @@
 					"{\"label\":\"app-wallot-blog-production\",\"local_development_port\":\"17157\",\"public_url\":\"https://blog.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:b57b38b14a9d3ad7385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-6RGT4E9K2Q\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
 					"{\"label\":\"app-wallot-blog-staging\",\"local_development_port\":\"7157\",\"public_url\":\"https://app-wallot-blog-staging.web.app\",\"firebase_config_api_key\":\"AIzaSyAWoWzRH01lGIx2jLx5sWPFDdfKsTSNaDc\",\"firebase_config_app_id\":\"1:721995107731:web:71408bfc1a7a302564ac66\",\"firebase_config_auth_domain\":\"app-wallot-staging.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-XMJGNB1R66\",\"firebase_config_messaging_sender_id\":\"721995107731\",\"firebase_config_project_id\":\"app-wallot-staging\",\"firebase_config_storage_bucket\":\"app-wallot-staging.firebasestorage.app\",\"deployment_environment\":\"test\"}"
 				],
-				"rewrites": ["{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"],
+				"rewrites": [
+					"{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"
+				],
 				"category": "default",
 				"visibility": "public"
 			},
@@ -337,7 +342,9 @@
 					"{\"label\":\"app-wallot-learn-production\",\"local_development_port\":\"17152\",\"public_url\":\"https://learn.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:2aa55b9fc0acf9d0385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-5LBL089NCZ\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
 					"{\"label\":\"app-wallot-learn-staging\",\"local_development_port\":\"7152\",\"public_url\":\"https://app-wallot-learn-staging.web.app\",\"firebase_config_api_key\":\"AIzaSyAWoWzRH01lGIx2jLx5sWPFDdfKsTSNaDc\",\"firebase_config_app_id\":\"1:721995107731:web:34b54ba6219ee44064ac66\",\"firebase_config_auth_domain\":\"app-wallot-staging.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-G28LLQSZS2\",\"firebase_config_messaging_sender_id\":\"721995107731\",\"firebase_config_project_id\":\"app-wallot-staging\",\"firebase_config_storage_bucket\":\"app-wallot-staging.firebasestorage.app\",\"deployment_environment\":\"test\"}"
 				],
-				"rewrites": ["{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"],
+				"rewrites": [
+					"{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"
+				],
 				"category": "default",
 				"visibility": "public"
 			},
@@ -351,7 +358,9 @@
 					"{\"label\":\"app-wallot-signup-production\",\"local_development_port\":\"17153\",\"public_url\":\"https://signup.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:d05521b123993980385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-M3G3R22V5S\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
 					"{\"label\":\"app-wallot-signup-staging\",\"local_development_port\":\"7153\",\"public_url\":\"https://app-wallot-signup-staging.web.app\",\"firebase_config_api_key\":\"AIzaSyAWoWzRH01lGIx2jLx5sWPFDdfKsTSNaDc\",\"firebase_config_app_id\":\"1:721995107731:web:24a02ce6e9529af464ac66\",\"firebase_config_auth_domain\":\"app-wallot-staging.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-PJ0KLN7BFN\",\"firebase_config_messaging_sender_id\":\"721995107731\",\"firebase_config_project_id\":\"app-wallot-staging\",\"firebase_config_storage_bucket\":\"app-wallot-staging.firebasestorage.app\",\"deployment_environment\":\"test\"}"
 				],
-				"rewrites": ["{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"],
+				"rewrites": [
+					"{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"
+				],
 				"category": "default",
 				"visibility": "public"
 			},
@@ -365,7 +374,9 @@
 					"{\"label\":\"app-wallot-sso-production\",\"local_development_port\":\"17154\",\"public_url\":\"https://sso.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:3da315ad246a07fa385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-R3Y10Z6H2T\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
 					"{\"label\":\"app-wallot-sso-staging\",\"local_development_port\":\"7154\",\"public_url\":\"https://app-wallot-sso-staging.web.app\",\"firebase_config_api_key\":\"AIzaSyAWoWzRH01lGIx2jLx5sWPFDdfKsTSNaDc\",\"firebase_config_app_id\":\"1:721995107731:web:48b320b0ec6f4e8164ac66\",\"firebase_config_auth_domain\":\"app-wallot-staging.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-4RYYKVMTW5\",\"firebase_config_messaging_sender_id\":\"721995107731\",\"firebase_config_project_id\":\"app-wallot-staging\",\"firebase_config_storage_bucket\":\"app-wallot-staging.firebasestorage.app\",\"deployment_environment\":\"test\"}"
 				],
-				"rewrites": ["{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"],
+				"rewrites": [
+					"{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"
+				],
 				"category": "default",
 				"visibility": "public"
 			},
@@ -379,7 +390,9 @@
 					"{\"label\":\"app-wallot-status-production\",\"local_development_port\":\"17158\",\"public_url\":\"https://status.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:e8460d228d660ae4385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-DRBY7H6J7D\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
 					"{\"label\":\"app-wallot-status-staging\",\"local_development_port\":\"7158\",\"public_url\":\"https://app-wallot-status-staging.web.app\",\"firebase_config_api_key\":\"AIzaSyAWoWzRH01lGIx2jLx5sWPFDdfKsTSNaDc\",\"firebase_config_app_id\":\"1:721995107731:web:fa7723627177591264ac66\",\"firebase_config_auth_domain\":\"app-wallot-staging.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-5LHDD5H56N\",\"firebase_config_messaging_sender_id\":\"721995107731\",\"firebase_config_project_id\":\"app-wallot-staging\",\"firebase_config_storage_bucket\":\"app-wallot-staging.firebasestorage.app\",\"deployment_environment\":\"test\"}"
 				],
-				"rewrites": ["{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"],
+				"rewrites": [
+					"{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"
+				],
 				"category": "default",
 				"visibility": "public"
 			},
@@ -393,7 +406,9 @@
 					"{\"label\":\"app-wallot-support-production\",\"local_development_port\":\"17151\",\"public_url\":\"https://support.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:dfa43aa56b541d79385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-8K8D5DSR12\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
 					"{\"label\":\"app-wallot-support-staging\",\"local_development_port\":\"7151\",\"public_url\":\"https://app-wallot-support-staging.web.app\",\"firebase_config_api_key\":\"AIzaSyAWoWzRH01lGIx2jLx5sWPFDdfKsTSNaDc\",\"firebase_config_app_id\":\"1:721995107731:web:d1576e0a071777e364ac66\",\"firebase_config_auth_domain\":\"app-wallot-staging.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-1PKSE5WR3S\",\"firebase_config_messaging_sender_id\":\"721995107731\",\"firebase_config_project_id\":\"app-wallot-staging\",\"firebase_config_storage_bucket\":\"app-wallot-staging.firebasestorage.app\",\"deployment_environment\":\"test\"}"
 				],
-				"rewrites": ["{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"],
+				"rewrites": [
+					"{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"
+				],
 				"category": "default",
 				"visibility": "public"
 			}

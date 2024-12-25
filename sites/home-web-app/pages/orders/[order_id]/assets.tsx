@@ -1,9 +1,17 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { Page as PageComponent, PageStaticProps, PageProps } from 'ergonomic-react/src/components/nextjs-pages/Page';
+import {
+	Page as PageComponent,
+	PageStaticProps,
+	PageProps,
+} from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
-import { getHomeWebAppRoute, HomeWebAppRouteQueryParams, getSsoWebAppRoute } from '@wallot/js';
+import {
+	getHomeWebAppRoute,
+	HomeWebAppRouteQueryParams,
+	getSsoWebAppRoute,
+} from '@wallot/js';
 import { AssetOrder, Recommendation } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { useQueryRecommendationPage } from '@wallot/react/src/features/recommendations';
@@ -19,8 +27,18 @@ import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/auth
 const AssetOrderCard: React.FC<{
 	assetOrder: AssetOrder;
 	recommendation: Recommendation;
-}> = ({ assetOrder: { alpaca_order_qty, alpaca_order_side, alpaca_order_symbol, amount }, recommendation: { best_investments = [] } }) => {
-	const investmentRecommendationForAsset = best_investments.find(({ symbol }) => symbol === alpaca_order_symbol);
+}> = ({
+	assetOrder: {
+		alpaca_order_qty,
+		alpaca_order_side,
+		alpaca_order_symbol,
+		amount,
+	},
+	recommendation: { best_investments = [] },
+}) => {
+	const investmentRecommendationForAsset = best_investments.find(
+		({ symbol }) => symbol === alpaca_order_symbol,
+	);
 	if (!investmentRecommendationForAsset) {
 		return null;
 	}
@@ -28,7 +46,11 @@ const AssetOrderCard: React.FC<{
 	const amountUsdString = getCurrencyUsdStringFromCents(amount);
 
 	return (
-		<div className={cn('bg-white border border-gray-200 rounded-md shadow-md p-6 h-full')}>
+		<div
+			className={cn(
+				'bg-white border border-gray-200 rounded-md shadow-md p-6 h-full',
+			)}
+		>
 			<div className={cn('flex justify-between')}>
 				<div>
 					<p className={cn('text-2xl font-semibold')}>{alpaca_order_symbol}</p>
@@ -94,7 +116,10 @@ const Page: NextPage = () => {
 	const { order_id } = query;
 
 	// Runtime Route ID
-	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace('[ORDER_ID]', order_id || '');
+	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace(
+		'[ORDER_ID]',
+		order_id || '',
+	);
 
 	// Runtime Page Props
 	const pageProps: PageProps = {
@@ -103,23 +128,28 @@ const Page: NextPage = () => {
 	};
 
 	// ==== Hooks ==== //
-	const { data: assetOrderPage, isLoading: isAssetOrderPageLoading } = useQueryAssetOrderPage({
-		firestoreQueryOptions: {
-			whereClauses: [['order', '==', order_id]],
-		},
-	});
+	const { data: assetOrderPage, isLoading: isAssetOrderPageLoading } =
+		useQueryAssetOrderPage({
+			firestoreQueryOptions: {
+				whereClauses: [['order', '==', order_id]],
+			},
+		});
 	const assetOrders = assetOrderPage?.documents ?? [];
 	const recommendationIds = assetOrders[0]?.recommendations;
 	const firstRecommendationId = recommendationIds?.[0];
-	const { data: recommendationPage, isLoading: isRecommendationPageLoading } = useQueryRecommendationPage({
-		firestoreQueryOptions: {
-			whereClauses: [['_id', '==', firstRecommendationId]],
-		},
-	});
+	const { data: recommendationPage, isLoading: isRecommendationPageLoading } =
+		useQueryRecommendationPage({
+			firestoreQueryOptions: {
+				whereClauses: [['_id', '==', firstRecommendationId]],
+			},
+		});
 	const recommendations = recommendationPage?.documents ?? [];
 	const recommendation = recommendations[0];
 
-	const isDataLoading = isAssetOrderPageLoading || isRecommendationPageLoading || recommendation == null;
+	const isDataLoading =
+		isAssetOrderPageLoading ||
+		isRecommendationPageLoading ||
+		recommendation == null;
 
 	// ==== Render ==== //
 	return (
@@ -127,7 +157,13 @@ const Page: NextPage = () => {
 			<div className={cn('flex flex-col min-h-screen min-w-screen relative')}>
 				<AuthenticatedPageHeader showHomeLink={false} />
 				<PageActionHeader />
-				<div className={cn('min-h-[95vh] w-full', 'py-48 px-6', 'lg:py-48 lg:px-28')}>
+				<div
+					className={cn(
+						'min-h-[95vh] w-full',
+						'py-48 px-6',
+						'lg:py-48 lg:px-28',
+					)}
+				>
 					<div>
 						<div className={cn('', 'lg:flex lg:items-end lg:justify-between')}>
 							<div>
@@ -152,26 +188,45 @@ const Page: NextPage = () => {
 												<FiShoppingCart className='text-white dark:text-brand text-xs' />
 											</div>
 											<div>
-												<p className='font-medium text-sm text-white dark:text-brand'>Continue to Cart</p>
+												<p className='font-medium text-sm text-white dark:text-brand'>
+													Continue to Cart
+												</p>
 											</div>
 										</div>
 									</button>
 								</Link>
 							</div>
 						</div>
-						<div className={cn('mt-10', 'grid grid-cols-1 gap-3', 'md:grid-cols-2', 'lg:grid-cols-2', 'xl:grid-cols-4')}>
+						<div
+							className={cn(
+								'mt-10',
+								'grid grid-cols-1 gap-3',
+								'md:grid-cols-2',
+								'lg:grid-cols-2',
+								'xl:grid-cols-4',
+							)}
+						>
 							{isDataLoading ? (
 								<Fragment>
 									{[1, 2, 3, 4].map((_, index) => (
 										<div className=''>
-											<Skeleton className='h-[30rem] !bg-gray-300' key={index} />
+											<Skeleton
+												className='h-[30rem] !bg-gray-300'
+												key={index}
+											/>
 										</div>
 									))}
 								</Fragment>
 							) : (
 								<Fragment>
 									{assetOrders.map((assetOrder) => {
-										return <AssetOrderCard assetOrder={assetOrder} key={assetOrder._id} recommendation={recommendation} />;
+										return (
+											<AssetOrderCard
+												assetOrder={assetOrder}
+												key={assetOrder._id}
+												recommendation={recommendation}
+											/>
+										);
 									})}
 								</Fragment>
 							)}

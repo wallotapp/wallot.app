@@ -2,7 +2,10 @@ import { User as FirebaseUser } from 'firebase/auth';
 import { FirebaseUserCustomTokenResponse, handleKyError } from 'ergonomic';
 import { getAuthenticatedKyInstance } from '@wallot/react/src/lib/ky';
 
-export const createFirebaseAuthCustomToken = async (firebaseUser: FirebaseUser | null, params: Record<string, never>) => {
+export const createFirebaseAuthCustomToken = async (
+	firebaseUser: FirebaseUser | null,
+	params: Record<string, never>,
+) => {
 	try {
 		if (!firebaseUser) {
 			throw new Error('User is not authenticated');

@@ -5,7 +5,12 @@ const nextConfig = {
 	},
 	output: 'export',
 	reactStrictMode: true,
-	transpilePackages: ['ergonomic', 'ergonomic-react', '@wallot/js', '@wallot/react'],
+	transpilePackages: [
+		'ergonomic',
+		'ergonomic-react',
+		'@wallot/js',
+		'@wallot/react',
+	],
 };
 
 module.exports = nextConfig;

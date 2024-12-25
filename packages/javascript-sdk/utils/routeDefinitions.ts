@@ -10,7 +10,9 @@ export const HomeWebAppRouteStaticIdEnum = getEnum([
 	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CHECKOUT',
 	'HOME_WEB_APP__/ORDERS/[ORDER_ID]/CONGRATULATIONS',
 ]);
-export type HomeWebAppRouteStaticId = EnumMember<typeof HomeWebAppRouteStaticIdEnum>;
+export type HomeWebAppRouteStaticId = EnumMember<
+	typeof HomeWebAppRouteStaticIdEnum
+>;
 
 export type HomeWebAppRouteQueryParams = {
 	'HOME_WEB_APP__/ASSETS/[ASSET_ID]/TRACK': {
@@ -42,8 +44,15 @@ export type HomeWebAppRouteQueryParams = {
 };
 
 // Admin Web App
-export const AdminWebAppRouteStaticIdEnum = getEnum(['ADMIN_WEB_APP__/INDEX', 'ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/ALL', 'ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/CREATE', 'ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT']);
-export type AdminWebAppRouteStaticId = EnumMember<typeof AdminWebAppRouteStaticIdEnum>;
+export const AdminWebAppRouteStaticIdEnum = getEnum([
+	'ADMIN_WEB_APP__/INDEX',
+	'ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/ALL',
+	'ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/CREATE',
+	'ADMIN_WEB_APP__/RESOURCE/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT',
+]);
+export type AdminWebAppRouteStaticId = EnumMember<
+	typeof AdminWebAppRouteStaticIdEnum
+>;
 
 export type AdminWebAppRouteQueryParams = {
 	'ADMIN_WEB_APP__/INDEX': {
@@ -62,8 +71,13 @@ export type AdminWebAppRouteQueryParams = {
 };
 
 // Blog Web App
-export const BlogWebAppRouteStaticIdEnum = getEnum(['BLOG_WEB_APP__/INDEX', 'BLOG_WEB_APP__/POSTS/[SLUG]/CONTENT']);
-export type BlogWebAppRouteStaticId = EnumMember<typeof BlogWebAppRouteStaticIdEnum>;
+export const BlogWebAppRouteStaticIdEnum = getEnum([
+	'BLOG_WEB_APP__/INDEX',
+	'BLOG_WEB_APP__/POSTS/[SLUG]/CONTENT',
+]);
+export type BlogWebAppRouteStaticId = EnumMember<
+	typeof BlogWebAppRouteStaticIdEnum
+>;
 
 export type BlogWebAppRouteQueryParams = {
 	'BLOG_WEB_APP__/INDEX': {
@@ -75,8 +89,13 @@ export type BlogWebAppRouteQueryParams = {
 };
 
 // Knowledge Base Web App
-export const KnowledgeBaseWebAppRouteStaticIdEnum = getEnum(['KNOWLEDGE_BASE_WEB_APP__/INDEX', 'KNOWLEDGE_BASE_WEB_APP__/POSTS/[SLUG]/CONTENT']);
-export type KnowledgeBaseWebAppRouteStaticId = EnumMember<typeof KnowledgeBaseWebAppRouteStaticIdEnum>;
+export const KnowledgeBaseWebAppRouteStaticIdEnum = getEnum([
+	'KNOWLEDGE_BASE_WEB_APP__/INDEX',
+	'KNOWLEDGE_BASE_WEB_APP__/POSTS/[SLUG]/CONTENT',
+]);
+export type KnowledgeBaseWebAppRouteStaticId = EnumMember<
+	typeof KnowledgeBaseWebAppRouteStaticIdEnum
+>;
 
 export type KnowledgeBaseWebAppRouteQueryParams = {
 	'KNOWLEDGE_BASE_WEB_APP__/INDEX': {
@@ -88,8 +107,13 @@ export type KnowledgeBaseWebAppRouteQueryParams = {
 };
 
 // Referrals Web App
-export const ReferralsWebAppRouteStaticIdEnum = getEnum(['REFERRALS_WEB_APP__/INDEX', 'REFERRALS_WEB_APP__/POSTS/[SLUG]/CONTENT']);
-export type ReferralsWebAppRouteStaticId = EnumMember<typeof ReferralsWebAppRouteStaticIdEnum>;
+export const ReferralsWebAppRouteStaticIdEnum = getEnum([
+	'REFERRALS_WEB_APP__/INDEX',
+	'REFERRALS_WEB_APP__/POSTS/[SLUG]/CONTENT',
+]);
+export type ReferralsWebAppRouteStaticId = EnumMember<
+	typeof ReferralsWebAppRouteStaticIdEnum
+>;
 
 export type ReferralsWebAppRouteQueryParams = {
 	'REFERRALS_WEB_APP__/INDEX': {
@@ -101,8 +125,15 @@ export type ReferralsWebAppRouteQueryParams = {
 };
 
 // SSO Web App
-export const SsoWebAppRouteStaticIdEnum = getEnum(['SSO_WEB_APP__/INDEX', 'SSO_WEB_APP__/LOGIN', 'SSO_WEB_APP__/LOGOUT', 'SSO_WEB_APP__/REGISTER']);
-export type SsoWebAppRouteStaticId = EnumMember<typeof SsoWebAppRouteStaticIdEnum>;
+export const SsoWebAppRouteStaticIdEnum = getEnum([
+	'SSO_WEB_APP__/INDEX',
+	'SSO_WEB_APP__/LOGIN',
+	'SSO_WEB_APP__/LOGOUT',
+	'SSO_WEB_APP__/REGISTER',
+]);
+export type SsoWebAppRouteStaticId = EnumMember<
+	typeof SsoWebAppRouteStaticIdEnum
+>;
 
 export type SsoWebAppRouteQueryParams = {
 	'SSO_WEB_APP__/INDEX': {
@@ -120,8 +151,13 @@ export type SsoWebAppRouteQueryParams = {
 };
 
 // Status Web App
-export const StatusWebAppRouteStaticIdEnum = getEnum(['STATUS_WEB_APP__/INDEX', 'STATUS_WEB_APP__/POSTS/[SLUG]/CONTENT']);
-export type StatusWebAppRouteStaticId = EnumMember<typeof StatusWebAppRouteStaticIdEnum>;
+export const StatusWebAppRouteStaticIdEnum = getEnum([
+	'STATUS_WEB_APP__/INDEX',
+	'STATUS_WEB_APP__/POSTS/[SLUG]/CONTENT',
+]);
+export type StatusWebAppRouteStaticId = EnumMember<
+	typeof StatusWebAppRouteStaticIdEnum
+>;
 
 export type StatusWebAppRouteQueryParams = {
 	'STATUS_WEB_APP__/INDEX': {
@@ -133,8 +169,13 @@ export type StatusWebAppRouteQueryParams = {
 };
 
 // Support Web App
-export const SupportWebAppRouteStaticIdEnum = getEnum(['SUPPORT_WEB_APP__/INDEX', 'SUPPORT_WEB_APP__/POSTS/[SLUG]/CONTENT']);
-export type SupportWebAppRouteStaticId = EnumMember<typeof SupportWebAppRouteStaticIdEnum>;
+export const SupportWebAppRouteStaticIdEnum = getEnum([
+	'SUPPORT_WEB_APP__/INDEX',
+	'SUPPORT_WEB_APP__/POSTS/[SLUG]/CONTENT',
+]);
+export type SupportWebAppRouteStaticId = EnumMember<
+	typeof SupportWebAppRouteStaticIdEnum
+>;
 
 export type SupportWebAppRouteQueryParams = {
 	'SUPPORT_WEB_APP__/INDEX': {

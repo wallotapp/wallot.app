@@ -17,7 +17,11 @@ export const encryptString =
 		// Generate a new IV for each encryption
 		const iv = crypto.randomBytes(16);
 
-		const cipher = crypto.createCipheriv(encryptionAlgorithm, Buffer.from(encryptionKey, 'hex'), iv);
+		const cipher = crypto.createCipheriv(
+			encryptionAlgorithm,
+			Buffer.from(encryptionKey, 'hex'),
+			iv,
+		);
 		let encrypted = cipher.update(plainText, 'utf8', 'hex');
 		encrypted += cipher.final('hex');
 

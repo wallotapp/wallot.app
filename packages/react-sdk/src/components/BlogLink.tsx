@@ -20,7 +20,15 @@ export const BlogLink: React.FC<BaseComponent> = ({ className = '' }) => {
 	});
 	return (
 		<Link className={className} href={blogHref} target='_blank'>
-			<p className={cn('font-light text-sm', currentRouteStaticId?.startsWith('BLOG_WEB_APP') && 'underline underline-offset-4')}>Blog</p>
+			<p
+				className={cn(
+					'font-light text-sm',
+					currentRouteStaticId?.startsWith('BLOG_WEB_APP') &&
+						'underline underline-offset-4',
+				)}
+			>
+				Blog
+			</p>
 		</Link>
 	);
 };

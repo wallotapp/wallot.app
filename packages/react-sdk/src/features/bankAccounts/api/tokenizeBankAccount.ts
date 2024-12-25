@@ -1,9 +1,16 @@
 import { User as FirebaseUser } from 'firebase/auth';
 import { handleKyError } from 'ergonomic';
 import { getAuthenticatedKyInstance } from '@wallot/react/src/lib/ky';
-import { TokenizeBankAccountParams, TokenizeBankAccountResponse } from '@wallot/js';
+import {
+	TokenizeBankAccountParams,
+	TokenizeBankAccountResponse,
+} from '@wallot/js';
 
-export const tokenizeBankAccount = async (firebaseUser: FirebaseUser | null, bankAccountId: string, params: TokenizeBankAccountParams) => {
+export const tokenizeBankAccount = async (
+	firebaseUser: FirebaseUser | null,
+	bankAccountId: string,
+	params: TokenizeBankAccountParams,
+) => {
 	try {
 		if (!firebaseUser) {
 			throw new Error('User is not authenticated');
