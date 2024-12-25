@@ -98,16 +98,16 @@ const Page: NextPage = () => {
 		'Stock Purchases',
 	];
 	// const completedSteps: OrderStep[] = [];
-	// const completedSteps: OrderStep[] = ['Account Verification'];
+	const completedSteps: OrderStep[] = ['Account Verification'];
 	// const completedSteps: OrderStep[] = [
 	// 	'Account Verification',
 	// 	'Funds Transfer',
 	// ];
-	const completedSteps: OrderStep[] = [
-		'Account Verification',
-		'Funds Transfer',
-		'Stock Purchases',
-	];
+	// const completedSteps: OrderStep[] = [
+	// 	'Account Verification',
+	// 	'Funds Transfer',
+	// 	'Stock Purchases',
+	// ];
 	const nextStepToComplete = orderSteps.find(
 		(step) => !completedSteps.includes(step),
 	);
@@ -190,70 +190,72 @@ const Page: NextPage = () => {
 									</div>
 								</div>
 								<div className='bg-white border border-gray-200 shadow-sm px-10 py-10 rounded-xl h-fit mt-8'>
-									<div>
+									<div className='mb-4'>
 										<p className='font-semibold text-xl'>Order Status</p>
 									</div>
-									{orderSteps.map((step, index) => {
-										const isCurrentStep = step === nextStepToComplete;
-										const isCompletedStep = completedSteps.includes(step);
-										return (
-											<div
-												className={cn(
-													'mt-6',
-													isCurrentStep ? 'text-brand-dark' : 'text-gray-500',
-												)}
-												key={index}
-											>
-												<div className='flex items-center space-x-2.5'>
-													<div>
-														{isCurrentStep ? (
-															<div className='flex items-center'>
-																<GoCircle className='text-gray-800 text-2xl' />
-															</div>
-														) : isCompletedStep ? (
-															<div className='flex items-center'>
-																<GoCheckCircleFill className='text-blue-700 text-2xl' />
-															</div>
-														) : (
-															<div className='flex items-center'>
-																<GoCircle className='text-gray-300 text-2xl' />
-															</div>
-														)}
-													</div>
+									<div className='px-4'>
+										{orderSteps.map((step, index) => {
+											const isCurrentStep = step === nextStepToComplete;
+											const isCompletedStep = completedSteps.includes(step);
+											return (
+												<div
+													className={cn(
+														isCurrentStep ? 'text-brand-dark' : 'text-gray-500',
+														index === 1 && 'border-l border-l-gray-400 py-4',
+													)}
+													key={index}
+												>
 													<div className='flex items-center space-x-2.5'>
-														<div>
-															<p
-																className={cn(
-																	'text-base',
-																	isCompletedStep
-																		? 'font-medium text-gray-800'
-																		: isCurrentStep
-																		? 'font-light text-gray-800'
-																		: 'font-light text-gray-400',
-																)}
-															>
-																{step}
-															</p>
+														<div className=''>
+															{isCurrentStep ? (
+																<div className='flex items-center ml-[-0.80rem]'>
+																	<GoCircle className='text-gray-800 text-2xl bg-white rounded-full' />
+																</div>
+															) : isCompletedStep ? (
+																<div className='flex items-center ml-[-0.75rem]'>
+																	<GoCheckCircleFill className='text-blue-700 text-2xl bg-white rounded-full' />
+																</div>
+															) : (
+																<div className='flex items-center ml-[-0.65rem]'>
+																	<GoCircle className='text-gray-300 text-2xl bg-white rounded-full' />
+																</div>
+															)}
 														</div>
-														{isCompletedStep && (
-															<div className='bg-blue-300 rounded-lg px-1.5 py-0.5 w-fit'>
-																<p className='text-blue-800 text-[0.6rem]'>
-																	COMPLETE
+														<div className='flex items-center space-x-2.5'>
+															<div>
+																<p
+																	className={cn(
+																		'text-base',
+																		isCompletedStep
+																			? 'font-medium text-gray-800'
+																			: isCurrentStep
+																			? 'font-light text-gray-800'
+																			: 'font-light text-gray-400',
+																	)}
+																>
+																	{step}
 																</p>
 															</div>
-														)}
-														{isCurrentStep && (
-															<div className='bg-gray-300 rounded-lg px-1.5 py-0.5 w-fit animate-pulse'>
-																<p className='text-gray-800 text-[0.6rem]'>
-																	IN PROGRESS
-																</p>
-															</div>
-														)}
+															{isCompletedStep && (
+																<div className='bg-blue-300 rounded-lg px-1.5 py-0.5 w-fit'>
+																	<p className='text-blue-800 text-[0.6rem]'>
+																		COMPLETE
+																	</p>
+																</div>
+															)}
+															{isCurrentStep && (
+																<div className='bg-gray-300 rounded-lg px-1.5 py-0.5 w-fit animate-pulse'>
+																	<p className='text-gray-800 text-[0.6rem]'>
+																		IN PROGRESS
+																	</p>
+																</div>
+															)}
+														</div>
 													</div>
 												</div>
-											</div>
-										);
-									})}
+											);
+										})}
+									</div>
 								</div>
 							</div>
 						</div>
