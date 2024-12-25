@@ -86,7 +86,7 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, de
 
 	return (
 		<div key={bankAccount._id} className={cn('flex items-start justify-between border rounded-md p-4 mt-2 bg-slate-50/10', !isTokenized && isDefault ? 'border-amber-900' : 'border-slate-200')}>
-			<div className='flex items-center space-x-3'>
+			<div className='flex items-center space-x-2'>
 				<div>
 					<p className='font-normal text-sm'>
 						{bankAccount.name} &nbsp;
@@ -94,10 +94,21 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, de
 					</p>
 				</div>
 				{isDefault && (
-					<div className={cn('flex items-center space-x-2', 'bg-green-800 py-0.5 px-2.5 rounded-full')}>
-						<p className='font-light text-xs text-white'>Default</p>
+					<div className={cn('bg-slate-300 rounded-lg px-1.5 py-0.5')}>
+						<p className='text-slate-800 text-[0.6rem]'>DEFAULT</p>
 					</div>
 				)}
+				<div>
+					{isTokenized ? (
+						<div className='bg-blue-300 rounded-lg px-1.5 py-0.5'>
+							<p className='text-blue-800 text-[0.6rem]'>CONNECTED</p>
+						</div>
+					) : (
+						<div className='bg-red-300 rounded-lg px-1.5 py-0.5'>
+							<p className='text-red-800 text-[0.6rem]'>ACTION REQUIRED</p>
+						</div>
+					)}
+				</div>
 			</div>
 			<div className={cn('w-1/2', showTokenizationForm ? '' : 'hidden')}>
 				<div className='text-right'>
