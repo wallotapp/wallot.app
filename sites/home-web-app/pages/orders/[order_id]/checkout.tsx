@@ -264,7 +264,15 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({ bankAccount, is
 				{!isDefault && (
 					<div>
 						<button className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300' type='button' onClick={setBankAccountAsUserDefault} disabled={isMakeDefaultButtonDisabled}>
-							<p className='font-normal text-xs'>Make Default</p>
+							{isUpdateUserRunning ? (
+								<div>
+									<div className='flex items-center justify-center min-w-8'>
+										<div className={cn('w-4 h-4 border-2 border-gray-200 rounded-full animate-spin', 'border-t-brand border-r-brand border-b-brand')}></div>
+									</div>
+								</div>
+							) : (
+								<p className='font-normal text-xs'>Make Default</p>
+							)}
 						</button>
 					</div>
 				)}
