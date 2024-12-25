@@ -114,11 +114,11 @@ const Page: NextPage = () => {
 			) : (
 				<Fragment>
 					<div className={cn('h-screen relative', 'px-8 pt-12 overflow-hidden')}>
-						<div className='mb-10 flex items-center justify-center'>
+						<div className='flex items-center justify-center'>
 							{OPEN_GRAPH_CONFIG.siteBrandIconDarkMode && OPEN_GRAPH_CONFIG.siteBrandIconLightMode && (
 								<PlatformIcon
 									height={380}
-									size='lg'
+									size='md'
 									srcMap={{
 										dark: OPEN_GRAPH_CONFIG.siteBrandIconDarkMode,
 										light: OPEN_GRAPH_CONFIG.siteBrandIconLightMode,
@@ -133,7 +133,7 @@ const Page: NextPage = () => {
 							)}
 						</div>
 						<div className='flex flex-col items-center'>
-							<div className='mt-7'>
+							<div className='mt-8'>
 								<p className='font-normal text-4xl'>{assetCongratulationText}</p>
 							</div>
 							<div className='mt-3'>
@@ -147,7 +147,7 @@ const Page: NextPage = () => {
 								</Link>
 							</div>
 						</div>
-						<div className='mt-10 flex flex-col items-center bg-white p-4 rounded-md h-screen max-w-4xl mx-auto shadow-xl border border-gray-200'>
+						<div className={cn('mt-10 flex flex-col items-center bg-white p-4 rounded-md max-w-4xl mx-auto shadow-xl border border-gray-200', 'overflow-y-auto h-screen')}>
 							<div>
 								<GoCheck />
 							</div>
@@ -159,6 +159,7 @@ const Page: NextPage = () => {
 							<p>
 								Height {height} Width {width}
 							</p>
+							<div className='min-h-[60vh]' />
 						</div>
 					</div>
 					{height != null && width != null && <Confetti height={height} recycle={recycle} width={width} />}
