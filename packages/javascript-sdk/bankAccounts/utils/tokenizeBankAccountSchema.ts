@@ -7,6 +7,13 @@ import { Keys, getFieldSpecByFieldKey } from 'ergonomic';
 
 export const tokenizeBankAccountProperties = {
 	account_number: yup.string().required().defined().default('').min(7).max(17),
+	account_owner_name: yup
+		.string()
+		.required()
+		.defined()
+		.default('')
+		.min(1)
+		.max(100),
 } as const;
 export const tokenizeBankAccountSchema = yup.object(
 	tokenizeBankAccountProperties,
@@ -30,6 +37,10 @@ export const tokenizedBankAccountProperties = {
 		.defined()
 		.min(1),
 	account_number_iv_hex: bankAccountsApi.properties.account_number_iv_hex
+		.nullable(false)
+		.defined()
+		.min(1),
+	account_owner_name: bankAccountsApi.properties.account_owner_name
 		.nullable(false)
 		.defined()
 		.min(1),
