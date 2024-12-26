@@ -1,11 +1,7 @@
-import { getCloudFunctionUrl } from 'ergonomic-node';
 import { PlaceAlpacaOrdersListenerTaskParams } from '@wallot/node';
 import { getFunctions } from 'firebase-admin/functions';
-import { secrets } from '../../../secrets.js';
-import { directoryPath } from '../../../directoryPath.js';
 import { v4 } from 'uuid';
-const serviceAccountPath = `${directoryPath}/../gmailApiServiceAccount.json`;
-
+import { secrets } from '../../../secrets.js';
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { FunctionResponse } from '@wallot/node';
 import {
@@ -23,7 +19,7 @@ import {
 	User,
 	ProLicenseParams,
 } from '@wallot/js';
-import { db, log, stripe } from '../../../services.js';
+import { db, gcp, log, stripe } from '../../../services.js';
 import { siteOriginByTarget } from '../../../variables.js';
 
 export const confirmOrder = async (
@@ -117,11 +113,7 @@ export const confirmOrder = async (
 		const queue = getFunctions().taskQueue<PlaceAlpacaOrdersListenerTaskParams>(
 			'place_alpaca_orders',
 		);
-		const targetUri = await getCloudFunctionUrl({
-			...secrets,
-			functionName: 'place_alpaca_orders',
-			serviceAccountPath,
-		});
+		const targetUri = await gcp.getCloudFunctionUrl('place_alpaca_orders');
 		log({ message: 'Enqueuing place_alpaca_orders task', targetUri });
 		const placeAlpacaOrdersParams: PlaceAlpacaOrdersListenerTaskParams = {
 			orderId,
