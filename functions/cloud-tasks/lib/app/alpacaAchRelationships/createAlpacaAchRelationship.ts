@@ -1,9 +1,26 @@
+import { CloudTaskHandler } from 'ergonomic-node';
 import {
 	AlpacaAchRelationship,
 	UserWithAlpacaEquity,
 	TokenizedBankAccount,
 } from '@wallot/js';
+import { CreateAlpacaAchRelationshipTaskParams } from '@wallot/node';
 import { alpaca, crypto } from '../../services.js';
+
+export const handleCreateAlpacaAchRelationshipTaskOptions = {
+	rateLimits: { maxConcurrentDispatches: 6 },
+	retryConfig: { maxAttempts: 3, minBackoffSeconds: 30 },
+};
+
+export const handleCreateAlpacaAchRelationshipTask: CloudTaskHandler<
+	CreateAlpacaAchRelationshipTaskParams
+> = async ({ data: { amountInCents, bankAccountId, orderId, userId } }) => {
+	amountInCents;
+	bankAccountId;
+	orderId;
+	userId;
+	return Promise.resolve();
+};
 
 async function createAlpacaAchRelationship(
 	user: UserWithAlpacaEquity,

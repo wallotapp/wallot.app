@@ -1,11 +1,10 @@
 import { getFunctions } from 'firebase-admin/functions';
+import { RequestAlpacaAchTransferTaskParams } from '../achTransfers/requestAlpacaAchTransfer.js';
 
-export type CreateAlpacaAchRelationshipTaskParams = {
-	orderId: string;
-};
-export type RefreshAlpacaAchRelationshipStatusTaskParams = {
-	orderId: string;
-};
+export type CreateAlpacaAchRelationshipTaskParams =
+	RequestAlpacaAchTransferTaskParams;
+export type RefreshAlpacaAchRelationshipStatusTaskParams =
+	RequestAlpacaAchTransferTaskParams;
 
 export const enqueueCreateAlpacaAchRelationship =
 	(

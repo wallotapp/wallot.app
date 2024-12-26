@@ -28,7 +28,7 @@ export const handleRequestAlpacaAchTransferTaskOptions = {
  *  - BANK_ACCOUNT is approved by Alpaca
  * 	- USER is activated by Alpaca
  */
-export const handleRequestAlpacaAchTransfer: CloudTaskHandler<
+export const handleRequestAlpacaAchTransferTask: CloudTaskHandler<
 	RequestAlpacaAchTransferTaskParams
 > = async ({ data: { amountInCents, bankAccountId, orderId, userId } }) => {
 	// Query the ACH_TRANSFERs
@@ -67,7 +67,12 @@ export const handleRequestAlpacaAchTransfer: CloudTaskHandler<
 		// Precondition failed
 		// Kick to the `create_alpaca_ach_relationship` task
 		log({ message: 'Requested ACH Transfer, but bank account not approved' });
-		await gcp.tasks.enqueueCreateAlpacaAchRelationship({ orderId });
+		await gcp.tasks.enqueueCreateAlpacaAchRelationship({
+			amountInCents,
+			bankAccountId,
+			orderId,
+			userId,
+		});
 		return Promise.resolve();
 	}
 
