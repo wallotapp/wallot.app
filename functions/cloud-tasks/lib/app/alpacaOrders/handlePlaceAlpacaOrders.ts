@@ -137,12 +137,14 @@ export const handlePlaceAlpacaOrders: CloudTaskHandler<
 	// Commit the batch
 	await batch.commit();
 
-	// Kick to the `refresh_alpaca_orders` task
+	// Kick to the `refresh_alpaca_orders_status` task
 	const queue = getFunctions().taskQueue<PlaceAlpacaOrdersTaskParams>(
-		'refresh_alpaca_orders',
+		'refresh_alpaca_orders_status',
 	);
-	const targetUri = await gcp.getCloudFunctionUrl('refresh_alpaca_orders');
-	log({ message: 'Enqueuing refresh_alpaca_orders task', targetUri });
+	const targetUri = await gcp.getCloudFunctionUrl(
+		'refresh_alpaca_orders_status',
+	);
+	log({ message: 'Enqueuing refresh_alpaca_orders_status task', targetUri });
 	const refreshAlpacaOrdersParams: PlaceAlpacaOrdersTaskParams = {
 		orderId,
 	};

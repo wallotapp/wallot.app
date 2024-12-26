@@ -7,7 +7,7 @@ import {
 	RequestAlpacaAchTransferTaskParams,
 	RefreshAlpacaAchTransferStatusTaskParams,
 	PlaceAlpacaOrdersTaskParams,
-	RefreshAlpacaOrdersTaskParams,
+	RefreshAlpacaOrdersStatusTaskParams,
 } from '@wallot/node';
 
 // ---- Application Routes: Alpaca Accounts  ---- //
@@ -95,13 +95,13 @@ export const place_alpaca_orders =
 		handlePlaceAlpacaOrders,
 	);
 
-// refresh_alpaca_orders
+// refresh_alpaca_orders_status
 import {
-	handleRefreshAlpacaOrders,
-	handleRefreshAlpacaOrdersTaskOptions,
-} from './app/alpacaOrders/refreshAlpacaOrders.js';
-export const refresh_alpaca_orders =
-	firebaseFunctions.tasks.onTaskDispatched<RefreshAlpacaOrdersTaskParams>(
-		handleRefreshAlpacaOrdersTaskOptions,
-		handleRefreshAlpacaOrders,
+	handleRefreshAlpacaOrdersStatus,
+	handleRefreshAlpacaOrdersStatusTaskOptions,
+} from './app/alpacaOrders/refreshAlpacaOrdersStatus.js';
+export const refresh_alpaca_orders_status =
+	firebaseFunctions.tasks.onTaskDispatched<RefreshAlpacaOrdersStatusTaskParams>(
+		handleRefreshAlpacaOrdersStatusTaskOptions,
+		handleRefreshAlpacaOrdersStatus,
 	);
