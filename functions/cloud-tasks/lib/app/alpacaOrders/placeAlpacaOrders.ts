@@ -39,7 +39,17 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 		.collection(ordersApi.collectionId)
 		.doc(orderId)
 		.get();
-	if (!orderDoc.exists) throw new Error('Order not found');
+	if (!orderDoc.exists) {
+		// ORDER not found, so this task is not possible
+		log(
+			{
+				message: 'Requested order placement, but order not found',
+				orderId,
+			},
+			{ type: 'error' },
+		);
+		return Promise.resolve();
+	}
 	const order = orderDoc.data() as Order;
 
 	if (!isOrderConfirmedByUser(order)) {

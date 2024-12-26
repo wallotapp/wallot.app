@@ -129,4 +129,3 @@ async function createAlpacaAchRelationship(
 	);
 	return response.json();
 }
-createAlpacaAchRelationship;
