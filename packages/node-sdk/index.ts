@@ -7,3 +7,4 @@ export * from './handleRouterFunctionError.js';
 export * from './getServices.js';
 export * from './log.js';
 export * from './SecretDataTypes.js';
+export * from './wallot/index.js';
