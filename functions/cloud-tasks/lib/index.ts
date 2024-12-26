@@ -5,13 +5,8 @@ import { handlePlaceAlpacaOrders } from './app/alpacaOrders/handlePlaceAlpacaOrd
 export const place_alpaca_orders =
 	firebaseFunctions.tasks.onTaskDispatched<PlaceAlpacaOrdersListenerTaskParams>(
 		{
-			retryConfig: {
-				maxAttempts: 5,
-				minBackoffSeconds: 60, // Retry after 1 minute
-			},
-			rateLimits: {
-				maxConcurrentDispatches: 6,
-			},
+			rateLimits: { maxConcurrentDispatches: 6 },
+			retryConfig: { maxAttempts: 3, minBackoffSeconds: 30 },
 		},
 		handlePlaceAlpacaOrders,
 	);
