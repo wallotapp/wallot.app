@@ -14,6 +14,7 @@ import {
 	usersApi,
 	User,
 	ProLicenseParams,
+	isUserWithAlpacaEquity,
 } from '@wallot/js';
 import { PlaceAlpacaOrdersListenerTaskParams } from '@wallot/node';
 import { db, log } from '../../services.js';
@@ -41,9 +42,8 @@ export const handlePlaceAlpacaOrders: CloudTaskHandler<
 		.get();
 	if (!userDoc.exists) throw new Error('User not found');
 	const user = userDoc.data() as User;
-	const userHasFunds = doesUserHaveFunds(user);
 
-	if (!userHasFunds) {
+	if (!isUserWithAlpacaEquity(user)) {
 		// Kick to the `request_alpaca_ach_transfer` task
 		// TODO
 	} else {
@@ -52,10 +52,3 @@ export const handlePlaceAlpacaOrders: CloudTaskHandler<
 	}
 	return Promise.resolve();
 };
-
-function doesUserHaveFunds(user: User) {
-	return (
-		user.alpaca_account_last_equity != null &&
-		parseFloat(user.alpaca_account_last_equity) > 0
-	);
-}
