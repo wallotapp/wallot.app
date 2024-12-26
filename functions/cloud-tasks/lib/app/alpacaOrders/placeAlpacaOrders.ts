@@ -1,4 +1,3 @@
-import { getFunctions } from 'firebase-admin/functions';
 import { CloudTaskHandler, firebaseFunctions } from 'ergonomic-node';
 import {
 	ordersApi,
@@ -13,11 +12,7 @@ import {
 	getAssetOrderPropertiesFromAlpacaOrder,
 	UpdateAssetOrderParams,
 } from '@wallot/js';
-import {
-	PlaceAlpacaOrdersTaskParams,
-	RefreshAlpacaOrdersStatusTaskParams,
-	RequestAlpacaAchTransferTaskParams,
-} from '@wallot/node';
+import { PlaceAlpacaOrdersTaskParams } from '@wallot/node';
 import { alpaca, db, gcp, log } from '../../services.js';
 
 export const placeAlpacaOrdersTaskOptions = {
@@ -54,7 +49,7 @@ export const placeAlpacaOrders: CloudTaskHandler<
 	if (!isUserWithAlpacaEquity(user)) {
 		// Precondition 1 failed
 		// Kick to the `request_alpaca_ach_transfer` task
-		await enqueueRequestAlpacaAchTransfer({ orderId });
+		await gcp.tasks.enqueueRequestAlpacaAchTransfer({ orderId });
 		return Promise.resolve();
 	}
 
@@ -128,7 +123,7 @@ export const placeAlpacaOrders: CloudTaskHandler<
 	await batch.commit();
 
 	// Kick to the `refresh_alpaca_orders_status` task
-	await enqueueRefreshAlpacaOrdersStatus({ orderId });
+	await gcp.tasks.enqueueRefreshAlpacaOrdersStatus({ orderId });
 
 	// Task complete
 	return Promise.resolve();
@@ -151,44 +146,4 @@ async function placeAlpacaOrder(
 		},
 	);
 	return response.json();
-}
-
-async function enqueueRequestAlpacaAchTransfer(
-	requestAlpacaAchTransferParams: RequestAlpacaAchTransferTaskParams,
-) {
-	const queue = getFunctions().taskQueue<RequestAlpacaAchTransferTaskParams>(
-		'request_alpaca_ach_transfer',
-	);
-	const targetUri = await gcp.getCloudFunctionUrl(
-		'request_alpaca_ach_transfer',
-	);
-	log({
-		message: 'Enqueuing request_alpaca_ach_transfer task',
-		targetUri,
-		requestAlpacaAchTransferParams,
-	});
-	await queue.enqueue(requestAlpacaAchTransferParams, {
-		scheduleDelaySeconds: 0,
-		uri: targetUri,
-	});
-}
-
-async function enqueueRefreshAlpacaOrdersStatus(
-	refreshAlpacaOrdersStatusParams: RefreshAlpacaOrdersStatusTaskParams,
-) {
-	const queue = getFunctions().taskQueue<RefreshAlpacaOrdersStatusTaskParams>(
-		'refresh_alpaca_orders_status',
-	);
-	const targetUri = await gcp.getCloudFunctionUrl(
-		'refresh_alpaca_orders_status',
-	);
-	log({
-		message: 'Enqueuing refresh_alpaca_orders_status task',
-		targetUri,
-		refreshAlpacaOrdersStatusParams,
-	});
-	await queue.enqueue(refreshAlpacaOrdersStatusParams, {
-		scheduleDelaySeconds: 20,
-		uri: targetUri,
-	});
 }
