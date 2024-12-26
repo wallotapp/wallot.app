@@ -14,7 +14,7 @@ import {
 } from '@wallot/js';
 import { CloudTaskHandler } from 'ergonomic-node';
 import { RequestAlpacaAchTransferTaskParams } from '@wallot/node';
-import { alpaca, db, gcp } from '../../services.js';
+import { alpaca, db, gcp, log } from '../../services.js';
 import { getCurrencyUsdStringFromCents } from 'ergonomic';
 
 export const handleRequestAlpacaAchTransferTaskOptions = {
@@ -39,6 +39,9 @@ export const handleRequestAlpacaAchTransfer: CloudTaskHandler<
 	if (!achTransfersQuery.empty) {
 		// Precondition failed
 		// There is already an ACH_TRANSFER pending, so this task is not necessary
+		log({
+			message: 'Requested ACH Transfer, but ACH Transfer already pending',
+		});
 		return Promise.resolve();
 	}
 
@@ -47,12 +50,23 @@ export const handleRequestAlpacaAchTransfer: CloudTaskHandler<
 		.collection(bankAccountsApi.collectionId)
 		.doc(bankAccountId)
 		.get();
-	if (!bankAccountDoc.exists) throw new Error('Bank account not found');
+	if (!bankAccountDoc.exists) {
+		// Bank account not found, so this task is not possible
+		log(
+			{
+				message: 'Requested ACH Transfer, but bank account not found',
+				bankAccountId,
+			},
+			{ type: 'error' },
+		);
+		return Promise.resolve();
+	}
 	const bankAccount = bankAccountDoc.data() as BankAccount;
 
 	if (!isBankAccountApprovedByAlpaca(bankAccount)) {
 		// Precondition failed
 		// Kick to the `create_alpaca_ach_relationship` task
+		log({ message: 'Requested ACH Transfer, but bank account not approved' });
 		await gcp.tasks.enqueueCreateAlpacaAchRelationship({ orderId });
 		return Promise.resolve();
 	}
@@ -63,6 +77,14 @@ export const handleRequestAlpacaAchTransfer: CloudTaskHandler<
 	const user = userDoc.data() as User;
 	if (!isUserActivatedByAlpaca(user)) {
 		// This will never happen -- the user must be activated by Alpaca to have a BANK_ACCOUNT approved by Alpaca
+		log(
+			{
+				message:
+					'Requested ACH Transfer, but the user is not activated by Alpaca',
+				userId,
+			},
+			{ type: 'error' },
+		);
 		return Promise.resolve();
 	}
 
