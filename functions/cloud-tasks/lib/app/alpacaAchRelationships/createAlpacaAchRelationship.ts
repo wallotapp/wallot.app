@@ -1,7 +1,7 @@
 import {
-  AlpacaAchRelationship,
-  UserWithAlpacaEquity,
-  TokenizedBankAccount
+	AlpacaAchRelationship,
+	UserWithAlpacaEquity,
+	TokenizedBankAccount,
 } from '@wallot/js';
 import { alpaca, crypto } from '../../services.js';
 

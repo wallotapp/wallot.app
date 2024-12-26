@@ -1,4 +1,7 @@
-import { AchTransfer, AlpacaAchTransfer } from '../models/achTransferProperties.js';
+import {
+	AchTransfer,
+	AlpacaAchTransfer,
+} from '../models/achTransferProperties.js';
 import {
 	AlpacaAchTransferPropertyName,
 	AlpacaAchTransferPropertyNameEnum,

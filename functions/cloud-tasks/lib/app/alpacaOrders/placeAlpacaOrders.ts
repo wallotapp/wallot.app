@@ -13,6 +13,7 @@ import {
 	getAssetOrderPropertiesFromAlpacaOrder,
 	UpdateAssetOrderParams,
 	isAssetOrderPendingAlpacaFill,
+	isOrderConfirmedByUser,
 } from '@wallot/js';
 import { PlaceAlpacaOrdersTaskParams } from '@wallot/node';
 import { alpaca, db, gcp, log } from '../../services.js';
@@ -25,6 +26,7 @@ export const handlePlaceAlpacaOrdersTaskOptions = {
 /**
  * Preconditions:
  * 	- USER has funds in their account
+ *  - ORDER is confirmed by user
  *
  * Criteria for success:
  * 	- If any of the Alpaca order placements are successful, the task is considered successful.
@@ -40,6 +42,12 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 	if (!orderDoc.exists) throw new Error('Order not found');
 	const order = orderDoc.data() as Order;
 
+	if (!isOrderConfirmedByUser(order)) {
+		// Precondition failed
+		// The order is still in cart, so this task is not necessary
+		return Promise.resolve();
+	}
+
 	// Get USER
 	const userDoc = await db
 		.collection(usersApi.collectionId)
@@ -47,13 +55,6 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 		.get();
 	if (!userDoc.exists) throw new Error('User not found');
 	const user = userDoc.data() as User;
-
-	if (!isUserWithAlpacaEquity(user)) {
-		// Precondition 1 failed
-		// Kick to the `request_alpaca_ach_transfer` task
-		await gcp.tasks.enqueueRequestAlpacaAchTransfer({ orderId });
-		return Promise.resolve();
-	}
 
 	// Query the ASSET_ORDERs
 	const assetOrdersQuery = await db
@@ -69,6 +70,24 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 		.filter(R.complement(isAssetOrderPendingAlpacaFill));
 	if (assetOrders.length === 0) {
 		// All the ASSET_ORDERs are already pending Alpaca fills, so this task is done
+		return Promise.resolve();
+	}
+
+	if (!isUserWithAlpacaEquity(user)) {
+		// Precondition 1 failed
+		// Kick to the `request_alpaca_ach_transfer` task
+
+		// Derive the amount to transfer
+		const orderSubtotalAmount = assetOrders.reduce((acc, assetOrder) => {
+			return acc + Number(assetOrder.amount);
+		}, 0);
+
+		await gcp.tasks.enqueueRequestAlpacaAchTransfer({
+			amountInCents: orderSubtotalAmount,
+			bankAccountId: order.bank_account,
+			orderId,
+			userId: order.user,
+		});
 		return Promise.resolve();
 	}
 

@@ -1,10 +1,6 @@
-import * as R from 'ramda';
 import {
 	AlpacaAchTransfer,
 	BankAccountApprovedByAlpaca,
-	assetOrdersApi,
-	AssetOrder,
-	isAssetOrderPendingAlpacaFill,
 	User,
 	usersApi,
 	UserActivatedByAlpaca,
@@ -12,17 +8,12 @@ import {
 	achTransfersApi,
 	CreateAchTransferParams,
 	getAchTransferPropertiesFromAlpacaAchTransfer,
-} from '@wallot/js';
-import { CloudTaskHandler } from 'ergonomic-node';
-import {
-	ordersApi,
-	Order,
 	bankAccountsApi,
 	BankAccount,
-	isOrderConfirmedByUser,
 	isBankAccountApprovedByAlpaca,
 } from '@wallot/js';
-import { PlaceAlpacaOrdersTaskParams } from '@wallot/node';
+import { CloudTaskHandler } from 'ergonomic-node';
+import { RequestAlpacaAchTransferTaskParams } from '@wallot/node';
 import { alpaca, db, gcp } from '../../services.js';
 import { getCurrencyUsdStringFromCents } from 'ergonomic';
 
@@ -35,30 +26,15 @@ export const handleRequestAlpacaAchTransferTaskOptions = {
  * Preconditions:
  *  - No ACH_TRANSFER is already pending
  *  - BANK_ACCOUNT is approved by Alpaca
- *  - ORDER is confirmed by user
- *  - USER does not already have Alpaca equity
+ * 	- USER is activated by Alpaca
  */
 export const handleRequestAlpacaAchTransfer: CloudTaskHandler<
-	PlaceAlpacaOrdersTaskParams
-> = async ({ data: { orderId } }) => {
-	// Get ORDER
-	const orderDoc = await db
-		.collection(ordersApi.collectionId)
-		.doc(orderId)
-		.get();
-	if (!orderDoc.exists) throw new Error('Order not found');
-	const order = orderDoc.data() as Order;
-
-	if (!isOrderConfirmedByUser(order)) {
-		// Precondition failed
-		// The order is still in cart, so this task is not necessary
-		return Promise.resolve();
-	}
-
-	// Query the ACH_TRANSFERs where bank_account = order.bank_account
+	RequestAlpacaAchTransferTaskParams
+> = async ({ data: { amountInCents, bankAccountId, orderId, userId } }) => {
+	// Query the ACH_TRANSFERs
 	const achTransfersQuery = await db
 		.collection(achTransfersApi.collectionId)
-		.where('bank_account', '==', order.bank_account)
+		.where('bank_account', '==', bankAccountId)
 		.get();
 	if (!achTransfersQuery.empty) {
 		// Precondition failed
@@ -66,10 +42,10 @@ export const handleRequestAlpacaAchTransfer: CloudTaskHandler<
 		return Promise.resolve();
 	}
 
-	// Query the BANK_ACCOUNT where _id = order.bank_account
+	// Query the BANK_ACCOUNT
 	const bankAccountDoc = await db
 		.collection(bankAccountsApi.collectionId)
-		.doc(order.bank_account)
+		.doc(bankAccountId)
 		.get();
 	if (!bankAccountDoc.exists) throw new Error('Bank account not found');
 	const bankAccount = bankAccountDoc.data() as BankAccount;
@@ -81,28 +57,8 @@ export const handleRequestAlpacaAchTransfer: CloudTaskHandler<
 		return Promise.resolve();
 	}
 
-	// Query the ASSET_ORDERs
-	const assetOrdersQuery = await db
-		.collection(assetOrdersApi.collectionId)
-		.where('order', '==', orderId)
-		.get();
-	if (assetOrdersQuery.empty) {
-		// The ORDER has no ASSET_ORDERs, so this task is not necessary
-		return Promise.resolve();
-	}
-	const assetOrders = assetOrdersQuery.docs
-		.map((doc) => doc.data() as AssetOrder)
-		.filter(R.complement(isAssetOrderPendingAlpacaFill));
-	if (assetOrders.length === 0) {
-		// All the ASSET_ORDERs are already pending Alpaca fills, so this task is not necessary
-		return Promise.resolve();
-	}
-
-	// Query the USER via the ORDER.user field
-	const userDoc = await db
-		.collection(usersApi.collectionId)
-		.doc(order.user)
-		.get();
+	// Query the USER
+	const userDoc = await db.collection(usersApi.collectionId).doc(userId).get();
 	if (!userDoc.exists) throw new Error('User not found');
 	const user = userDoc.data() as User;
 	if (!isUserActivatedByAlpaca(user)) {
@@ -110,16 +66,11 @@ export const handleRequestAlpacaAchTransfer: CloudTaskHandler<
 		return Promise.resolve();
 	}
 
-	// Derive the amount to transfer
-	const orderSubtotalAmount = assetOrders.reduce((acc, assetOrder) => {
-		return acc + Number(assetOrder.amount);
-	}, 0);
-
 	// Request the ACH_TRANSFER
 	const alpacaAchTransfer = await requestAlpacaAchTransfer(
 		user,
 		bankAccount,
-		orderSubtotalAmount,
+		amountInCents,
 	);
 	const achTransferCreateParams: CreateAchTransferParams = {
 		bank_account: bankAccount._id,

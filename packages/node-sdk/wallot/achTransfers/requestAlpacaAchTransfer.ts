@@ -1,7 +1,10 @@
 import { getFunctions } from 'firebase-admin/functions';
+import { PlaceAlpacaOrdersTaskParams } from '../orders/placeAlpacaOrders.js';
 
-export type RequestAlpacaAchTransferTaskParams = {
-	orderId: string;
+export type RequestAlpacaAchTransferTaskParams = PlaceAlpacaOrdersTaskParams & {
+	amountInCents: number;
+	bankAccountId: string;
+	userId: string;
 };
 export type RefreshAlpacaAchTransferStatusTaskParams = {
 	orderId: string;
@@ -38,10 +41,13 @@ export const enqueueRefreshAlpacaAchTransferStatus =
 	async (
 		refreshAlpacaAchTransferStatusParams: RefreshAlpacaAchTransferStatusTaskParams,
 	) => {
-		const queue = getFunctions().taskQueue<RefreshAlpacaAchTransferStatusTaskParams>(
+		const queue =
+			getFunctions().taskQueue<RefreshAlpacaAchTransferStatusTaskParams>(
+				'refresh_alpaca_ach_transfer_status',
+			);
+		const targetUri = await getCloudFunctionUrl(
 			'refresh_alpaca_ach_transfer_status',
 		);
-		const targetUri = await getCloudFunctionUrl('refresh_alpaca_ach_transfer_status');
 		log({
 			message: 'Enqueuing refresh_alpaca_ach_transfer_status task',
 			targetUri,
