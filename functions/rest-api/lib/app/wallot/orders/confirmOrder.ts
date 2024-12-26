@@ -113,15 +113,16 @@ export const confirmOrder = async (
 	});
 
 	const onFinished = async () => {
-		// Enqueue fill_order task
-		const queue =
-			getFunctions().taskQueue<FillOrderListenerTaskParams>('fill_order');
+		// Enqueue place_alpaca_orders task
+		const queue = getFunctions().taskQueue<FillOrderListenerTaskParams>(
+			'place_alpaca_orders',
+		);
 		const targetUri = await getCloudFunctionUrl({
 			...secrets,
-			functionName: 'fill_order',
+			functionName: 'place_alpaca_orders',
 			serviceAccountPath,
 		});
-		log({ message: 'Enqueuing fill_order task', targetUri });
+		log({ message: 'Enqueuing place_alpaca_orders task', targetUri });
 		await queue.enqueue(
 			{ orderId },
 			{
