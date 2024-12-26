@@ -22,10 +22,11 @@ export const placeAlpacaOrdersTaskOptions = {
 };
 
 /**
- * Precondition 1: USER has funds in their account
+ * Preconditions:
+ * 	- USER has funds in their account
  *
  * Criteria for success:
- * 	If any of the Alpaca order placements are successful, the task is considered successful.
+ * 	- If any of the Alpaca order placements are successful, the task is considered successful.
  */
 export const placeAlpacaOrders: CloudTaskHandler<
 	PlaceAlpacaOrdersTaskParams
