@@ -5,7 +5,6 @@ import {
 	KycUser,
 	usersApi,
 	User,
-	isUserActivatedByAlpaca,
 	isUserPendingAlpacaAccount,
 	isKycUser,
 	UpdateUserParams,
@@ -23,7 +22,6 @@ export const handleCreateAlpacaAccountTaskOptions = {
  * Preconditions:
  * 	- USER has completed KYC information
  * 	- USER is not pending activation by Alpaca
- * 	- USER is not activated by Alpaca
  */
 export const handleCreateAlpacaAccountTask: CloudTaskHandler<
 	CreateAlpacaAccountTaskParams
@@ -52,15 +50,6 @@ export const handleCreateAlpacaAccountTask: CloudTaskHandler<
 		log({
 			message:
 				'Requested Alpaca activation, but Alpaca activation already pending',
-		});
-		return Promise.resolve();
-	}
-	if (isUserActivatedByAlpaca(user)) {
-		// Precondition failed
-		// Alpaca activation is already complete, so this task is not necessary
-		log({
-			message:
-				'Requested Alpaca activation, but Alpaca activation already complete',
 		});
 		return Promise.resolve();
 	}
