@@ -5,6 +5,7 @@ export type PlaceAlpacaOrdersTaskParams = {
 };
 export type RefreshAlpacaOrderStatusTaskParams = {
 	assetOrderId: string;
+	userId: string;
 };
 
 export const enqueuePlaceAlpacaOrders =

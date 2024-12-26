@@ -54,7 +54,11 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 
 	if (!isOrderConfirmedByUser(order)) {
 		// Precondition failed
-		// The order is still in cart, so this task is not necessary
+		// The order is still in cart, so this task is not possible
+		log({
+			message: 'Requested order placement, but order not confirmed by user',
+			orderId,
+		});
 		return Promise.resolve();
 	}
 
@@ -63,7 +67,14 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 		.collection(usersApi.collectionId)
 		.doc(order.user)
 		.get();
-	if (!userDoc.exists) throw new Error('User not found');
+	if (!userDoc.exists) {
+		// User not found, so this task is not possible
+		log({
+			message:
+				'Requested refresh of Alpaca activation status, but user not found',
+		});
+		return Promise.resolve();
+	}
 	const user = userDoc.data() as User;
 
 	// Query the ASSET_ORDERs
@@ -72,7 +83,11 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 		.where('order', '==', orderId)
 		.get();
 	if (assetOrdersQuery.empty) {
-		// The ORDER has no ASSET_ORDERs, so this task is done
+		// The ORDER has no ASSET_ORDERs, so this task is not possible
+		log({
+			message: 'Requested order placement, but order has no asset orders',
+			orderId,
+		});
 		return Promise.resolve();
 	}
 	const assetOrders = assetOrdersQuery.docs
@@ -80,6 +95,11 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 		.filter(R.complement(isAssetOrderPendingAlpacaFill));
 	if (assetOrders.length === 0) {
 		// All the ASSET_ORDERs are already pending Alpaca fills, so this task is done
+		log({
+			message:
+				'Requested order placement, but all asset orders are already pending Alpaca fills',
+			orderId,
+		});
 		return Promise.resolve();
 	}
 
@@ -92,6 +112,11 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 			return acc + Number(assetOrder.amount);
 		}, 0);
 
+		log({
+			message:
+				'Requested order placement, but user has no Alpaca equity. Kicking to ACH transfer',
+			orderId,
+		});
 		await gcp.tasks.enqueueRequestAlpacaAchTransfer({
 			amountInCents: orderSubtotalAmount,
 			bankAccountId: order.bank_account,
@@ -164,10 +189,18 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 
 	// Kick to the `refresh_alpaca_order_status` task for each ASSET_ORDER
 	for (const assetOrderId of assetOrdersToRefresh) {
-		await gcp.tasks.enqueueRefreshAlpacaOrderStatus({ assetOrderId });
+		await gcp.tasks.enqueueRefreshAlpacaOrderStatus({
+			assetOrderId,
+			userId: user._id,
+		});
 	}
 
 	// Task complete
+	log({
+		message: 'Alpaca orders placed',
+		orderId,
+		assetOrdersToRefresh: Array.from(assetOrdersToRefresh).join(', '),
+	});
 	return Promise.resolve();
 };
 
