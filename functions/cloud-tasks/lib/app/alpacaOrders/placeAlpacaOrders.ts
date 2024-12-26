@@ -34,7 +34,7 @@ export const handlePlaceAlpacaOrdersTaskOptions = {
 export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 	PlaceAlpacaOrdersTaskParams
 > = async ({ data: { orderId } }) => {
-	// Get ORDER
+	// Query ORDER
 	const orderDoc = await db
 		.collection(ordersApi.collectionId)
 		.doc(orderId)
@@ -48,7 +48,7 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 		return Promise.resolve();
 	}
 
-	// Get USER
+	// Query USER
 	const userDoc = await db
 		.collection(usersApi.collectionId)
 		.doc(order.user)
