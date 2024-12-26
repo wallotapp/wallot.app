@@ -1,5 +1,6 @@
 import { default as OpenAI } from 'openai';
 import {
+	getCloudFunctionUrl,
 	getCloudStorageBucket,
 	getFirebaseAuth,
 	getFirestoreDB,
@@ -12,7 +13,10 @@ import { encryptString } from './crypto/encryptString.js';
 import { decryptString } from './crypto/decryptString.js';
 import { log } from './log.js';
 
-export const getServices = (secrets: SecretData) => ({
+export const getServices = (
+	secrets: SecretData,
+	serviceAccountPath: string,
+) => ({
 	alpaca: { broker: getAlpacaBrokerApiClient(secrets) },
 	alphaVantage: getAlphaVantageClient(secrets),
 	auth: getFirebaseAuth(secrets),
@@ -28,6 +32,14 @@ export const getServices = (secrets: SecretData) => ({
 		),
 	},
 	db: getFirestoreDB(secrets),
+	gcp: {
+		getCloudFunctionUrl: (functionName: string) =>
+			getCloudFunctionUrl({
+				...secrets,
+				functionName,
+				serviceAccountPath,
+			}),
+	},
 	log: log(secrets.SECRET_CRED_SERVER_PROTOCOL),
 	openAI: new OpenAI({
 		apiKey: secrets.SECRET_CRED_OPENAI_API_KEY,
