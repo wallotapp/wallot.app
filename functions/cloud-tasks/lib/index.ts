@@ -86,13 +86,13 @@ export const refresh_alpaca_ach_transfer_status =
 
 // place_alpaca_orders
 import {
-	placeAlpacaOrders,
-	placeAlpacaOrdersTaskOptions,
+	handlePlaceAlpacaOrdersTask,
+	handlePlaceAlpacaOrdersTaskOptions,
 } from './app/alpacaOrders/placeAlpacaOrders.js';
 export const place_alpaca_orders =
 	firebaseFunctions.tasks.onTaskDispatched<PlaceAlpacaOrdersTaskParams>(
-		placeAlpacaOrdersTaskOptions,
-		placeAlpacaOrders,
+		handlePlaceAlpacaOrdersTaskOptions,
+		handlePlaceAlpacaOrdersTask,
 	);
 
 // refresh_alpaca_orders_status
