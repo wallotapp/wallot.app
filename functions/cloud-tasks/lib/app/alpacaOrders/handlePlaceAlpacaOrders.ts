@@ -92,7 +92,7 @@ export const handlePlaceAlpacaOrders: CloudTaskHandler<
 	);
 	const results = await Promise.all(alpacaOrderPromises);
 
-	if (!results.some((result) => result.success)) {
+	if (results.every((result) => !result.success)) {
 		// If all Alpaca Order placements failed, throw an error
 		throw new firebaseFunctions.https.HttpsError(
 			'internal',
