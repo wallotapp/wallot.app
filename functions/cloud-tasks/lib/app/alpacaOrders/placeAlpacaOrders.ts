@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import { CloudTaskHandler, firebaseFunctions } from 'ergonomic-node';
 import {
 	ordersApi,
@@ -11,6 +12,7 @@ import {
 	UserWithAlpacaEquity,
 	getAssetOrderPropertiesFromAlpacaOrder,
 	UpdateAssetOrderParams,
+	isAssetOrderPendingAlpacaFill,
 } from '@wallot/js';
 import { PlaceAlpacaOrdersTaskParams } from '@wallot/node';
 import { alpaca, db, gcp, log } from '../../services.js';
@@ -58,10 +60,17 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 		.collection(assetOrdersApi.collectionId)
 		.where('order', '==', orderId)
 		.get();
-	if (assetOrdersQuery.empty) throw new Error('No ASSET_ORDERs found');
-	const assetOrders = assetOrdersQuery.docs.map(
-		(doc) => doc.data() as AssetOrder,
-	);
+	if (assetOrdersQuery.empty) {
+		// The ORDER has no ASSET_ORDERs, so this task is done
+		return Promise.resolve();
+	}
+	const assetOrders = assetOrdersQuery.docs
+		.map((doc) => doc.data() as AssetOrder)
+		.filter(R.complement(isAssetOrderPendingAlpacaFill));
+	if (assetOrders.length === 0) {
+		// All the ASSET_ORDERs are already pending Alpaca fills, so this task is done
+		return Promise.resolve();
+	}
 
 	// Place the ALPACA_ORDERs such that the promise only rejects if all orders reject
 	const alpacaOrderPromises = assetOrders.map((assetOrder) =>
