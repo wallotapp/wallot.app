@@ -31,7 +31,7 @@ export const handleCreateAlpacaAccountTask: CloudTaskHandler<
 	if (!userDoc.exists) {
 		// User not found, so this task is not possible
 		log({
-			message: 'Requested ACH Relationship, but user not found',
+			message: 'Requested Alpaca activation, but user not found',
 		});
 		return Promise.resolve();
 	}
