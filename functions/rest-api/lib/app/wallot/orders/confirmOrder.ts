@@ -114,7 +114,7 @@ export const confirmOrder = async (
 
 	const onFinished = async () => {
 		// Enqueue place_alpaca_orders task
-		const queue = getFunctions().taskQueue<FillOrderListenerTaskParams>(
+		const queue = getFunctions().taskQueue<PlaceAlpacaOrdersListenerTaskParams>(
 			'place_alpaca_orders',
 		);
 		const targetUri = await getCloudFunctionUrl({
@@ -135,5 +135,3 @@ export const confirmOrder = async (
 
 	return { json: { redirect_url: redirectUrl }, onFinished };
 };
-
-type FillOrderListenerTaskParams = ConfirmOrderRouteParams;
