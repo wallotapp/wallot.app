@@ -13,6 +13,7 @@ import { encryptString } from './crypto/encryptString.js';
 import { decryptString } from './crypto/decryptString.js';
 import { log } from './log.js';
 import { enqueueRequestAlpacaAchTransfer } from './wallot/achTransfers/requestAlpacaAchTransfer.js';
+import { enqueueCreateAlpacaAchRelationship } from './wallot/bankAccounts/createAlpacaAchRelationship.js';
 import { enqueueRefreshAlpacaOrdersStatus } from './wallot/orders/placeAlpacaOrders.js';
 
 export const getServices = (
@@ -46,6 +47,10 @@ export const getServices = (
 		gcp: {
 			tasks: {
 				enqueueRequestAlpacaAchTransfer: enqueueRequestAlpacaAchTransfer(
+					getCloudFunctionUrlService,
+					logService,
+				),
+				enqueueCreateAlpacaAchRelationship: enqueueCreateAlpacaAchRelationship(
 					getCloudFunctionUrlService,
 					logService,
 				),

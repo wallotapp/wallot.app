@@ -1,16 +1,16 @@
-import { getFunctions } from 'firebase-admin/functions';
 import { CloudTaskHandler, firebaseFunctions } from 'ergonomic-node';
 import {
-  ordersApi,
-  Order,
-  bankAccountsApi,
-  BankAccount, isOrderConfirmedByUser,
-  isBankAccountApprovedByAlpaca
+	ordersApi,
+	Order,
+	bankAccountsApi,
+	BankAccount,
+	isOrderConfirmedByUser,
+	isBankAccountApprovedByAlpaca,
 } from '@wallot/js';
 import { PlaceAlpacaOrdersTaskParams } from '@wallot/node';
-import { db, gcp, log } from '../../services.js';
+import { db, gcp } from '../../services.js';
 
-export const requestAlpacaAchTransferTaskOptions = {
+export const handleRequestAlpacaAchTransferTaskOptions = {
 	rateLimits: { maxConcurrentDispatches: 6 },
 	retryConfig: { maxAttempts: 3, minBackoffSeconds: 30 },
 };
@@ -20,7 +20,7 @@ export const requestAlpacaAchTransferTaskOptions = {
  *  - ORDER is confirmed by user
  *  - BANK_ACCOUNT is approved by Alpaca
  */
-export const requestAlpacaAchTransfer: CloudTaskHandler<
+export const handleRequestAlpacaAchTransfer: CloudTaskHandler<
 	PlaceAlpacaOrdersTaskParams
 > = async ({ data: { orderId } }) => {
 	// Get ORDER
@@ -48,24 +48,8 @@ export const requestAlpacaAchTransfer: CloudTaskHandler<
 
 	if (!isBankAccountApprovedByAlpaca(bankAccount)) {
 		// Precondition 1 failed
-		// Kick to the `request_alpaca_ach_relationship` task
-		const queue = getFunctions().taskQueue<PlaceAlpacaOrdersTaskParams>(
-			'request_alpaca_ach_relationship',
-		);
-		const targetUri = await gcp.getCloudFunctionUrl(
-			'request_alpaca_ach_relationship',
-		);
-		log({
-			message: 'Enqueuing request_alpaca_ach_relationship task',
-			targetUri,
-		});
-		const requestAlpacaAchTransferParams: PlaceAlpacaOrdersTaskParams = {
-			orderId,
-		};
-		await queue.enqueue(requestAlpacaAchTransferParams, {
-			scheduleDelaySeconds: 0,
-			uri: targetUri,
-		});
+		// Kick to the `create_alpaca_ach_relationship` task
+		await gcp.tasks.enqueueCreateAlpacaAchRelationship({ orderId });
 		return Promise.resolve();
 	}
 
