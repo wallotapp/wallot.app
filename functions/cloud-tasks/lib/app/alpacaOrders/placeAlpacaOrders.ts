@@ -54,20 +54,7 @@ export const placeAlpacaOrders: CloudTaskHandler<
 	if (!isUserWithAlpacaEquity(user)) {
 		// Precondition 1 failed
 		// Kick to the `request_alpaca_ach_transfer` task
-		const queue = getFunctions().taskQueue<RequestAlpacaAchTransferTaskParams>(
-			'request_alpaca_ach_transfer',
-		);
-		const targetUri = await gcp.getCloudFunctionUrl(
-			'request_alpaca_ach_transfer',
-		);
-		log({ message: 'Enqueuing request_alpaca_ach_transfer task', targetUri });
-		const requestAlpacaAchTransferParams: RequestAlpacaAchTransferTaskParams = {
-			orderId,
-		};
-		await queue.enqueue(requestAlpacaAchTransferParams, {
-			scheduleDelaySeconds: 0,
-			uri: targetUri,
-		});
+		await enqueueRequestAlpacaAchTransfer({ orderId });
 		return Promise.resolve();
 	}
 
@@ -141,20 +128,7 @@ export const placeAlpacaOrders: CloudTaskHandler<
 	await batch.commit();
 
 	// Kick to the `refresh_alpaca_orders_status` task
-	const queue = getFunctions().taskQueue<RefreshAlpacaOrdersStatusTaskParams>(
-		'refresh_alpaca_orders_status',
-	);
-	const targetUri = await gcp.getCloudFunctionUrl(
-		'refresh_alpaca_orders_status',
-	);
-	log({ message: 'Enqueuing refresh_alpaca_orders_status task', targetUri });
-	const refreshAlpacaOrdersStatusParams: RefreshAlpacaOrdersStatusTaskParams = {
-		orderId,
-	};
-	await queue.enqueue(refreshAlpacaOrdersStatusParams, {
-		scheduleDelaySeconds: 20,
-		uri: targetUri,
-	});
+	await enqueueRefreshAlpacaOrdersStatus({ orderId });
 
 	// Task complete
 	return Promise.resolve();
@@ -177,4 +151,44 @@ async function placeAlpacaOrder(
 		},
 	);
 	return response.json();
+}
+
+async function enqueueRequestAlpacaAchTransfer(
+	requestAlpacaAchTransferParams: RequestAlpacaAchTransferTaskParams,
+) {
+	const queue = getFunctions().taskQueue<RequestAlpacaAchTransferTaskParams>(
+		'request_alpaca_ach_transfer',
+	);
+	const targetUri = await gcp.getCloudFunctionUrl(
+		'request_alpaca_ach_transfer',
+	);
+	log({
+		message: 'Enqueuing request_alpaca_ach_transfer task',
+		targetUri,
+		requestAlpacaAchTransferParams,
+	});
+	await queue.enqueue(requestAlpacaAchTransferParams, {
+		scheduleDelaySeconds: 0,
+		uri: targetUri,
+	});
+}
+
+async function enqueueRefreshAlpacaOrdersStatus(
+	refreshAlpacaOrdersStatusParams: RefreshAlpacaOrdersStatusTaskParams,
+) {
+	const queue = getFunctions().taskQueue<RefreshAlpacaOrdersStatusTaskParams>(
+		'refresh_alpaca_orders_status',
+	);
+	const targetUri = await gcp.getCloudFunctionUrl(
+		'refresh_alpaca_orders_status',
+	);
+	log({
+		message: 'Enqueuing refresh_alpaca_orders_status task',
+		targetUri,
+		refreshAlpacaOrdersStatusParams,
+	});
+	await queue.enqueue(refreshAlpacaOrdersStatusParams, {
+		scheduleDelaySeconds: 20,
+		uri: targetUri,
+	});
 }
