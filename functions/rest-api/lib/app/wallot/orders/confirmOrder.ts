@@ -1,6 +1,3 @@
-import { PlaceAlpacaOrdersTaskParams } from '@wallot/node';
-import { getFunctions } from 'firebase-admin/functions';
-import { v4 } from 'uuid';
 import { secrets } from '../../../secrets.js';
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { FunctionResponse } from '@wallot/node';
@@ -85,7 +82,6 @@ export const confirmOrder = async (
 	}
 
 	// Update ORDER status
-	const fillOrderTaskId = v4(); // <== revisit this
 	const orderUpdateParams: UpdateOrderParams & OrderConfirmedByUserParams = {
 		bank_account,
 		status: 'confirmed_by_user',
@@ -109,19 +105,7 @@ export const confirmOrder = async (
 
 	const onFinished = async () => {
 		// Enqueue place_alpaca_orders task
-		const queue = getFunctions().taskQueue<PlaceAlpacaOrdersTaskParams>(
-			'place_alpaca_orders',
-		);
-		const targetUri = await gcp.getCloudFunctionUrl('place_alpaca_orders');
-		log({ message: 'Enqueuing place_alpaca_orders task', targetUri });
-		const placeAlpacaOrdersParams: PlaceAlpacaOrdersTaskParams = {
-			orderId,
-		};
-		await queue.enqueue(placeAlpacaOrdersParams, {
-			id: fillOrderTaskId, // <== revisit this
-			scheduleDelaySeconds: 0,
-			uri: targetUri,
-		});
+		await gcp.tasks.enqueuePlaceAlpacaOrders({ orderId });
 	};
 
 	return { json: { redirect_url: redirectUrl }, onFinished };
