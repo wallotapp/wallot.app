@@ -1,4 +1,4 @@
-import { PlaceAlpacaOrdersListenerTaskParams } from '@wallot/node';
+import { PlaceAlpacaOrdersTaskParams } from '@wallot/node';
 import { getFunctions } from 'firebase-admin/functions';
 import { v4 } from 'uuid';
 import { secrets } from '../../../secrets.js';
@@ -109,12 +109,12 @@ export const confirmOrder = async (
 
 	const onFinished = async () => {
 		// Enqueue place_alpaca_orders task
-		const queue = getFunctions().taskQueue<PlaceAlpacaOrdersListenerTaskParams>(
+		const queue = getFunctions().taskQueue<PlaceAlpacaOrdersTaskParams>(
 			'place_alpaca_orders',
 		);
 		const targetUri = await gcp.getCloudFunctionUrl('place_alpaca_orders');
 		log({ message: 'Enqueuing place_alpaca_orders task', targetUri });
-		const placeAlpacaOrdersParams: PlaceAlpacaOrdersListenerTaskParams = {
+		const placeAlpacaOrdersParams: PlaceAlpacaOrdersTaskParams = {
 			orderId,
 		};
 		await queue.enqueue(placeAlpacaOrdersParams, {

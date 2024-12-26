@@ -13,7 +13,7 @@ import {
 	getAssetOrderPropertiesFromAlpacaOrder,
 	UpdateAssetOrderParams,
 } from '@wallot/js';
-import { PlaceAlpacaOrdersListenerTaskParams } from '@wallot/node';
+import { PlaceAlpacaOrdersTaskParams } from '@wallot/node';
 import { alpaca, db, gcp, log } from '../../services.js';
 
 export const handlePlaceAlpacaOrdersTaskOptions = {
@@ -30,7 +30,7 @@ export const handlePlaceAlpacaOrdersTaskOptions = {
  * 	If any of the Alpaca order placements are successful, the task is considered successful.
  */
 export const handlePlaceAlpacaOrders: CloudTaskHandler<
-	PlaceAlpacaOrdersListenerTaskParams
+	PlaceAlpacaOrdersTaskParams
 > = async ({ data: { orderId } }) => {
 	// Get ORDER
 	const orderDoc = await db
@@ -51,17 +51,16 @@ export const handlePlaceAlpacaOrders: CloudTaskHandler<
 	if (!isUserWithAlpacaEquity(user)) {
 		// Precondition 1 failed
 		// Kick to the `request_alpaca_ach_transfer` task
-		const queue = getFunctions().taskQueue<PlaceAlpacaOrdersListenerTaskParams>(
+		const queue = getFunctions().taskQueue<PlaceAlpacaOrdersTaskParams>(
 			'request_alpaca_ach_transfer',
 		);
 		const targetUri = await gcp.getCloudFunctionUrl(
 			'request_alpaca_ach_transfer',
 		);
 		log({ message: 'Enqueuing request_alpaca_ach_transfer task', targetUri });
-		const requestAlpacaAchTransferParams: PlaceAlpacaOrdersListenerTaskParams =
-			{
-				orderId,
-			};
+		const requestAlpacaAchTransferParams: PlaceAlpacaOrdersTaskParams = {
+			orderId,
+		};
 		await queue.enqueue(requestAlpacaAchTransferParams, {
 			scheduleDelaySeconds: 0,
 			uri: targetUri,
@@ -139,12 +138,12 @@ export const handlePlaceAlpacaOrders: CloudTaskHandler<
 	await batch.commit();
 
 	// Kick to the `refresh_alpaca_orders` task
-	const queue = getFunctions().taskQueue<PlaceAlpacaOrdersListenerTaskParams>(
+	const queue = getFunctions().taskQueue<PlaceAlpacaOrdersTaskParams>(
 		'refresh_alpaca_orders',
 	);
 	const targetUri = await gcp.getCloudFunctionUrl('refresh_alpaca_orders');
 	log({ message: 'Enqueuing refresh_alpaca_orders task', targetUri });
-	const refreshAlpacaOrdersParams: PlaceAlpacaOrdersListenerTaskParams = {
+	const refreshAlpacaOrdersParams: PlaceAlpacaOrdersTaskParams = {
 		orderId,
 	};
 	await queue.enqueue(refreshAlpacaOrdersParams, {

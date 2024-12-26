@@ -1,3 +1,3 @@
-export type PlaceAlpacaOrdersListenerTaskParams = {
+export type PlaceAlpacaOrdersTaskParams = {
 	orderId: string;
 };
