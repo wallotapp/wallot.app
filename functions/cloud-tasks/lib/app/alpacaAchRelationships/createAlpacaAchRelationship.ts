@@ -68,7 +68,13 @@ export const handleCreateAlpacaAchRelationshipTask: CloudTaskHandler<
 
 	// Query the USER
 	const userDoc = await db.collection(usersApi.collectionId).doc(userId).get();
-	if (!userDoc.exists) throw new Error('User not found');
+	if (!userDoc.exists) {
+		// User not found, so this task is not possible
+		log({
+			message: 'Requested ACH Relationship, but user not found',
+		});
+		return Promise.resolve();
+	}
 	const user = userDoc.data() as User;
 	if (!isUserActivatedByAlpaca(user)) {
 		// Precondition failed
