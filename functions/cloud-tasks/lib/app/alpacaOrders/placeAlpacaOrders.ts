@@ -125,6 +125,7 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 
 	// Initialize a batch
 	const batch = db.batch();
+	const assetOrdersToRefresh = new Set<string>();
 
 	// Add updates to batch
 	for (const { alpacaOrder, assetOrder, success, error } of results) {
@@ -137,6 +138,7 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 				.collection(assetOrdersApi.collectionId)
 				.doc(assetOrder._id);
 			batch.update(assetOrderDoc, assetOrderUpdateParams);
+			assetOrdersToRefresh.add(assetOrder._id);
 		} else {
 			log(
 				{
@@ -160,8 +162,10 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 	// Commit the batch
 	await batch.commit();
 
-	// Kick to the `refresh_alpaca_orders_status` task
-	await gcp.tasks.enqueueRefreshAlpacaOrdersStatus({ orderId });
+	// Kick to the `refresh_alpaca_order_status` task for each ASSET_ORDER
+	for (const assetOrderId of assetOrdersToRefresh) {
+		await gcp.tasks.enqueueRefreshAlpacaOrderStatus({ assetOrderId });
+	}
 
 	// Task complete
 	return Promise.resolve();

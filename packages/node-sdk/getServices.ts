@@ -22,7 +22,7 @@ import {
 } from './wallot/bankAccounts/createAlpacaAchRelationship.js';
 import {
 	enqueuePlaceAlpacaOrders,
-	enqueueRefreshAlpacaOrdersStatus,
+	enqueueRefreshAlpacaOrderStatus,
 } from './wallot/orders/placeAlpacaOrders.js';
 import {
 	enqueueCreateAlpacaAccount,
@@ -93,7 +93,7 @@ export const getServices = (
 					getCloudFunctionUrlService,
 					logService,
 				),
-				enqueueRefreshAlpacaOrdersStatus: enqueueRefreshAlpacaOrdersStatus(
+				enqueueRefreshAlpacaOrderStatus: enqueueRefreshAlpacaOrderStatus(
 					getCloudFunctionUrlService,
 					logService,
 				),

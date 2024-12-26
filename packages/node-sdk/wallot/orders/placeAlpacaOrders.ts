@@ -3,8 +3,8 @@ import { getFunctions } from 'firebase-admin/functions';
 export type PlaceAlpacaOrdersTaskParams = {
 	orderId: string;
 };
-export type RefreshAlpacaOrdersStatusTaskParams = {
-	orderId: string;
+export type RefreshAlpacaOrderStatusTaskParams = {
+	assetOrderId: string;
 };
 
 export const enqueuePlaceAlpacaOrders =
@@ -12,7 +12,7 @@ export const enqueuePlaceAlpacaOrders =
 		getCloudFunctionUrl: (functionName: string) => Promise<string>,
 		log: (log: unknown, options?: { type: 'error' | 'normal' }) => void,
 	) =>
-	async (refreshAlpacaOrdersStatusParams: PlaceAlpacaOrdersTaskParams) => {
+	async (refreshAlpacaOrderStatusParams: PlaceAlpacaOrdersTaskParams) => {
 		const queue = getFunctions().taskQueue<PlaceAlpacaOrdersTaskParams>(
 			'place_alpaca_orders',
 		);
@@ -20,32 +20,32 @@ export const enqueuePlaceAlpacaOrders =
 		log({
 			message: 'Enqueuing place_alpaca_orders task',
 			targetUri,
-			refreshAlpacaOrdersStatusParams,
+			refreshAlpacaOrderStatusParams,
 		});
-		await queue.enqueue(refreshAlpacaOrdersStatusParams, {
+		await queue.enqueue(refreshAlpacaOrderStatusParams, {
 			scheduleDelaySeconds: 0,
 			uri: targetUri,
 		});
 	};
 
-export const enqueueRefreshAlpacaOrdersStatus =
+export const enqueueRefreshAlpacaOrderStatus =
 	(
 		getCloudFunctionUrl: (functionName: string) => Promise<string>,
 		log: (log: unknown, options?: { type: 'error' | 'normal' }) => void,
 	) =>
 	async (
-		refreshAlpacaOrdersStatusParams: RefreshAlpacaOrdersStatusTaskParams,
+		refreshAlpacaOrderStatusParams: RefreshAlpacaOrderStatusTaskParams,
 	) => {
-		const queue = getFunctions().taskQueue<RefreshAlpacaOrdersStatusTaskParams>(
-			'refresh_alpaca_orders_status',
+		const queue = getFunctions().taskQueue<RefreshAlpacaOrderStatusTaskParams>(
+			'refresh_alpaca_order_status',
 		);
-		const targetUri = await getCloudFunctionUrl('refresh_alpaca_orders_status');
+		const targetUri = await getCloudFunctionUrl('refresh_alpaca_order_status');
 		log({
-			message: 'Enqueuing refresh_alpaca_orders_status task',
+			message: 'Enqueuing refresh_alpaca_order_status task',
 			targetUri,
-			refreshAlpacaOrdersStatusParams,
+			refreshAlpacaOrderStatusParams,
 		});
-		await queue.enqueue(refreshAlpacaOrdersStatusParams, {
+		await queue.enqueue(refreshAlpacaOrderStatusParams, {
 			scheduleDelaySeconds: 20,
 			uri: targetUri,
 		});

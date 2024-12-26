@@ -1,5 +1,11 @@
 import { CloudTaskHandler } from 'ergonomic-node';
 import { RefreshAlpacaAchTransferStatusTaskParams } from '@wallot/node';
+import {
+	AchTransfer,
+	AlpacaAchTransfer,
+	UserActivatedByAlpaca,
+} from '@wallot/js';
+import { alpaca } from '../../services.js';
 
 export const handleRefreshAlpacaAchTransferStatusTaskOptions = {
 	rateLimits: { maxConcurrentDispatches: 6 },
@@ -13,3 +19,13 @@ export const handleRefreshAlpacaAchTransferStatusTask: CloudTaskHandler<
 	orderId;
 	return Promise.resolve();
 };
+
+async function retrieveAlpacaAchTransfer(
+	user: UserActivatedByAlpaca,
+	achTransfer: AchTransfer,
+) {
+	const response = await alpaca.broker.get<AlpacaAchTransfer>(
+		`v1/todo/${user.alpaca_account_id}`,
+	);
+	return response.json();
+}
