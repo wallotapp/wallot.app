@@ -29,3 +29,26 @@ export const enqueueRequestAlpacaAchTransfer =
 			uri: targetUri,
 		});
 	};
+
+export const enqueueRefreshAlpacaAchTransferStatus =
+	(
+		getCloudFunctionUrl: (functionName: string) => Promise<string>,
+		log: (log: unknown, options?: { type: 'error' | 'normal' }) => void,
+	) =>
+	async (
+		refreshAlpacaAchTransferStatusParams: RefreshAlpacaAchTransferStatusTaskParams,
+	) => {
+		const queue = getFunctions().taskQueue<RefreshAlpacaAchTransferStatusTaskParams>(
+			'refresh_alpaca_ach_transfer_status',
+		);
+		const targetUri = await getCloudFunctionUrl('refresh_alpaca_ach_transfer_status');
+		log({
+			message: 'Enqueuing refresh_alpaca_ach_transfer_status task',
+			targetUri,
+			refreshAlpacaAchTransferStatusParams,
+		});
+		await queue.enqueue(refreshAlpacaAchTransferStatusParams, {
+			scheduleDelaySeconds: 20,
+			uri: targetUri,
+		});
+	};

@@ -103,5 +103,5 @@ import {
 export const refresh_alpaca_orders_status =
 	firebaseFunctions.tasks.onTaskDispatched<RefreshAlpacaOrdersStatusTaskParams>(
 		handleRefreshAlpacaOrdersStatusTaskOptions,
-		handleRefreshAlpacaOrdersStatusTaskf,
+		handleRefreshAlpacaOrdersStatusTask,
 	);

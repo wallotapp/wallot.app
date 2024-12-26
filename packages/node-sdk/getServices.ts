@@ -12,7 +12,10 @@ import { getAlphaVantageClient } from './alphaVantage/index.js';
 import { encryptString } from './crypto/encryptString.js';
 import { decryptString } from './crypto/decryptString.js';
 import { log } from './log.js';
-import { enqueueRequestAlpacaAchTransfer } from './wallot/achTransfers/requestAlpacaAchTransfer.js';
+import {
+	enqueueRequestAlpacaAchTransfer,
+	enqueueRefreshAlpacaAchTransferStatus,
+} from './wallot/achTransfers/requestAlpacaAchTransfer.js';
 import { enqueueCreateAlpacaAchRelationship } from './wallot/bankAccounts/createAlpacaAchRelationship.js';
 import { enqueueRefreshAlpacaOrdersStatus } from './wallot/orders/placeAlpacaOrders.js';
 
@@ -50,6 +53,11 @@ export const getServices = (
 					getCloudFunctionUrlService,
 					logService,
 				),
+				enqueueRefreshAlpacaAchTransferStatus:
+					enqueueRefreshAlpacaAchTransferStatus(
+						getCloudFunctionUrlService,
+						logService,
+					),
 				enqueueCreateAlpacaAchRelationship: enqueueCreateAlpacaAchRelationship(
 					getCloudFunctionUrlService,
 					logService,
