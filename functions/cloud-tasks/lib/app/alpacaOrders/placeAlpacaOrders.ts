@@ -16,20 +16,18 @@ import {
 import { PlaceAlpacaOrdersTaskParams } from '@wallot/node';
 import { alpaca, db, gcp, log } from '../../services.js';
 
-export const handlePlaceAlpacaOrdersTaskOptions = {
+export const placeAlpacaOrdersTaskOptions = {
 	rateLimits: { maxConcurrentDispatches: 6 },
 	retryConfig: { maxAttempts: 3, minBackoffSeconds: 30 },
 };
 
 /**
- * handlePlaceAlpacaOrders
- *
  * Precondition 1: USER has funds in their account
  *
  * Criteria for success:
  * 	If any of the Alpaca order placements are successful, the task is considered successful.
  */
-export const handlePlaceAlpacaOrders: CloudTaskHandler<
+export const placeAlpacaOrders: CloudTaskHandler<
 	PlaceAlpacaOrdersTaskParams
 > = async ({ data: { orderId } }) => {
 	// Get ORDER
