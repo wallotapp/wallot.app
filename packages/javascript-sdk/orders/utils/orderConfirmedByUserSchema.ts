@@ -1,8 +1,16 @@
 import * as yup from 'yup';
 import { YupHelpers } from 'ergonomic';
-import { Order, OrderStatusEnum } from '../models/orderProperties.js';
+import {
+	Order,
+	OrderStatusEnum,
+	ordersApi,
+} from '../models/orderProperties.js';
 
 export const orderConfirmedByUserProperties = {
+	bank_account: ordersApi.properties.bank_account
+		.defined()
+		.nullable(false)
+		.min(1),
 	status: YupHelpers.constant(OrderStatusEnum.obj.confirmed_by_user),
 };
 export const orderConfirmedByUserSchema = yup.object(
