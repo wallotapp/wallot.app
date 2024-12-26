@@ -10,6 +10,11 @@ import {
 import { PlaceAlpacaOrdersListenerTaskParams } from '@wallot/node';
 import { db, gcp, log } from '../../services.js';
 
+export const handlePlaceAlpacaOrdersTaskOptions = {
+	rateLimits: { maxConcurrentDispatches: 6 },
+	retryConfig: { maxAttempts: 3, minBackoffSeconds: 30 },
+};
+
 /**
  * handlePlaceAlpacaOrders
  *
