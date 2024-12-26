@@ -13,7 +13,11 @@ import {
 	getAssetOrderPropertiesFromAlpacaOrder,
 	UpdateAssetOrderParams,
 } from '@wallot/js';
-import { PlaceAlpacaOrdersTaskParams } from '@wallot/node';
+import {
+	PlaceAlpacaOrdersTaskParams,
+	RefreshAlpacaOrdersStatusTaskParams,
+	RequestAlpacaAchTransferTaskParams,
+} from '@wallot/node';
 import { alpaca, db, gcp, log } from '../../services.js';
 
 export const placeAlpacaOrdersTaskOptions = {
@@ -50,14 +54,14 @@ export const placeAlpacaOrders: CloudTaskHandler<
 	if (!isUserWithAlpacaEquity(user)) {
 		// Precondition 1 failed
 		// Kick to the `request_alpaca_ach_transfer` task
-		const queue = getFunctions().taskQueue<PlaceAlpacaOrdersTaskParams>(
+		const queue = getFunctions().taskQueue<RequestAlpacaAchTransferTaskParams>(
 			'request_alpaca_ach_transfer',
 		);
 		const targetUri = await gcp.getCloudFunctionUrl(
 			'request_alpaca_ach_transfer',
 		);
 		log({ message: 'Enqueuing request_alpaca_ach_transfer task', targetUri });
-		const requestAlpacaAchTransferParams: PlaceAlpacaOrdersTaskParams = {
+		const requestAlpacaAchTransferParams: RequestAlpacaAchTransferTaskParams = {
 			orderId,
 		};
 		await queue.enqueue(requestAlpacaAchTransferParams, {
@@ -137,17 +141,17 @@ export const placeAlpacaOrders: CloudTaskHandler<
 	await batch.commit();
 
 	// Kick to the `refresh_alpaca_orders_status` task
-	const queue = getFunctions().taskQueue<PlaceAlpacaOrdersTaskParams>(
+	const queue = getFunctions().taskQueue<RefreshAlpacaOrdersStatusTaskParams>(
 		'refresh_alpaca_orders_status',
 	);
 	const targetUri = await gcp.getCloudFunctionUrl(
 		'refresh_alpaca_orders_status',
 	);
 	log({ message: 'Enqueuing refresh_alpaca_orders_status task', targetUri });
-	const refreshAlpacaOrdersParams: PlaceAlpacaOrdersTaskParams = {
+	const refreshAlpacaOrdersStatusParams: RefreshAlpacaOrdersStatusTaskParams = {
 		orderId,
 	};
-	await queue.enqueue(refreshAlpacaOrdersParams, {
+	await queue.enqueue(refreshAlpacaOrdersStatusParams, {
 		scheduleDelaySeconds: 20,
 		uri: targetUri,
 	});
