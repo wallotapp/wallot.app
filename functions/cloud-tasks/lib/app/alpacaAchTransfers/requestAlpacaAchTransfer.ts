@@ -3,7 +3,7 @@ import {
 	UserWithAlpacaEquity,
 	BankAccountApprovedByAlpaca,
 } from '@wallot/js';
-import { CloudTaskHandler, firebaseFunctions } from 'ergonomic-node';
+import { CloudTaskHandler } from 'ergonomic-node';
 import {
 	ordersApi,
 	Order,
@@ -38,10 +38,9 @@ export const handleRequestAlpacaAchTransfer: CloudTaskHandler<
 	const order = orderDoc.data() as Order;
 
 	if (!isOrderConfirmedByUser(order)) {
-		throw new firebaseFunctions.https.HttpsError(
-			'failed-precondition',
-			'Order is not confirmed by user',
-		);
+		// Precondition 1 failed
+		// The order is still in cart, so this task is not necessary
+		return Promise.resolve();
 	}
 
 	// Get BANK_ACCOUNT
@@ -53,7 +52,7 @@ export const handleRequestAlpacaAchTransfer: CloudTaskHandler<
 	const bankAccount = bankAccountDoc.data() as BankAccount;
 
 	if (!isBankAccountApprovedByAlpaca(bankAccount)) {
-		// Precondition 1 failed
+		// Precondition 2 failed
 		// Kick to the `create_alpaca_ach_relationship` task
 		await gcp.tasks.enqueueCreateAlpacaAchRelationship({ orderId });
 		return Promise.resolve();
