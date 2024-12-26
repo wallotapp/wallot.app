@@ -62,7 +62,6 @@ export const registerUser = async ({
 	const userDoc = usersApi.mergeCreateParams({
 		createParams: {
 			_id: userDocId,
-			activation_reminder_task_id: activationReminderTaskId,
 			category: 'default',
 			firebase_auth_email: email,
 			name: '',

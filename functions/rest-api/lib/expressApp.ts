@@ -246,7 +246,6 @@ const mockApiResource: User = {
 	...apiResourceSpec.apiResourceDefaultJson,
 	category: 'default',
 	name: 'My User',
-	activation_reminder_task_id: '...',
 	alpaca_account_id: '...',
 	firebase_auth_email: '...',
 	investing_goals: [],

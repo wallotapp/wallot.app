@@ -3,7 +3,6 @@ import { YupHelpers } from 'ergonomic';
 import { Order, OrderStatusEnum } from '../models/orderProperties.js';
 
 export const orderConfirmedByUserProperties = {
-	fill_task_id: yup.string().defined().nullable(false).min(1),
 	status: YupHelpers.constant(OrderStatusEnum.obj.confirmed_by_user),
 };
 export const orderConfirmedByUserSchema = yup.object(

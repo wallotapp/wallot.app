@@ -1,28 +1,19 @@
+import { getFunctions } from 'firebase-admin/functions';
 import { CloudTaskHandler } from 'ergonomic-node';
 import {
-	getHomeSiteRoute, // route function
-	ConfirmOrderParams,
-	ConfirmOrderRouteParams,
-	ConfirmOrderResponse,
-	OrderConfirmedByUserParams,
 	ordersApi,
-	UpdateOrderParams,
 	Order,
-	licensesApi,
-	License,
-	isProLicense,
 	usersApi,
 	User,
-	ProLicenseParams,
 	isUserWithAlpacaEquity,
 } from '@wallot/js';
 import { PlaceAlpacaOrdersListenerTaskParams } from '@wallot/node';
-import { db, log } from '../../services.js';
+import { db, gcp, log } from '../../services.js';
 
 /**
  * handlePlaceAlpacaOrders
  *
- * Precondition: USER has funds in their account
+ * Precondition 1: USER has funds in their account
  */
 export const handlePlaceAlpacaOrders: CloudTaskHandler<
 	PlaceAlpacaOrdersListenerTaskParams
@@ -44,11 +35,27 @@ export const handlePlaceAlpacaOrders: CloudTaskHandler<
 	const user = userDoc.data() as User;
 
 	if (!isUserWithAlpacaEquity(user)) {
+		// Precondition 1 failed
 		// Kick to the `request_alpaca_ach_transfer` task
-		// TODO
-	} else {
-		// Place the order
-		// TODO
+		const queue = getFunctions().taskQueue<PlaceAlpacaOrdersListenerTaskParams>(
+			'request_alpaca_ach_transfer',
+		);
+		const targetUri = await gcp.getCloudFunctionUrl(
+			'request_alpaca_ach_transfer',
+		);
+		log({ message: 'Enqueuing request_alpaca_ach_transfer task', targetUri });
+		const requestAlpacaAchTransferParams: PlaceAlpacaOrdersListenerTaskParams =
+			{
+				orderId,
+			};
+		await queue.enqueue(requestAlpacaAchTransferParams, {
+			scheduleDelaySeconds: 0,
+			uri: targetUri,
+		});
+		return Promise.resolve();
 	}
+
+	// Place the order
+	// TODO
 	return Promise.resolve();
 };

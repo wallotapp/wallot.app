@@ -85,10 +85,9 @@ export const confirmOrder = async (
 	}
 
 	// Update ORDER status
-	const fillOrderTaskId = v4();
+	const fillOrderTaskId = v4(); // <== revisit this
 	const orderUpdateParams: UpdateOrderParams & OrderConfirmedByUserParams = {
 		bank_account,
-		fill_task_id: fillOrderTaskId,
 		status: 'confirmed_by_user',
 	};
 	log({ message: 'Updating order', orderUpdateParams });
@@ -119,7 +118,7 @@ export const confirmOrder = async (
 			orderId,
 		};
 		await queue.enqueue(placeAlpacaOrdersParams, {
-			id: fillOrderTaskId,
+			id: fillOrderTaskId, // <== revisit this
 			scheduleDelaySeconds: 0,
 			uri: targetUri,
 		});
