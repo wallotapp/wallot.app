@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 import { BankAccount } from '../models/bankAccountProperties.js';
+import { TokenizedBankAccount } from './tokenizeBankAccountSchema.js';
 import { alpacaAchRelationshipProperties } from './alpacaAchRelationships.js';
 
 export const bankAccountPendingAlpacaAchRelationshipProperties = {
@@ -19,7 +20,7 @@ export type BankAccountPendingAlpacaAchRelationshipParams = yup.InferType<
 	typeof bankAccountPendingAlpacaAchRelationshipSchema
 >;
 
-export type BankAccountPendingAlpacaAchRelationship = BankAccount &
+export type BankAccountPendingAlpacaAchRelationship = TokenizedBankAccount &
 	BankAccountPendingAlpacaAchRelationshipParams;
 export const isBankAccountPendingAlpacaAchRelationship = (
 	bankAccount: BankAccount,
