@@ -16,8 +16,18 @@ import {
 	enqueueRequestAlpacaAchTransfer,
 	enqueueRefreshAlpacaAchTransferStatus,
 } from './wallot/achTransfers/requestAlpacaAchTransfer.js';
-import { enqueueCreateAlpacaAchRelationship } from './wallot/bankAccounts/createAlpacaAchRelationship.js';
-import { enqueueRefreshAlpacaOrdersStatus } from './wallot/orders/placeAlpacaOrders.js';
+import {
+	enqueueCreateAlpacaAchRelationship,
+	enqueueRefreshAlpacaAchRelationshipStatus,
+} from './wallot/bankAccounts/createAlpacaAchRelationship.js';
+import {
+	enqueuePlaceAlpacaOrders,
+	enqueueRefreshAlpacaOrdersStatus,
+} from './wallot/orders/placeAlpacaOrders.js';
+import {
+	enqueueCreateAlpacaAccount,
+	enqueueRefreshAlpacaAccountStatus,
+} from './wallot/users/createAlpacaAccount.js';
 
 export const getServices = (
 	secrets: SecretData,
@@ -49,6 +59,16 @@ export const getServices = (
 		db: getFirestoreDB(secrets),
 		gcp: {
 			tasks: {
+				// Alpaca Accounts
+				enqueueCreateAlpacaAccount: enqueueCreateAlpacaAccount(
+					getCloudFunctionUrlService,
+					logService,
+				),
+				enqueueRefreshAlpacaAccountStatus: enqueueRefreshAlpacaAccountStatus(
+					getCloudFunctionUrlService,
+					logService,
+				),
+				// Alpaca ACH Transfers
 				enqueueRequestAlpacaAchTransfer: enqueueRequestAlpacaAchTransfer(
 					getCloudFunctionUrlService,
 					logService,
@@ -58,7 +78,18 @@ export const getServices = (
 						getCloudFunctionUrlService,
 						logService,
 					),
+				// Alpaca ACH Relationships
 				enqueueCreateAlpacaAchRelationship: enqueueCreateAlpacaAchRelationship(
+					getCloudFunctionUrlService,
+					logService,
+				),
+				enqueueRefreshAlpacaAchRelationshipStatus:
+					enqueueRefreshAlpacaAchRelationshipStatus(
+						getCloudFunctionUrlService,
+						logService,
+					),
+				// Alpaca Orders
+				enqueuePlaceAlpacaOrders: enqueuePlaceAlpacaOrders(
 					getCloudFunctionUrlService,
 					logService,
 				),

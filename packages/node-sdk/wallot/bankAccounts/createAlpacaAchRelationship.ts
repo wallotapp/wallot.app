@@ -32,3 +32,29 @@ export const enqueueCreateAlpacaAchRelationship =
 			uri: targetUri,
 		});
 	};
+
+export const enqueueRefreshAlpacaAchRelationshipStatus =
+	(
+		getCloudFunctionUrl: (functionName: string) => Promise<string>,
+		log: (log: unknown, options?: { type: 'error' | 'normal' }) => void,
+	) =>
+	async (
+		refreshAlpacaAchRelationshipStatusParams: RefreshAlpacaAchRelationshipStatusTaskParams,
+	) => {
+		const queue =
+			getFunctions().taskQueue<RefreshAlpacaAchRelationshipStatusTaskParams>(
+				'refresh_alpaca_ach_relationship_status',
+			);
+		const targetUri = await getCloudFunctionUrl(
+			'refresh_alpaca_ach_relationship_status',
+		);
+		log({
+			message: 'Enqueuing refresh_alpaca_ach_relationship_status task',
+			targetUri,
+			refreshAlpacaAchRelationshipStatusParams,
+		});
+		await queue.enqueue(refreshAlpacaAchRelationshipStatusParams, {
+			scheduleDelaySeconds: 20,
+			uri: targetUri,
+		});
+	};
