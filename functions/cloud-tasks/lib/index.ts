@@ -14,72 +14,72 @@ import {
 
 // create_alpaca_account
 import {
-	createAlpacaAccount,
-	createAlpacaAccountTaskOptions,
+	handleCreateAlpacaAccountTask,
+	handleCreateAlpacaAccountTaskOptions,
 } from './app/alpacaAccounts/createAlpacaAccount.js';
 export const create_alpaca_account =
 	firebaseFunctions.tasks.onTaskDispatched<CreateAlpacaAccountTaskParams>(
-		createAlpacaAccountTaskOptions,
-		createAlpacaAccount,
+		handleCreateAlpacaAccountTaskOptions,
+		handleCreateAlpacaAccountTask,
 	);
 
 // refresh_alpaca_account_status
 import {
-	refreshAlpacaAccountStatus,
-	refreshAlpacaAccountStatusTaskOptions,
+	handleRefreshAlpacaAccountStatusTask,
+	handleRefreshAlpacaAccountStatusTaskOptions,
 } from './app/alpacaAccounts/refreshAlpacaAccountStatus.js';
 export const refresh_alpaca_account_status =
 	firebaseFunctions.tasks.onTaskDispatched<RefreshAlpacaAccountStatusTaskParams>(
-		refreshAlpacaAccountStatusTaskOptions,
-		refreshAlpacaAccountStatus,
+		handleRefreshAlpacaAccountStatusTaskOptions,
+		handleRefreshAlpacaAccountStatusTask,
 	);
 
 // ---- Application Routes: Alpaca ACH Relationships  ---- //
 
 // create_alpaca_ach_relationship
 import {
-	createAlpacaAchRelationship,
-	createAlpacaAchRelationshipTaskOptions,
+	handleCreateAlpacaAchRelationshipTask,
+	handleCreateAlpacaAchRelationshipTaskOptions,
 } from './app/alpacaAchRelationships/createAlpacaAchRelationship.js';
 export const create_alpaca_ach_relationship =
 	firebaseFunctions.tasks.onTaskDispatched<CreateAlpacaAchRelationshipTaskParams>(
-		createAlpacaAchRelationshipTaskOptions,
-		createAlpacaAchRelationship,
+		handleCreateAlpacaAchRelationshipTaskOptions,
+		handleCreateAlpacaAchRelationshipTask,
 	);
 
 // refresh_alpaca_ach_relationship_status
 import {
-	refreshAlpacaAchRelationshipStatus,
-	refreshAlpacaAchRelationshipStatusTaskOptions,
+	handleRefreshAlpacaAchRelationshipStatusTask,
+	handleRefreshAlpacaAchRelationshipStatusTaskOptions,
 } from './app/alpacaAchRelationships/refreshAlpacaAchRelationshipStatus.js';
 export const refresh_alpaca_ach_relationship_status =
 	firebaseFunctions.tasks.onTaskDispatched<RefreshAlpacaAchRelationshipStatusTaskParams>(
-		refreshAlpacaAchRelationshipStatusTaskOptions,
-		refreshAlpacaAchRelationshipStatus,
+		handleRefreshAlpacaAchRelationshipStatusTaskOptions,
+		handleRefreshAlpacaAchRelationshipStatusTask,
 	);
 
 // ---- Application Routes: Alpaca ACH Transfers  ---- //
 
 // request_alpaca_ach_transfer
 import {
-	requestAlpacaAchTransfer,
-	requestAlpacaAchTransferTaskOptions,
+	handleRequestAlpacaAchTransferTask,
+	handleRequestAlpacaAchTransferTaskOptions,
 } from './app/alpacaAchTransfers/requestAlpacaAchTransfer.js';
 export const request_alpaca_ach_transfer =
 	firebaseFunctions.tasks.onTaskDispatched<RequestAlpacaAchTransferTaskParams>(
-		requestAlpacaAchTransferTaskOptions,
-		requestAlpacaAchTransfer,
+		handleRequestAlpacaAchTransferTaskOptions,
+		handleRequestAlpacaAchTransferTask,
 	);
 
 // refresh_alpaca_ach_transfer_status
 import {
-	refreshAlpacaAchTransferStatus,
-	refreshAlpacaAchTransferStatusTaskOptions,
+	handleRefreshAlpacaAchTransferStatusTask,
+	handleRefreshAlpacaAchTransferStatusTaskOptions,
 } from './app/alpacaAchTransfers/refreshAlpacaAchTransferStatus.js';
 export const refresh_alpaca_ach_transfer_status =
 	firebaseFunctions.tasks.onTaskDispatched<RefreshAlpacaAchTransferStatusTaskParams>(
-		refreshAlpacaAchTransferStatusTaskOptions,
-		refreshAlpacaAchTransferStatus,
+		handleRefreshAlpacaAchTransferStatusTaskOptions,
+		handleRefreshAlpacaAchTransferStatusTask,
 	);
 
 // ---- Application Routes: Alpaca Orders  ---- //
@@ -97,11 +97,11 @@ export const place_alpaca_orders =
 
 // refresh_alpaca_orders_status
 import {
-	refreshAlpacaOrdersStatus,
-	refreshAlpacaOrdersStatusTaskOptions,
+	handleRefreshAlpacaOrdersStatusTask,
+	handleRefreshAlpacaOrdersStatusTaskOptions,
 } from './app/alpacaOrders/refreshAlpacaOrdersStatus.js';
 export const refresh_alpaca_orders_status =
 	firebaseFunctions.tasks.onTaskDispatched<RefreshAlpacaOrdersStatusTaskParams>(
-		refreshAlpacaOrdersStatusTaskOptions,
-		refreshAlpacaOrdersStatus,
+		handleRefreshAlpacaOrdersStatusTaskOptions,
+		handleRefreshAlpacaOrdersStatusTaskf,
 	);
