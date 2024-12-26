@@ -132,17 +132,24 @@ async function requestAlpacaAchTransfer(
 		throw new Error('Amount must be greater than 0');
 	}
 
+	const requestAlpacaAchTransferParams: Pick<
+		AlpacaAchTransfer,
+		'amount' | 'direction' | 'relationship_id'
+	> & {
+		transfer_type: 'ach';
+	} = {
+		amount: getCurrencyUsdStringFromCents(amountInCents)
+			.replace('$', '')
+			.replace(/,/g, ''),
+		direction: 'INCOMING',
+		relationship_id: bankAccount.alpaca_ach_relationship_id,
+		transfer_type: 'ach',
+	};
+
 	const response = await alpaca.broker.post<AlpacaAchTransfer>(
 		`v1/accounts/${user.alpaca_account_id}/transfers`,
 		{
-			json: {
-				transfer_type: 'ach',
-				relationship_id: bankAccount.alpaca_ach_relationship_id,
-				amount: getCurrencyUsdStringFromCents(amountInCents)
-					.replace('$', '')
-					.replace(/,/g, ''),
-				direction: 'INCOMING',
-			},
+			json: requestAlpacaAchTransferParams,
 		},
 	);
 	return response.json();
