@@ -114,7 +114,10 @@ export const handleRequestAlpacaAchTransferTask: CloudTaskHandler<
 		.set(achTransfer);
 
 	// Kick to the `refresh_alpaca_ach_transfer_status` task
-	await gcp.tasks.enqueueRefreshAlpacaAchTransferStatus({ orderId });
+	await gcp.tasks.enqueueRefreshAlpacaAchTransferStatus({
+		orderId,
+		achTransferId: achTransfer._id,
+	});
 
 	// Task complete
 	return Promise.resolve();

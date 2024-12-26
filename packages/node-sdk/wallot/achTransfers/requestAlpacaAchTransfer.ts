@@ -6,9 +6,10 @@ export type RequestAlpacaAchTransferTaskParams = PlaceAlpacaOrdersTaskParams & {
 	bankAccountId: string;
 	userId: string;
 };
-export type RefreshAlpacaAchTransferStatusTaskParams = {
-	orderId: string;
-};
+export type RefreshAlpacaAchTransferStatusTaskParams =
+	PlaceAlpacaOrdersTaskParams & {
+		achTransferId: string;
+	};
 
 export const enqueueRequestAlpacaAchTransfer =
 	(
