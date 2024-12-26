@@ -1,5 +1,5 @@
 import { getCloudFunctionUrl } from 'ergonomic-node';
-
+import { PlaceAlpacaOrdersListenerTaskParams } from '@wallot/node';
 import { getFunctions } from 'firebase-admin/functions';
 import { secrets } from '../../../secrets.js';
 import { directoryPath } from '../../../directoryPath.js';
@@ -123,14 +123,14 @@ export const confirmOrder = async (
 			serviceAccountPath,
 		});
 		log({ message: 'Enqueuing place_alpaca_orders task', targetUri });
-		await queue.enqueue(
-			{ orderId },
-			{
-				id: fillOrderTaskId,
-				scheduleDelaySeconds: 0,
-				uri: targetUri,
-			},
-		);
+		const placeAlpacaOrdersParams: PlaceAlpacaOrdersListenerTaskParams = {
+			orderId,
+		};
+		await queue.enqueue(placeAlpacaOrdersParams, {
+			id: fillOrderTaskId,
+			scheduleDelaySeconds: 0,
+			uri: targetUri,
+		});
 	};
 
 	return { json: { redirect_url: redirectUrl }, onFinished };
