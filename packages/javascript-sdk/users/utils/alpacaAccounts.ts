@@ -161,7 +161,7 @@ export const alpacaAccountProperties = {
 		.nullable()
 		.default(null),
 	// { "summary": "pass" } or { "summary": "fail", "additional_information": "..." }
-	alpaca_account_last_equity: yup.number().nullable().default(null), // "0" or "1236.31"
+	alpaca_account_last_equity: yup.string().nullable().default(null), // "0" or "1236.31"
 	alpaca_account_minor_identity: yup.string().nullable().default(null), // `null`
 	alpaca_account_status: AlpacaAccountStatusEnum.getOptionalSchema()
 		.nullable()
