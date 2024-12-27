@@ -9,6 +9,7 @@ export type RequestAlpacaAchTransferTaskParams = PlaceAlpacaOrdersTaskParams & {
 export type RefreshAlpacaAchTransferStatusTaskParams =
 	PlaceAlpacaOrdersTaskParams & {
 		achTransferId: string;
+		userId: string;
 	};
 
 export const enqueueRequestAlpacaAchTransfer =

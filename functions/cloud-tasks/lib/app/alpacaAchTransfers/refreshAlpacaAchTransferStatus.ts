@@ -14,9 +14,10 @@ export const handleRefreshAlpacaAchTransferStatusTaskOptions = {
 
 export const handleRefreshAlpacaAchTransferStatusTask: CloudTaskHandler<
 	RefreshAlpacaAchTransferStatusTaskParams
-> = async ({ data: { achTransferId, orderId } }) => {
+> = async ({ data: { achTransferId, orderId, userId } }) => {
 	achTransferId;
 	orderId;
+	userId;
 	return Promise.resolve();
 };
 
