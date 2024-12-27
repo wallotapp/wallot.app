@@ -29,3 +29,15 @@ export const isUserActivatedByAlpaca = (
 		return false;
 	}
 };
+
+export const isUserActivatedByAlpacaParams = (
+	params: unknown,
+): params is UserActivatedByAlpacaParams => {
+	try {
+		userActivatedByAlpacaSchema.validateSync(params);
+		return true;
+	} catch (error) {
+		console.error('Error detected in isUserActivatedByAlpacaParams', error);
+		return false;
+	}
+};

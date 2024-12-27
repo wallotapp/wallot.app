@@ -27,3 +27,15 @@ export const isAssetOrderFilledByAlpaca = (
 		return false;
 	}
 };
+
+export const isAssetOrderFilledByAlpacaParams = (
+	params: unknown,
+): params is AssetOrderFilledByAlpacaParams => {
+	try {
+		assetOrderFilledByAlpacaSchema.validateSync(params);
+		return true;
+	} catch (error) {
+		console.error('Error detected in isAssetOrderFilledByAlpacaParams', error);
+		return false;
+	}
+};

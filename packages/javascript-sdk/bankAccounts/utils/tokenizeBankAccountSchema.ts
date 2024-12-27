@@ -1,9 +1,19 @@
 import * as yup from 'yup';
-import { BankAccount } from '../models/bankAccountProperties.js';
+import {
+	BankAccount,
+	bankAccountsApi,
+} from '../models/bankAccountProperties.js';
 import { Keys, getFieldSpecByFieldKey } from 'ergonomic';
 
 export const tokenizeBankAccountProperties = {
 	account_number: yup.string().required().defined().default('').min(7).max(17),
+	account_owner_name: yup
+		.string()
+		.required()
+		.defined()
+		.default('')
+		.min(1)
+		.max(100),
 } as const;
 export const tokenizeBankAccountSchema = yup.object(
 	tokenizeBankAccountProperties,
@@ -21,9 +31,35 @@ export type TokenizeBankAccountParams = yup.InferType<
 export type TokenizeBankAccountRouteParams = { bankAccountId: string };
 export type TokenizeBankAccountResponse = Record<string, never>;
 
-export const isBankAccountTokenized = (bankAccount: BankAccount) => {
-	return (
-		bankAccount.account_number_data !== null &&
-		bankAccount.account_number_iv_hex !== null
-	);
+export const tokenizedBankAccountProperties = {
+	account_number_data: bankAccountsApi.properties.account_number_data
+		.nullable(false)
+		.defined()
+		.min(1),
+	account_number_iv_hex: bankAccountsApi.properties.account_number_iv_hex
+		.nullable(false)
+		.defined()
+		.min(1),
+	account_owner_name: bankAccountsApi.properties.account_owner_name
+		.nullable(false)
+		.defined()
+		.min(1),
+} as const;
+export const tokenizedBankAccountSchema = yup.object(
+	tokenizedBankAccountProperties,
+);
+export type TokenizedBankAccountParams = yup.InferType<
+	typeof tokenizedBankAccountSchema
+>;
+export type TokenizedBankAccount = BankAccount & TokenizedBankAccountParams;
+export const isBankAccountTokenized = (
+	bankAccount: BankAccount,
+): bankAccount is TokenizedBankAccount => {
+	try {
+		tokenizedBankAccountSchema.validateSync(bankAccount);
+		return true;
+	} catch (error) {
+		console.error('Error detected in isBankAccountTokenized', error);
+		return false;
+	}
 };

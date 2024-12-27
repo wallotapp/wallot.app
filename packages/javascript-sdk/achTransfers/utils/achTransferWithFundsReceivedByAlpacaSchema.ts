@@ -31,3 +31,18 @@ export const isAchTransferWithFundsReceivedByAlpaca = (
 		return false;
 	}
 };
+
+export const isAchTransferWithFundsReceivedByAlpacaParams = (
+	params: unknown,
+): params is AchTransferWithFundsReceivedByAlpacaParams => {
+	try {
+		achTransferWithFundsReceivedByAlpacaSchema.validateSync(params);
+		return true;
+	} catch (error) {
+		console.error(
+			'Error detected in isAchTransferWithFundsReceivedByAlpacaParams',
+			error,
+		);
+		return false;
+	}
+};

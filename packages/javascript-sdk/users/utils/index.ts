@@ -9,3 +9,4 @@ export * from './username.js';
 export * from './userPendingAlpacaAccountSchema.js';
 export * from './userActivatedByAlpacaSchema.js';
 export * from './userRejectedByAlpacaSchema.js';
+export * from './userWithAlpacaEquitySchema.js';

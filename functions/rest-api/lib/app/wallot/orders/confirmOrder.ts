@@ -1,11 +1,4 @@
-import { getCloudFunctionUrl } from 'ergonomic-node';
-
-import { getFunctions } from 'firebase-admin/functions';
 import { secrets } from '../../../secrets.js';
-import { directoryPath } from '../../../directoryPath.js';
-import { v4 } from 'uuid';
-const serviceAccountPath = `${directoryPath}/../gmailApiServiceAccount.json`;
-
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { FunctionResponse } from '@wallot/node';
 import {
@@ -23,8 +16,8 @@ import {
 	User,
 	ProLicenseParams,
 } from '@wallot/js';
-import { db, log, stripe } from '../../../services.js';
-import { siteOriginByTarget } from '../../../variables.js';
+import { db, gcp, log, stripe } from '../../../services.js';
+import { siteOriginByTarget, variables } from '../../../variables.js';
 
 export const confirmOrder = async (
 	{ bank_account }: ConfirmOrderParams,
@@ -89,10 +82,8 @@ export const confirmOrder = async (
 	}
 
 	// Update ORDER status
-	const fillOrderTaskId = v4();
 	const orderUpdateParams: UpdateOrderParams & OrderConfirmedByUserParams = {
 		bank_account,
-		fill_task_id: fillOrderTaskId,
 		status: 'confirmed_by_user',
 	};
 	log({ message: 'Updating order', orderUpdateParams });
@@ -113,26 +104,11 @@ export const confirmOrder = async (
 	});
 
 	const onFinished = async () => {
-		// Enqueue fill_order task
-		const queue =
-			getFunctions().taskQueue<FillOrderListenerTaskParams>('fill_order');
-		const targetUri = await getCloudFunctionUrl({
-			...secrets,
-			functionName: 'fill_order',
-			serviceAccountPath,
-		});
-		log({ message: 'Enqueuing fill_order task', targetUri });
-		await queue.enqueue(
-			{ orderId },
-			{
-				id: fillOrderTaskId,
-				scheduleDelaySeconds: 0,
-				uri: targetUri,
-			},
-		);
+		if (variables.SERVER_VAR_FEATURE_FLAGS.ENABLE_ALPACA) {
+			// Enqueue place_alpaca_orders task
+			await gcp.tasks.enqueuePlaceAlpacaOrders({ orderId });
+		}
 	};
 
 	return { json: { redirect_url: redirectUrl }, onFinished };
 };
-
-type FillOrderListenerTaskParams = ConfirmOrderRouteParams;

@@ -125,7 +125,7 @@ export const alpacaAccountProperties = {
 		.array()
 		.of(yup.object(alpacaAccountAgreementsProperties))
 		.nullable()
-		.default(null), // { "agreement": "customer_agreement", "signed_at": "2024-12-12T01:59:15.126099757Z", "ip_address": "127.0.0.1" }
+		.default(null), // [{ "agreement": "customer_agreement", "signed_at": "2024-12-12T01:59:15.126099757Z", "ip_address": "127.0.0.1" }]
 	alpaca_account_auto_approve: yup.boolean().nullable().default(null), // `null`
 	alpaca_account_contact: yup
 		.object(alpacaAccountContactProperties)
@@ -161,7 +161,7 @@ export const alpacaAccountProperties = {
 		.nullable()
 		.default(null),
 	// { "summary": "pass" } or { "summary": "fail", "additional_information": "..." }
-	alpaca_account_last_equity: yup.number().nullable().default(null), // "0" or "1236.31"
+	alpaca_account_last_equity: yup.string().nullable().default(null), // "0" or "1236.31"
 	alpaca_account_minor_identity: yup.string().nullable().default(null), // `null`
 	alpaca_account_status: AlpacaAccountStatusEnum.getOptionalSchema()
 		.nullable()

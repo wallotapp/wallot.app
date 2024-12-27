@@ -29,3 +29,18 @@ export const isBankAccountApprovedByAlpaca = (
 		return false;
 	}
 };
+
+export const isBankAccountApprovedByAlpacaParams = (
+	params: unknown,
+): params is BankAccountApprovedByAlpacaParams => {
+	try {
+		bankAccountApprovedByAlpacaSchema.validateSync(params);
+		return true;
+	} catch (error) {
+		console.error(
+			'Error detected in isBankAccountApprovedByAlpacaParams',
+			error,
+		);
+		return false;
+	}
+};

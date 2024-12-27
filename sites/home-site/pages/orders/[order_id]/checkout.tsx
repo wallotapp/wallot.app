@@ -106,8 +106,7 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({
 		tokenizeBankAccountSchema,
 		defaultGeneralizedFormDataTransformationOptions,
 	);
-	const initialFormData =
-		tokenizeBankAccountSchema.getDefault() as TokenizeBankAccountParams;
+	const initialFormData = tokenizeBankAccountSchema.getDefault();
 	const { control, formState, handleSubmit, reset, setError, watch } =
 		useForm<TokenizeBankAccountParams>({
 			defaultValues: initialFormData,
@@ -212,6 +211,31 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({
 		disabled: isTokenizeFormSubmitting,
 		name: 'account_number',
 	});
+	const { field: accountOwnerNameField } = useController({
+		control,
+		disabled: isTokenizeFormSubmitting,
+		name: 'account_owner_name',
+	});
+
+	const [
+		hasInitializedDefaultAccountOwnerName,
+		setHasInitializedDefaultAccountOwnerName,
+	] = useState(false);
+	useEffect(() => {
+		if (isUserPageLoading) return;
+		if (hasInitializedDefaultAccountOwnerName) return;
+
+		const defaultValueAccountOwnerName = (
+			(currentUser?.alpaca_account_identity?.given_name ?? '') +
+			' ' +
+			(currentUser?.alpaca_account_identity?.family_name ?? '')
+		).trim();
+		reset({
+			...initialFormData,
+			account_owner_name: defaultValueAccountOwnerName,
+		});
+		setHasInitializedDefaultAccountOwnerName(true);
+	}, [isUserPageLoading, hasInitializedDefaultAccountOwnerName, currentUser]);
 
 	return (
 		<div
@@ -306,6 +330,27 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({
 								<LiteFormFieldError
 									fieldErrorMessage={
 										formState.errors['account_number']?.message ?? ''
+									}
+								/>
+							</div>
+						)}
+					</div>
+					<div className='mt-2'>
+						<p className='font-semibold text-xs text-right'>
+							Confirm Account Owner Name
+							<span className='text-amber-900'>*</span>
+						</p>
+						<input
+							{...accountOwnerNameField}
+							className='border border-amber-900 h-8 rounded-md text-xs px-2 w-full'
+							placeholder={'Enter the name of the account holder ····'}
+							required
+						/>
+						{Boolean(formState.errors['account_owner_name']?.message) && (
+							<div className='mt-4'>
+								<LiteFormFieldError
+									fieldErrorMessage={
+										formState.errors['account_owner_name']?.message ?? ''
 									}
 								/>
 							</div>

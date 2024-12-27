@@ -12,7 +12,11 @@ import {
 	apiYupHelpers,
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
-import { alpacaOrderProperties } from '../utils/alpacaOrders.js';
+import {
+	alpacaOrderProperties,
+	AlpacaOrderPropertyName,
+	RemoveAlpacaOrderPrefix,
+} from '../utils/alpacaOrders.js';
 
 export const AssetOrderCategoryEnum = getEnum(['default']);
 export type AssetOrderCategory = keyof typeof AssetOrderCategoryEnum.obj;
@@ -63,3 +67,7 @@ export type AssetOrder = yup.InferType<
 >;
 export type CreateAssetOrderParams = CreateParams<AssetOrder, T>;
 export type UpdateAssetOrderParams = UpdateParams<AssetOrder>;
+
+export type AlpacaOrder = RemoveAlpacaOrderPrefix<
+	Pick<AssetOrder, AlpacaOrderPropertyName>
+>;

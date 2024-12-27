@@ -34,7 +34,6 @@ export type UserCategory = keyof typeof UserCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
-	'activation_reminder_task_id',
 	'firebase_auth_email',
 	'stripe_customer_id',
 	'username',
@@ -46,10 +45,6 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
-	activation_reminder_task_id: yup.string().min(1).meta({
-		unique_key: true,
-		type: GeneralizedFieldTypeEnum.obj.short_text,
-	}),
 	age_range: AgeRangeEnum.getOptionalSchema().default(null).nullable().meta({
 		label_by_enum_option: AgeRangeEnum.obj,
 		label_message_user_text: 'Select your age range',

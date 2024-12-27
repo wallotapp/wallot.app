@@ -34,3 +34,15 @@ export const isUserRejectedByAlpaca = (
 		return false;
 	}
 };
+
+export const isUserRejectedByAlpacaParams = (
+	params: unknown,
+): params is UserRejectedByAlpacaParams => {
+	try {
+		userRejectedByAlpacaSchema.validateSync(params);
+		return true;
+	} catch (error) {
+		console.error('Error detected in isUserRejectedByAlpacaParams', error);
+		return false;
+	}
+};

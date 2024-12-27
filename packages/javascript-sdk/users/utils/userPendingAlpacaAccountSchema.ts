@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import { User } from '../models/userProperties.js';
 import { alpacaAccountProperties } from './alpacaAccounts.js';
-import { KycUser } from './completeUserKycSchema';
+import { KycUser } from './completeUserKycSchema.js';
 
 export const userPendingAlpacaAccountProperties = {
 	alpaca_account_account_number:
