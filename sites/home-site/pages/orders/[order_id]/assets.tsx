@@ -11,8 +11,9 @@ import {
 	getHomeSiteRoute,
 	HomeSiteRouteQueryParams,
 	getSsoSiteRoute,
+	AssetOrder,
+	Recommendation,
 } from '@wallot/js';
-import { AssetOrder, Recommendation } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { useQueryRecommendationPage } from '@wallot/react/src/features/recommendations';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';

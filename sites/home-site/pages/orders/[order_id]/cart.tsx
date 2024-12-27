@@ -12,8 +12,10 @@ import {
 	HomeSiteRouteQueryParams,
 	getSsoSiteRoute,
 } from '@wallot/js';
-import { AssetOrderCartItem } from '@wallot/react/src/features/assetOrders';
-import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
+import {
+	AssetOrderCartItem,
+	useQueryAssetOrderPage,
+} from '@wallot/react/src/features/assetOrders';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
 import { Fragment } from 'react';

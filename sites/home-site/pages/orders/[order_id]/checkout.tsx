@@ -26,7 +26,6 @@ import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader'
 import {
 	getCurrencyUsdStringFromCents,
 	getEnum,
-	UsaStateCode,
 	UsaStateCodeEnum,
 } from 'ergonomic';
 import Link from 'next/link';
@@ -322,7 +321,9 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({
 						<input
 							{...accountNumberField}
 							className='border border-amber-900 h-8 rounded-md text-xs px-2 w-full'
-							placeholder={'Account number ending in ····' + bankAccount.last_4}
+							placeholder={
+								'Account number ending in ····' + (bankAccount.last_4 ?? '')
+							}
 							required
 						/>
 						{Boolean(formState.errors['account_number']?.message) && (
@@ -839,7 +840,7 @@ const Page: NextPage = () => {
 					['email_address', 'phone_number', 'city', 'postal_code'] as const,
 					data,
 				),
-				state: data.state as UsaStateCode,
+				state: data.state,
 				street_address: [
 					data.street_address_line_1,
 					data.street_address_line_2,
@@ -910,11 +911,13 @@ const Page: NextPage = () => {
 				? currentUser?.alpaca_account_contact?.state
 				: initialFormData.state,
 			street_address_line_1:
-				currentUser?.alpaca_account_contact?.street_address?.[0] ??
-				initialFormData.street_address_line_1,
+				(
+					currentUser?.alpaca_account_contact?.street_address as string[]
+				)?.[0] ?? initialFormData.street_address_line_1,
 			street_address_line_2:
-				currentUser?.alpaca_account_contact?.street_address?.[1] ??
-				initialFormData.street_address_line_2,
+				(
+					currentUser?.alpaca_account_contact?.street_address as string[]
+				)?.[1] ?? initialFormData.street_address_line_2,
 			immediate_family_exposed:
 				currentUser?.alpaca_account_disclosures?.immediate_family_exposed ??
 				initialFormData.immediate_family_exposed,
