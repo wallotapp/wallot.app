@@ -58,6 +58,8 @@ export const getServices = (
 	return {
 		alpaca: {
 			broker: {
+				// Instance
+				instance: alpacaBrokerClient,
 				// Alpaca Accounts
 				createAlpacaAccount: createAlpacaAccount(alpacaBrokerClient),
 				retrieveAlpacaAccount: retrieveAlpacaAccount(alpacaBrokerClient),

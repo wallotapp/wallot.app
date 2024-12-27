@@ -1,4 +1,4 @@
-export type RetrieveAssetPricesQueryParams = { symbol: string };
+export type RetrieveAssetPricesQueryParams = { symbol: string; notional: number };
 export type RetrieveAssetPricesResponse = {
 	data: {
 		symbol: string;
