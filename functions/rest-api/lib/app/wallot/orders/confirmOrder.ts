@@ -17,7 +17,7 @@ import {
 	ProLicenseParams,
 } from '@wallot/js';
 import { db, gcp, log, stripe } from '../../../services.js';
-import { siteOriginByTarget } from '../../../variables.js';
+import { siteOriginByTarget, variables } from '../../../variables.js';
 
 export const confirmOrder = async (
 	{ bank_account }: ConfirmOrderParams,
@@ -104,8 +104,10 @@ export const confirmOrder = async (
 	});
 
 	const onFinished = async () => {
-		// Enqueue place_alpaca_orders task
-		await gcp.tasks.enqueuePlaceAlpacaOrders({ orderId });
+		if (variables.SERVER_VAR_FEATURE_FLAGS.ENABLE_ALPACA) {
+			// Enqueue place_alpaca_orders task
+			await gcp.tasks.enqueuePlaceAlpacaOrders({ orderId });
+		}
 	};
 
 	return { json: { redirect_url: redirectUrl }, onFinished };
