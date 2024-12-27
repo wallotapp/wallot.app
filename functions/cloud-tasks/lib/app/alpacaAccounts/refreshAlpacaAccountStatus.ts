@@ -94,6 +94,6 @@ export const handleRefreshAlpacaAccountStatusTask: CloudTaskHandler<
 	// Alpaca is still processing the account
 	throw new firebaseFunctions.https.HttpsError(
 		'internal',
-		'Alpaca account still pending',
+		'Alpaca account still processing',
 	);
 };

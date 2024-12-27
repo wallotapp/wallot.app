@@ -62,7 +62,7 @@ const handleCheckAlpacaAccountStatus: CloudTaskHandler<
 		console.log(result);
 		throw new firebaseFunctions.https.HttpsError(
 			'internal',
-			'Order still pending',
+			'Order still processing',
 		);
 	} else {
 		const result = {

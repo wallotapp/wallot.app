@@ -31,7 +31,7 @@ export const handleRefreshAlpacaAchRelationshipStatusTask: CloudTaskHandler<
 		// BankAccount not found, so this task is not possible
 		log({
 			message:
-				'Requested refresh of Alpaca activation status, but bankAccount not found',
+				'Requested refresh of Alpaca ACH relationship status, but bankAccount not found',
 		});
 		return Promise.resolve();
 	}
@@ -47,19 +47,19 @@ export const handleRefreshAlpacaAchRelationshipStatusTask: CloudTaskHandler<
 			// BANK_ACCOUNT is not pending approval by Alpaca, so this task is not possible
 			log({
 				message:
-					'Requested refresh of Alpaca ACH relationship approval status, but Alpaca approval not pending',
+					'Requested refresh of Alpaca ACH relationship status, but Alpaca approval not pending',
 			});
 		} else if (isApproved) {
 			// BANK_ACCOUNT is already approved by Alpaca, so this task is not necessary
 			log({
 				message:
-					'Requested refresh of Alpaca ACH relationship approval status, but Alpaca approval already complete',
+					'Requested refresh of Alpaca ACH relationship status, but Alpaca approval already complete',
 			});
 		} else {
 			// BANK_ACCOUNT is already rejected by Alpaca, so this task is not necessary
 			log({
 				message:
-					'Requested refresh of Alpaca ACH relationship approval status, but Alpaca approval already rejected',
+					'Requested refresh of Alpaca ACH relationship status, but Alpaca approval already rejected',
 			});
 		}
 		return Promise.resolve();
@@ -130,6 +130,6 @@ export const handleRefreshAlpacaAchRelationshipStatusTask: CloudTaskHandler<
 	// Alpaca is still processing the account
 	throw new firebaseFunctions.https.HttpsError(
 		'internal',
-		'Alpaca ACH relationship still pending',
+		'Alpaca ACH relationship still processing',
 	);
 };
