@@ -13,11 +13,11 @@ export const enqueueCreateAlpacaAccount =
 	) =>
 	async (createAlpacaAccountParams: CreateAlpacaAccountTaskParams) => {
 		const queue = getFunctions().taskQueue<CreateAlpacaAccountTaskParams>(
-			'create_alpaca_account',
+			'createAlpacaAccount',
 		);
-		const targetUri = await getCloudFunctionUrl('create_alpaca_account');
+		const targetUri = await getCloudFunctionUrl('createAlpacaAccount');
 		log({
-			message: 'Enqueuing create_alpaca_account task',
+			message: 'Enqueuing createAlpacaAccount task',
 			targetUri,
 			createAlpacaAccountParams,
 		});
@@ -37,13 +37,11 @@ export const enqueueRefreshAlpacaAccountStatus =
 	) => {
 		const queue =
 			getFunctions().taskQueue<RefreshAlpacaAccountStatusTaskParams>(
-				'refresh_alpaca_account_status',
+				'refreshAlpacaAccountStatus',
 			);
-		const targetUri = await getCloudFunctionUrl(
-			'refresh_alpaca_account_status',
-		);
+		const targetUri = await getCloudFunctionUrl('refreshAlpacaAccountStatus');
 		log({
-			message: 'Enqueuing refresh_alpaca_account_status task',
+			message: 'Enqueuing refreshAlpacaAccountStatus task',
 			targetUri,
 			refreshAlpacaAccountStatusParams,
 		});

@@ -115,7 +115,7 @@ export const handleRefreshAlpacaAchTransferStatusTask: CloudTaskHandler<
 		isUserWithAlpacaEquityParams(updateUserParams)
 	) {
 		// Alpaca received the funds and updated the User's equity
-		// Kick back to the `place_alpaca_orders` task
+		// Kick back to the `placeAlpacaOrders` task
 		log({
 			message:
 				"Alpaca received the funds and updated the User's equity. Next up: Place Alpaca Orders",

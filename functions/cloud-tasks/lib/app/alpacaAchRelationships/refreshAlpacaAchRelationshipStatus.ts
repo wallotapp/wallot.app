@@ -103,7 +103,7 @@ export const handleRefreshAlpacaAchRelationshipStatusTask: CloudTaskHandler<
 	// Check if Alpaca activated or rejected the account
 	if (isBankAccountApprovedByAlpacaParams(updateBankAccountParams)) {
 		// Alpaca approved the ACH relationship
-		// Kick back to the `request_alpaca_ach_transfer` task
+		// Kick back to the `requestAlpacaAchTransfer` task
 		log({
 			message: 'Alpaca approved the ACH relationship. Next up: ACH transfer',
 		});

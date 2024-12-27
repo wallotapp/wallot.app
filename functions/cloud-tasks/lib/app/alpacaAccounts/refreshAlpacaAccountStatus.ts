@@ -71,7 +71,7 @@ export const handleRefreshAlpacaAccountStatusTask: CloudTaskHandler<
 	// Check if Alpaca activated or rejected the account
 	if (isUserActivatedByAlpacaParams(updateUserParams)) {
 		// Alpaca activated the account
-		// Kick back to the `create_alpaca_ach_relationship` task
+		// Kick back to the `createAlpacaAchRelationship` task
 		log({ message: 'Alpaca activated the account. Next up: ACH relationship' });
 		await gcp.tasks.enqueueCreateAlpacaAchRelationship({
 			amountInCents,

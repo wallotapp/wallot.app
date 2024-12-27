@@ -75,7 +75,7 @@ export const handleCreateAlpacaAchRelationshipTask: CloudTaskHandler<
 	const user = userDoc.data() as User;
 	if (!isUserActivatedByAlpaca(user)) {
 		// Precondition failed
-		// Kick to the `create_alpaca_account` task
+		// Kick to the `createAlpacaAccount` task
 		log({
 			message: 'Requested ACH Relationship, but user not activated by Alpaca',
 		});
@@ -102,7 +102,7 @@ export const handleCreateAlpacaAchRelationshipTask: CloudTaskHandler<
 		.doc(bankAccountId)
 		.update(bankAccountUpdateParams);
 
-	// Kick to the `refresh_alpaca_ach_relationship_status` task
+	// Kick to the `refreshAlpacaAchRelationshipStatus` task
 	await gcp.tasks.enqueueRefreshAlpacaAchRelationshipStatus({
 		amountInCents,
 		bankAccountId,

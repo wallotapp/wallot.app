@@ -21,11 +21,11 @@ export const enqueueRequestAlpacaAchTransfer =
 		requestAlpacaAchTransferParams: RequestAlpacaAchTransferTaskParams,
 	) => {
 		const queue = getFunctions().taskQueue<RequestAlpacaAchTransferTaskParams>(
-			'request_alpaca_ach_transfer',
+			'requestAlpacaAchTransfer',
 		);
-		const targetUri = await getCloudFunctionUrl('request_alpaca_ach_transfer');
+		const targetUri = await getCloudFunctionUrl('requestAlpacaAchTransfer');
 		log({
-			message: 'Enqueuing request_alpaca_ach_transfer task',
+			message: 'Enqueuing requestAlpacaAchTransfer task',
 			targetUri,
 			requestAlpacaAchTransferParams,
 		});
@@ -45,13 +45,13 @@ export const enqueueRefreshAlpacaAchTransferStatus =
 	) => {
 		const queue =
 			getFunctions().taskQueue<RefreshAlpacaAchTransferStatusTaskParams>(
-				'refresh_alpaca_ach_transfer_status',
+				'refreshAlpacaAchTransferStatus',
 			);
 		const targetUri = await getCloudFunctionUrl(
-			'refresh_alpaca_ach_transfer_status',
+			'refreshAlpacaAchTransferStatus',
 		);
 		log({
-			message: 'Enqueuing refresh_alpaca_ach_transfer_status task',
+			message: 'Enqueuing refreshAlpacaAchTransferStatus task',
 			targetUri,
 			refreshAlpacaAchTransferStatusParams,
 		});

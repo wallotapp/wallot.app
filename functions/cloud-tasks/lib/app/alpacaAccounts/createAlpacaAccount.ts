@@ -62,7 +62,7 @@ export const handleCreateAlpacaAccountTask: CloudTaskHandler<
 		.doc(userId)
 		.update(updateUserParams);
 
-	// Kick to the `refresh_alpaca_account_status` task
+	// Kick to the `refreshAlpacaAccountStatus` task
 	await gcp.tasks.enqueueRefreshAlpacaAccountStatus({
 		amountInCents,
 		bankAccountId,

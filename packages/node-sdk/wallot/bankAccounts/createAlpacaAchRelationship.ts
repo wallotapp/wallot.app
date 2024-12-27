@@ -16,13 +16,11 @@ export const enqueueCreateAlpacaAchRelationship =
 	) => {
 		const queue =
 			getFunctions().taskQueue<CreateAlpacaAchRelationshipTaskParams>(
-				'create_alpaca_ach_relationship',
+				'createAlpacaAchRelationship',
 			);
-		const targetUri = await getCloudFunctionUrl(
-			'create_alpaca_ach_relationship',
-		);
+		const targetUri = await getCloudFunctionUrl('createAlpacaAchRelationship');
 		log({
-			message: 'Enqueuing create_alpaca_ach_relationship task',
+			message: 'Enqueuing createAlpacaAchRelationship task',
 			targetUri,
 			createAlpacaAchRelationshipParams,
 		});
@@ -42,13 +40,13 @@ export const enqueueRefreshAlpacaAchRelationshipStatus =
 	) => {
 		const queue =
 			getFunctions().taskQueue<RefreshAlpacaAchRelationshipStatusTaskParams>(
-				'refresh_alpaca_ach_relationship_status',
+				'refreshAlpacaAchRelationshipStatus',
 			);
 		const targetUri = await getCloudFunctionUrl(
-			'refresh_alpaca_ach_relationship_status',
+			'refreshAlpacaAchRelationshipStatus',
 		);
 		log({
-			message: 'Enqueuing refresh_alpaca_ach_relationship_status task',
+			message: 'Enqueuing refreshAlpacaAchRelationshipStatus task',
 			targetUri,
 			refreshAlpacaAchRelationshipStatusParams,
 		});

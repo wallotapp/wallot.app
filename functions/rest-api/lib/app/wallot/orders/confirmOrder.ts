@@ -105,7 +105,7 @@ export const confirmOrder = async (
 
 	const onFinished = async () => {
 		if (variables.SERVER_VAR_FEATURE_FLAGS.ENABLE_ALPACA) {
-			// Enqueue place_alpaca_orders task
+			// Enqueue placeAlpacaOrders task
 			await gcp.tasks.enqueuePlaceAlpacaOrders({ orderId });
 		}
 	};

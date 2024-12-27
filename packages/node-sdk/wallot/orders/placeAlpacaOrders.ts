@@ -14,12 +14,13 @@ export const enqueuePlaceAlpacaOrders =
 		log: (log: unknown, options?: { type: 'error' | 'normal' }) => void,
 	) =>
 	async (refreshAlpacaOrderStatusParams: PlaceAlpacaOrdersTaskParams) => {
-		const queue = getFunctions().taskQueue<PlaceAlpacaOrdersTaskParams>(
-			'place_alpaca_orders',
-		);
-		const targetUri = await getCloudFunctionUrl('place_alpaca_orders');
+		const queue =
+			getFunctions().taskQueue<PlaceAlpacaOrdersTaskParams>(
+				'placeAlpacaOrders',
+			);
+		const targetUri = await getCloudFunctionUrl('placeAlpacaOrders');
 		log({
-			message: 'Enqueuing place_alpaca_orders task',
+			message: 'Enqueuing placeAlpacaOrders task',
 			targetUri,
 			refreshAlpacaOrderStatusParams,
 		});
@@ -38,11 +39,11 @@ export const enqueueRefreshAlpacaOrderStatus =
 		refreshAlpacaOrderStatusParams: RefreshAlpacaOrderStatusTaskParams,
 	) => {
 		const queue = getFunctions().taskQueue<RefreshAlpacaOrderStatusTaskParams>(
-			'refresh_alpaca_order_status',
+			'refreshAlpacaOrderStatus',
 		);
-		const targetUri = await getCloudFunctionUrl('refresh_alpaca_order_status');
+		const targetUri = await getCloudFunctionUrl('refreshAlpacaOrderStatus');
 		log({
-			message: 'Enqueuing refresh_alpaca_order_status task',
+			message: 'Enqueuing refreshAlpacaOrderStatus task',
 			targetUri,
 			refreshAlpacaOrderStatusParams,
 		});

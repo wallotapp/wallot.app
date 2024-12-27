@@ -103,7 +103,7 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 
 	if (!isUserWithAlpacaEquity(user)) {
 		// Precondition 1 failed
-		// Kick to the `request_alpaca_ach_transfer` task
+		// Kick to the `requestAlpacaAchTransfer` task
 
 		// Derive the amount to transfer
 		const orderSubtotalAmount = assetOrders.reduce((acc, assetOrder) => {
@@ -185,7 +185,7 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 	// Commit the batch
 	await batch.commit();
 
-	// Kick to the `refresh_alpaca_order_status` task for each ASSET_ORDER
+	// Kick to the `refreshAlpacaOrderStatus` task for each ASSET_ORDER
 	for (const assetOrderId of assetOrdersToRefresh) {
 		await gcp.tasks.enqueueRefreshAlpacaOrderStatus({
 			assetOrderId,
