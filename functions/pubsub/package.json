@@ -24,6 +24,7 @@
 		"google-auth-library": "^9.15.0",
 		"openai": "^4.77.0",
 		"stripe": "^14.10.0",
+		"web-streams-polyfill": "^4.0.0",
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
