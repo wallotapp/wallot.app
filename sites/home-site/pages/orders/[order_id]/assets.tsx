@@ -49,6 +49,7 @@ import { SelectOneField } from 'ergonomic-react/src/features/data/components/fie
 
 const AssetOrderCard: React.FC<{
 	assetOrder: AssetOrder;
+	disableDeletion: boolean;
 	mode: 'edit' | 'view';
 	recommendation: Recommendation;
 	refetchAssetOrderPage: () => Promise<unknown>;
@@ -60,6 +61,7 @@ const AssetOrderCard: React.FC<{
 		alpaca_order_symbol,
 		amount,
 	},
+	disableDeletion,
 	mode,
 	recommendation: { best_investments = [] },
 	refetchAssetOrderPage,
@@ -157,17 +159,16 @@ const AssetOrderCard: React.FC<{
 	const isUpdateAmountFormSubmitting =
 		formState.isSubmitting || isUpdateAssetOrderRunning;
 	const isDeleteAssetOrderButtonDisabled =
-		isDeleteAssetOrderRunning || isUpdateAmountFormSubmitting;
+		isDeleteAssetOrderRunning ||
+		isUpdateAmountFormSubmitting ||
+		disableDeletion;
 	const isSaveAmountButtonDisabled =
 		isUpdateAmountFormSubmitting || !isAmountInputComplete;
 
 	const investmentRecommendationForAsset = best_investments.find(
 		({ symbol }) => symbol === alpaca_order_symbol,
 	);
-	if (!investmentRecommendationForAsset) {
-		return null;
-	}
-	const { rationale } = investmentRecommendationForAsset;
+	const { rationale = 'Custom' } = investmentRecommendationForAsset ?? {};
 	const amountUsdString = getCurrencyUsdStringFromCents(amount);
 
 	const [hasInitializedDefaultValues, setHasInitializedDefaultValues] =
@@ -398,6 +399,7 @@ const Page: NextPage = () => {
 		},
 	});
 	const assetOrders = assetOrderPage?.documents ?? [];
+	const orderContainsOnlyOneAsset = assetOrders.length === 1;
 	const recommendationIds = assetOrders[0]?.recommendations;
 	const firstRecommendationId = recommendationIds?.[0];
 	const { data: recommendationPage, isLoading: isRecommendationPageLoading } =
@@ -591,6 +593,7 @@ const Page: NextPage = () => {
 										return (
 											<AssetOrderCard
 												assetOrder={assetOrder}
+												disableDeletion={orderContainsOnlyOneAsset}
 												key={assetOrder._id}
 												mode={assetOrderCardMode}
 												recommendation={recommendation}
