@@ -30,7 +30,6 @@ erDiagram
 
 	BANK_ACCOUNT ||--o| ALPACA_ACH_RELATIONSHIP : "mirrors"
 	MODEL ||--|| OPEN_AI_MODEL : "mirrors"
-	PAYMENT_METHOD ||--||  : "mirrors"
 	POSITION ||--o| ALPACA_POSITION : "mirrors"
 	USER ||--o| ALPACA_ACCOUNT : "mirrors"
 
