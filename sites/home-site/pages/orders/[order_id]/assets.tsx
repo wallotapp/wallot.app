@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -14,29 +15,112 @@ import {
 	AssetOrder,
 	Recommendation,
 } from '@wallot/js';
-import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
+import {
+	useQueryAssetOrderPage,
+	useUpdateAssetOrderMutation,
+} from '@wallot/react/src/features/assetOrders';
 import { useQueryRecommendationPage } from '@wallot/react/src/features/recommendations';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
 import { Fragment } from 'react';
-import { getCurrencyUsdStringFromCents } from 'ergonomic';
+import { getCurrencyUsdStringFromCents, YupHelpers } from 'ergonomic';
 import Link from 'next/link';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { FiShoppingCart } from 'react-icons/fi';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
+import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
+import * as yup from 'yup';
+import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
+import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
+import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
+import { useController, useForm } from 'react-hook-form';
 
 const AssetOrderCard: React.FC<{
 	assetOrder: AssetOrder;
+	mode: 'edit' | 'view';
 	recommendation: Recommendation;
+	refetchAssetOrderPage: () => Promise<unknown>;
 }> = ({
 	assetOrder: {
+		_id: assetOrderId,
 		alpaca_order_qty,
 		alpaca_order_side,
 		alpaca_order_symbol,
 		amount,
 	},
+	mode,
 	recommendation: { best_investments = [] },
+	refetchAssetOrderPage,
 }) => {
+	// Toaster
+	const { toast } = useToast();
+
+	// Form Resolver
+	const resolver = useYupValidationResolver(
+		yup.object({ amount: YupHelpers.usd().required() }),
+		{
+			...defaultGeneralizedFormDataTransformationOptions,
+			currencyFieldKeys: ['amount'],
+		},
+	);
+	const { control, formState, handleSubmit, reset, setError, watch } = useForm<{
+		amount: number;
+	}>({
+		resolver,
+		shouldUnregister: false,
+	});
+	const liveData = watch();
+	const isAmountInputComplete = String(liveData.amount).length > 0;
+
+	// Mutation
+	const { mutate: updateAssetOrder, isLoading: isUpdateAssetOrderRunning } =
+		useUpdateAssetOrderMutation({
+			onError: ({ error: { message } }) => {
+				// Show the error message
+				toast({
+					title: 'Error',
+					description: message,
+				});
+				setError('root', {
+					type: 'manual',
+					message: 'An error occurred. Please try again.',
+				});
+
+				// Reset form
+				reset();
+			},
+			onSuccess: async () => {
+				// Refetch the user
+				await refetchAssetOrderPage();
+
+				// Show success toast
+				toast({
+					title: 'Success',
+					description: 'Saved your purchase updates...',
+				});
+			},
+		});
+
+	const onSubmit = (data: { amount: number }) => {
+		console.log('Updating asset order with following data:', data);
+		toast({
+			title: 'Saving your purchase information',
+			description: 'This may take a few moments...',
+		});
+		updateAssetOrder({ _id: assetOrderId, ...data });
+	};
+
+	const isViewMode = mode !== 'view';
+	const isUpdateAmountFormSubmitting =
+		formState.isSubmitting || isUpdateAssetOrderRunning;
+	const isSaveAmountButtonDisabled =
+		isUpdateAmountFormSubmitting || !isAmountInputComplete;
+	const { field: amountField } = useController({
+		control,
+		disabled: isViewMode || isUpdateAmountFormSubmitting,
+		name: 'amount',
+	});
+
 	const investmentRecommendationForAsset = best_investments.find(
 		({ symbol }) => symbol === alpaca_order_symbol,
 	);
@@ -58,8 +142,71 @@ const AssetOrderCard: React.FC<{
 					<p className={cn('text-lg font-light')}>{alpaca_order_qty} shares</p>
 				</div>
 				<div>
-					<p className={cn('text-2xl font-medium')}>{amountUsdString}</p>
-					<p className={cn('text-lg font-light')}>{alpaca_order_side} order</p>
+					<div className={cn(isViewMode ? 'block' : 'hidden')}>
+						<p className={cn('text-2xl font-medium')}>{amountUsdString}</p>
+						<p className={cn('text-lg font-light')}>
+							{alpaca_order_side} order
+						</p>
+					</div>
+					<div className={cn(isViewMode ? 'hidden' : 'block')}>
+						<form onSubmit={handleSubmit(onSubmit) as () => void}>
+							<p className='font-semibold text-xs text-right'>
+								Amount (USD)
+								<span className='text-amber-900'>*</span>
+							</p>
+							<input
+								{...amountField}
+								className='border border-amber-900 h-8 rounded-md text-xs px-2 w-full'
+								placeholder={'Enter the amount you would like to order ····'}
+								required
+							/>
+							{Boolean(formState.errors['amount']?.message) && (
+								<div className='mt-4'>
+									<LiteFormFieldError
+										fieldErrorMessage={
+											formState.errors['amount']?.message ?? ''
+										}
+									/>
+								</div>
+							)}
+							<div className={cn('mt-2 items-center flex justify-end')}>
+								<button
+									className={cn(
+										'w-fit text-center py-1.5 px-6 rounded-md border',
+										isAmountInputComplete ? 'bg-black' : 'bg-slate-500',
+									)}
+									type='submit'
+									disabled={isSaveAmountButtonDisabled}
+								>
+									<div>
+										{isUpdateAmountFormSubmitting ? (
+											<>
+												<div className='flex items-center justify-center min-w-8'>
+													<div
+														className={cn(
+															'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
+															'border-t-brand border-r-brand border-b-brand',
+														)}
+													></div>
+												</div>
+											</>
+										) : (
+											<p
+												className={cn(
+													'font-normal text-xs',
+													isSaveAmountButtonDisabled
+														? 'text-slate-300'
+														: 'text-white',
+												)}
+											>
+												Save
+											</p>
+										)}
+									</div>
+								</button>
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
 			<div className={cn('mt-5')}>
@@ -89,6 +236,11 @@ const ROUTE_STATIC_PROPS: PageStaticProps = {
 type RouteQueryParams = HomeSiteRouteQueryParams[typeof ROUTE_STATIC_ID];
 
 const Page: NextPage = () => {
+	// ==== State ==== //
+	const [assetOrderCardMode, setAssetOrderCardMode] = useState<'edit' | 'view'>(
+		'view',
+	);
+
 	// ==== Hooks ==== //
 
 	// Site Origin by Target
@@ -129,12 +281,15 @@ const Page: NextPage = () => {
 	};
 
 	// ==== Hooks ==== //
-	const { data: assetOrderPage, isLoading: isAssetOrderPageLoading } =
-		useQueryAssetOrderPage({
-			firestoreQueryOptions: {
-				whereClauses: [['order', '==', order_id]],
-			},
-		});
+	const {
+		data: assetOrderPage,
+		isLoading: isAssetOrderPageLoading,
+		refetch: refetchAssetOrderPage,
+	} = useQueryAssetOrderPage({
+		firestoreQueryOptions: {
+			whereClauses: [['order', '==', order_id]],
+		},
+	});
 	const assetOrders = assetOrderPage?.documents ?? [];
 	const recommendationIds = assetOrders[0]?.recommendations;
 	const firstRecommendationId = recommendationIds?.[0];
@@ -225,7 +380,9 @@ const Page: NextPage = () => {
 											<AssetOrderCard
 												assetOrder={assetOrder}
 												key={assetOrder._id}
+												mode={assetOrderCardMode}
 												recommendation={recommendation}
+												refetchAssetOrderPage={refetchAssetOrderPage}
 											/>
 										);
 									})}
