@@ -27,6 +27,7 @@ import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader'
 import { Fragment } from 'react';
 import {
 	getCurrencyUsdStringFromCents,
+	getEnum,
 	getFieldSpecByFieldKey,
 } from 'ergonomic';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
@@ -37,10 +38,30 @@ import * as yup from 'yup';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
-import { useForm } from 'react-hook-form';
+import {
+	ErrorOption,
+	Field,
+	FieldArray,
+	FieldArrayPath,
+	FieldError,
+	FieldErrors,
+	FieldName,
+	FieldRefs,
+	FieldValues,
+	FormState,
+	InternalFieldName,
+	RegisterOptions,
+	SubmitErrorHandler,
+	SubmitHandler,
+	useForm,
+	UseFormRegisterReturn,
+} from 'react-hook-form';
 import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
 import { UsdField } from 'ergonomic-react/src/features/data/components/fields/UsdField';
 import { AsyncLink } from 'ergonomic-react/src/components/custom-ui/async-link';
+import { useQueryAssetPage } from '@wallot/react/src/features/assets';
+import { SelectOneField } from 'ergonomic-react/src/features/data/components/fields/SelectOneField';
+import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 
 const AssetOrderCard: React.FC<{
 	assetOrder: AssetOrder;
@@ -400,11 +421,60 @@ const Page: NextPage = () => {
 		});
 	const recommendations = recommendationPage?.documents ?? [];
 	const recommendation = recommendations[0];
+	const { data: assetPage, isLoading: isAssetPageLoading } = useQueryAssetPage({
+		firestoreQueryOptions: {},
+	});
+	const assets = assetPage?.documents ?? [];
+	const assetNameBySymbol = assets.reduce((acc, { symbol, name }) => {
+		acc[symbol] = `${name} (${symbol})`;
+		return acc;
+	}, {} as Record<string, string>);
 
 	const isDataLoading =
 		isAssetOrderPageLoading ||
 		isRecommendationPageLoading ||
-		recommendation == null;
+		recommendation == null ||
+		(isAssetPageLoading && !isViewMode);
+
+	// Add a new stock form
+	const SymbolEnum = getEnum(
+		Object.keys(assetNameBySymbol)
+			.filter(
+				(symbol) =>
+					!assetOrders.some((order) => order.alpaca_order_symbol === symbol),
+			)
+			.toSorted((a, b) => a.localeCompare(b)),
+	);
+	const newStockFormProperties = {
+		symbol: SymbolEnum.getDefinedSchema()
+			.default('')
+			.meta({ label_by_enum_option: assetNameBySymbol }),
+	} as const;
+	const newStockFormSchema = yup.object(newStockFormProperties);
+	const newStockFormFieldSpecByFieldKey = getFieldSpecByFieldKey(
+		newStockFormSchema,
+		['symbol'],
+	);
+	const resolver = useYupValidationResolver(
+		newStockFormSchema,
+		defaultGeneralizedFormDataTransformationOptions,
+	);
+	const { control, formState, handleSubmit, reset, watch } = useForm<{
+		symbol: string;
+	}>({
+		defaultValues: newStockFormSchema.getDefault(),
+		resolver,
+		shouldUnregister: false,
+	});
+	const liveData = watch();
+	const isNewStockSymbolInputComplete =
+		liveData.symbol && liveData.symbol.length > 0;
+	const isNewStockFormSubmitting = formState.isSubmitting;
+	const isSaveNewStockButtonDisabled =
+		isNewStockFormSubmitting || !isNewStockSymbolInputComplete;
+	const onSubmit = (data: { symbol: string }) => {
+		console.log('Adding new stock with following data:', data);
+	};
 
 	// ==== Render ==== //
 	return (
@@ -502,6 +572,76 @@ const Page: NextPage = () => {
 									})}
 								</Fragment>
 							)}
+						</div>
+						<div className={cn(isViewMode ? 'hidden' : 'block mt-8')}>
+							<form onSubmit={handleSubmit(onSubmit) as () => void}>
+								<p className='text-2xl'>Looking for another stock?</p>
+								<p className='font-light text-sm'>
+									Select from the list below.
+								</p>
+								<div className='mt-2.5'>
+									<SelectOneField
+										control={control}
+										fieldKey='symbol'
+										fieldSpec={newStockFormFieldSpecByFieldKey.symbol}
+										initialFormData={newStockFormSchema.getDefault()}
+										isSubmitting={isNewStockFormSubmitting}
+										operation='update'
+										className='rounded-md text-xs px-2 lg:w-1/3'
+									/>
+								</div>
+								{Boolean(formState.errors['symbol']?.message) && (
+									<div className='mt-4'>
+										<LiteFormFieldError
+											fieldErrorMessage={
+												formState.errors['symbol']?.message ?? ''
+											}
+										/>
+									</div>
+								)}
+								<div
+									className={cn(
+										'mt-4 items-center flex justify-start space-x-2',
+									)}
+								>
+									<button
+										className={cn(
+											'w-fit text-center py-1.5 px-6 rounded-md border',
+											isNewStockSymbolInputComplete
+												? 'bg-black'
+												: 'bg-slate-500',
+										)}
+										type='submit'
+										disabled={isSaveNewStockButtonDisabled}
+									>
+										<div>
+											{isNewStockFormSubmitting ? (
+												<>
+													<div className='flex items-center justify-center min-w-8'>
+														<div
+															className={cn(
+																'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
+																'border-t-brand border-r-brand border-b-brand',
+															)}
+														></div>
+													</div>
+												</>
+											) : (
+												<p
+													className={cn(
+														'font-normal text-xs',
+														isSaveNewStockButtonDisabled
+															? 'text-slate-300'
+															: 'text-white',
+													)}
+												>
+													Save
+												</p>
+											)}
+										</div>
+									</button>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
