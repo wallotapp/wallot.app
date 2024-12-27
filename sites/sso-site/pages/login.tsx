@@ -170,6 +170,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			} catch (err) {
 				// Show the error message
 				const message =
+					(err as Error)?.message ??
 					(err as GeneralizedError)?.error?.message ??
 					'An error occurred. Please try again.';
 				toast({
