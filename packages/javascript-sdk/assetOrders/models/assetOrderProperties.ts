@@ -74,6 +74,6 @@ export type AlpacaOrder = RemoveAlpacaOrderPrefix<
 
 export type RetrieveAssetPriceQueryParams = {
 	symbol: string;
-	notional: number;
+	notional: string;
 };
 export type RetrieveAssetPriceResponse = AlpacaOrder;

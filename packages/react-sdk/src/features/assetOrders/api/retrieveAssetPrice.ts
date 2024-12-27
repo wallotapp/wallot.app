@@ -16,7 +16,7 @@ export const retrieveAssetPrice = async (
 		}
 
 		const data = await getAuthenticatedKyInstance(firebaseUser)
-			.post('v0/assets/price', {
+			.get('v0/assets/price', {
 				searchParams,
 			})
 			.json<RetrieveAssetPriceResponse>();

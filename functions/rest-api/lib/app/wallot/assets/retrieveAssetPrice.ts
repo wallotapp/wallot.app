@@ -13,7 +13,10 @@ export const retrieveAssetPrice = async (
 	firebaseUser: FirebaseUser | null,
 ): Promise<FunctionResponse<RetrieveAssetPriceResponse>> => {
 	if (!firebaseUser) throw new Error('Unauthorized');
-	const json = await alpaca.broker.estimateAlpacaOrder({ notional, symbol });
+	const json = await alpaca.broker.estimateAlpacaOrder({
+		notional: Number(notional),
+		symbol,
+	});
 
 	return { json };
 };
