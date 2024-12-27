@@ -55,10 +55,7 @@ app.get(
 			Record<string, never>,
 			RetrieveAssetPricesQueryParams
 		>,
-		res: express.Response<
-			AlpacaOrder,
-			GeneralizedResLocals<AlpacaOrder>
-		>,
+		res: express.Response<AlpacaOrder, GeneralizedResLocals<AlpacaOrder>>,
 		next,
 	) => {
 		corsPolicy(

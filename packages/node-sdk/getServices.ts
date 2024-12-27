@@ -9,12 +9,14 @@ import {
 import { SecretData } from './SecretDataTypes.js';
 import {
 	getAlpacaBrokerApiClient,
+	getAlpacaBrokerEstimationApiClient,
 	createAlpacaAccount,
 	retrieveAlpacaAccount,
 	retrieveAlpacaAchTransfer,
 	requestAlpacaAchTransfer,
 	createAlpacaAchRelationship,
 	retrieveAlpacaAchRelationship,
+	estimateAlpacaOrder,
 	placeAlpacaOrder,
 	retrieveAlpacaOrder,
 } from './alpaca/index.js';
@@ -51,6 +53,8 @@ export const getServices = (
 			serviceAccountPath,
 		});
 	const alpacaBrokerClient = getAlpacaBrokerApiClient(secrets);
+	const alpacaBrokerEstimationClient =
+		getAlpacaBrokerEstimationApiClient(secrets);
 	const decrypt = decryptString(
 		secrets.SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY,
 	);
@@ -58,8 +62,6 @@ export const getServices = (
 	return {
 		alpaca: {
 			broker: {
-				// Instance
-				instance: alpacaBrokerClient,
 				// Alpaca Accounts
 				createAlpacaAccount: createAlpacaAccount(alpacaBrokerClient),
 				retrieveAlpacaAccount: retrieveAlpacaAccount(alpacaBrokerClient),
@@ -74,7 +76,11 @@ export const getServices = (
 				),
 				retrieveAlpacaAchRelationship:
 					retrieveAlpacaAchRelationship(alpacaBrokerClient),
-				// Alpaca ACH Orders
+				// Alpaca Orders
+				estimateAlpacaOrder: estimateAlpacaOrder(
+					alpacaBrokerEstimationClient,
+					secrets,
+				),
 				placeAlpacaOrder: placeAlpacaOrder(alpacaBrokerClient),
 				retrieveAlpacaOrder: retrieveAlpacaOrder(alpacaBrokerClient),
 			},
