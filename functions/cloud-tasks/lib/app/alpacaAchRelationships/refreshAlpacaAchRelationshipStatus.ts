@@ -3,7 +3,7 @@ import { RefreshAlpacaAchRelationshipStatusTaskParams } from '@wallot/node';
 import {
 	BankAccountPendingAlpacaAchRelationship,
 	UserActivatedByAlpaca,
-	AlpacaAccount,
+	AlpacaAchRelationship,
 } from '@wallot/js';
 import { alpaca } from '../../services.js';
 
@@ -26,8 +26,17 @@ async function retrieveAlpacaAchRelationship(
 	user: UserActivatedByAlpaca,
 	bankAccount: BankAccountPendingAlpacaAchRelationship,
 ) {
-	const response = await alpaca.broker.get<AlpacaAccount>(
-		`v1/todo/${user.alpaca_account_id}`,
+	const response = await alpaca.broker.get<AlpacaAchRelationship[]>(
+		`v1/accounts/${user.alpaca_account_id}/ach_relationships`,
 	);
-	return response.json();
+	const achRelationships = await response.json();
+	const achRelationship = achRelationships.find(
+		({ id }) => id === bankAccount.alpaca_ach_relationship_id,
+	);
+	if (achRelationship == null) {
+		throw new Error(
+			`Alpaca ACH relationship ${bankAccount.alpaca_ach_relationship_id} not found`,
+		);
+	}
+	return achRelationship;
 }
