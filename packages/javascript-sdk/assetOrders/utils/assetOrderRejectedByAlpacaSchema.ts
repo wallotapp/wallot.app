@@ -37,3 +37,18 @@ export const isAssetOrderRejectedByAlpaca = (
 		return false;
 	}
 };
+
+export const isAssetOrderRejectedByAlpacaParams = (
+	params: unknown,
+): params is AssetOrderRejectedByAlpacaParams => {
+	try {
+		assetOrderRejectedByAlpacaSchema.validateSync(params);
+		return true;
+	} catch (error) {
+		console.error(
+			'Error detected in isAssetOrderRejectedByAlpacaParams',
+			error,
+		);
+		return false;
+	}
+};
