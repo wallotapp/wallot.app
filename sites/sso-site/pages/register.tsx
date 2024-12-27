@@ -86,6 +86,9 @@ const Page: NextPage<PageStaticProps> = (props) => {
 				redirect_url: redirectUrl,
 			}) => {
 				try {
+					// Pause onAuthStateChanged listener
+					localStorage.setItem('pause_firebase_auth_redirects', 'true');
+
 					// Log in user
 					await signInWithCustomToken(auth, customToken);
 
@@ -112,6 +115,9 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						type: 'manual',
 						message: 'An error occurred. Please try again.',
 					});
+				} finally {
+					// Unpause onAuthStateChanged listener
+					localStorage.removeItem('pause_firebase_auth_redirects');
 				}
 			},
 		});
