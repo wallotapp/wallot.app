@@ -1,21 +1,16 @@
 import {
-	AlpacaAchTransfer,
-	BankAccountApprovedByAlpaca,
 	User,
-	usersApi,
-	UserActivatedByAlpaca,
-	isUserActivatedByAlpaca,
+	usersApi, isUserActivatedByAlpaca,
 	achTransfersApi,
 	CreateAchTransferParams,
 	getAchTransferPropertiesFromAlpacaAchTransfer,
 	bankAccountsApi,
 	BankAccount,
-	isBankAccountApprovedByAlpaca,
+	isBankAccountApprovedByAlpaca
 } from '@wallot/js';
 import { CloudTaskHandler } from 'ergonomic-node';
 import { RequestAlpacaAchTransferTaskParams } from '@wallot/node';
 import { alpaca, db, gcp, log } from '../../services.js';
-import { getCurrencyUsdStringFromCents } from 'ergonomic';
 
 export const handleRequestAlpacaAchTransferTaskOptions = {
 	rateLimits: { maxConcurrentDispatches: 6 },
@@ -94,7 +89,7 @@ export const handleRequestAlpacaAchTransferTask: CloudTaskHandler<
 	}
 
 	// Request the ACH_TRANSFER
-	const alpacaAchTransfer = await requestAlpacaAchTransfer(
+	const alpacaAchTransfer = await alpaca.broker.requestAlpacaAchTransfer(
 		user,
 		bankAccount,
 		amountInCents,
@@ -123,35 +118,3 @@ export const handleRequestAlpacaAchTransferTask: CloudTaskHandler<
 	// Task complete
 	return Promise.resolve();
 };
-
-async function requestAlpacaAchTransfer(
-	user: UserActivatedByAlpaca,
-	bankAccount: BankAccountApprovedByAlpaca,
-	amountInCents: number,
-) {
-	if (amountInCents <= 0) {
-		throw new Error('Amount must be greater than 0');
-	}
-
-	const requestAlpacaAchTransferParams: Pick<
-		AlpacaAchTransfer,
-		'amount' | 'direction' | 'relationship_id'
-	> & {
-		transfer_type: 'ach';
-	} = {
-		amount: getCurrencyUsdStringFromCents(amountInCents)
-			.replace('$', '')
-			.replace(/,/g, ''),
-		direction: 'INCOMING',
-		relationship_id: bankAccount.alpaca_ach_relationship_id,
-		transfer_type: 'ach',
-	};
-
-	const response = await alpaca.broker.post<AlpacaAchTransfer>(
-		`v1/accounts/${user.alpaca_account_id}/transfers`,
-		{
-			json: requestAlpacaAchTransferParams,
-		},
-	);
-	return response.json();
-}

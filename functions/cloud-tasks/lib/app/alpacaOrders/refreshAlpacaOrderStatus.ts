@@ -18,13 +18,3 @@ export const handleRefreshAlpacaOrderStatusTask: CloudTaskHandler<
 	assetOrderId;
 	return Promise.resolve();
 };
-
-async function retrieveAlpacaOrder(
-	user: UserActivatedByAlpaca,
-	assetOrder: AssetOrderPendingAlpacaFill,
-) {
-	const response = await alpaca.broker.get<AlpacaOrder>(
-		`v1/trading/accounts/${user.alpaca_account_id}/orders/${assetOrder.alpaca_order_id}`,
-	);
-	return response.json();
-}

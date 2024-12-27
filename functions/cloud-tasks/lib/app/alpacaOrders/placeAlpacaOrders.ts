@@ -7,13 +7,10 @@ import {
 	User,
 	isUserWithAlpacaEquity,
 	assetOrdersApi,
-	AssetOrder,
-	AlpacaOrder,
-	UserWithAlpacaEquity,
-	getAssetOrderPropertiesFromAlpacaOrder,
+	AssetOrder, getAssetOrderPropertiesFromAlpacaOrder,
 	UpdateAssetOrderParams,
 	isAssetOrderPendingAlpacaFill,
-	isOrderConfirmedByUser,
+	isOrderConfirmedByUser
 } from '@wallot/js';
 import { PlaceAlpacaOrdersTaskParams } from '@wallot/node';
 import { alpaca, db, gcp, log } from '../../services.js';
@@ -128,7 +125,7 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 
 	// Place the ALPACA_ORDERs such that the promise only rejects if all orders reject
 	const alpacaOrderPromises = assetOrders.map((assetOrder) =>
-		placeAlpacaOrder(user, assetOrder).then(
+		alpaca.broker.placeAlpacaOrder(user, assetOrder).then(
 			(alpacaOrder) => ({
 				alpacaOrder,
 				assetOrder,
@@ -203,26 +200,3 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 	});
 	return Promise.resolve();
 };
-
-async function placeAlpacaOrder(
-	user: UserWithAlpacaEquity,
-	assetOrder: AssetOrder,
-) {
-	const placeAlpacaOrderParams: Pick<
-		AlpacaOrder,
-		'qty' | 'side' | 'symbol' | 'time_in_force' | 'type'
-	> = {
-		qty: assetOrder.alpaca_order_qty,
-		side: assetOrder.alpaca_order_side,
-		symbol: assetOrder.alpaca_order_symbol,
-		time_in_force: assetOrder.alpaca_order_time_in_force,
-		type: assetOrder.alpaca_order_type,
-	};
-	const response = await alpaca.broker.post<AlpacaOrder>(
-		`v1/trading/accounts/${user.alpaca_account_id}/orders`,
-		{
-			json: placeAlpacaOrderParams,
-		},
-	);
-	return response.json();
-}

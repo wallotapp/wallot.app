@@ -1,15 +1,13 @@
 import { CloudTaskHandler, firebaseFunctions } from 'ergonomic-node';
 import {
-	AlpacaAccount,
 	usersApi,
 	User,
 	isUserPendingAlpacaAccount,
 	getUserPropertiesFromAlpacaAccount,
 	isUserActivatedByAlpacaParams,
-	isUserRejectedByAlpacaParams,
+	isUserRejectedByAlpacaParams
 } from '@wallot/js';
 import { RefreshAlpacaAccountStatusTaskParams } from '@wallot/node';
-import { UserPendingAlpacaAccount } from '@wallot/js';
 import { alpaca, db, gcp, log } from '../../services.js';
 
 export const handleRefreshAlpacaAccountStatusTaskOptions = {
@@ -59,7 +57,7 @@ export const handleRefreshAlpacaAccountStatusTask: CloudTaskHandler<
 	}
 
 	// Retrieve the Alpaca Account
-	const alpacaAccount = await retrieveAlpacaAccount(userInitialData);
+	const alpacaAccount = await alpaca.broker.retrieveAlpacaAccount(userInitialData);
 
 	// Update the USER
 	const updateUserParams = getUserPropertiesFromAlpacaAccount(alpacaAccount);
@@ -99,10 +97,3 @@ export const handleRefreshAlpacaAccountStatusTask: CloudTaskHandler<
 		'Alpaca account still pending',
 	);
 };
-
-async function retrieveAlpacaAccount(user: UserPendingAlpacaAccount) {
-	const response = await alpaca.broker.get<AlpacaAccount>(
-		`v1/accounts/${user.alpaca_account_id}`,
-	);
-	return response.json();
-}
