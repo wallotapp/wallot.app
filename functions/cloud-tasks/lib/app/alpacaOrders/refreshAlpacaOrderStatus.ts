@@ -1,7 +1,7 @@
 import { CloudTaskHandler } from 'ergonomic-node';
 import { RefreshAlpacaOrderStatusTaskParams } from '@wallot/node';
 import {
-	AlpacaAccount,
+	AlpacaOrder,
 	AssetOrderPendingAlpacaFill,
 	UserActivatedByAlpaca,
 } from '@wallot/js';
@@ -23,8 +23,8 @@ async function retrieveAlpacaOrder(
 	user: UserActivatedByAlpaca,
 	assetOrder: AssetOrderPendingAlpacaFill,
 ) {
-	const response = await alpaca.broker.get<AlpacaAccount>(
-		`v1/todo/${user.alpaca_account_id}`,
+	const response = await alpaca.broker.get<AlpacaOrder>(
+		`v1/trading/accounts/${user.alpaca_account_id}/orders/${assetOrder.alpaca_order_id}`,
 	);
 	return response.json();
 }
