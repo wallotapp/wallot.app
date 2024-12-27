@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -14,6 +14,7 @@ import {
 	getSsoSiteRoute,
 	AssetOrder,
 	Recommendation,
+	assetOrdersApi,
 } from '@wallot/js';
 import {
 	useQueryAssetOrderPage,
@@ -23,7 +24,10 @@ import { useQueryRecommendationPage } from '@wallot/react/src/features/recommend
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
 import { Fragment } from 'react';
-import { getCurrencyUsdStringFromCents, YupHelpers } from 'ergonomic';
+import {
+	getCurrencyUsdStringFromCents,
+	getFieldSpecByFieldKey,
+} from 'ergonomic';
 import Link from 'next/link';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { FiShoppingCart } from 'react-icons/fi';
@@ -33,7 +37,9 @@ import * as yup from 'yup';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
-import { useController, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
+import { UsdField } from 'ergonomic-react/src/features/data/components/fields/UsdField';
 
 const AssetOrderCard: React.FC<{
 	assetOrder: AssetOrder;
@@ -56,13 +62,16 @@ const AssetOrderCard: React.FC<{
 	const { toast } = useToast();
 
 	// Form Resolver
-	const resolver = useYupValidationResolver(
-		yup.object({ amount: YupHelpers.usd().required() }),
-		{
-			...defaultGeneralizedFormDataTransformationOptions,
-			currencyFieldKeys: ['amount'],
-		},
-	);
+	const amountFormSchema = yup.object({
+		amount: assetOrdersApi.properties.amount,
+	});
+	const amountFieldSpecByFieldKey = getFieldSpecByFieldKey(amountFormSchema, [
+		'amount',
+	]);
+	const resolver = useYupValidationResolver(amountFormSchema, {
+		...defaultGeneralizedFormDataTransformationOptions,
+		currencyFieldKeys: ['amount'],
+	});
 	const { control, formState, handleSubmit, reset, setError, watch } = useForm<{
 		amount: number;
 	}>({
@@ -115,11 +124,6 @@ const AssetOrderCard: React.FC<{
 		formState.isSubmitting || isUpdateAssetOrderRunning;
 	const isSaveAmountButtonDisabled =
 		isUpdateAmountFormSubmitting || !isAmountInputComplete;
-	const { field: amountField } = useController({
-		control,
-		disabled: isViewMode || isUpdateAmountFormSubmitting,
-		name: 'amount',
-	});
 
 	const investmentRecommendationForAsset = best_investments.find(
 		({ symbol }) => symbol === alpaca_order_symbol,
@@ -129,6 +133,22 @@ const AssetOrderCard: React.FC<{
 	}
 	const { rationale } = investmentRecommendationForAsset;
 	const amountUsdString = getCurrencyUsdStringFromCents(amount);
+
+	const [hasInitializedDefaultValues, setHasInitializedDefaultValues] =
+		useState(false);
+	useEffect(() => {
+		if (hasInitializedDefaultValues) return;
+
+		const initialValues = getGeneralizedFormDataFromServerData(
+			{ amount },
+			{
+				...defaultGeneralizedFormDataTransformationOptions,
+				currencyFieldKeys: ['amount'],
+			},
+		);
+		reset(initialValues);
+		setHasInitializedDefaultValues(true);
+	}, [hasInitializedDefaultValues, amount]);
 
 	return (
 		<div
@@ -154,11 +174,14 @@ const AssetOrderCard: React.FC<{
 								Amount (USD)
 								<span className='text-amber-900'>*</span>
 							</p>
-							<input
-								{...amountField}
+							<UsdField
+								control={control}
+								fieldKey='amount'
+								fieldSpec={amountFieldSpecByFieldKey.amount}
+								isSubmitting={isUpdateAmountFormSubmitting}
+								operation='update'
+								setError={(message) => setError('amount', { message })}
 								className='border border-amber-900 h-8 rounded-md text-xs px-2 w-full'
-								placeholder={'Enter the amount you would like to order ····'}
-								required
 							/>
 							{Boolean(formState.errors['amount']?.message) && (
 								<div className='mt-4'>
