@@ -192,7 +192,40 @@ const AssetOrderCard: React.FC<{
 									/>
 								</div>
 							)}
-							<div className={cn('mt-2 items-center flex justify-end')}>
+							<div className={cn('mt-2 items-center flex justify-end space-x-2')}>
+								<button
+									className={cn(
+										'w-fit text-center py-1.5 px-4 rounded-md border bg-red-800',
+									)}
+									type='button'
+									disabled={isDeleteAssetOrderButtonDisabled}
+								>
+									<div>
+										{isDeleteAssetOrderRunning ? (
+											<>
+												<div className='flex items-center justify-center min-w-8'>
+													<div
+														className={cn(
+															'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
+															'border-t-white border-r-white border-b-white',
+														)}
+													></div>
+												</div>
+											</>
+										) : (
+											<p
+												className={cn(
+													'font-normal text-xs',
+													isDeleteAssetOrderButtonDisabled
+														? 'text-slate-300'
+														: 'text-white',
+												)}
+											>
+												Delete
+											</p>
+										)}
+									</div>
+								</button>
 								<button
 									className={cn(
 										'w-fit text-center py-1.5 px-6 rounded-md border',
