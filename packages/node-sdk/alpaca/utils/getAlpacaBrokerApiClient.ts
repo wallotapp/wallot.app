@@ -1,4 +1,4 @@
-import { default as ky } from 'ky';
+import { default as ky } from 'ky-universal';
 import { SecretData } from '../../SecretDataTypes.js';
 
 /**
