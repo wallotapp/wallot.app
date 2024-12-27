@@ -9,7 +9,7 @@ import { alpaca } from '../../services.js';
 
 export const handleRefreshAlpacaAchRelationshipStatusTaskOptions = {
 	rateLimits: { maxConcurrentDispatches: 6 },
-	retryConfig: { maxAttempts: 3, minBackoffSeconds: 30 },
+	retryConfig: { maxAttempts: 5, minBackoffSeconds: 120 },
 };
 
 export const handleRefreshAlpacaAchRelationshipStatusTask: CloudTaskHandler<
