@@ -7,7 +7,17 @@ import {
 	getStripeInstance,
 } from 'ergonomic-node';
 import { SecretData } from './SecretDataTypes.js';
-import { getAlpacaBrokerApiClient } from './alpaca/index.js';
+import {
+	getAlpacaBrokerApiClient,
+	createAlpacaAccount,
+	retrieveAlpacaAccount,
+	retrieveAlpacaAchTransfer,
+	requestAlpacaAchTransfer,
+	createAlpacaAchRelationship,
+	retrieveAlpacaAchRelationship,
+	placeAlpacaOrder,
+	retrieveAlpacaOrder,
+} from './alpaca/index.js';
 import { getAlphaVantageClient } from './alphaVantage/index.js';
 import { encryptString } from './crypto/encryptString.js';
 import { decryptString } from './crypto/decryptString.js';
@@ -40,9 +50,33 @@ export const getServices = (
 			functionName,
 			serviceAccountPath,
 		});
+	const alpacaBrokerClient = getAlpacaBrokerApiClient(secrets);
+	const decrypt = decryptString(
+		secrets.SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY,
+	);
 
 	return {
-		alpaca: { broker: getAlpacaBrokerApiClient(secrets) },
+		alpaca: {
+			broker: {
+				// Alpaca Accounts
+				createAlpacaAccount: createAlpacaAccount(alpacaBrokerClient),
+				retrieveAlpacaAccount: retrieveAlpacaAccount(alpacaBrokerClient),
+				// Alpaca ACH Transfers
+				retrieveAlpacaAchTransfer:
+					retrieveAlpacaAchTransfer(alpacaBrokerClient),
+				requestAlpacaAchTransfer: requestAlpacaAchTransfer(alpacaBrokerClient),
+				// Alpaca ACH Relationships
+				createAlpacaAchRelationship: createAlpacaAchRelationship(
+					alpacaBrokerClient,
+					decrypt,
+				),
+				retrieveAlpacaAchRelationship:
+					retrieveAlpacaAchRelationship(alpacaBrokerClient),
+				// Alpaca ACH Orders
+				placeAlpacaOrder: placeAlpacaOrder(alpacaBrokerClient),
+				retrieveAlpacaOrder: retrieveAlpacaOrder(alpacaBrokerClient),
+			},
+		},
 		alphaVantage: getAlphaVantageClient(secrets),
 		auth: getFirebaseAuth(secrets),
 		bucket: getCloudStorageBucket(
@@ -52,9 +86,7 @@ export const getServices = (
 			encrypt: encryptString(
 				secrets.SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY,
 			),
-			decrypt: decryptString(
-				secrets.SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY,
-			),
+			decrypt,
 		},
 		db: getFirestoreDB(secrets),
 		gcp: {
