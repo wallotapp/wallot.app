@@ -1,12 +1,13 @@
 import {
 	User,
-	usersApi, isUserActivatedByAlpaca,
+	usersApi,
+	isUserActivatedByAlpaca,
 	achTransfersApi,
 	CreateAchTransferParams,
 	getAchTransferPropertiesFromAlpacaAchTransfer,
 	bankAccountsApi,
 	BankAccount,
-	isBankAccountApprovedByAlpaca
+	isBankAccountApprovedByAlpaca,
 } from '@wallot/js';
 import { CloudTaskHandler } from 'ergonomic-node';
 import { RequestAlpacaAchTransferTaskParams } from '@wallot/node';

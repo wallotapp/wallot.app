@@ -8,7 +8,7 @@ import {
 	User,
 	isUserActivatedByAlpaca,
 	UpdateBankAccountParams,
-	getBankAccountPropertiesFromAlpacaAchRelationship
+	getBankAccountPropertiesFromAlpacaAchRelationship,
 } from '@wallot/js';
 import { CreateAlpacaAchRelationshipTaskParams } from '@wallot/node';
 import { alpaca, db, gcp, log } from '../../services.js';
@@ -89,7 +89,10 @@ export const handleCreateAlpacaAchRelationshipTask: CloudTaskHandler<
 	}
 
 	// Create the ACH relationship
-	const achRelationship = await alpaca.broker.createAlpacaAchRelationship(user, bankAccount);
+	const achRelationship = await alpaca.broker.createAlpacaAchRelationship(
+		user,
+		bankAccount,
+	);
 
 	// Update the BANK_ACCOUNT
 	const bankAccountUpdateParams: UpdateBankAccountParams =

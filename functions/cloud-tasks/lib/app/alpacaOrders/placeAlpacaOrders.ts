@@ -7,10 +7,11 @@ import {
 	User,
 	isUserWithAlpacaEquity,
 	assetOrdersApi,
-	AssetOrder, getAssetOrderPropertiesFromAlpacaOrder,
+	AssetOrder,
+	getAssetOrderPropertiesFromAlpacaOrder,
 	UpdateAssetOrderParams,
 	isAssetOrderPendingAlpacaFill,
-	isOrderConfirmedByUser
+	isOrderConfirmedByUser,
 } from '@wallot/js';
 import { PlaceAlpacaOrdersTaskParams } from '@wallot/node';
 import { alpaca, db, gcp, log } from '../../services.js';

@@ -5,7 +5,7 @@ import {
 	isUserPendingAlpacaAccount,
 	getUserPropertiesFromAlpacaAccount,
 	isUserActivatedByAlpacaParams,
-	isUserRejectedByAlpacaParams
+	isUserRejectedByAlpacaParams,
 } from '@wallot/js';
 import { RefreshAlpacaAccountStatusTaskParams } from '@wallot/node';
 import { alpaca, db, gcp, log } from '../../services.js';
@@ -57,7 +57,9 @@ export const handleRefreshAlpacaAccountStatusTask: CloudTaskHandler<
 	}
 
 	// Retrieve the Alpaca Account
-	const alpacaAccount = await alpaca.broker.retrieveAlpacaAccount(userInitialData);
+	const alpacaAccount = await alpaca.broker.retrieveAlpacaAccount(
+		userInitialData,
+	);
 
 	// Update the USER
 	const updateUserParams = getUserPropertiesFromAlpacaAccount(alpacaAccount);

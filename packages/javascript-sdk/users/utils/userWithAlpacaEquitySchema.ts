@@ -39,3 +39,15 @@ export const isUserWithAlpacaEquity = (
 		return false;
 	}
 };
+
+export const isUserWithAlpacaEquityParams = (
+	params: unknown,
+): params is UserWithAlpacaEquityParams => {
+	try {
+		userWithAlpacaEquitySchema.validateSync(params);
+		return true;
+	} catch (error) {
+		console.error('Error detected in isUserWithAlpacaEquityParams', error);
+		return false;
+	}
+};

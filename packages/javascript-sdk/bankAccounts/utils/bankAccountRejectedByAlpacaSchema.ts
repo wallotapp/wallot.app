@@ -37,7 +37,10 @@ export const isBankAccountRejectedByAlpacaParams = (
 		bankAccountRejectedByAlpacaSchema.validateSync(params);
 		return true;
 	} catch (error) {
-		console.error('Error detected in isBankAccountRejectedByAlpaca', error);
+		console.error(
+			'Error detected in isBankAccountRejectedByAlpacaParams',
+			error,
+		);
 		return false;
 	}
 };

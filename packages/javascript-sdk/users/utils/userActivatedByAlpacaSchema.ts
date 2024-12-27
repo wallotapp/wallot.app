@@ -37,7 +37,7 @@ export const isUserActivatedByAlpacaParams = (
 		userActivatedByAlpacaSchema.validateSync(params);
 		return true;
 	} catch (error) {
-		console.error('Error detected in isUserActivatedByAlpaca', error);
+		console.error('Error detected in isUserActivatedByAlpacaParams', error);
 		return false;
 	}
 };

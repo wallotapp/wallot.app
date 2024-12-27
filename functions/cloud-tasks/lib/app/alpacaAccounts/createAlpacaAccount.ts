@@ -6,7 +6,7 @@ import {
 	isUserPendingAlpacaAccount,
 	isKycUser,
 	UpdateUserParams,
-	getUserPropertiesFromAlpacaAccount
+	getUserPropertiesFromAlpacaAccount,
 } from '@wallot/js';
 import { alpaca, db, gcp, log } from '../../services.js';
 

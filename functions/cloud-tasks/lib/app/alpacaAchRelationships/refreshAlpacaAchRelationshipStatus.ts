@@ -10,7 +10,7 @@ import {
 	isBankAccountRejectedByAlpacaParams,
 	getBankAccountPropertiesFromAlpacaAchRelationship,
 	isUserActivatedByAlpaca,
-	User
+	User,
 } from '@wallot/js';
 import { alpaca, db, gcp, log } from '../../services.js';
 
@@ -86,10 +86,11 @@ export const handleRefreshAlpacaAchRelationshipStatusTask: CloudTaskHandler<
 	}
 
 	// Retrieve the Alpaca Account
-	const alpacaAchRelationship = await alpaca.broker.retrieveAlpacaAchRelationship(
-		user,
-		bankAccountInitialData,
-	);
+	const alpacaAchRelationship =
+		await alpaca.broker.retrieveAlpacaAchRelationship(
+			user,
+			bankAccountInitialData,
+		);
 
 	// Update the USER
 	const updateBankAccountParams =

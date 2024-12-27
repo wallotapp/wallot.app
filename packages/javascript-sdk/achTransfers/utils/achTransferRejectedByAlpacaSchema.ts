@@ -33,3 +33,18 @@ export const isAchTransferRejectedByAlpaca = (
 		return false;
 	}
 };
+
+export const isAchTransferRejectedByAlpacaParams = (
+	params: unknown,
+): params is AchTransferRejectedByAlpacaParams => {
+	try {
+		achTransferRejectedByAlpacaSchema.validateSync(params);
+		return true;
+	} catch (error) {
+		console.error(
+			'Error detected in isAchTransferRejectedByAlpacaParams',
+			error,
+		);
+		return false;
+	}
+};
