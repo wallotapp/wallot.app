@@ -1,2 +1,2 @@
 export * from './AlphaVantageTimeSeriesApiTypes.js';
-export * from './RetrieveAssetPriceTypes.js';
+export * from './RetrieveAssetPricesTypes.js';
