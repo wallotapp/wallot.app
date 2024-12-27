@@ -15,8 +15,10 @@ import {
 	AssetOrder,
 	Recommendation,
 	assetOrdersApi,
+	CreateAssetOrderParams,
 } from '@wallot/js';
 import {
+	useCreateAssetOrderMutation,
 	useDeleteAssetOrderMutation,
 	useQueryAssetOrderPage,
 	useUpdateAssetOrderMutation,
@@ -38,30 +40,12 @@ import * as yup from 'yup';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
-import {
-	ErrorOption,
-	Field,
-	FieldArray,
-	FieldArrayPath,
-	FieldError,
-	FieldErrors,
-	FieldName,
-	FieldRefs,
-	FieldValues,
-	FormState,
-	InternalFieldName,
-	RegisterOptions,
-	SubmitErrorHandler,
-	SubmitHandler,
-	useForm,
-	UseFormRegisterReturn,
-} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
 import { UsdField } from 'ergonomic-react/src/features/data/components/fields/UsdField';
 import { AsyncLink } from 'ergonomic-react/src/components/custom-ui/async-link';
 import { useQueryAssetPage } from '@wallot/react/src/features/assets';
 import { SelectOneField } from 'ergonomic-react/src/features/data/components/fields/SelectOneField';
-import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 
 const AssetOrderCard: React.FC<{
 	assetOrder: AssetOrder;
@@ -380,6 +364,9 @@ const Page: NextPage = () => {
 	// Router
 	const router = useRouter();
 
+	// Toaster
+	const { toast } = useToast();
+
 	// ==== Constants ==== //
 
 	// Router Query
@@ -466,14 +453,55 @@ const Page: NextPage = () => {
 		resolver,
 		shouldUnregister: false,
 	});
+
+	const { mutate: createAssetOrder, isLoading: isCreateAssetOrderRunning } =
+		useCreateAssetOrderMutation({});
+
 	const liveData = watch();
 	const isNewStockSymbolInputComplete =
 		liveData.symbol && liveData.symbol.length > 0;
-	const isNewStockFormSubmitting = formState.isSubmitting;
+	const isNewStockFormSubmitting =
+		formState.isSubmitting || isCreateAssetOrderRunning;
 	const isSaveNewStockButtonDisabled =
 		isNewStockFormSubmitting || !isNewStockSymbolInputComplete;
 	const onSubmit = (data: { symbol: string }) => {
 		console.log('Adding new stock with following data:', data);
+		const copyOfFirstAssetOrder = assetOrders[0];
+		if (copyOfFirstAssetOrder == null) {
+			console.error('No asset order to copy from');
+			toast({
+				title: 'Error',
+				description: 'An error occurred. Please try again.',
+			});
+			return;
+		}
+		const assetId = assets.find(({ symbol }) => symbol === data.symbol)?._id;
+		if (assetId == null) {
+			console.error('No asset found for symbol:', data.symbol);
+			toast({
+				title: 'Error',
+				description: 'An error occurred. Please try again.',
+			});
+			return;
+		}
+		const createAssetOrderParams: CreateAssetOrderParams = {
+			alpaca_order_side: copyOfFirstAssetOrder.alpaca_order_side,
+			alpaca_order_symbol: data.symbol,
+			amount: 10000,
+			asset: assetId,
+			category: 'default',
+			name: '',
+			order: copyOfFirstAssetOrder.order,
+			recommendations: copyOfFirstAssetOrder.recommendations,
+		};
+		const assetOrder = assetOrdersApi.mergeCreateParams({
+			createParams: createAssetOrderParams,
+		});
+		toast({
+			title: 'Adding new stock to your order...',
+			description: 'This may take a few moments...',
+		});
+		createAssetOrder(assetOrder);
 	};
 
 	// ==== Render ==== //
