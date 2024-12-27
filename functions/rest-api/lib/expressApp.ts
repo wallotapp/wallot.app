@@ -24,9 +24,8 @@ import {
 	usersApi as apiResourceSpec,
 	ConfirmOrderParams,
 	ConfirmOrderResponse,
-	RetrieveAssetPricesQueryParams,
-	// RetrieveAssetPricesResponse,
-	AlpacaOrder,
+	RetrieveAssetPriceQueryParams,
+	RetrieveAssetPriceResponse,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -44,26 +43,27 @@ app.use(express.json());
 // ---- Application Routes: Wallot ---- //
 
 // Assets
-import { retrieveAssetPrices } from './app/wallot/assets/retrieveAssetPrices.js';
-app.options('*/v0/assets/prices', corsPolicy);
+import { retrieveAssetPrice } from './app/wallot/assets/retrieveAssetPrice.js';
+app.options('*/v0/assets/price', corsPolicy);
 app.get(
-	'*/v0/assets/prices',
+	'*/v0/assets/price',
 	(
 		req: express.Request<
 			Record<string, never>,
-			AlpacaOrder,
+			RetrieveAssetPriceResponse,
 			Record<string, never>,
-			RetrieveAssetPricesQueryParams
+			RetrieveAssetPriceQueryParams
 		>,
-		res: express.Response<AlpacaOrder, GeneralizedResLocals<AlpacaOrder>>,
+		res: express.Response<
+			RetrieveAssetPriceResponse,
+			GeneralizedResLocals<RetrieveAssetPriceResponse>
+		>,
 		next,
 	) => {
 		corsPolicy(
 			req,
 			res,
-			createRouterFunction(auth, secrets)(retrieveAssetPrices, {
-				requiresAuth: false,
-			})(req, res, next),
+			createRouterFunction(auth, secrets)(retrieveAssetPrice)(req, res, next),
 		);
 	},
 );
