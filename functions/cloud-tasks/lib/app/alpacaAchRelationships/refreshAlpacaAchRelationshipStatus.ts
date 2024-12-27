@@ -4,8 +4,13 @@ import {
 	BankAccountPendingAlpacaAchRelationship,
 	UserActivatedByAlpaca,
 	AlpacaAchRelationship,
+	bankAccountsApi,
+	BankAccount,
+	isBankAccountPendingAlpacaAchRelationship,
+	isBankAccountApprovedByAlpaca,
+	isBankAccountRejectedByAlpaca,
 } from '@wallot/js';
-import { alpaca } from '../../services.js';
+import { alpaca, db, log } from '../../services.js';
 
 export const handleRefreshAlpacaAchRelationshipStatusTaskOptions = {
 	rateLimits: { maxConcurrentDispatches: 6 },
@@ -15,6 +20,48 @@ export const handleRefreshAlpacaAchRelationshipStatusTaskOptions = {
 export const handleRefreshAlpacaAchRelationshipStatusTask: CloudTaskHandler<
 	RefreshAlpacaAchRelationshipStatusTaskParams
 > = async ({ data: { amountInCents, bankAccountId, orderId, userId } }) => {
+	// Query the BANK_ACCOUNT
+	const bankAccountDoc = await db
+		.collection(bankAccountsApi.collectionId)
+		.doc(bankAccountId)
+		.get();
+	if (!bankAccountDoc.exists) {
+		// BankAccount not found, so this task is not possible
+		log({
+			message:
+				'Requested refresh of Alpaca activation status, but bankAccount not found',
+		});
+		return Promise.resolve();
+	}
+	const bankAccountInitialData = bankAccountDoc.data() as BankAccount;
+	const isPending = isBankAccountPendingAlpacaAchRelationship(
+		bankAccountInitialData,
+	);
+	const isApproved = isBankAccountApprovedByAlpaca(bankAccountInitialData);
+	const isRejected = isBankAccountRejectedByAlpaca(bankAccountInitialData);
+	if (!isPending || isApproved || isRejected) {
+		// Precondition failed
+		if (!isPending) {
+			// BANK_ACCOUNT is not pending approval by Alpaca, so this task is not possible
+			log({
+				message:
+					'Requested refresh of Alpaca ACH relationship approval status, but Alpaca approval not pending',
+			});
+		} else if (isApproved) {
+			// BANK_ACCOUNT is already approved by Alpaca, so this task is not necessary
+			log({
+				message:
+					'Requested refresh of Alpaca ACH relationship approval status, but Alpaca approval already complete',
+			});
+		} else {
+			// BANK_ACCOUNT is already rejected by Alpaca, so this task is not necessary
+			log({
+				message:
+					'Requested refresh of Alpaca ACH relationship approval status, but Alpaca approval already rejected',
+			});
+		}
+		return Promise.resolve();
+	}
 	amountInCents;
 	bankAccountId;
 	orderId;
