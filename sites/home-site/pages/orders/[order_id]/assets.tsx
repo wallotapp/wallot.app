@@ -457,7 +457,29 @@ const Page: NextPage = () => {
 	});
 
 	const { mutate: createAssetOrder, isLoading: isCreateAssetOrderRunning } =
-		useCreateAssetOrderMutation({});
+		useCreateAssetOrderMutation({
+			onError: ({ error: { message } }) => {
+				// Show the error message
+				toast({
+					title: 'Error',
+					description: message,
+				});
+				reset();
+			},
+			onSuccess: async () => {
+				// Refetch the list of asset orders
+				await refetchAssetOrderPage();
+
+				// Show success toast
+				toast({
+					title: 'Success',
+					description: 'Added new stock to your order...',
+				});
+
+				// Reset form
+				reset();
+			},
+		});
 
 	const liveData = watch();
 	const isNewStockSymbolInputComplete =
