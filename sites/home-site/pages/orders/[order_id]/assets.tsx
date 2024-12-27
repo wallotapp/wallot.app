@@ -28,7 +28,6 @@ import {
 	getCurrencyUsdStringFromCents,
 	getFieldSpecByFieldKey,
 } from 'ergonomic';
-import Link from 'next/link';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { FiShoppingCart } from 'react-icons/fi';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
@@ -40,6 +39,7 @@ import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react
 import { useForm } from 'react-hook-form';
 import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
 import { UsdField } from 'ergonomic-react/src/features/data/components/fields/UsdField';
+import { AsyncLink } from 'ergonomic-react/src/components/custom-ui/async-link';
 
 const AssetOrderCard: React.FC<{
 	assetOrder: AssetOrder;
@@ -119,7 +119,7 @@ const AssetOrderCard: React.FC<{
 		updateAssetOrder({ _id: assetOrderId, ...data });
 	};
 
-	const isViewMode = mode !== 'view';
+	const isViewMode = mode === 'view';
 	const isUpdateAmountFormSubmitting =
 		formState.isSubmitting || isUpdateAssetOrderRunning;
 	const isSaveAmountButtonDisabled =
@@ -263,6 +263,9 @@ const Page: NextPage = () => {
 	const [assetOrderCardMode, setAssetOrderCardMode] = useState<'edit' | 'view'>(
 		'view',
 	);
+	const isViewMode = assetOrderCardMode === 'view';
+	const onToggleEditMode = () =>
+		setAssetOrderCardMode((prev) => (prev === 'edit' ? 'view' : 'edit'));
 
 	// ==== Hooks ==== //
 
@@ -353,16 +356,31 @@ const Page: NextPage = () => {
 								</p>
 							</div>
 							<div className='mt-6 lg:mt-0'>
-								<Link
-									href={getHomeSiteRoute({
-										includeOrigin: true,
-										origin: siteOriginByTarget.HOME_SITE,
-										queryParams: { order_id },
-										routeStaticId: 'HOME_SITE__/ORDERS/[ORDER_ID]/CART',
-									})}
-								>
-									<button>
-										<div className='bg-black py-1.5 px-10 rounded-sm flex items-center space-x-2'>
+								<div className='flex items-center space-x-4'>
+									<button
+										className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300'
+										type='button'
+										onClick={onToggleEditMode}
+									>
+										<p className='font-normal text-sm'>
+											{isViewMode ? 'Make Changes' : 'Confirm Cart'}
+										</p>
+									</button>
+									<AsyncLink
+										href={getHomeSiteRoute({
+											includeOrigin: true,
+											origin: siteOriginByTarget.HOME_SITE,
+											queryParams: { order_id },
+											routeStaticId: 'HOME_SITE__/ORDERS/[ORDER_ID]/CART',
+										})}
+										isReady={isViewMode}
+									>
+										<div
+											className={cn(
+												'py-1.5 px-10 rounded-sm flex items-center space-x-2',
+												isViewMode ? 'bg-black' : 'bg-gray-300',
+											)}
+										>
 											<div>
 												<FiShoppingCart className='text-white dark:text-brand text-xs' />
 											</div>
@@ -372,8 +390,8 @@ const Page: NextPage = () => {
 												</p>
 											</div>
 										</div>
-									</button>
-								</Link>
+									</AsyncLink>
+								</div>
 							</div>
 						</div>
 						<div
