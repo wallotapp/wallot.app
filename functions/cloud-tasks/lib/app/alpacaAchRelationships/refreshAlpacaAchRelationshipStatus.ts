@@ -30,13 +30,13 @@ async function retrieveAlpacaAchRelationship(
 		`v1/accounts/${user.alpaca_account_id}/ach_relationships`,
 	);
 	const achRelationships = await response.json();
-	const achRelationship = achRelationships.find(
+	const match = achRelationships.find(
 		({ id }) => id === bankAccount.alpaca_ach_relationship_id,
 	);
-	if (achRelationship == null) {
+	if (match == null) {
 		throw new Error(
 			`Alpaca ACH relationship ${bankAccount.alpaca_ach_relationship_id} not found`,
 		);
 	}
-	return achRelationship;
+	return match;
 }

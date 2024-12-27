@@ -24,8 +24,20 @@ async function retrieveAlpacaAchTransfer(
 	user: UserActivatedByAlpaca,
 	achTransfer: AchTransfer,
 ) {
-	const response = await alpaca.broker.get<AlpacaAchTransfer>(
-		`v1/todo/${user.alpaca_account_id}`,
+	const response = await alpaca.broker.get<AlpacaAchTransfer[]>(
+		`v1/accounts/${user.alpaca_account_id}/transfers`,
+		{
+			searchParams: { direction: achTransfer.alpaca_ach_transfer_direction },
+		},
 	);
-	return response.json();
+	const achTransfers = await response.json();
+	const match = achTransfers.find(
+		({ id }) => id === achTransfer.alpaca_ach_transfer_id,
+	);
+	if (match == null) {
+		throw new Error(
+			`Alpaca ACH relationship ${achTransfer.alpaca_ach_transfer_id} not found`,
+		);
+	}
+	return match;
 }
