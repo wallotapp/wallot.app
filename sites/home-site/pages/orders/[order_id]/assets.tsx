@@ -17,6 +17,7 @@ import {
 	assetOrdersApi,
 } from '@wallot/js';
 import {
+	useDeleteAssetOrderMutation,
 	useQueryAssetOrderPage,
 	useUpdateAssetOrderMutation,
 } from '@wallot/react/src/features/assetOrders';
@@ -81,7 +82,7 @@ const AssetOrderCard: React.FC<{
 	const liveData = watch();
 	const isAmountInputComplete = String(liveData.amount).length > 0;
 
-	// Mutation
+	// Mutation for updates
 	const { mutate: updateAssetOrder, isLoading: isUpdateAssetOrderRunning } =
 		useUpdateAssetOrderMutation({
 			onError: ({ error: { message } }) => {
@@ -99,7 +100,7 @@ const AssetOrderCard: React.FC<{
 				reset();
 			},
 			onSuccess: async () => {
-				// Refetch the user
+				// Refetch the list of asset orders
 				await refetchAssetOrderPage();
 
 				// Show success toast
@@ -110,6 +111,34 @@ const AssetOrderCard: React.FC<{
 			},
 		});
 
+	// Mutation for deletion
+	const { mutate: deleteAssetOrder, isLoading: isDeleteAssetOrderRunning } =
+		useDeleteAssetOrderMutation(assetOrderId, {
+			onError: ({ error: { message } }) => {
+				// Show the error message
+				toast({
+					title: 'Error',
+					description: message,
+				});
+				setError('root', {
+					type: 'manual',
+					message: 'An error occurred. Please try again.',
+				});
+
+				// Reset form
+				reset();
+			},
+			onSuccess: async () => {
+				// Refetch the list of asset orders
+				await refetchAssetOrderPage();
+
+				// Show success toast
+				toast({
+					title: 'Success',
+					description: 'Deleted 1 asset from your order...',
+				});
+			},
+		});
 	const onSubmit = (data: { amount: number }) => {
 		console.log('Updating asset order with following data:', data);
 		toast({
@@ -122,6 +151,8 @@ const AssetOrderCard: React.FC<{
 	const isViewMode = mode === 'view';
 	const isUpdateAmountFormSubmitting =
 		formState.isSubmitting || isUpdateAssetOrderRunning;
+	const isDeleteAssetOrderButtonDisabled =
+		isDeleteAssetOrderRunning || isUpdateAmountFormSubmitting;
 	const isSaveAmountButtonDisabled =
 		isUpdateAmountFormSubmitting || !isAmountInputComplete;
 
@@ -192,13 +223,22 @@ const AssetOrderCard: React.FC<{
 									/>
 								</div>
 							)}
-							<div className={cn('mt-2 items-center flex justify-end space-x-2')}>
+							<div
+								className={cn('mt-2 items-center flex justify-end space-x-2')}
+							>
 								<button
 									className={cn(
 										'w-fit text-center py-1.5 px-4 rounded-md border bg-red-800',
 									)}
 									type='button'
 									disabled={isDeleteAssetOrderButtonDisabled}
+									onClick={() => {
+										toast({
+											title: 'Deleting asset order...',
+											description: 'This may take a few moments...',
+										});
+										deleteAssetOrder({});
+									}}
 								>
 									<div>
 										{isDeleteAssetOrderRunning ? (
