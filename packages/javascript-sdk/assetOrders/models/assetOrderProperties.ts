@@ -71,3 +71,9 @@ export type UpdateAssetOrderParams = UpdateParams<AssetOrder>;
 export type AlpacaOrder = RemoveAlpacaOrderPrefix<
 	Pick<AssetOrder, AlpacaOrderPropertyName>
 >;
+
+export type RetrieveAssetPriceQueryParams = {
+	symbol: string;
+	notional: string;
+};
+export type RetrieveAssetPriceResponse = AlpacaOrder;

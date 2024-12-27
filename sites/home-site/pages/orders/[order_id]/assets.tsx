@@ -16,11 +16,13 @@ import {
 	Recommendation,
 	assetOrdersApi,
 	CreateAssetOrderParams,
+	AlpacaOrder,
 } from '@wallot/js';
 import {
 	useCreateAssetOrderMutation,
 	useDeleteAssetOrderMutation,
 	useQueryAssetOrderPage,
+	useRetrieveAssetPrice,
 	useUpdateAssetOrderMutation,
 } from '@wallot/react/src/features/assetOrders';
 import { useQueryRecommendationPage } from '@wallot/react/src/features/recommendations';
@@ -56,7 +58,6 @@ const AssetOrderCard: React.FC<{
 }> = ({
 	assetOrder: {
 		_id: assetOrderId,
-		alpaca_order_qty,
 		alpaca_order_side,
 		alpaca_order_symbol,
 		amount,
@@ -187,16 +188,37 @@ const AssetOrderCard: React.FC<{
 		setHasInitializedDefaultValues(true);
 	}, [hasInitializedDefaultValues, amount]);
 
+	const { data: assetPriceData, isLoading: isAssetPriceLoading } =
+		useRetrieveAssetPrice({
+			notional: String(amount),
+			symbol: alpaca_order_symbol,
+		});
+	const assetPriceFallback: Pick<
+		AlpacaOrder,
+		'filled_avg_price' | 'filled_qty'
+	> = { filled_avg_price: '0', filled_qty: '0' };
+	const { filled_avg_price, filled_qty } = assetPriceData ?? assetPriceFallback;
+
 	return (
 		<div
 			className={cn(
 				'bg-white border border-gray-200 rounded-md shadow-md p-6 h-full',
 			)}
 		>
-			<div className={cn('flex justify-between')}>
+			<div className={cn('flex justify-between space-x-4')}>
 				<div>
 					<p className={cn('text-2xl font-semibold')}>{alpaca_order_symbol}</p>
-					<p className={cn('text-lg font-light')}>{alpaca_order_qty} shares</p>
+					{isAssetPriceLoading ? (
+						<Fragment>
+							<Skeleton className='w-20 h-4' />
+						</Fragment>
+					) : (
+						<p className={cn('text-xs font-light')}>
+							approx. <span className='font-semibold'>{filled_qty}</span> shares
+							at <span className='font-semibold'>${filled_avg_price}</span> per
+							share
+						</p>
+					)}
 				</div>
 				<div>
 					<div className={cn(isViewMode ? 'block' : 'hidden')}>

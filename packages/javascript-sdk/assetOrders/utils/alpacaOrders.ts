@@ -125,7 +125,7 @@ export const alpacaOrderProperties = {
 		.default(null),
 	alpaca_order_stop_price: yup.string().nullable().default(null),
 	alpaca_order_submitted_at: yup.string().nullable().default(null),
-	alpaca_order_symbol: yup.string().nullable().default(null),
+	alpaca_order_symbol: yup.string().defined().min(1),
 	alpaca_order_time_in_force: AlpacaOrderTimeInForceEnum.getOptionalSchema()
 		.nullable()
 		.default(null),
