@@ -97,18 +97,11 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					// Pause onAuthStateChanged listener
 					setShouldPauseFirebaseAuthRedirects(true);
 
-					// Wait 10sec
-					console.log('Pausing for 10 seconds...');
-					await new Promise((resolve) => setTimeout(resolve, 1000 * 10));
-					console.log('Logging in...');
+					// Wait 1 second
+					await new Promise((resolve) => setTimeout(resolve, 1000));
 
 					// Log in user
 					await signInWithCustomToken(auth, customToken);
-
-					// Wait 10sec
-					console.log('Pausing for another 10 seconds...');
-					await new Promise((resolve) => setTimeout(resolve, 1000 * 10));
-					console.log('Navigating to redirect_url...');
 
 					// Redirect to next page
 					await router.push(redirectUrl);
@@ -128,9 +121,6 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						type: 'manual',
 						message: 'An error occurred. Please try again.',
 					});
-				} finally {
-					// Unpause onAuthStateChanged listener
-					setShouldPauseFirebaseAuthRedirects(false);
 				}
 			},
 		});
