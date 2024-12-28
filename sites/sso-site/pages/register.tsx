@@ -97,11 +97,18 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					// Pause onAuthStateChanged listener
 					setShouldPauseFirebaseAuthRedirects(true);
 
-					// Wait 100ms
-					await new Promise((resolve) => setTimeout(resolve, 100));
+					// Wait 10sec
+					console.log('Pausing for 10 seconds...');
+					await new Promise((resolve) => setTimeout(resolve, 1000 * 10));
+					console.log('Logging in...');
 
 					// Log in user
 					await signInWithCustomToken(auth, customToken);
+
+					// Wait 10sec
+					console.log('Pausing for another 10 seconds...');
+					await new Promise((resolve) => setTimeout(resolve, 1000 * 10));
+					console.log('Navigating to redirect_url...');
 
 					// Redirect to next page
 					await router.push(redirectUrl);
