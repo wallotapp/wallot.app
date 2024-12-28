@@ -61,7 +61,7 @@
 		"class-variance-authority": "^0.6.0",
 		"clsx": "^1.2.1",
 		"cmdk": "^0.2.0",
-		"ergonomic-react": "^0.4.18",
+		"ergonomic-react": "^0.4.19",
 		"firebase": "^10.3.0",
 		"get-user-locale": "^2.3.0",
 		"gray-matter": "^4.0.3",
