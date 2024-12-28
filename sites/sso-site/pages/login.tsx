@@ -37,6 +37,10 @@ import { useState } from 'react';
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== State ==== //
 	const [isLoginUserRunning, setIsLoginUserRunning] = useState(false);
+	const [
+		shouldPauseFirebaseAuthRedirects,
+		setShouldPauseFirebaseAuthRedirects,
+	] = useState(false);
 
 	// ==== Hooks ==== //
 
@@ -45,8 +49,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 
 	// Auth
 	useGuestRouteRedirect({
+		shouldPauseFirebaseAuthRedirects,
 		welcomeSiteOrigin: siteOriginByTarget.HOME_SITE,
-		shouldPauseFirebaseAuthRedirects: isLoginUserRunning,
 	});
 
 	// Router
@@ -142,6 +146,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			});
 			try {
 				setIsLoginUserRunning(true);
+				setShouldPauseFirebaseAuthRedirects(true);
 
 				const { password, email } = data;
 				const { user: firebaseUser } = await signInWithEmailAndPassword(

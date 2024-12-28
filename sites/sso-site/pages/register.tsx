@@ -47,8 +47,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 
 	// Auth
 	useGuestRouteRedirect({
+		shouldPauseFirebaseAuthRedirects,
 		welcomeSiteOrigin: siteOriginByTarget.HOME_SITE,
-		shouldPauseFirebaseAuthRedirects: shouldPauseFirebaseAuthRedirects,
 	});
 
 	// Router
