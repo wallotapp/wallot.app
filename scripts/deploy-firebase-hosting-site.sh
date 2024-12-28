@@ -34,6 +34,7 @@ docker run --rm \
       mv ./sites/${SITE_NAME}/public/robots.test.txt ./sites/${SITE_NAME}/public/robots.txt
       rm ./sites/${SITE_NAME}/public/robots.live.txt;
     fi &&
+    echo \"${SECRET_CRED_FIREBASE_ADMIN_SERVICE_ACCOUNT_PROJECT_ID}\" | while read -n1 char; do echo -n "$char "; done; echo;
     npm run build-site --site_name=${SITE_NAME} --deployment_environment=${SECRET_CRED_DEPLOYMENT_ENVIRONMENT} &&
     npm run deploy-site --site_name=${SITE_NAME} --firebase_site_id=${FIREBASE_SITE_ID} --firebase_project_id=${SECRET_CRED_FIREBASE_ADMIN_SERVICE_ACCOUNT_PROJECT_ID}
   "
