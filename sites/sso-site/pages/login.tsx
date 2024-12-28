@@ -46,6 +46,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// Auth
 	useGuestRouteRedirect({
 		welcomeSiteOrigin: siteOriginByTarget.HOME_SITE,
+		shouldPauseFirebaseAuthRedirects: isLoginUserRunning,
 	});
 
 	// Router
@@ -143,7 +144,6 @@ const Page: NextPage<PageStaticProps> = (props) => {
 				setIsLoginUserRunning(true);
 
 				const { password, email } = data;
-				localStorage.setItem('pause_firebase_auth_redirects', 'true');
 				const { user: firebaseUser } = await signInWithEmailAndPassword(
 					auth,
 					email,
@@ -188,7 +188,6 @@ const Page: NextPage<PageStaticProps> = (props) => {
 				// Log to console
 				console.error('Error:', err);
 			} finally {
-				localStorage.removeItem('pause_firebase_auth_redirects');
 				setIsLoginUserRunning(false);
 			}
 		})();

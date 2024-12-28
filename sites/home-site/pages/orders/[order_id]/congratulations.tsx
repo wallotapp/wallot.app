@@ -61,6 +61,7 @@ const Page: NextPage = () => {
 			queryParams: {},
 			routeStaticId: 'SSO_SITE__/LOGIN',
 		}),
+		shouldPauseFirebaseAuthRedirects: false,
 	});
 
 	// Router

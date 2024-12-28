@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { signInWithCustomToken } from 'firebase/auth';
@@ -33,6 +34,12 @@ import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/compon
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 
 const Page: NextPage<PageStaticProps> = (props) => {
+	// ==== State ==== //
+	const [
+		shouldPauseFirebaseAuthRedirects,
+		setShouldPauseFirebaseAuthRedirects,
+	] = useState(false);
+
 	// ==== Hooks ==== //
 
 	// Site origins
@@ -41,6 +48,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// Auth
 	useGuestRouteRedirect({
 		welcomeSiteOrigin: siteOriginByTarget.HOME_SITE,
+		shouldPauseFirebaseAuthRedirects: shouldPauseFirebaseAuthRedirects,
 	});
 
 	// Router
@@ -87,19 +95,17 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			}) => {
 				try {
 					// Pause onAuthStateChanged listener
-					localStorage.setItem('pause_firebase_auth_redirects', 'true');
+					setShouldPauseFirebaseAuthRedirects(true);
+
+					// Wait 100ms
+					await new Promise((resolve) => setTimeout(resolve, 100));
 
 					// Log in user
 					await signInWithCustomToken(auth, customToken);
 
-					// Show success toast
-					toast({
-						title: 'Success',
-						description: 'Your account has been created.',
-					});
-
 					// Redirect to next page
 					await router.push(redirectUrl);
+					return;
 				} catch (err) {
 					console.error('Error:', err);
 					toast({
@@ -117,7 +123,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					});
 				} finally {
 					// Unpause onAuthStateChanged listener
-					localStorage.removeItem('pause_firebase_auth_redirects');
+					setShouldPauseFirebaseAuthRedirects(false);
 				}
 			},
 		});
