@@ -134,7 +134,6 @@
 	},
 	"scripts": {
 		"build": "next build",
-		"prebuild": "if [ \"$npm_config_deployment_environment\" = \"live\" ]; then echo 'NEXT_PUBLIC_DEPLOYMENT_ENVIRONMENT=live' >> ./.env.local && mv ./public/robots.live.txt ./public/robots.txt && rm ./public/robots.test.txt; else mv ./public/robots.test.txt ./public/robots.txt && rm ./public/robots.live.txt; fi",
 		"clean": "rm -rf .next && rm -rf node_modules && rm -rf out",
 		"deploy": "firebase use $npm_config_firebase_project_id && firebase deploy --project $npm_config_firebase_project_id --debug --only hosting:$npm_config_firebase_site_id --token \"$FIREBASE_TOKEN\"",
 		"dev": "next dev -p $([ \"$npm_config_deployment_environment\" = \"live\" ] && echo 17151 || echo 7151)",
