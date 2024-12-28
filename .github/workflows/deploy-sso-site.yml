@@ -14,9 +14,12 @@ jobs:
       name: ${{ github.ref_name == 'master' && 'live' || 'test' }}
 
     env:
+      FIREBASE_SITE_ID: ${{ vars.SSO_SITE_FIREBASE_HOSTING_ID }}
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      HTTPS_NEXT_PUBLIC_VARIABLES: ${{ vars.SSO_SITE_HTTPS_NEXT_PUBLIC_VARIABLES }}
       SECRET_CRED_DEPLOYMENT_ENVIRONMENT: ${{ secrets.SECRET_CRED_DEPLOYMENT_ENVIRONMENT }}
       SECRET_CRED_FIREBASE_ADMIN_SERVICE_ACCOUNT_PROJECT_ID: ${{ secrets.SECRET_CRED_FIREBASE_ADMIN_SERVICE_ACCOUNT_PROJECT_ID }}
+      SHARED_HTTPS_NEXT_PUBLIC_VARIABLES: ${{ vars.SHARED_HTTPS_NEXT_PUBLIC_VARIABLES }}
 
     steps:
       - uses: actions/checkout@v3
@@ -44,4 +47,4 @@ jobs:
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_SITES == 'true' || env.DEPLOY_SSO_SITE == 'true')
         run: |
           chmod +x ./scripts/deploy-firebase-hosting-site.sh;
-          ./scripts/deploy-firebase-hosting-site.sh sso-site ${{ github.ref_name == 'master' && 'app-wallot-sso-production' || 'app-wallot-sso-staging' }};
+          ./scripts/deploy-firebase-hosting-site.sh sso-site

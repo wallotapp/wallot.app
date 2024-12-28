@@ -14,9 +14,12 @@ jobs:
       name: ${{ github.ref_name == 'master' && 'live' || 'test' }}
 
     env:
+      FIREBASE_SITE_ID: ${{ vars.BLOG_SITE_FIREBASE_HOSTING_ID }}
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      HTTPS_NEXT_PUBLIC_VARIABLES: ${{ vars.BLOG_SITE_HTTPS_NEXT_PUBLIC_VARIABLES }}
       SECRET_CRED_DEPLOYMENT_ENVIRONMENT: ${{ secrets.SECRET_CRED_DEPLOYMENT_ENVIRONMENT }}
       SECRET_CRED_FIREBASE_ADMIN_SERVICE_ACCOUNT_PROJECT_ID: ${{ secrets.SECRET_CRED_FIREBASE_ADMIN_SERVICE_ACCOUNT_PROJECT_ID }}
+      SHARED_HTTPS_NEXT_PUBLIC_VARIABLES: ${{ vars.SHARED_HTTPS_NEXT_PUBLIC_VARIABLES }}
 
     steps:
       - uses: actions/checkout@v3
@@ -44,4 +47,4 @@ jobs:
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_SITES == 'true' || env.DEPLOY_BLOG_SITE == 'true')
         run: |
           chmod +x ./scripts/deploy-firebase-hosting-site.sh;
-          ./scripts/deploy-firebase-hosting-site.sh blog-site ${{ github.ref_name == 'master' && 'app-wallot-blog-production' || 'app-wallot-blog-staging' }};
+          ./scripts/deploy-firebase-hosting-site.sh blog-site
