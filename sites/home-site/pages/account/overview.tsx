@@ -13,6 +13,7 @@ import {
 	useQueryLoggedInUser,
 	useQueryLoggedInUserStatus,
 } from '@wallot/react/src/features/users';
+import { GoArrowRight } from 'react-icons/go';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -77,8 +78,50 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</div>
 					</div>
 					<div className='mt-4'>
-						{/* Account Status Section */}
-						<div>Account status: {state}</div>
+						{/* Tasks Section */}
+						<div>
+							<p className='font-medium text-lg'>Tasks</p>
+						</div>
+						<div className='mt-2'>
+							{tasks.map(({ ctaHref, ctaText, title, subtitle }, taskIdx) => {
+								return (
+									<div
+										key={ctaHref}
+										className={cn(
+											'p-4 bg-white rounded-lg shadow-sm border',
+											'lg:flex lg:items-center lg:justify-between lg:space-x-16',
+											taskIdx > 0 ? 'mt-4' : '',
+											taskIdx === 0 ? 'border-red-800' : '',
+										)}
+									>
+										<div>
+											<div className='font-medium'>{title}</div>
+											<div className='font-extralight text-gray-600 text-sm'>
+												{subtitle}
+											</div>
+										</div>
+										<div>
+											<Link href={ctaHref}>
+												<div
+													className={cn(
+														'bg-black px-4 py-2 rounded-lg cursor-pointer flex items-center space-x-2 hover:bg-brand-dark',
+													)}
+												>
+													<div>
+														<p className='text-white text-sm font-semibold'>
+															{ctaText}
+														</p>
+													</div>
+													<div>
+														<GoArrowRight className='text-white text-sm' />
+													</div>
+												</div>
+											</Link>
+										</div>
+									</div>
+								);
+							})}
+						</div>
 					</div>
 					<div className='mt-4'>
 						{/* Equity Section */}
