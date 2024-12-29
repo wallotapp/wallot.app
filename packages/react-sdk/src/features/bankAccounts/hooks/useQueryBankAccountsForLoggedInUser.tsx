@@ -1,13 +1,13 @@
 import { useQueryBankAccountPage } from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountPage';
-import { useQueryCurrentUser } from '../../users';
+import { useQueryLoggedInUser } from '../../users';
 
 export const useQueryBankAccountsForLoggedInUser = () => {
-	const { currentUser } = useQueryCurrentUser();
-	const isUserSignedIn = currentUser != null;
+	const { loggedInUser } = useQueryLoggedInUser();
+	const isUserSignedIn = loggedInUser != null;
 	const isBankAccountPageQueryEnabled = isUserSignedIn;
 	const bankAccountPageQueryObserver = useQueryBankAccountPage({
 		firestoreQueryOptions: {
-			whereClauses: [['user', '==', currentUser?._id]],
+			whereClauses: [['user', '==', loggedInUser?._id]],
 		},
 		reactQueryOptions: {
 			enabled: isBankAccountPageQueryEnabled,

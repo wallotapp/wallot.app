@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { useQueryUserPage } from '@wallot/react/src/features/users/hooks/useQueryUserPage';
 import { getUserDisplayName, getUserDisplayNameWithFallback } from '@wallot/js';
 
-export const useQueryCurrentUser = () => {
+export const useQueryLoggedInUser = () => {
 	const { user } = useContext(AuthContext);
 
 	const isUserSignedIn = user?.uid != null;
@@ -19,15 +19,15 @@ export const useQueryCurrentUser = () => {
 	});
 	const isUserPageDataLoaded = userPageQueryObserver.data != null;
 
-	const currentUser = userPageQueryObserver.data?.documents?.[0];
-	const currentUserDisplayName = getUserDisplayName(currentUser);
-	const currentUserDisplayNameWithFallback =
-		getUserDisplayNameWithFallback(currentUser);
+	const loggedInUser = userPageQueryObserver.data?.documents?.[0];
+	const loggedInUserDisplayName = getUserDisplayName(loggedInUser);
+	const loggedInUserDisplayNameWithFallback =
+		getUserDisplayNameWithFallback(loggedInUser);
 
 	return {
-		currentUser,
-		currentUserDisplayName,
-		currentUserDisplayNameWithFallback,
+		loggedInUser,
+		loggedInUserDisplayName,
+		loggedInUserDisplayNameWithFallback,
 		isUserPageDataLoaded,
 		isUserPageError: userPageQueryObserver.isError,
 		isUserPageLoading: userPageQueryObserver.isLoading,

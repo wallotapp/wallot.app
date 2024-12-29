@@ -14,7 +14,7 @@ import { LogoButton } from './LogoButton';
 import { SupportLink } from './SupportLink';
 import { UserMenuPopover } from './UserMenuPopover';
 import { UserNameTag } from './UserNameTag';
-import { useQueryCurrentUser } from '@wallot/react/src/features/users';
+import { useQueryLoggedInUser } from '@wallot/react/src/features/users';
 
 export type AuthenticatedPageHeaderProps = BaseComponent & {
 	getCustomLogoButton?: (props: BaseComponent) => JSX.Element;
@@ -24,7 +24,7 @@ export const AuthenticatedPageHeader: React.FC<
 	AuthenticatedPageHeaderProps
 > = ({ className = '', getCustomLogoButton, showHomeLink = true }) => {
 	// ==== Hooks ==== //
-	const { currentUser } = useQueryCurrentUser();
+	const { loggedInUser } = useQueryLoggedInUser();
 
 	// ==== Components ==== //
 	const navbarComponents = [
@@ -66,7 +66,7 @@ export const AuthenticatedPageHeader: React.FC<
 				<UserMenuPopover
 					TriggerComponent={
 						<button className='border-t border-t-gray-200 dark:border-t-gray-800 w-full'>
-							<UserNameTag user={currentUser} />
+							<UserNameTag user={loggedInUser} />
 						</button>
 					}
 				/>
@@ -94,7 +94,7 @@ export const AuthenticatedPageHeader: React.FC<
 						<UserMenuPopover
 							TriggerComponent={
 								<button className='w-full'>
-									<UserNameTag className='!px-0 !py-0' user={currentUser} />
+									<UserNameTag className='!px-0 !py-0' user={loggedInUser} />
 								</button>
 							}
 						/>

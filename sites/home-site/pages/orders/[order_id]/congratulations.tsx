@@ -19,7 +19,7 @@ import { PlatformIcon } from 'ergonomic-react/src/components/brand/PlatformIcon'
 import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
 import Link from 'next/link';
 import { GoCheck } from 'react-icons/go';
-import { useQueryCurrentUser } from '@wallot/react/src/features/users';
+import { useQueryLoggedInUser } from '@wallot/react/src/features/users';
 import Confetti from 'react-confetti';
 import { SuspensePage } from '@wallot/react/src/components/SuspensePage';
 import {
@@ -68,10 +68,10 @@ const Page: NextPage = () => {
 	const router = useRouter();
 
 	// Current User
-	const { currentUser } = useQueryCurrentUser();
+	const { loggedInUser } = useQueryLoggedInUser();
 	const receiptEmail =
-		currentUser?.alpaca_account_contact?.email_address ??
-		currentUser?.firebase_auth_email ??
+		loggedInUser?.alpaca_account_contact?.email_address ??
+		loggedInUser?.firebase_auth_email ??
 		'your email on file';
 
 	// Window size

@@ -9,7 +9,7 @@ import {
 import cn from 'ergonomic-react/src/lib/cn';
 import { SITE_ORIGIN } from 'ergonomic-react/src/config/originConfig';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
-import { useQueryCurrentUser } from '@wallot/react/src/features/users';
+import { useQueryLoggedInUser } from '@wallot/react/src/features/users';
 import Link from 'next/link';
 import { useState } from 'react';
 import { getHomeSiteRoute } from '@wallot/js';
@@ -23,7 +23,7 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 	className = '',
 }) => {
 	const [isLoggingOut, setIsLoggingOut] = useState(false);
-	const { currentUser } = useQueryCurrentUser();
+	const { loggedInUser } = useQueryLoggedInUser();
 	// Site Origin by Target
 	const siteOriginByTarget = useSiteOriginByTarget();
 	const homeSiteOrigin = siteOriginByTarget.HOME_SITE;
@@ -49,13 +49,13 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 				<div className='p-3'>
 					<div>
 						<p className='font-semibold'>
-							{currentUser?.alpaca_account_identity?.given_name ||
-								currentUser?.username}
+							{loggedInUser?.alpaca_account_identity?.given_name ||
+								loggedInUser?.username}
 						</p>
 					</div>
 					<div>
 						<p className='text-gray-500 text-[0.66rem]'>
-							{currentUser?.firebase_auth_email ?? ''}
+							{loggedInUser?.firebase_auth_email ?? ''}
 						</p>
 					</div>
 				</div>

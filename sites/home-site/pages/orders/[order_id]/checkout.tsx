@@ -35,7 +35,7 @@ import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hook
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useController, useForm } from 'react-hook-form';
 import {
-	useQueryCurrentUser,
+	useQueryLoggedInUser,
 	useUpdateUserMutation,
 } from '@wallot/react/src/features/users';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
@@ -85,11 +85,11 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({
 
 	// Current User
 	const {
-		currentUser,
+		loggedInUser,
 		isUserPageLoading,
 		refetch: refetchUser,
-	} = useQueryCurrentUser();
-	const defaultBankAccountId = currentUser?.default_bank_account ?? 'null';
+	} = useQueryLoggedInUser();
+	const defaultBankAccountId = loggedInUser?.default_bank_account ?? 'null';
 
 	const showTokenizationForm = isTokenizationFormShown(bankAccount._id);
 	const handleToggleTokenizationForm = toggleTokenizationFormShown(
@@ -177,14 +177,14 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({
 	isUpdateUserRunning; // <== use this
 
 	const setBankAccountAsUserDefault = () => {
-		if (currentUser?._id == null) {
+		if (loggedInUser?._id == null) {
 			toast({
 				title: 'Error',
 				description: 'Try logging in again',
 			});
 			return;
 		}
-		updateUser({ _id: currentUser._id, default_bank_account: bankAccount._id });
+		updateUser({ _id: loggedInUser._id, default_bank_account: bankAccount._id });
 	};
 
 	const onSubmit = (data: TokenizeBankAccountParams) => {
@@ -225,16 +225,16 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({
 		if (hasInitializedDefaultAccountOwnerName) return;
 
 		const defaultValueAccountOwnerName = (
-			(currentUser?.alpaca_account_identity?.given_name ?? '') +
+			(loggedInUser?.alpaca_account_identity?.given_name ?? '') +
 			' ' +
-			(currentUser?.alpaca_account_identity?.family_name ?? '')
+			(loggedInUser?.alpaca_account_identity?.family_name ?? '')
 		).trim();
 		reset({
 			...initialFormData,
 			account_owner_name: defaultValueAccountOwnerName,
 		});
 		setHasInitializedDefaultAccountOwnerName(true);
-	}, [isUserPageLoading, hasInitializedDefaultAccountOwnerName, currentUser]);
+	}, [isUserPageLoading, hasInitializedDefaultAccountOwnerName, loggedInUser]);
 
 	return (
 		<div
@@ -505,11 +505,11 @@ const Page: NextPage = () => {
 
 	// Current User
 	const {
-		currentUser,
+		loggedInUser,
 		isUserPageLoading,
 		refetch: refetchUser,
-	} = useQueryCurrentUser();
-	const defaultBankAccountId = currentUser?.default_bank_account ?? 'null';
+	} = useQueryLoggedInUser();
+	const defaultBankAccountId = loggedInUser?.default_bank_account ?? 'null';
 
 	// Bank Accounts for Logged In User
 	const {
@@ -821,7 +821,7 @@ const Page: NextPage = () => {
 
 	// Form Submit Handler
 	const onSubmit = (data: KycFormDataParams) => {
-		if (currentUser == null) {
+		if (loggedInUser == null) {
 			toast({
 				title: 'Error',
 				description: 'Try logging in again',
@@ -835,7 +835,7 @@ const Page: NextPage = () => {
 			description: 'This may take a few moments.',
 		});
 		updateUser({
-			_id: currentUser._id,
+			_id: loggedInUser._id,
 			alpaca_account_contact: {
 				...R.pick(
 					['email_address', 'phone_number', 'city', 'postal_code'] as const,
@@ -893,71 +893,71 @@ const Page: NextPage = () => {
 	useEffect(() => {
 		if (hasInitializedDefaultValues) return;
 		if (isUserPageLoading) return;
-		const { firebase_auth_email: fallbackEmail } = currentUser ?? {};
+		const { firebase_auth_email: fallbackEmail } = loggedInUser ?? {};
 		const defaultValues: KycFormDataParams = {
-			city: currentUser?.alpaca_account_contact?.city ?? initialFormData.city,
+			city: loggedInUser?.alpaca_account_contact?.city ?? initialFormData.city,
 			email_address:
-				currentUser?.alpaca_account_contact?.email_address ??
+				loggedInUser?.alpaca_account_contact?.email_address ??
 				fallbackEmail ??
 				initialFormData.email_address,
 			phone_number:
-				currentUser?.alpaca_account_contact?.phone_number ??
+				loggedInUser?.alpaca_account_contact?.phone_number ??
 				initialFormData.phone_number,
 			postal_code:
-				currentUser?.alpaca_account_contact?.postal_code ??
+				loggedInUser?.alpaca_account_contact?.postal_code ??
 				initialFormData.postal_code,
 			state: UsaStateCodeEnum.isMember(
-				currentUser?.alpaca_account_contact?.state,
+				loggedInUser?.alpaca_account_contact?.state,
 			)
-				? currentUser?.alpaca_account_contact?.state
+				? loggedInUser?.alpaca_account_contact?.state
 				: initialFormData.state,
 			street_address_line_1:
 				(
-					currentUser?.alpaca_account_contact?.street_address as string[]
+					loggedInUser?.alpaca_account_contact?.street_address as string[]
 				)?.[0] ?? initialFormData.street_address_line_1,
 			street_address_line_2:
 				(
-					currentUser?.alpaca_account_contact?.street_address as string[]
+					loggedInUser?.alpaca_account_contact?.street_address as string[]
 				)?.[1] ?? initialFormData.street_address_line_2,
 			immediate_family_exposed:
-				currentUser?.alpaca_account_disclosures?.immediate_family_exposed ??
+				loggedInUser?.alpaca_account_disclosures?.immediate_family_exposed ??
 				initialFormData.immediate_family_exposed,
 			is_affiliated_exchange_or_finra:
-				currentUser?.alpaca_account_disclosures
+				loggedInUser?.alpaca_account_disclosures
 					?.is_affiliated_exchange_or_finra ??
 				initialFormData.is_affiliated_exchange_or_finra,
 			is_affiliated_exchange_or_iiroc:
-				currentUser?.alpaca_account_disclosures
+				loggedInUser?.alpaca_account_disclosures
 					?.is_affiliated_exchange_or_iiroc ??
 				initialFormData.is_affiliated_exchange_or_iiroc,
 			is_control_person:
-				currentUser?.alpaca_account_disclosures?.is_control_person ??
+				loggedInUser?.alpaca_account_disclosures?.is_control_person ??
 				initialFormData.is_control_person,
 			is_politically_exposed:
-				currentUser?.alpaca_account_disclosures?.is_politically_exposed ??
+				loggedInUser?.alpaca_account_disclosures?.is_politically_exposed ??
 				initialFormData.is_politically_exposed,
 			country_of_birth:
-				currentUser?.alpaca_account_identity?.country_of_birth ??
+				loggedInUser?.alpaca_account_identity?.country_of_birth ??
 				initialFormData.country_of_birth,
 			country_of_citizenship:
-				currentUser?.alpaca_account_identity?.country_of_citizenship ??
+				loggedInUser?.alpaca_account_identity?.country_of_citizenship ??
 				initialFormData.country_of_citizenship,
 			country_of_tax_residence:
-				currentUser?.alpaca_account_identity?.country_of_tax_residence ??
+				loggedInUser?.alpaca_account_identity?.country_of_tax_residence ??
 				initialFormData.country_of_tax_residence,
 			date_of_birth:
-				currentUser?.alpaca_account_identity?.date_of_birth ??
+				loggedInUser?.alpaca_account_identity?.date_of_birth ??
 				initialFormData.date_of_birth,
 			family_name:
-				currentUser?.alpaca_account_identity?.family_name ??
+				loggedInUser?.alpaca_account_identity?.family_name ??
 				initialFormData.family_name,
 			given_name:
-				currentUser?.alpaca_account_identity?.given_name ??
+				loggedInUser?.alpaca_account_identity?.given_name ??
 				initialFormData.given_name,
 			tax_id:
-				currentUser?.alpaca_account_identity?.tax_id ?? initialFormData.tax_id,
+				loggedInUser?.alpaca_account_identity?.tax_id ?? initialFormData.tax_id,
 			tax_id_type:
-				currentUser?.alpaca_account_identity?.tax_id_type ??
+				loggedInUser?.alpaca_account_identity?.tax_id_type ??
 				initialFormData.tax_id_type,
 		};
 		const isContactDetailsSectionCompleteInDefaultValues =
@@ -980,7 +980,7 @@ const Page: NextPage = () => {
 		}
 		reset(defaultValues);
 		setHasInitializedDefaultValues(true);
-	}, [currentUser, isUserPageLoading, hasInitializedDefaultValues]);
+	}, [loggedInUser, isUserPageLoading, hasInitializedDefaultValues]);
 
 	const [
 		isBankAccountInterfaceInitialized,

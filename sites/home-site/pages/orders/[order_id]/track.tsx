@@ -27,7 +27,7 @@ import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTa
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 import { GoCheckCircleFill, GoCircle } from 'react-icons/go';
-import { useQueryCurrentUser } from '@wallot/react/src/features/users';
+import { useQueryLoggedInUser } from '@wallot/react/src/features/users';
 import { useQueryAchTransferPage } from '@wallot/react/src/features/achTransfers';
 
 // ==== Static Page Props ==== //
@@ -112,9 +112,9 @@ const Page: NextPage = () => {
 	const isStockPurchasesStepCompleted = unfilledAssetOrders.length === 0;
 
 	// Current User
-	const { currentUser, isUserPageLoading } = useQueryCurrentUser();
+	const { loggedInUser, isUserPageLoading } = useQueryLoggedInUser();
 	const isAccountVerified =
-		currentUser != null && isUserActivatedByAlpaca(currentUser);
+		loggedInUser != null && isUserActivatedByAlpaca(loggedInUser);
 
 	// ACH Transfer
 	const { data: achTransferPage, isLoading: isAchTransferPageLoading } =
@@ -124,7 +124,7 @@ const Page: NextPage = () => {
 					[
 						'alpaca_ach_transfer_account_id',
 						'==',
-						currentUser?.alpaca_account_id,
+						loggedInUser?.alpaca_account_id,
 					],
 				],
 			},

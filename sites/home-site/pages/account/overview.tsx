@@ -9,7 +9,7 @@ import { HomeSiteRouteQueryParams } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import Link from 'next/link';
-import { useQueryCurrentUser } from '@wallot/react/src/features/users';
+import { useQueryLoggedInUser } from '@wallot/react/src/features/users';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -18,7 +18,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const router = useRouter();
 
 	// Router
-	const { currentUserDisplayName } = useQueryCurrentUser();
+	const { loggedInUserDisplayName } = useQueryLoggedInUser();
 
 	// ==== Constants ==== //
 
@@ -47,7 +47,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						<div>
 							<p className='font-semibold text-2xl'>
 								Welcome back
-								{currentUserDisplayName ? `, ${currentUserDisplayName}` : ''}!
+								{loggedInUserDisplayName ? `, ${loggedInUserDisplayName}` : ''}!
 							</p>
 						</div>
 						<div className='mt-1'>
