@@ -1,13 +1,16 @@
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
+	Page as PageComponent,
 	PageStaticProps,
 	PageProps,
-	Page as PageComponent,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
-import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
+import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { HomeSiteRouteQueryParams, getSsoSiteRoute } from '@wallot/js';
+import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
+import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
+import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
+import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -50,7 +53,19 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<div>My Account</div>
+			<div className={cn('flex flex-col min-h-screen min-w-screen relative')}>
+				<AuthenticatedPageHeader showHomeLink={false} />
+				<PageActionHeader />
+				<div
+					className={cn(
+						'min-h-[95vh] w-full',
+						'py-48 px-6',
+						'lg:py-48 lg:px-28',
+					)}
+				>
+					<div>My Account</div>
+				</div>
+			</div>
 		</PageComponent>
 	);
 };
