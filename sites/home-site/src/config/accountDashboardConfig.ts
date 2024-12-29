@@ -24,7 +24,7 @@ export type AccountDashboardRouteConfig = {
 	href: string;
 	title: string;
 };
-export const accountDashboardConfigByRoute: Record<
+export const accountDashboardConfigByRouteTyped: Record<
 	AccountDashboardRoute,
 	AccountDashboardRouteConfig
 > = {
@@ -78,3 +78,8 @@ export const accountDashboardConfigByRoute: Record<
 		title: 'Bank Accounts',
 	},
 };
+
+export const accountDashboardConfigByRoute: Record<
+	string,
+	AccountDashboardRouteConfig
+> = accountDashboardConfigByRouteTyped;
