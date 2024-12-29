@@ -13,7 +13,8 @@ export const AccountDashboardPage: React.FC<AccountDashboardPageProps> = ({
 		'Transactions',
 		'Statements',
 		'Billing Information',
-		'Connected Bank Accounts',
+		'Plans',
+		'Bank Accounts',
 	];
 	return (
 		<div className={cn('flex flex-col min-h-screen min-w-screen relative')}>
