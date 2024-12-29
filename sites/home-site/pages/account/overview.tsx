@@ -95,7 +95,7 @@ export default Page;
 // ==== Static Page Props ==== //
 
 // Route Static ID
-const ROUTE_STATIC_ID = 'HOME_SITE__/ACCOUNT' as const;
+const ROUTE_STATIC_ID = 'HOME_SITE__/ACCOUNT/OVERVIEW' as const;
 
 // Route Query Params Type
 type RouteQueryParams = HomeSiteRouteQueryParams[typeof ROUTE_STATIC_ID];

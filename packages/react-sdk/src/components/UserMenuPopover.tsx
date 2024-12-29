@@ -69,7 +69,7 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 								includeOrigin,
 								origin: homeSiteOrigin,
 								queryParams: {},
-								routeStaticId: 'HOME_SITE__/ACCOUNT',
+								routeStaticId: 'HOME_SITE__/ACCOUNT/OVERVIEW',
 							}),
 							target: '_self',
 							title: 'Account',

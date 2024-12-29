@@ -20,7 +20,7 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 	}
 
 	const path = {
-		'HOME_SITE__/ACCOUNT': '/account',
+		'HOME_SITE__/ACCOUNT/OVERVIEW': '/account/overview',
 		'HOME_SITE__/INDEX': '/',
 		'HOME_SITE__/GET_STARTED': '/get-started',
 		'HOME_SITE__/ORDERS/[ORDER_ID]/ASSETS': '/assets',
@@ -34,7 +34,7 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 	const clientTokenQuery = clientToken ? `client_token=${clientToken}` : '';
 	const queries = [clientTokenQuery].filter(Boolean);
 	if (
-		routeStaticId === 'HOME_SITE__/ACCOUNT' ||
+		routeStaticId === 'HOME_SITE__/ACCOUNT/OVERVIEW' ||
 		routeStaticId === 'HOME_SITE__/INDEX' ||
 		routeStaticId === 'HOME_SITE__/GET_STARTED'
 	) {
