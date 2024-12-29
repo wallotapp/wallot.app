@@ -310,8 +310,11 @@
 					"{\"label\":\"app-wallot-staging\",\"local_development_port\":\"7150\",\"public_url\":\"https://app-wallot-staging.web.app\",\"firebase_config_api_key\":\"AIzaSyAWoWzRH01lGIx2jLx5sWPFDdfKsTSNaDc\",\"firebase_config_app_id\":\"1:721995107731:web:a9bdd3b9a3b7501464ac66\",\"firebase_config_auth_domain\":\"app-wallot-staging.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-V7P0JHB26C\",\"firebase_config_messaging_sender_id\":\"721995107731\",\"firebase_config_project_id\":\"app-wallot-staging\",\"firebase_config_storage_bucket\":\"app-wallot-staging.firebasestorage.app\",\"deployment_environment\":\"test\"}"
 				],
 				"rewrites": [
-					"{\"source\":\"/orders/**/confirm\",\"destination\":\"/orders/[order_id]/confirm.html\"}",
-					"{\"source\":\"/recommendations/**/details\",\"destination\":\"/recommendations/[recommendation_id]/details.html\"}"
+					"{\"source\":\"/orders/**/assets\",\"destination\":\"/orders/[order_id]/assets.html\"}",
+					"{\"source\":\"/orders/**/cart\",\"destination\":\"/orders/[order_id]/cart.html\"}",
+					"{\"source\":\"/orders/**/checkout\",\"destination\":\"/orders/[order_id]/checkout.html\"}",
+					"{\"source\":\"/orders/**/congratulations\",\"destination\":\"/orders/[order_id]/congratulations.html\"}",
+					"{\"source\":\"/orders/**/track\",\"destination\":\"/orders/[order_id]/track.html\"}"
 				],
 				"category": "default",
 				"visibility": "public"

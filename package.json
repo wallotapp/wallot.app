@@ -27,6 +27,7 @@
 		"dev-site": "cd ./sites/$npm_config_site_name && npm run dev",
 		"format": "doctoc . && prettier --write .",
 		"lint": "eslint . --ext .ts,.tsx",
+		"predev-site": "([ ! -s sites/$npm_config_site_name/.env.local ] && code sites/$npm_config_site_name/.env.local || true)",
 		"prepare": "husky install && chmod +x .husky/*",
 		"publish-public-package": "npm run authenticate-npm-cli && cd ./packages/$npm_config_package_name && npm publish --access public --tag $( [ \"$npm_config_deployment_environment\" = \"live\" ] && echo \"latest\" || echo \"next\" ) && cd -",
 		"publish-restricted-package": "npm run authenticate-npm-cli && cd ./packages/$npm_config_package_name && npm publish --access restricted --tag $( [ \"$npm_config_deployment_environment\" = \"live\" ] && echo \"latest\" || echo \"next\" ) && cd -",
