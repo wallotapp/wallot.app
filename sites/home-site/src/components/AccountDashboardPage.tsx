@@ -2,20 +2,17 @@ import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { BaseComponentWithChildren } from 'ergonomic-react/src/types/BaseComponentTypes';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
+import { useRouteStateContext } from 'ergonomic-react/src/hooks/useRouteStateContext';
+import { accountDashboardConfigByRoute } from '@wallot/home-site/src/config/accountDashboardConfig';
+import Link from 'next/link';
 
 export type AccountDashboardPageProps = BaseComponentWithChildren;
 export const AccountDashboardPage: React.FC<AccountDashboardPageProps> = ({
 	children,
 }) => {
-	const accountSettings = [
-		'Overview',
-		'Positions',
-		'Transactions',
-		'Statements',
-		'Billing Information',
-		'Plans',
-		'Bank Accounts',
-	];
+	const { routeState } = useRouteStateContext();
+	const currentRouteStaticId = routeState.currentRouteStaticId ?? '';
+
 	return (
 		<div className={cn('flex flex-col min-h-screen min-w-screen relative')}>
 			<AuthenticatedPageHeader showHomeLink={false} />
@@ -24,16 +21,35 @@ export const AccountDashboardPage: React.FC<AccountDashboardPageProps> = ({
 				className={cn('min-h-[95vh] w-full', 'py-40 px-6', 'lg:py-40 lg:px-28')}
 			>
 				<div>
-					<p className='font-semibold text-3xl'>Account</p>
+					<p className='font-semibold text-2xl'>Account</p>
 				</div>
-				<div className={cn('mt-4', 'lg:flex lg:items-center lg:space-x-12')}>
-					{accountSettings.map((setting) => {
-						return (
-							<div key={setting} className='flex items-center'>
-								<p className='text-sm'>{setting}</p>
-							</div>
-						);
-					})}
+				<div
+					className={cn(
+						'mt-2.5',
+						'lg:flex lg:items-center lg:space-x-2.5 lg:border-b-[1.5px] lg:border-gray-200 lg:w-fit',
+					)}
+				>
+					{Object.entries(accountDashboardConfigByRoute).map(
+						([routeId, { href, title }]) => {
+							const isActive = routeId === currentRouteStaticId;
+							return (
+								<Link key={routeId} href={href}>
+									<div
+										className={cn(
+											'py-0.5 w-fit',
+											isActive
+												? 'border-b-2 border-b-brand-dark'
+												: 'border-b-2 border-b-transparent',
+										)}
+									>
+										<div className='hover:bg-gray-100 py-1 px-1.5 rounded-lg'>
+											<p className='font-light text-sm'>{title}</p>
+										</div>
+									</div>
+								</Link>
+							);
+						},
+					)}
 				</div>
 				<div className='mt-4'>{children}</div>
 			</div>
