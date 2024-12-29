@@ -10,6 +10,7 @@ import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDa
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import Link from 'next/link';
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users';
+import { useQueryLoggedInUserStatus } from '@wallot/react/src/hooks/useQueryLoggedInUserStatus';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -19,6 +20,11 @@ const Page: NextPage<PageStaticProps> = (props) => {
 
 	// Router
 	const { loggedInUserDisplayName } = useQueryLoggedInUser();
+	const { isLoggedInUserStatusLoading, state, tasks } =
+		useQueryLoggedInUserStatus();
+	isLoggedInUserStatusLoading;
+	state;
+	tasks;
 
 	// ==== Constants ==== //
 
@@ -70,7 +76,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					</div>
 					<div className='mt-4'>
 						{/* Account Status Section */}
-						<div>Account status</div>
+						<div>Account status: {state}</div>
 					</div>
 					<div className='mt-4'>
 						{/* Equity Section */}

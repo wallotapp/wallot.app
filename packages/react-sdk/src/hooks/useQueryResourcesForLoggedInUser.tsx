@@ -3,11 +3,10 @@ import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/use
 import { getPageQueryHookForResource } from '@wallot/react/src/hooks/getPageQueryHookForResource';
 import { GeneralizedApiResource } from 'ergonomic';
 
-export const useQueryResourcesForLoggedInUser =
-	<TResource extends GeneralizedApiResource>(
-		resourceName: Exclude<WallotResourceName, 'user'>,
-	) =>
-	() => {
+export function useQueryResourcesForLoggedInUser<
+	TResource extends GeneralizedApiResource,
+>(resourceName: Exclude<WallotResourceName, 'user'>) {
+	return () => {
 		const { loggedInUser, isLoggedInUserLoading } = useQueryLoggedInUser();
 		const isUserSignedIn = loggedInUser != null;
 		const isResourcePageQueryEnabled = isUserSignedIn;
@@ -34,3 +33,4 @@ export const useQueryResourcesForLoggedInUser =
 			...resourcePageQueryObserver,
 		};
 	};
+}

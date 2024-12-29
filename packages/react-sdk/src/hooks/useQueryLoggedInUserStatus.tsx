@@ -28,8 +28,8 @@ import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/
 import { useQueryOrdersForLoggedInUser } from '@wallot/react/src/features/orders/hooks/useQueryOrdersForLoggedInUser';
 // import { useQueryPositionsForLoggedInUser } from '@wallot/react/src/features/positions/hooks/useQueryPositionsForLoggedInUser';
 // import { useQueryRecommendationsForLoggedInUser } from '@wallot/react/src/features/recommendations/hooks/useQueryRecommendationsForLoggedInUser';
-import { useQueryAchTransferPage } from '../../achTransfers';
-import { useQueryAssetOrderPage } from '../../assetOrders';
+import { useQueryAchTransferPage } from '@wallot/react/src/features/achTransfers/hooks/useQueryAchTransferPage';
+import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders/hooks/useQueryAssetOrderPage';
 
 export type LoggedInUserStatus = {
 	isLoggedInUserStatusLoading: boolean;
