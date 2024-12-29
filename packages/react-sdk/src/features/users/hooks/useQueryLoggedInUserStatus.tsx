@@ -1,4 +1,12 @@
-import { UserExperienceState } from '@wallot/js';
+import {
+	BankAccount,
+	License,
+	Order,
+	Position,
+	Recommendation,
+	User,
+	UserExperienceState,
+} from '@wallot/js';
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountsForLoggedInUser';
 import { useQueryLicensesForLoggedInUser } from '@wallot/react/src/features/licenses/hooks/useQueryLicensesForLoggedInUser';
@@ -8,7 +16,7 @@ import { useQueryRecommendationsForLoggedInUser } from '@wallot/react/src/featur
 
 export type LoggedInUserStatus = {
 	isLoggedInUserStatusLoading: boolean;
-	state: UserExperienceState | null;
+	state: UserExperienceState;
 	tasks:
 		| {
 				ctaHref: string;
@@ -42,6 +50,52 @@ export const useQueryLoggedInUserStatus = (): LoggedInUserStatus => {
 		isResourcePageLoading: isRecommendationPageLoading,
 	} = useQueryRecommendationsForLoggedInUser();
 
+	return getLoggedInUserStatus({
+		loggedInUser,
+		isLoggedInUserLoading,
+		bankAccountsForLoggedInUser,
+		isBankAccountPageLoading,
+		licensesForLoggedInUser,
+		isLicensePageLoading,
+		ordersForLoggedInUser,
+		isOrderPageLoading,
+		positionsForLoggedInUser,
+		isPositionPageLoading,
+		recommendationsForLoggedInUser,
+		isRecommendationPageLoading,
+	});
+};
+
+function getLoggedInUserStatus({
+	loggedInUser,
+	isLoggedInUserLoading,
+	bankAccountsForLoggedInUser,
+	isBankAccountPageLoading,
+	licensesForLoggedInUser,
+	isLicensePageLoading,
+	ordersForLoggedInUser,
+	isOrderPageLoading,
+	positionsForLoggedInUser,
+	isPositionPageLoading,
+	recommendationsForLoggedInUser,
+	isRecommendationPageLoading,
+}: {
+	loggedInUser: User | undefined;
+	isLoggedInUserLoading: boolean;
+	bankAccountsForLoggedInUser: BankAccount[];
+	isBankAccountPageLoading: boolean;
+	licensesForLoggedInUser: License[];
+	isLicensePageLoading: boolean;
+	ordersForLoggedInUser: Order[];
+	isOrderPageLoading: boolean;
+	positionsForLoggedInUser: Position[];
+	isPositionPageLoading: boolean;
+	recommendationsForLoggedInUser: Recommendation[];
+	isRecommendationPageLoading: boolean;
+}): LoggedInUserStatus {
+	const tasks: LoggedInUserStatus['tasks'] = [];
+	let state: UserExperienceState = 'registered';
+
 	const isLoggedInUserStatusLoading = [
 		isLoggedInUserLoading,
 		isBankAccountPageLoading,
@@ -53,7 +107,7 @@ export const useQueryLoggedInUserStatus = (): LoggedInUserStatus => {
 
 	return {
 		isLoggedInUserStatusLoading,
-		state: null,
-		tasks: [],
+		state,
+		tasks,
 	};
-};
+}
