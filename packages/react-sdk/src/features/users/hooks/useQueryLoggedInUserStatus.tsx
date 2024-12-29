@@ -1,23 +1,35 @@
 import {
+	AchTransfer,
+	AssetOrder,
 	BankAccount,
 	getHomeSiteRoute,
+	isAchTransferRejectedByAlpaca,
+	isAssetOrderRejectedByAlpaca,
+	isAssetOrderFilledByAlpaca,
 	isActivatedUser,
+	isBankAccountApprovedByAlpaca,
+	isBankAccountRejectedByAlpaca,
 	isBankAccountTokenized,
 	isKycUser,
 	isOrderConfirmedByUser,
-	License,
+	isUserActivatedByAlpaca,
+	isUserRejectedByAlpaca,
+	isUserWithAlpacaEquity,
+	// License,
 	Order,
-	Position,
-	Recommendation,
+	// Position,
+	// Recommendation,
 	User,
 	UserExperienceState,
 } from '@wallot/js';
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountsForLoggedInUser';
-import { useQueryLicensesForLoggedInUser } from '@wallot/react/src/features/licenses/hooks/useQueryLicensesForLoggedInUser';
+// import { useQueryLicensesForLoggedInUser } from '@wallot/react/src/features/licenses/hooks/useQueryLicensesForLoggedInUser';
 import { useQueryOrdersForLoggedInUser } from '@wallot/react/src/features/orders/hooks/useQueryOrdersForLoggedInUser';
-import { useQueryPositionsForLoggedInUser } from '@wallot/react/src/features/positions/hooks/useQueryPositionsForLoggedInUser';
-import { useQueryRecommendationsForLoggedInUser } from '@wallot/react/src/features/recommendations/hooks/useQueryRecommendationsForLoggedInUser';
+// import { useQueryPositionsForLoggedInUser } from '@wallot/react/src/features/positions/hooks/useQueryPositionsForLoggedInUser';
+// import { useQueryRecommendationsForLoggedInUser } from '@wallot/react/src/features/recommendations/hooks/useQueryRecommendationsForLoggedInUser';
+import { useQueryAchTransferPage } from '../../achTransfers';
+import { useQueryAssetOrderPage } from '../../assetOrders';
 
 export type LoggedInUserStatus = {
 	isLoggedInUserStatusLoading: boolean;
@@ -36,75 +48,109 @@ export const useQueryLoggedInUserStatus = (): LoggedInUserStatus => {
 		resourcesForLoggedInUser: bankAccountsForLoggedInUser,
 		isResourcePageLoading: isBankAccountPageLoading,
 	} = useQueryBankAccountsForLoggedInUser();
-	const {
-		resourcesForLoggedInUser: licensesForLoggedInUser,
-		isResourcePageLoading: isLicensePageLoading,
-	} = useQueryLicensesForLoggedInUser();
+	// const {
+	// 	resourcesForLoggedInUser: licensesForLoggedInUser,
+	// 	isResourcePageLoading: isLicensePageLoading,
+	// } = useQueryLicensesForLoggedInUser();
 	const {
 		resourcesForLoggedInUser: ordersForLoggedInUser,
 		isResourcePageLoading: isOrderPageLoading,
 	} = useQueryOrdersForLoggedInUser();
+	// const {
+	// 	resourcesForLoggedInUser: positionsForLoggedInUser,
+	// 	isResourcePageLoading: isPositionPageLoading,
+	// } = useQueryPositionsForLoggedInUser();
+	// const {
+	// 	resourcesForLoggedInUser: recommendationsForLoggedInUser,
+	// 	isResourcePageLoading: isRecommendationPageLoading,
+	// } = useQueryRecommendationsForLoggedInUser();
+
+	const bankAccountIds = bankAccountsForLoggedInUser.map(({ _id }) => _id);
 	const {
-		resourcesForLoggedInUser: positionsForLoggedInUser,
-		isResourcePageLoading: isPositionPageLoading,
-	} = useQueryPositionsForLoggedInUser();
-	const {
-		resourcesForLoggedInUser: recommendationsForLoggedInUser,
-		isResourcePageLoading: isRecommendationPageLoading,
-	} = useQueryRecommendationsForLoggedInUser();
+		data: achTransferPage,
+		isLoading: isAchTransfersForLoggedInUserLoading,
+	} = useQueryAchTransferPage({
+		firestoreQueryOptions: {
+			whereClauses: [['bank_account', 'in', bankAccountIds]],
+		},
+	});
+	const achTransfersForLoggedInUser = achTransferPage?.documents ?? [];
+
+	const orderIds = ordersForLoggedInUser.map(({ _id }) => _id);
+	const { data: assetOrderPage, isLoading: isAssetOrderPageLoading } =
+		useQueryAssetOrderPage({
+			firestoreQueryOptions: {
+				whereClauses: [['order', 'in', orderIds]],
+			},
+		});
+	const assetOrdersForLoggedInUser = assetOrderPage?.documents ?? [];
 
 	return getLoggedInUserStatus({
 		loggedInUser,
 		isLoggedInUserLoading,
+		achTransfersForLoggedInUser,
+		isAchTransfersForLoggedInUserLoading,
+		assetOrdersForLoggedInUser,
+		isAssetOrderPageLoading,
 		bankAccountsForLoggedInUser,
 		isBankAccountPageLoading,
-		licensesForLoggedInUser,
-		isLicensePageLoading,
+		// licensesForLoggedInUser,
+		// isLicensePageLoading,
 		ordersForLoggedInUser,
 		isOrderPageLoading,
-		positionsForLoggedInUser,
-		isPositionPageLoading,
-		recommendationsForLoggedInUser,
-		isRecommendationPageLoading,
+		// positionsForLoggedInUser,
+		// isPositionPageLoading,
+		// recommendationsForLoggedInUser,
+		// isRecommendationPageLoading,
 	});
 };
 
 function getLoggedInUserStatus({
 	loggedInUser,
 	isLoggedInUserLoading,
+	achTransfersForLoggedInUser,
+	isAchTransfersForLoggedInUserLoading,
+	assetOrdersForLoggedInUser,
+	isAssetOrderPageLoading,
 	bankAccountsForLoggedInUser,
 	isBankAccountPageLoading,
 	// licensesForLoggedInUser,
-	isLicensePageLoading,
+	// isLicensePageLoading,
 	ordersForLoggedInUser,
 	isOrderPageLoading,
-	// positionsForLoggedInUser,
-	isPositionPageLoading,
-	// recommendationsForLoggedInUser,
-	isRecommendationPageLoading,
-}: {
+}: // positionsForLoggedInUser,
+// isPositionPageLoading,
+// recommendationsForLoggedInUser,
+// isRecommendationPageLoading,
+{
 	loggedInUser: User | undefined;
 	isLoggedInUserLoading: boolean;
+	achTransfersForLoggedInUser: AchTransfer[];
+	isAchTransfersForLoggedInUserLoading: boolean;
+	assetOrdersForLoggedInUser: AssetOrder[];
+	isAssetOrderPageLoading: boolean;
 	bankAccountsForLoggedInUser: BankAccount[];
 	isBankAccountPageLoading: boolean;
-	licensesForLoggedInUser: License[];
-	isLicensePageLoading: boolean;
+	// licensesForLoggedInUser: License[];
+	// isLicensePageLoading: boolean;
 	ordersForLoggedInUser: Order[];
 	isOrderPageLoading: boolean;
-	positionsForLoggedInUser: Position[];
-	isPositionPageLoading: boolean;
-	recommendationsForLoggedInUser: Recommendation[];
-	isRecommendationPageLoading: boolean;
+	// positionsForLoggedInUser: Position[];
+	// isPositionPageLoading: boolean;
+	// recommendationsForLoggedInUser: Recommendation[];
+	// isRecommendationPageLoading: boolean;
 }): LoggedInUserStatus {
 	const isLoggedInUserStatusLoading =
 		loggedInUser == null ||
 		[
 			isLoggedInUserLoading,
+			isAchTransfersForLoggedInUserLoading,
+			isAssetOrderPageLoading,
 			isBankAccountPageLoading,
-			isLicensePageLoading,
+			// isLicensePageLoading,
 			isOrderPageLoading,
-			isPositionPageLoading,
-			isRecommendationPageLoading,
+			// isPositionPageLoading,
+			// isRecommendationPageLoading,
 		].some(Boolean);
 
 	const status: LoggedInUserStatus = {
@@ -156,9 +202,15 @@ function getLoggedInUserStatus({
 		return status;
 	}
 
-	const firstBankAccount = bankAccountsForLoggedInUser[0];
+	const { default_bank_account } = loggedInUser;
+	const defaultBankAccount = bankAccountsForLoggedInUser.find(
+		(bankAccount) => bankAccount._id === default_bank_account,
+	);
 
-	if (firstBankAccount == null || !isBankAccountTokenized(firstBankAccount)) {
+	if (
+		defaultBankAccount == null ||
+		!isBankAccountTokenized(defaultBankAccount)
+	) {
 		status.state = 'activated.inputting_kyc_and_bank';
 		status.tasks.push({
 			ctaHref: getHomeSiteRoute({
@@ -168,9 +220,7 @@ function getLoggedInUserStatus({
 			}),
 			ctaText: 'Continue',
 			subtitle:
-				firstBankAccount == null
-					? 'Looks like you still need to connect a bank account. We use Stripe to make this process secure and easy.'
-					: 'Looks like you still need to confirm your bank account details. Head over to our checkout page to complete this step.',
+				'Looks like you still need to confirm your bank account details. Head over to the checkout page to complete this step.',
 			title: 'Connect a bank account',
 		});
 		return status;
@@ -192,16 +242,83 @@ function getLoggedInUserStatus({
 		return status;
 	}
 
-	// TODO -- Add logic for the following states:
-	// | 'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAccountToChangeFromSubmittedToActive'
-	// | 'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved'
-	// | 'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchTransferToChangeFromQueuedToComplete'
-	// | 'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaOrderToChangeFromPendingNewToFilled'
-	// | 'trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAccountActivationError'
-	// | 'trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchRelationshipError'
-	// | 'trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchTransferError'
-	// | 'trackingProgress.resolvingProblemWithOrder.resolvingAlpacaOrderError'
+	const resolutionTaskCtaData = {
+		ctaHref: 'mailto:support@wallot.app',
+		ctaText: 'Contact Support',
+	};
 
-	status.state = 'trackingProgress.homeostasis';
+	// Alpaca Account
+	if (isUserRejectedByAlpaca(loggedInUser)) {
+		status.state =
+			'trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAccountActivationError';
+		status.tasks.push({
+			...resolutionTaskCtaData,
+			subtitle:
+				'Your account activation was unsuccessful. Please contact support to resolve this issue.',
+			title: 'Account activation failed',
+		});
+		return status;
+	}
+	if (!isUserActivatedByAlpaca(loggedInUser)) {
+		status.state =
+			'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAccountToChangeFromSubmittedToActive';
+		return status;
+	}
+
+	// Alpaca ACH Relationship
+	if (isBankAccountRejectedByAlpaca(defaultBankAccount)) {
+		status.state =
+			'trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchRelationshipError';
+		status.tasks.push({
+			...resolutionTaskCtaData,
+			subtitle:
+				'There was a problem completing your bank account connection. Please contact support to resolve this issue.',
+			title: 'Bank account connection failed',
+		});
+		return status;
+	}
+	if (!isBankAccountApprovedByAlpaca(defaultBankAccount)) {
+		status.state =
+			'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchRelationshipToChangeFromQueuedToApproved';
+		return status;
+	}
+
+	// Alpaca ACH Transfer
+	if (achTransfersForLoggedInUser.some(isAchTransferRejectedByAlpaca)) {
+		status.state =
+			'trackingProgress.resolvingProblemWithOrder.resolvingAlpacaAchTransferError';
+		status.tasks.push({
+			...resolutionTaskCtaData,
+			subtitle:
+				'There was a problem with your ACH transfer. Please contact support to resolve this issue.',
+			title: 'ACH transfer failed',
+		});
+		return status;
+	}
+	if (!isUserWithAlpacaEquity(loggedInUser)) {
+		status.state =
+			'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchTransferToChangeFromQueuedToComplete';
+		return status;
+	}
+
+	// Alpaca Order
+	if (assetOrdersForLoggedInUser.some(isAssetOrderRejectedByAlpaca)) {
+		status.state =
+			'trackingProgress.resolvingProblemWithOrder.resolvingAlpacaOrderError';
+		status.tasks.push({
+			...resolutionTaskCtaData,
+			subtitle:
+				'There was a problem with one or more of your orders. Please contact support to resolve this issue.',
+			title: 'Order failed',
+		});
+		return status;
+	}
+	if (assetOrdersForLoggedInUser.every(isAssetOrderFilledByAlpaca)) {
+		status.state = 'trackingProgress.homeostasis';
+		return status;
+	}
+
+	status.state =
+		'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaOrderToChangeFromPendingNewToFilled';
 	return status;
 }
