@@ -5,28 +5,11 @@ import {
 	PageStaticProps,
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { HomeSiteRouteQueryParams, getSsoSiteRoute } from '@wallot/js';
-import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
-import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
+import { HomeSiteRouteQueryParams } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
-
-	// Site origins
-	const siteOriginByTarget = useSiteOriginByTarget();
-
-	// Auth
-	useAuthenticatedRouteRedirect({
-		authSiteOrigin: siteOriginByTarget.SSO_SITE,
-		loginRoutePath: getSsoSiteRoute({
-			includeOrigin: false,
-			origin: null,
-			queryParams: {},
-			routeStaticId: 'SSO_SITE__/LOGIN',
-		}),
-		shouldPauseFirebaseAuthRedirects: false,
-	});
 
 	// Router
 	const router = useRouter();

@@ -5,11 +5,32 @@ import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader'
 import { useRouteStateContext } from 'ergonomic-react/src/hooks/useRouteStateContext';
 import { accountDashboardConfigByRoute } from '@wallot/home-site/src/config/accountDashboardConfig';
 import Link from 'next/link';
+import { getSsoSiteRoute } from '@wallot/js';
+import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
+import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 
 export type AccountDashboardPageProps = BaseComponentWithChildren;
 export const AccountDashboardPage: React.FC<AccountDashboardPageProps> = ({
 	children,
 }) => {
+	// ==== Hooks ==== //
+
+	// Site origins
+	const siteOriginByTarget = useSiteOriginByTarget();
+
+	// Auth
+	useAuthenticatedRouteRedirect({
+		authSiteOrigin: siteOriginByTarget.SSO_SITE,
+		loginRoutePath: getSsoSiteRoute({
+			includeOrigin: false,
+			origin: null,
+			queryParams: {},
+			routeStaticId: 'SSO_SITE__/LOGIN',
+		}),
+		shouldPauseFirebaseAuthRedirects: false,
+	});
+
+	// Route State
 	const { routeState } = useRouteStateContext();
 	const currentRouteStaticId = routeState.currentRouteStaticId ?? '';
 
