@@ -33,4 +33,4 @@ export function useQueryLoggedInUser() {
 		isLoggedInUserQueryEnabled,
 		...loggedInUserQueryObserver,
 	};
-};
+}
