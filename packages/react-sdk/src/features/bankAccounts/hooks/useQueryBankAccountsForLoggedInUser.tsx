@@ -1,5 +1,5 @@
 import { useQueryBankAccountPage } from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountPage';
-import { useQueryLoggedInUser } from '../../users';
+import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 
 export const useQueryBankAccountsForLoggedInUser = () => {
 	const { loggedInUser } = useQueryLoggedInUser();

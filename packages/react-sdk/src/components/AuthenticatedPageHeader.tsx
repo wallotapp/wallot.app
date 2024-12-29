@@ -7,13 +7,13 @@ import {
 	SheetTrigger,
 } from 'ergonomic-react/src/components/ui/sheet';
 import { Fragment } from 'react';
-import { BlogLink } from './BlogLink';
-import { HomeLink } from './HomeLink';
-import { KnowledgeBaseLink } from './KnowledgeBaseLink';
-import { LogoButton } from './LogoButton';
-import { SupportLink } from './SupportLink';
-import { UserMenuPopover } from './UserMenuPopover';
-import { UserNameTag } from './UserNameTag';
+import { BlogLink } from '@wallot/react/src/components/BlogLink';
+import { HomeLink } from '@wallot/react/src/components/HomeLink';
+import { KnowledgeBaseLink } from '@wallot/react/src/components/KnowledgeBaseLink';
+import { LogoButton } from '@wallot/react/src/components/LogoButton';
+import { SupportLink } from '@wallot/react/src/components/SupportLink';
+import { UserMenuPopover } from '@wallot/react/src/components/UserMenuPopover';
+import { UserNameTag } from '@wallot/react/src/components/UserNameTag';
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users';
 
 export type AuthenticatedPageHeaderProps = BaseComponent & {
