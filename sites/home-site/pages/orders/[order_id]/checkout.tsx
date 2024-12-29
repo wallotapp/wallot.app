@@ -184,7 +184,10 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({
 			});
 			return;
 		}
-		updateUser({ _id: loggedInUser._id, default_bank_account: bankAccount._id });
+		updateUser({
+			_id: loggedInUser._id,
+			default_bank_account: bankAccount._id,
+		});
 	};
 
 	const onSubmit = (data: TokenizeBankAccountParams) => {
