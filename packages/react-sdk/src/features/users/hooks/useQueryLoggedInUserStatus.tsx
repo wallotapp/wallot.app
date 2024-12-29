@@ -15,19 +15,13 @@ import {
 	isUserActivatedByAlpaca,
 	isUserRejectedByAlpaca,
 	isUserWithAlpacaEquity,
-	// License,
 	Order,
-	// Position,
-	// Recommendation,
 	User,
 	UserExperienceState,
 } from '@wallot/js';
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountsForLoggedInUser';
-// import { useQueryLicensesForLoggedInUser } from '@wallot/react/src/features/licenses/hooks/useQueryLicensesForLoggedInUser';
 import { useQueryOrdersForLoggedInUser } from '@wallot/react/src/features/orders/hooks/useQueryOrdersForLoggedInUser';
-// import { useQueryPositionsForLoggedInUser } from '@wallot/react/src/features/positions/hooks/useQueryPositionsForLoggedInUser';
-// import { useQueryRecommendationsForLoggedInUser } from '@wallot/react/src/features/recommendations/hooks/useQueryRecommendationsForLoggedInUser';
 import { useQueryAchTransferPage } from '@wallot/react/src/features/achTransfers/hooks/useQueryAchTransferPage';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders/hooks/useQueryAssetOrderPage';
 
@@ -42,28 +36,16 @@ export type LoggedInUserStatus = {
 	}[];
 };
 
-export const useQueryLoggedInUserStatus = (): LoggedInUserStatus => {
+export function useQueryLoggedInUserStatus(): LoggedInUserStatus {
 	const { loggedInUser, isLoggedInUserLoading } = useQueryLoggedInUser();
 	const {
 		resourcesForLoggedInUser: bankAccountsForLoggedInUser,
 		isResourcePageLoading: isBankAccountPageLoading,
 	} = useQueryBankAccountsForLoggedInUser();
-	// const {
-	// 	resourcesForLoggedInUser: licensesForLoggedInUser,
-	// 	isResourcePageLoading: isLicensePageLoading,
-	// } = useQueryLicensesForLoggedInUser();
 	const {
 		resourcesForLoggedInUser: ordersForLoggedInUser,
 		isResourcePageLoading: isOrderPageLoading,
 	} = useQueryOrdersForLoggedInUser();
-	// const {
-	// 	resourcesForLoggedInUser: positionsForLoggedInUser,
-	// 	isResourcePageLoading: isPositionPageLoading,
-	// } = useQueryPositionsForLoggedInUser();
-	// const {
-	// 	resourcesForLoggedInUser: recommendationsForLoggedInUser,
-	// 	isResourcePageLoading: isRecommendationPageLoading,
-	// } = useQueryRecommendationsForLoggedInUser();
 
 	const bankAccountIds = bankAccountsForLoggedInUser.map(({ _id }) => _id);
 	const {
@@ -94,16 +76,10 @@ export const useQueryLoggedInUserStatus = (): LoggedInUserStatus => {
 		isAssetOrderPageLoading,
 		bankAccountsForLoggedInUser,
 		isBankAccountPageLoading,
-		// licensesForLoggedInUser,
-		// isLicensePageLoading,
 		ordersForLoggedInUser,
 		isOrderPageLoading,
-		// positionsForLoggedInUser,
-		// isPositionPageLoading,
-		// recommendationsForLoggedInUser,
-		// isRecommendationPageLoading,
 	});
-};
+}
 
 function getLoggedInUserStatus({
 	loggedInUser,
@@ -114,15 +90,9 @@ function getLoggedInUserStatus({
 	isAssetOrderPageLoading,
 	bankAccountsForLoggedInUser,
 	isBankAccountPageLoading,
-	// licensesForLoggedInUser,
-	// isLicensePageLoading,
 	ordersForLoggedInUser,
 	isOrderPageLoading,
-}: // positionsForLoggedInUser,
-// isPositionPageLoading,
-// recommendationsForLoggedInUser,
-// isRecommendationPageLoading,
-{
+}: {
 	loggedInUser: User | undefined;
 	isLoggedInUserLoading: boolean;
 	achTransfersForLoggedInUser: AchTransfer[];
@@ -131,14 +101,8 @@ function getLoggedInUserStatus({
 	isAssetOrderPageLoading: boolean;
 	bankAccountsForLoggedInUser: BankAccount[];
 	isBankAccountPageLoading: boolean;
-	// licensesForLoggedInUser: License[];
-	// isLicensePageLoading: boolean;
 	ordersForLoggedInUser: Order[];
 	isOrderPageLoading: boolean;
-	// positionsForLoggedInUser: Position[];
-	// isPositionPageLoading: boolean;
-	// recommendationsForLoggedInUser: Recommendation[];
-	// isRecommendationPageLoading: boolean;
 }): LoggedInUserStatus {
 	const isLoggedInUserStatusLoading =
 		loggedInUser == null ||
@@ -147,10 +111,7 @@ function getLoggedInUserStatus({
 			isAchTransfersForLoggedInUserLoading,
 			isAssetOrderPageLoading,
 			isBankAccountPageLoading,
-			// isLicensePageLoading,
 			isOrderPageLoading,
-			// isPositionPageLoading,
-			// isRecommendationPageLoading,
 		].some(Boolean);
 
 	const status: LoggedInUserStatus = {

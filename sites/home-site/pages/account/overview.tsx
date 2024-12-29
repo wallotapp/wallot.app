@@ -9,8 +9,7 @@ import { HomeSiteRouteQueryParams } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import Link from 'next/link';
-import { useQueryLoggedInUser } from '@wallot/react/src/features/users';
-import { useQueryLoggedInUserStatus } from '@wallot/react/src/hooks/useQueryLoggedInUserStatus';
+import { useQueryLoggedInUser, useQueryLoggedInUserStatus } from '@wallot/react/src/features/users';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
