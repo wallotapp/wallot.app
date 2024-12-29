@@ -9,7 +9,10 @@ import { HomeSiteRouteQueryParams } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import Link from 'next/link';
-import { useQueryLoggedInUser, useQueryLoggedInUserStatus } from '@wallot/react/src/features/users';
+import {
+	useQueryLoggedInUser,
+	useQueryLoggedInUserStatus,
+} from '@wallot/react/src/features/users';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -45,8 +48,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<AccountDashboardPage>
-				<div className={cn('lg:max-w-2xl')}>
+			<AccountDashboardPage className={cn('lg:max-w-3xl')}>
+				<div>
 					{/* Welcome Section */}
 					<div>
 						<div>

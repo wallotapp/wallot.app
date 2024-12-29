@@ -8,10 +8,13 @@ import Link from 'next/link';
 import { getSsoSiteRoute } from '@wallot/js';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
+import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
+import { useQueryLoggedInUserStatus } from '@wallot/react/src/features/users';
 
 export type AccountDashboardPageProps = BaseComponentWithChildren;
 export const AccountDashboardPage: React.FC<AccountDashboardPageProps> = ({
 	children,
+	className = '',
 }) => {
 	// ==== Hooks ==== //
 
@@ -33,6 +36,9 @@ export const AccountDashboardPage: React.FC<AccountDashboardPageProps> = ({
 	// Route State
 	const { routeState } = useRouteStateContext();
 	const currentRouteStaticId = routeState.currentRouteStaticId ?? '';
+
+	// Status
+	const { isLoggedInUserStatusLoading } = useQueryLoggedInUserStatus();
 
 	return (
 		<div className={cn('flex flex-col min-h-screen min-w-screen relative')}>
@@ -72,8 +78,42 @@ export const AccountDashboardPage: React.FC<AccountDashboardPageProps> = ({
 						},
 					)}
 				</div>
-				<div className='mt-7'>{children}</div>
+				<div className={cn('mt-7', className)}>
+					<div className={cn(isLoggedInUserStatusLoading ? '' : 'hidden')}>
+						<AccountDashboardPageSuspense />
+					</div>
+					<div className={cn(!isLoggedInUserStatusLoading ? '' : 'hidden')}>
+						{children}
+					</div>
+				</div>
 			</div>
 		</div>
 	);
 };
+
+function AccountDashboardPageSuspense() {
+	return (
+		<div className='flex flex-col space-y-7'>
+			{Array.from({ length: 5 }).map((_, i) =>
+				i % 3 === 0 ? (
+					<div key={i} className='flex space-x-4'>
+						<Skeleton
+							className={cn(
+								'bg-slate-300 h-20',
+								i % 2 === 0 ? 'flex-[2_2_0%]' : 'flex-1',
+							)}
+						/>
+						<Skeleton
+							className={cn(
+								'bg-slate-300 h-20',
+								i % 2 === 0 ? 'flex-1' : 'flex-[4_4_0%]',
+							)}
+						/>
+					</div>
+				) : (
+					<Skeleton key={i} className='bg-slate-300 h-28' />
+				),
+			)}
+		</div>
+	);
+}
