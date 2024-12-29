@@ -7,6 +7,7 @@ import {
 	PopoverTrigger,
 } from 'ergonomic-react/src/components/ui/popover';
 import cn from 'ergonomic-react/src/lib/cn';
+import { SITE_ORIGIN } from 'ergonomic-react/src/config/originConfig';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import { useQueryCurrentUser } from '@wallot/react/src/features/users';
 import Link from 'next/link';
@@ -25,6 +26,8 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 	const { currentUser } = useQueryCurrentUser();
 	// Site Origin by Target
 	const siteOriginByTarget = useSiteOriginByTarget();
+	const homeSiteOrigin = siteOriginByTarget.HOME_SITE;
+	const includeOrigin = SITE_ORIGIN === homeSiteOrigin;
 	const onLogOut = () => {
 		return void (async () => {
 			try {
@@ -63,25 +66,37 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 					{[
 						{
 							href: getHomeSiteRoute({
-								includeOrigin: true,
-								origin: siteOriginByTarget['HOME_SITE'],
+								includeOrigin,
+								origin: homeSiteOrigin,
+								queryParams: {},
+								routeStaticId: 'HOME_SITE__/ACCOUNT',
+							}),
+							target: '_self',
+							title: 'Account',
+						},
+						{
+							href: getHomeSiteRoute({
+								includeOrigin,
+								origin: homeSiteOrigin,
 								queryParams: {},
 								routeStaticId: 'HOME_SITE__/INDEX',
 							}),
+							target: '_blank',
 							title: 'Terms of Service',
 						},
 						{
 							href: getHomeSiteRoute({
-								includeOrigin: true,
-								origin: siteOriginByTarget['HOME_SITE'],
+								includeOrigin,
+								origin: homeSiteOrigin,
 								queryParams: {},
 								routeStaticId: 'HOME_SITE__/INDEX',
 							}),
+							target: '_blank',
 							title: 'Privacy Policy',
 						},
-					].map(({ href, title }) => {
+					].map(({ href, target, title }) => {
 						return (
-							<Link href={href} key={href} target='_blank'>
+							<Link href={href} key={href} target={target}>
 								<div
 									className={cn(
 										'group hover:bg-purple-50 px-3 py-1',
