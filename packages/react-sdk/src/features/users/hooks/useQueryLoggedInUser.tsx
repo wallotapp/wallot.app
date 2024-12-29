@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { useQueryUserPage } from '@wallot/react/src/features/users/hooks/useQueryUserPage';
 import { getUserDisplayName, getUserDisplayNameWithFallback } from '@wallot/js';
 
-export const useQueryLoggedInUser = () => {
+export function useQueryLoggedInUser() {
 	const { user } = useContext(AuthContext);
 
 	const isUserSignedIn = user?.uid != null;
