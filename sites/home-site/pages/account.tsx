@@ -50,6 +50,15 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		routeId: ROUTE_RUNTIME_ID,
 	};
 
+	const accountSettings = [
+		'Overview',
+		'Billing Information',
+		'Orders',
+		'Positions',
+		'Transfers',
+		'Statements',
+	];
+
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
@@ -59,11 +68,22 @@ const Page: NextPage<PageStaticProps> = (props) => {
 				<div
 					className={cn(
 						'min-h-[95vh] w-full',
-						'py-48 px-6',
-						'lg:py-48 lg:px-28',
+						'py-40 px-6',
+						'lg:py-40 lg:px-28',
 					)}
 				>
-					<div>My Account</div>
+					<div>
+						<p className='font-semibold text-3xl'>Account</p>
+					</div>
+					<div className={cn('mt-4', 'lg:flex lg:items-center lg:space-x-12')}>
+						{accountSettings.map((setting) => {
+							return (
+								<div key={setting} className='flex items-center'>
+									<p className='text-sm'>{setting}</p>
+								</div>
+							);
+						})}
+					</div>
 				</div>
 			</div>
 		</PageComponent>
