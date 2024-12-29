@@ -8,18 +8,17 @@ export const useQueryLoggedInUser = () => {
 
 	const isUserSignedIn = user?.uid != null;
 
-	const isUserPageQueryEnabled = isUserSignedIn;
-	const userPageQueryObserver = useQueryUserPage({
+	const isLoggedInUserQueryEnabled = isUserSignedIn;
+	const loggedInUserQueryObserver = useQueryUserPage({
 		firestoreQueryOptions: {
 			whereClauses: [['_id', '==', user?.uid]],
 		},
 		reactQueryOptions: {
-			enabled: isUserPageQueryEnabled,
+			enabled: isLoggedInUserQueryEnabled,
 		},
 	});
-	const isUserPageDataLoaded = userPageQueryObserver.data != null;
 
-	const loggedInUser = userPageQueryObserver.data?.documents?.[0];
+	const loggedInUser = loggedInUserQueryObserver.data?.documents?.[0];
 	const loggedInUserDisplayName = getUserDisplayName(loggedInUser);
 	const loggedInUserDisplayNameWithFallback =
 		getUserDisplayNameWithFallback(loggedInUser);
@@ -28,10 +27,10 @@ export const useQueryLoggedInUser = () => {
 		loggedInUser,
 		loggedInUserDisplayName,
 		loggedInUserDisplayNameWithFallback,
-		isUserPageDataLoaded,
-		isUserPageError: userPageQueryObserver.isError,
-		isUserPageLoading: userPageQueryObserver.isLoading,
-		isUserPageQueryEnabled,
-		...userPageQueryObserver,
+		isLoggedInUserError: loggedInUserQueryObserver.isError,
+		isLoggedInUserLoading:
+			!isLoggedInUserQueryEnabled || loggedInUserQueryObserver.isLoading,
+		isLoggedInUserQueryEnabled,
+		...loggedInUserQueryObserver,
 	};
 };

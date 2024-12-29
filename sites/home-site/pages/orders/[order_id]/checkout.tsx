@@ -86,7 +86,7 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({
 	// Current User
 	const {
 		loggedInUser,
-		isUserPageLoading,
+		isLoggedInUserLoading,
 		refetch: refetchUser,
 	} = useQueryLoggedInUser();
 	const defaultBankAccountId = loggedInUser?.default_bank_account ?? 'null';
@@ -202,11 +202,11 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({
 	const isTokenizeFormSubmitting =
 		formState.isSubmitting || isTokenizeBankAccountRunning;
 	const isTokenizeButtonDisabled =
-		isUserPageLoading ||
+		isLoggedInUserLoading ||
 		isTokenizeFormSubmitting ||
 		!isAccountNumberInputComplete;
 	const isMakeDefaultButtonDisabled =
-		isUserPageLoading || isTokenizeFormSubmitting || isUpdateUserRunning;
+		isLoggedInUserLoading || isTokenizeFormSubmitting || isUpdateUserRunning;
 
 	const { field: accountNumberField } = useController({
 		control,
@@ -224,7 +224,7 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({
 		setHasInitializedDefaultAccountOwnerName,
 	] = useState(false);
 	useEffect(() => {
-		if (isUserPageLoading) return;
+		if (isLoggedInUserLoading) return;
 		if (hasInitializedDefaultAccountOwnerName) return;
 
 		const defaultValueAccountOwnerName = (
@@ -237,7 +237,11 @@ const BankAccountManager: React.FC<BankAccountManagerProps> = ({
 			account_owner_name: defaultValueAccountOwnerName,
 		});
 		setHasInitializedDefaultAccountOwnerName(true);
-	}, [isUserPageLoading, hasInitializedDefaultAccountOwnerName, loggedInUser]);
+	}, [
+		isLoggedInUserLoading,
+		hasInitializedDefaultAccountOwnerName,
+		loggedInUser,
+	]);
 
 	return (
 		<div
@@ -509,7 +513,7 @@ const Page: NextPage = () => {
 	// Current User
 	const {
 		loggedInUser,
-		isUserPageLoading,
+		isLoggedInUserLoading,
 		refetch: refetchUser,
 	} = useQueryLoggedInUser();
 	const defaultBankAccountId = loggedInUser?.default_bank_account ?? 'null';
@@ -895,7 +899,7 @@ const Page: NextPage = () => {
 		useState(false);
 	useEffect(() => {
 		if (hasInitializedDefaultValues) return;
-		if (isUserPageLoading) return;
+		if (isLoggedInUserLoading) return;
 		const { firebase_auth_email: fallbackEmail } = loggedInUser ?? {};
 		const defaultValues: KycFormDataParams = {
 			city: loggedInUser?.alpaca_account_contact?.city ?? initialFormData.city,
@@ -983,7 +987,7 @@ const Page: NextPage = () => {
 		}
 		reset(defaultValues);
 		setHasInitializedDefaultValues(true);
-	}, [loggedInUser, isUserPageLoading, hasInitializedDefaultValues]);
+	}, [loggedInUser, isLoggedInUserLoading, hasInitializedDefaultValues]);
 
 	const [
 		isBankAccountInterfaceInitialized,
@@ -992,14 +996,14 @@ const Page: NextPage = () => {
 	useEffect(() => {
 		if (isBankAccountInterfaceInitialized) return;
 		if (isBankAccountPageLoading) return;
-		if (isUserPageLoading) return;
+		if (isLoggedInUserLoading) return;
 		if (defaultBankAccount == null) return;
 		if (isDefaultBankAccountTokenized) return;
 
 		setIsBankAccountInterfaceInitialized(true);
 		setBankAccountIdsWithTokenizationFormShown([defaultBankAccount._id]);
 	}, [
-		isUserPageLoading,
+		isLoggedInUserLoading,
 		isBankAccountPageLoading,
 		defaultBankAccount,
 		isDefaultBankAccountTokenized,

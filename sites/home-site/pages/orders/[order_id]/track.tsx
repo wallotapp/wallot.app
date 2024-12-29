@@ -112,7 +112,7 @@ const Page: NextPage = () => {
 	const isStockPurchasesStepCompleted = unfilledAssetOrders.length === 0;
 
 	// Current User
-	const { loggedInUser, isUserPageLoading } = useQueryLoggedInUser();
+	const { loggedInUser, isLoggedInUserLoading } = useQueryLoggedInUser();
 	const isAccountVerified =
 		loggedInUser != null && isUserActivatedByAlpaca(loggedInUser);
 
@@ -156,7 +156,7 @@ const Page: NextPage = () => {
 
 	const isAnyQueryLoading = [
 		isAssetOrderPageLoading,
-		isUserPageLoading,
+		isLoggedInUserLoading,
 		isAchTransferPageLoading,
 	].some(Boolean);
 

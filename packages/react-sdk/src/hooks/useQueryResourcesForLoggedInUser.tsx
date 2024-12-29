@@ -8,7 +8,7 @@ export const useQueryResourcesForLoggedInUser =
 		resourceName: Exclude<WallotResourceName, 'user'>,
 	) =>
 	() => {
-		const { loggedInUser } = useQueryLoggedInUser();
+		const { loggedInUser, isLoggedInUserLoading } = useQueryLoggedInUser();
 		const isUserSignedIn = loggedInUser != null;
 		const isResourcePageQueryEnabled = isUserSignedIn;
 		const useQueryResourcePage = getPageQueryHookForResource(resourceName);
@@ -26,7 +26,10 @@ export const useQueryResourcesForLoggedInUser =
 		return {
 			resourcesForLoggedInUser,
 			isResourcePageError: resourcePageQueryObserver.isError,
-			isResourcePageLoading: resourcePageQueryObserver.isLoading,
+			isResourcePageLoading:
+				isLoggedInUserLoading ||
+				!isResourcePageQueryEnabled ||
+				resourcePageQueryObserver.isLoading,
 			isResourcePageQueryEnabled,
 			...resourcePageQueryObserver,
 		};
