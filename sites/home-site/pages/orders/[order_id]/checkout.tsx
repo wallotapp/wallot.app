@@ -516,8 +516,8 @@ const Page: NextPage = () => {
 
 	// Bank Accounts for Logged In User
 	const {
-		bankAccountsForLoggedInUser: bankAccountsForLoggedInUserUnsorted,
-		isBankAccountPageLoading,
+		resourcesForLoggedInUser: bankAccountsForLoggedInUserUnsorted,
+		isResourcePageLoading: isBankAccountPageLoading,
 		refetch: refetchBankAccountsForLoggedInUser,
 	} = useQueryBankAccountsForLoggedInUser();
 	const bankAccountsForLoggedInUser =
