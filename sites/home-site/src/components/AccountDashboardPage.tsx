@@ -47,7 +47,7 @@ export const AccountDashboardPage: React.FC<AccountDashboardPageProps> = ({
 				<div
 					className={cn(
 						'mt-2.5',
-						'lg:flex lg:items-center lg:space-x-2.5 lg:border-b-[1.5px] lg:border-gray-200 lg:w-fit',
+						'lg:flex lg:items-center lg:space-x-5 lg:border-b-[1.5px] lg:border-gray-200 lg:w-fit',
 					)}
 				>
 					{Object.entries(accountDashboardConfigByRoute).map(
