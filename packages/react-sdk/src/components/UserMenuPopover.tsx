@@ -1,5 +1,3 @@
-import { signOut } from 'firebase/auth';
-import { firebaseAuthInstance } from 'ergonomic-react/src/lib/firebase';
 import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
 import {
 	Popover,
@@ -11,9 +9,9 @@ import { SITE_ORIGIN } from 'ergonomic-react/src/config/originConfig';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users';
 import Link from 'next/link';
-import { useState } from 'react';
 import { getHomeSiteRoute } from '@wallot/js';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
+import { useRouter } from 'next/router';
 
 export type UserMenuPopover = BaseComponent & {
 	TriggerComponent: React.ReactNode;
@@ -22,26 +20,16 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 	TriggerComponent,
 	className = '',
 }) => {
-	const [isLoggingOut, setIsLoggingOut] = useState(false);
+	// const [isLoggingOut, setIsLoggingOut] = useState(false);
 	const { loggedInUser } = useQueryLoggedInUser();
+	// Router
+	const router = useRouter();
 	// Site Origin by Target
 	const siteOriginByTarget = useSiteOriginByTarget();
 	const homeSiteOrigin = siteOriginByTarget.HOME_SITE;
 	const includeOrigin = SITE_ORIGIN === homeSiteOrigin;
-	const onLogOut = () => {
-		return void (async () => {
-			try {
-				setIsLoggingOut(true);
+	const onLogOut = () => void router.replace('/logout');
 
-				// Sign out of Firebase Auth
-				await signOut(firebaseAuthInstance);
-			} catch (err) {
-				console.error(err);
-			} finally {
-				setIsLoggingOut(false);
-			}
-		})();
-	};
 	return (
 		<Popover>
 			<PopoverTrigger asChild>{TriggerComponent}</PopoverTrigger>
@@ -130,27 +118,14 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 						onClick={onLogOut}
 					>
 						<div>
-							{isLoggingOut ? (
-								<>
-									<div className='flex items-center space-x-2'>
-										<div
-											className={cn(
-												'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
-												'border-t-brand border-r-brand border-b-brand',
-											)}
-										></div>
-									</div>
-								</>
-							) : (
-								<p
-									className={cn(
-										'group-hover:font-medium text-sm',
-										'duration-200 ease-in-out transition-all',
-									)}
-								>
-									Log Out
-								</p>
-							)}
+							<p
+								className={cn(
+									'group-hover:font-medium text-sm',
+									'duration-200 ease-in-out transition-all',
+								)}
+							>
+								Log Out
+							</p>
 						</div>
 					</button>
 				</div>
