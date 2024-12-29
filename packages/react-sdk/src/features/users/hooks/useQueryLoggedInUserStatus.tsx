@@ -22,27 +22,37 @@ export type LoggedInUserStatus = {
 export const useQueryLoggedInUserStatus = (): LoggedInUserStatus => {
 	const { loggedInUser, isLoggedInUserLoading } = useQueryLoggedInUser();
 	const {
-		resourcesForLoggedInUser: bankAccountsForLoggedInUserUnsorted,
+		resourcesForLoggedInUser: bankAccountsForLoggedInUser,
 		isResourcePageLoading: isBankAccountPageLoading,
 	} = useQueryBankAccountsForLoggedInUser();
 	const {
-		resourcesForLoggedInUser: licensesForLoggedInUserUnsorted,
+		resourcesForLoggedInUser: licensesForLoggedInUser,
 		isResourcePageLoading: isLicensePageLoading,
 	} = useQueryLicensesForLoggedInUser();
 	const {
-		resourcesForLoggedInUser: ordersForLoggedInUserUnsorted,
+		resourcesForLoggedInUser: ordersForLoggedInUser,
 		isResourcePageLoading: isOrderPageLoading,
 	} = useQueryOrdersForLoggedInUser();
 	const {
-		resourcesForLoggedInUser: positionsForLoggedInUserUnsorted,
+		resourcesForLoggedInUser: positionsForLoggedInUser,
 		isResourcePageLoading: isPositionPageLoading,
 	} = useQueryPositionsForLoggedInUser();
 	const {
-		resourcesForLoggedInUser: recommendationsForLoggedInUserUnsorted,
+		resourcesForLoggedInUser: recommendationsForLoggedInUser,
 		isResourcePageLoading: isRecommendationPageLoading,
 	} = useQueryRecommendationsForLoggedInUser();
+
+	const isLoggedInUserStatusLoading = [
+		isLoggedInUserLoading,
+		isBankAccountPageLoading,
+		isLicensePageLoading,
+		isOrderPageLoading,
+		isPositionPageLoading,
+		isRecommendationPageLoading,
+	].some(Boolean);
+
 	return {
-		isLoggedInUserStatusLoading: true,
+		isLoggedInUserStatusLoading,
 		state: null,
 		tasks: [],
 	};
