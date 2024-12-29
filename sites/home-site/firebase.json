@@ -6,12 +6,24 @@
 			"public": "out",
 			"rewrites": [
 				{
-					"source": "/orders/**/confirm",
-					"destination": "/orders/[order_id]/confirm.html"
+					"source": "/orders/**/assets",
+					"destination": "/orders/[order_id]/assets.html"
 				},
 				{
-					"source": "/recommendations/**/details",
-					"destination": "/recommendations/[recommendation_id]/details.html"
+					"source": "/orders/**/cart",
+					"destination": "/orders/[order_id]/cart.html"
+				},
+				{
+					"source": "/orders/**/checkout",
+					"destination": "/orders/[order_id]/checkout.html"
+				},
+				{
+					"source": "/orders/**/congratulations",
+					"destination": "/orders/[order_id]/congratulations.html"
+				},
+				{
+					"source": "/orders/**/track",
+					"destination": "/orders/[order_id]/track.html"
 				}
 			],
 			"site": "app-wallot-production"
@@ -22,12 +34,24 @@
 			"public": "out",
 			"rewrites": [
 				{
-					"source": "/orders/**/confirm",
-					"destination": "/orders/[order_id]/confirm.html"
+					"source": "/orders/**/assets",
+					"destination": "/orders/[order_id]/assets.html"
 				},
 				{
-					"source": "/recommendations/**/details",
-					"destination": "/recommendations/[recommendation_id]/details.html"
+					"source": "/orders/**/cart",
+					"destination": "/orders/[order_id]/cart.html"
+				},
+				{
+					"source": "/orders/**/checkout",
+					"destination": "/orders/[order_id]/checkout.html"
+				},
+				{
+					"source": "/orders/**/congratulations",
+					"destination": "/orders/[order_id]/congratulations.html"
+				},
+				{
+					"source": "/orders/**/track",
+					"destination": "/orders/[order_id]/track.html"
 				}
 			],
 			"site": "app-wallot-staging"
