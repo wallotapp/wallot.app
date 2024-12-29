@@ -20,7 +20,13 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 	}
 
 	const path = {
+		'HOME_SITE__/ACCOUNT/BANKING': '/account/banking',
 		'HOME_SITE__/ACCOUNT/OVERVIEW': '/account/overview',
+		'HOME_SITE__/ACCOUNT/PLANS': '/account/plans',
+		'HOME_SITE__/ACCOUNT/POSITIONS': '/account/positions',
+		'HOME_SITE__/ACCOUNT/SETTINGS': '/account/settings',
+		'HOME_SITE__/ACCOUNT/STATEMENTS': '/account/statements',
+		'HOME_SITE__/ACCOUNT/TRANSACTIONS': '/account/transactions',
 		'HOME_SITE__/INDEX': '/',
 		'HOME_SITE__/GET_STARTED': '/get-started',
 		'HOME_SITE__/ORDERS/[ORDER_ID]/ASSETS': '/assets',
@@ -34,7 +40,13 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 	const clientTokenQuery = clientToken ? `client_token=${clientToken}` : '';
 	const queries = [clientTokenQuery].filter(Boolean);
 	if (
+		routeStaticId === 'HOME_SITE__/ACCOUNT/BANKING' ||
 		routeStaticId === 'HOME_SITE__/ACCOUNT/OVERVIEW' ||
+		routeStaticId === 'HOME_SITE__/ACCOUNT/PLANS' ||
+		routeStaticId === 'HOME_SITE__/ACCOUNT/POSITIONS' ||
+		routeStaticId === 'HOME_SITE__/ACCOUNT/SETTINGS' ||
+		routeStaticId === 'HOME_SITE__/ACCOUNT/STATEMENTS' ||
+		routeStaticId === 'HOME_SITE__/ACCOUNT/TRANSACTIONS' ||
 		routeStaticId === 'HOME_SITE__/INDEX' ||
 		routeStaticId === 'HOME_SITE__/GET_STARTED'
 	) {
