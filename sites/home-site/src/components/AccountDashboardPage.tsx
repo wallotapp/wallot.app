@@ -39,14 +39,14 @@ export const AccountDashboardPage: React.FC<AccountDashboardPageProps> = ({
 			<AuthenticatedPageHeader showHomeLink={false} />
 			<PageActionHeader />
 			<div
-				className={cn('min-h-[95vh] w-full', 'py-40 px-6', 'lg:py-40 lg:px-28')}
+				className={cn('min-h-[95vh] w-full', 'py-36 px-6', 'lg:py-36 lg:px-28')}
 			>
 				<div>
-					<p className='font-semibold text-2xl'>Account</p>
+					<p className='font-medium text-xl'>Account</p>
 				</div>
 				<div
 					className={cn(
-						'mt-2.5',
+						'mt-2',
 						'lg:flex lg:items-center lg:space-x-5 lg:border-b-[1.5px] lg:border-gray-200 lg:w-fit',
 					)}
 				>
@@ -72,7 +72,7 @@ export const AccountDashboardPage: React.FC<AccountDashboardPageProps> = ({
 						},
 					)}
 				</div>
-				<div className='mt-4'>{children}</div>
+				<div className='mt-7'>{children}</div>
 			</div>
 		</div>
 	);

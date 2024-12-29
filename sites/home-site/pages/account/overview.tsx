@@ -7,12 +7,18 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { HomeSiteRouteQueryParams } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
+import { default as cn } from 'ergonomic-react/src/lib/cn';
+import Link from 'next/link';
+import { useQueryCurrentUser } from '@wallot/react/src/features/users';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
 
 	// Router
 	const router = useRouter();
+
+	// Router
+	const { currentUserDisplayName } = useQueryCurrentUser();
 
 	// ==== Constants ==== //
 
@@ -35,7 +41,50 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	return (
 		<PageComponent {...pageProps}>
 			<AccountDashboardPage>
-				<div>Here is your account overview!</div>
+				<div className={cn('lg:max-w-2xl')}>
+					{/* Welcome Section */}
+					<div>
+						<div>
+							<p className='font-semibold text-2xl'>
+								Welcome back
+								{currentUserDisplayName ? `, ${currentUserDisplayName}` : ''}!
+							</p>
+						</div>
+						<div className='mt-1'>
+							<p className='font-light text-base text-gray-600'>
+								Browse our{' '}
+								<Link href='/knowledge-base' target='_blank'>
+									<span className='font-normal text-brand hover:text-brand-dark'>
+										knowledge base
+									</span>
+								</Link>{' '}
+								or{' '}
+								<Link href='https://instagram.com/wallotapp' target='_blank'>
+									<span className='font-normal text-brand hover:text-brand-dark'>
+										explore all the ways
+									</span>
+								</Link>{' '}
+								to start trading on Wallot.
+							</p>
+						</div>
+					</div>
+					<div className='mt-4'>
+						{/* Account Status Section */}
+						<div>Account status</div>
+					</div>
+					<div className='mt-4'>
+						{/* Equity Section */}
+						<div>Equity</div>
+					</div>
+					<div className='mt-4'>
+						{/* Recent Orders Section */}
+						<div>Recent orders</div>
+					</div>
+					<div className='mt-4'>
+						{/* Billing Information */}
+						<div>Billing information</div>
+					</div>
+				</div>
 			</AccountDashboardPage>
 		</PageComponent>
 	);
