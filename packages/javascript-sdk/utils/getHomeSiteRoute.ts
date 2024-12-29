@@ -19,18 +19,29 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 		return '/';
 	}
 
+	const path = {
+		'HOME_SITE__/ACCOUNT': '/account',
+		'HOME_SITE__/INDEX': '/',
+		'HOME_SITE__/GET_STARTED': '/get-started',
+		'HOME_SITE__/ORDERS/[ORDER_ID]/ASSETS': '/assets',
+		'HOME_SITE__/ORDERS/[ORDER_ID]/CART': '/cart',
+		'HOME_SITE__/ORDERS/[ORDER_ID]/CHECKOUT': '/checkout',
+		'HOME_SITE__/ORDERS/[ORDER_ID]/CONGRATULATIONS': '/congratulations',
+		'HOME_SITE__/ORDERS/[ORDER_ID]/TRACK': '/track',
+	}[routeStaticId];
+
 	const clientToken = options.queryParams.client_token;
 	const clientTokenQuery = clientToken ? `client_token=${clientToken}` : '';
 	const queries = [clientTokenQuery].filter(Boolean);
 	if (
+		routeStaticId === 'HOME_SITE__/ACCOUNT' ||
 		routeStaticId === 'HOME_SITE__/INDEX' ||
 		routeStaticId === 'HOME_SITE__/GET_STARTED'
 	) {
-		const path = `${
-			routeStaticId === 'HOME_SITE__/INDEX' ? '/' : '/get-started'
-		}${queries.length ? `?${queries.join('&')}` : ''}`;
-		if (includeOrigin) return `${origin as string}${path}`;
-		return path;
+		const query = queries.length ? `?${queries.join('&')}` : '';
+		const fullPath = `${path}${query}`;
+		if (includeOrigin) return `${origin as string}${fullPath}`;
+		return fullPath;
 	}
 
 	if (
@@ -51,21 +62,10 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 			console.error('order_id is required');
 			return '/';
 		}
-		const path = `/orders/${orderId}${
-			routeStaticId === 'HOME_SITE__/ORDERS/[ORDER_ID]/ASSETS'
-				? '/assets'
-				: routeStaticId === 'HOME_SITE__/ORDERS/[ORDER_ID]/CART'
-				? '/cart'
-				: routeStaticId === 'HOME_SITE__/ORDERS/[ORDER_ID]/CHECKOUT'
-				? '/checkout'
-				: routeStaticId === 'HOME_SITE__/ORDERS/[ORDER_ID]/CONGRATULATIONS'
-				? '/congratulations'
-				: routeStaticId === 'HOME_SITE__/ORDERS/[ORDER_ID]/TRACK'
-				? '/track'
-				: ''
-		}${queries.length ? `?${queries.join('&')}` : ''}`;
-		if (includeOrigin) return `${origin as string}${path}`;
-		return path;
+		const query = queries.length ? `?${queries.join('&')}` : '';
+		const fullPath = `/orders/${orderId}${path}${query}`;
+		if (includeOrigin) return `${origin as string}${fullPath}`;
+		return fullPath;
 	}
 
 	throw new Error('Invalid routeStaticId');
