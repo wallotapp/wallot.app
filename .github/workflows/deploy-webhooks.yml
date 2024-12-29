@@ -55,7 +55,7 @@ jobs:
       - name: Get the commit message which triggered this run
         id: get_commit_message
         run: |
-          COMMIT_MESSAGE=$(git log -1 --pretty=format:"%B" | tr '\n' '::::')
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:"%B" | tr '\n' '::::' | sed "s/'/::::/g")
           echo "Commit message: $COMMIT_MESSAGE"
           echo "GIT_COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
 
