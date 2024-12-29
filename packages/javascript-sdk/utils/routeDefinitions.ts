@@ -2,7 +2,13 @@ import { getEnum, EnumMember } from 'ergonomic';
 
 // Home Site
 export const HomeSiteRouteStaticIdEnum = getEnum([
+	'HOME_SITE__/ACCOUNT/BANKING',
 	'HOME_SITE__/ACCOUNT/OVERVIEW',
+	'HOME_SITE__/ACCOUNT/PLANS',
+	'HOME_SITE__/ACCOUNT/POSITIONS',
+	'HOME_SITE__/ACCOUNT/SETTINGS',
+	'HOME_SITE__/ACCOUNT/STATEMENTS',
+	'HOME_SITE__/ACCOUNT/TRANSACTIONS',
 	'HOME_SITE__/INDEX',
 	'HOME_SITE__/GET_STARTED',
 	'HOME_SITE__/ORDERS/[ORDER_ID]/ASSETS',
@@ -16,7 +22,25 @@ export type HomeSiteRouteStaticId = EnumMember<
 >;
 
 export type HomeSiteRouteQueryParams = {
+	'HOME_SITE__/ACCOUNT/BANKING': {
+		client_token?: string | undefined;
+	};
 	'HOME_SITE__/ACCOUNT/OVERVIEW': {
+		client_token?: string | undefined;
+	};
+	'HOME_SITE__/ACCOUNT/PLANS': {
+		client_token?: string | undefined;
+	};
+	'HOME_SITE__/ACCOUNT/POSITIONS': {
+		client_token?: string | undefined;
+	};
+	'HOME_SITE__/ACCOUNT/SETTINGS': {
+		client_token?: string | undefined;
+	};
+	'HOME_SITE__/ACCOUNT/STATEMENTS': {
+		client_token?: string | undefined;
+	};
+	'HOME_SITE__/ACCOUNT/TRANSACTIONS': {
 		client_token?: string | undefined;
 	};
 	'HOME_SITE__/INDEX': {
