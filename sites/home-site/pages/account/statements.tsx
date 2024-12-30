@@ -12,6 +12,7 @@ import { useRetrieveDocuments } from '@wallot/react/src/features/users/hooks/use
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { DateTime } from 'luxon';
 import { GoDownload } from 'react-icons/go';
+import { AsyncLink } from 'ergonomic-react/src/components/custom-ui/async-link';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -67,7 +68,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</div>
 					</div>
 					<div className='mt-2 flex flex-col gap-2'>
-						{documents.map(({ date, id, type }) => {
+						{documents.map(({ date, download_url, id, type }) => {
 							const dateString =
 								date == null
 									? 'Pending'
@@ -84,7 +85,11 @@ const Page: NextPage<PageStaticProps> = (props) => {
 											);
 										},
 									)}
-									<div>
+									<AsyncLink
+										href={download_url ?? ''}
+										isReady={download_url != null}
+										target='_blank'
+									>
 										<button className='flex items-center gap-1'>
 											<div>
 												<GoDownload className='text-gray-400' />
@@ -93,7 +98,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 												<p className='font-light text-sm'>Download</p>
 											</div>
 										</button>
-									</div>
+									</AsyncLink>
 								</div>
 							);
 						})}

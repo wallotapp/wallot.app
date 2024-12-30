@@ -1,16 +1,23 @@
 import { handleKyError } from 'ergonomic';
-import { KyInstance } from 'ky-universal';
+import { default as fetch } from 'node-fetch';
 import { KycUser } from '@wallot/js';
+import { SecretData } from '../../SecretDataTypes.js';
 
 export const downloadAlpacaDocument =
-	(alpacaBrokerDownloadClient: KyInstance) =>
-	async (user: KycUser, documentId: string) => {
+	(secrets: SecretData) => async (user: KycUser, documentId: string) => {
 		try {
-			const response = await alpacaBrokerDownloadClient.get(
-				`v1/accounts/${user.alpaca_account_id}/documents/${documentId}/download`,
+			const response = await fetch(
+				`${secrets.SECRET_CRED_ALPACA_BROKER_API_BASE_URL}/v1/accounts/${user.alpaca_account_id}/documents/${documentId}/download`,
+				{
+					headers: {
+						Authorization: `Basic ${Buffer.from(
+							`${secrets.SECRET_CRED_ALPACA_BROKER_API_KEY}:${secrets.SECRET_CRED_ALPACA_BROKER_API_SECRET}`,
+						).toString('base64')}`,
+					},
+				},
 			);
-			// Extract the pre-signed URL from the 'location' header
-			const downloadUrl = response.headers.get('location');
+
+			const downloadUrl = response.url;
 			if (!downloadUrl) {
 				throw new Error('Download URL not found in response');
 			}

@@ -58,19 +58,3 @@ export const getAlpacaBrokerEstimationApiClient = ({
 			).toString('base64')}`,
 		},
 	});
-
-export const getAlpacaBrokerDownloadClient = ({
-	SECRET_CRED_ALPACA_BROKER_API_BASE_URL,
-	SECRET_CRED_ALPACA_BROKER_API_KEY,
-	SECRET_CRED_ALPACA_BROKER_API_SECRET,
-}: SecretData) =>
-	ky.create({
-		prefixUrl: SECRET_CRED_ALPACA_BROKER_API_BASE_URL,
-		headers: {
-			authorization: `Basic ${Buffer.from(
-				`${SECRET_CRED_ALPACA_BROKER_API_KEY}:${SECRET_CRED_ALPACA_BROKER_API_SECRET}`,
-			).toString('base64')}`,
-		},
-		timeout: 10000,
-		redirect: 'manual',
-	});
