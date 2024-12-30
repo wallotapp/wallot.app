@@ -29,6 +29,8 @@ import {
 	AlpacaPosition,
 	RequestNewAchTransferResponse,
 	RequestNewAchTransferParams,
+	RequestNewOrderParams,
+	RequestNewOrderResponse,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -174,6 +176,31 @@ app.post(
 			req,
 			res,
 			createRouterFunction(auth, secrets)(confirmOrder)(req, res, next),
+		);
+	},
+);
+
+import { requestNewOrder } from './app/wallot/orders/requestNewOrder.js';
+app.options('*/v0/orders', corsPolicy);
+app.post(
+	'*/v0/orders',
+	(
+		req: express.Request<
+			Record<string, never>,
+			RequestNewOrderResponse,
+			RequestNewOrderParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			RequestNewOrderResponse,
+			GeneralizedResLocals<RequestNewOrderResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(requestNewOrder)(req, res, next),
 		);
 	},
 );
