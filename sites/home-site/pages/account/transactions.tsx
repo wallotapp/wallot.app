@@ -1,3 +1,4 @@
+import * as changeCase from 'change-case';
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -7,12 +8,19 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { HomeSiteRouteQueryParams } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
+import { useQueryAssetOrdersForLoggedInUser } from '@wallot/react/src/features/assetOrders/hooks/useQueryAssetOrdersForLoggedInUser';
+import { default as cn } from 'ergonomic-react/src/lib/cn';
+import { getCurrencyUsdStringFromCents } from 'ergonomic';
+import { DateTime } from 'luxon';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
 
 	// Router
 	const router = useRouter();
+
+	// Asset orders
+	const { assetOrdersForLoggedInUser } = useQueryAssetOrdersForLoggedInUser();
 
 	// ==== Constants ==== //
 
@@ -34,8 +42,71 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<AccountDashboardPage>
-				<div>Here are your transactions!</div>
+			<AccountDashboardPage className={cn('lg:max-w-3xl')}>
+				<div>
+					<div>
+						<p className='font-semibold text-2xl'>Transactions</p>
+					</div>
+					<div className='mt-1'>
+						<p className='font-light text-base text-gray-600'>
+							Below are all of the buy and sell orders you have made to date.
+						</p>
+					</div>
+					<div className='mt-3 border-b border-gray-200 py-1'>
+						<div className='grid grid-cols-4 gap-4'>
+							{['Order', 'Shares', 'Avg Entry Price', 'Side'].map((header) => {
+								return (
+									<div key={header}>
+										<p className='font-semibold text-base text-gray-600'>
+											{header}
+										</p>
+									</div>
+								);
+							})}
+						</div>
+					</div>
+					<div className='mt-2 flex flex-col gap-2'>
+						{assetOrdersForLoggedInUser.map(
+							({
+								alpaca_order_filled_at,
+								alpaca_order_filled_avg_price: avg_entry_price,
+								alpaca_order_filled_qty: qty,
+								alpaca_order_side: side,
+								alpaca_order_symbol: symbol,
+							}) => {
+								const date =
+									alpaca_order_filled_at == null
+										? 'Recent'
+										: DateTime.fromISO(alpaca_order_filled_at).toLocaleString(
+												DateTime.DATE_SHORT,
+										  );
+								const avgEntryPriceCents =
+									avg_entry_price == null
+										? 0
+										: parseFloat(avg_entry_price) * 100;
+								const avgEntryPriceUsdString =
+									getCurrencyUsdStringFromCents(avgEntryPriceCents);
+								const orderName = `${symbol} - ${date}`;
+								return (
+									<div key={orderName} className={cn('grid grid-cols-4 gap-4')}>
+										{[
+											orderName,
+											qty,
+											avgEntryPriceUsdString,
+											changeCase.capitalCase(side ?? ''),
+										].map((value, valueIdx) => {
+											return (
+												<div key={valueIdx}>
+													<p className='font-light text-sm'>{value}</p>
+												</div>
+											);
+										})}
+									</div>
+								);
+							},
+						)}
+					</div>
+				</div>
 			</AccountDashboardPage>
 		</PageComponent>
 	);
