@@ -76,7 +76,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							}) => {
 								const date =
 									alpaca_order_filled_at == null
-										? 'Recent'
+										? 'Pending'
 										: DateTime.fromISO(alpaca_order_filled_at).toLocaleString(
 												DateTime.DATE_SHORT,
 										  );
@@ -84,16 +84,17 @@ const Page: NextPage<PageStaticProps> = (props) => {
 									avg_entry_price == null
 										? 0
 										: parseFloat(avg_entry_price) * 100;
-								const avgEntryPriceUsdString =
-									getCurrencyUsdStringFromCents(avgEntryPriceCents);
+								const avgEntryPriceUsdString = avgEntryPriceCents
+									? getCurrencyUsdStringFromCents(avgEntryPriceCents)
+									: 'Pending';
 								const orderName = `${symbol} - ${date}`;
 								return (
 									<div key={orderName} className={cn('grid grid-cols-4 gap-4')}>
 										{[
 											orderName,
-											qty,
+											qty || 'Pending',
 											avgEntryPriceUsdString,
-											changeCase.capitalCase(side ?? ''),
+											changeCase.capitalCase(side || 'Pending'),
 										].map((value, valueIdx) => {
 											return (
 												<div key={valueIdx}>
