@@ -7,6 +7,8 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import {
 	HomeSiteRouteQueryParams,
+	isAchTransferRejectedByAlpaca,
+	isAchTransferWithFundsReceivedByAlpaca,
 	isBankAccountApprovedByAlpaca,
 } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
@@ -17,6 +19,7 @@ import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountsForLoggedInUser';
 import { useState } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
+import { useQueryAchTransfersForLoggedInUser } from '@wallot/react/src/features/achTransfers/hooks/useQueryAchTransfersForLoggedInUser';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== State ==== //
@@ -39,6 +42,16 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		bankAccountsForLoggedInUser.filter(isBankAccountApprovedByAlpaca);
 	const hasAtLeastOneApprovedBankAccounts =
 		approvedBankAccountsForLoggedInUser.length > 0;
+
+	// ACH Transfers
+	const { achTransfersForLoggedInUser } = useQueryAchTransfersForLoggedInUser();
+	const queuedAchTransfersForLoggedInUser = achTransfersForLoggedInUser.filter(
+		(achTransfer) =>
+			!isAchTransferRejectedByAlpaca(achTransfer) &&
+			!isAchTransferWithFundsReceivedByAlpaca(achTransfer),
+	);
+	const hasAtLeastOneQueuedAchTransfers =
+		queuedAchTransfersForLoggedInUser.length > 0;
 
 	// ==== Constants ==== //
 
@@ -82,15 +95,22 @@ const Page: NextPage<PageStaticProps> = (props) => {
 											'text-center',
 										)}
 										onClick={() => {
-											if (hasAtLeastOneApprovedBankAccounts) {
-												setMode('new_ach_transfer');
-											} else {
+											if (!hasAtLeastOneApprovedBankAccounts) {
 												toast({
 													title:
 														'Unable to start a new ACH transfer at this time',
 													description:
 														'If you have recently made a bank account connection, please wait a few minutes and try again.',
 												});
+											} else if (hasAtLeastOneQueuedAchTransfers) {
+												toast({
+													title:
+														'Unable to start a new ACH transfer at this time',
+													description:
+														'You already have a pending ACH transfer. Please wait for the transfer to complete before starting a new one.',
+												});
+											} else {
+												setMode('new_ach_transfer');
 											}
 										}}
 									>
