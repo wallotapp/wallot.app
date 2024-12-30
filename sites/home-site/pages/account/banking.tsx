@@ -28,7 +28,7 @@ import { BankAccountsContainer } from '@wallot/react/src/features/bankAccounts/c
 import { GoPlus } from 'react-icons/go';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountsForLoggedInUser';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
 import { useQueryAchTransfersForLoggedInUser } from '@wallot/react/src/features/achTransfers/hooks/useQueryAchTransfersForLoggedInUser';
 import { DateTime } from 'luxon';
@@ -40,6 +40,7 @@ import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/compon
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { useRequestNewAchTransferMutation } from '@wallot/react/src/features/achTransfers/hooks/useRequestNewAchTransferMutation';
+import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== State ==== //
@@ -104,7 +105,9 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					return acc;
 				}
 
-				acc[_id] = `${account_type} account ending in ${last_4}`.trim();
+				acc[_id] = `${changeCase.capitalCase(
+					account_type ?? '',
+				)} account ending in ${last_4}`.trim();
 				return acc;
 			},
 			{} as Record<string, string>,
@@ -119,7 +122,14 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			.label('Bank Account'),
 		direction: AlpacaAchTransferDirectionEnum.getDefinedSchema()
 			.default('' as AlpacaAchTransferDirection)
-			.required(),
+			.required()
+			.label('Type of Transfer')
+			.meta({
+				label_by_enum_option: {
+					INCOMING: 'Deposit Funds into Wallot',
+					OUTGOING: 'Withdraw Funds from Wallot',
+				},
+			}),
 	} as const;
 	const newTransferFormSchema = yup.object(newTransferFormProperties);
 	const newTransferFormFieldSpecByFieldKey = getFieldSpecByFieldKey(
@@ -185,6 +195,9 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const isFormSubmitting = formStatus === 'running';
 	const fields: LiteFormFieldProps<RequestNewAchTransferParams>[] = [
 		{
+			fieldKey: 'direction' as const,
+		},
+		{
 			fieldKey: 'bank_account' as const,
 		},
 		{
@@ -213,6 +226,23 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		requestNewAchTransfer(data);
 	};
 	const isSubmitButtonDisabled = !isNewTransferFormReady || isFormSubmitting;
+
+	// ==== Effects ==== //
+	const [hasInitializedDefaultValues, setHasInitializedDefaultValues] =
+		useState(false);
+	useEffect(() => {
+		if (hasInitializedDefaultValues) return;
+
+		const initialValues = getGeneralizedFormDataFromServerData(
+			newTransferFormSchema.getDefault(),
+			{
+				...defaultGeneralizedFormDataTransformationOptions,
+				currencyFieldKeys: ['amount'],
+			},
+		);
+		reset(initialValues);
+		setHasInitializedDefaultValues(true);
+	}, [hasInitializedDefaultValues]);
 
 	// ==== Render ==== //
 	return (
@@ -376,7 +406,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							within 1-2 business days.
 						</p>
 					</div>
-					<div className='mt-4'>
+					<div className='mt-4 lg:max-w-lg'>
 						<form onSubmit={handleSubmit(onSubmit) as () => void}>
 							<div>
 								{fields.map((fieldProps) => (
@@ -391,6 +421,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 									className='w-full'
 									isDisabled={isSubmitButtonDisabled}
 									isSubmitting={isFormSubmitting}
+									text='Submit Transfer'
 								/>
 							</div>
 							{Boolean(formState.errors['root']?.message) && (
