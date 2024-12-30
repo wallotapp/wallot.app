@@ -149,17 +149,31 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							</div>
 						</div>
 					)}
-					<div className='mt-4'>
-						{/* Equity Section */}
-						<div>Equity</div>
-					</div>
-					<div className='mt-4'>
-						{/* Recent Orders Section */}
-						<div>Recent orders</div>
-					</div>
-					<div className='mt-4'>
-						{/* Billing Information */}
-						<div>Billing information</div>
+					<div
+						className={cn(
+							'mt-4',
+							'grid grid-cols-1 gap-y-4',
+							'lg:grid-cols-3 lg:gap-x-4 lg:gap-y-0',
+						)}
+					>
+						<div className='bg-white rounded-md shadow-sm p-4 border border-gray-200'>
+							{/* Equity Section */}
+							<div>
+								<p className='font-medium text-base'>Equity</p>
+							</div>
+						</div>
+						<div className='bg-white rounded-md shadow-sm p-4 border border-gray-200'>
+							{/* Recent Orders Section */}
+							<div>
+								<p className='font-medium text-base'>Recent orders</p>
+							</div>
+						</div>
+						<div className='bg-white rounded-md shadow-sm p-4 border border-gray-200'>
+							{/* Billing Information Section */}
+							<div>
+								<p className='font-medium text-base'>Billing information</p>
+							</div>
+						</div>
 					</div>
 					{tasks.length === 0 &&
 						state !==
