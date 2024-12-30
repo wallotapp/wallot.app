@@ -7,12 +7,18 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { HomeSiteRouteQueryParams } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
+import { default as cn } from 'ergonomic-react/src/lib/cn';
+import { GoPlus } from 'react-icons/go';
+import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
 
 	// Router
 	const router = useRouter();
+
+	// Toaster
+	const { toast } = useToast();
 
 	// ==== Constants ==== //
 
@@ -34,8 +40,55 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<AccountDashboardPage>
-				<div>Here are your bank accounts!</div>
+			<AccountDashboardPage className={cn('lg:max-w-3xl')}>
+				<div>
+					<div
+						className={cn(
+							'lg:flex lg:items-center lg:justify-between lg:space-x-20',
+						)}
+					>
+						<div>
+							<div>
+								<p className='font-semibold text-2xl'>Bank Accounts</p>
+							</div>
+						</div>
+						<div className='mt-4 lg:mt-0 flex items-center space-x-5'>
+							{[{ ctaText: 'Connect a bank account' }].map(({ ctaText }) => {
+								return (
+									<div key={ctaText}>
+										<button
+											className={cn(
+												'bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100',
+												'flex items-center space-x-1',
+												'text-center',
+											)}
+											onClick={() => {
+												toast({
+													title:
+														'Error - your account must be funded to trade.',
+													description:
+														'If you have recently made a deposit, please wait a few minutes and try again.',
+												});
+											}}
+										>
+											<div>
+												<GoPlus />
+											</div>
+											<div>
+												<p className='font-light text-sm'>{ctaText}</p>
+											</div>
+										</button>
+									</div>
+								);
+							})}
+						</div>
+					</div>
+					<div className='mt-4 lg:mt-1'>
+						<p className='font-light text-base text-gray-600'>
+							Connected bank accounts help you fund your Wallot account
+						</p>
+					</div>
+				</div>
 			</AccountDashboardPage>
 		</PageComponent>
 	);
