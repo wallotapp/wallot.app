@@ -7,14 +7,14 @@ import {
 	SheetTrigger,
 } from 'ergonomic-react/src/components/ui/sheet';
 import { Fragment } from 'react';
-import { BlogLink } from './BlogLink';
-import { HomeLink } from './HomeLink';
-import { KnowledgeBaseLink } from './KnowledgeBaseLink';
-import { LoginButton } from './LoginButton';
-import { LoginLink } from './LoginLink';
-import { LogoButton } from './LogoButton';
-import { RegisterButton } from './RegisterButton';
-import { SupportLink } from './SupportLink';
+import { BlogLink } from '@wallot/react/src/components/BlogLink';
+import { HomeLink } from '@wallot/react/src/components/HomeLink';
+import { KnowledgeBaseLink } from '@wallot/react/src/components/KnowledgeBaseLink';
+import { LoginButton } from '@wallot/react/src/components/LoginButton';
+import { LoginLink } from '@wallot/react/src/components/LoginLink';
+import { LogoButton } from '@wallot/react/src/components/LogoButton';
+import { RegisterButton } from '@wallot/react/src/components/RegisterButton';
+import { SupportLink } from '@wallot/react/src/components/SupportLink';
 
 export type PageHeaderProps = BaseComponent & {
 	getCustomLogoButton?: (props: BaseComponent) => JSX.Element;

@@ -1,5 +1,3 @@
-import { signOut } from 'firebase/auth';
-import { firebaseAuthInstance } from 'ergonomic-react/src/lib/firebase';
 import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
 import {
 	Popover,
@@ -7,12 +5,13 @@ import {
 	PopoverTrigger,
 } from 'ergonomic-react/src/components/ui/popover';
 import cn from 'ergonomic-react/src/lib/cn';
+import { SITE_ORIGIN } from 'ergonomic-react/src/config/originConfig';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
-import { useQueryCurrentUser } from '@wallot/react/src/features/users';
+import { useQueryLoggedInUser } from '@wallot/react/src/features/users';
 import Link from 'next/link';
-import { useState } from 'react';
 import { getHomeSiteRoute } from '@wallot/js';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
+import { useRouter } from 'next/router';
 
 export type UserMenuPopover = BaseComponent & {
 	TriggerComponent: React.ReactNode;
@@ -21,24 +20,16 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 	TriggerComponent,
 	className = '',
 }) => {
-	const [isLoggingOut, setIsLoggingOut] = useState(false);
-	const { currentUser } = useQueryCurrentUser();
+	// const [isLoggingOut, setIsLoggingOut] = useState(false);
+	const { loggedInUser } = useQueryLoggedInUser();
+	// Router
+	const router = useRouter();
 	// Site Origin by Target
 	const siteOriginByTarget = useSiteOriginByTarget();
-	const onLogOut = () => {
-		return void (async () => {
-			try {
-				setIsLoggingOut(true);
+	const homeSiteOrigin = siteOriginByTarget.HOME_SITE;
+	const includeOrigin = SITE_ORIGIN === homeSiteOrigin;
+	const onLogOut = () => void router.replace('/logout');
 
-				// Sign out of Firebase Auth
-				await signOut(firebaseAuthInstance);
-			} catch (err) {
-				console.error(err);
-			} finally {
-				setIsLoggingOut(false);
-			}
-		})();
-	};
 	return (
 		<Popover>
 			<PopoverTrigger asChild>{TriggerComponent}</PopoverTrigger>
@@ -46,13 +37,13 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 				<div className='p-3'>
 					<div>
 						<p className='font-semibold'>
-							{currentUser?.alpaca_account_identity?.given_name ||
-								currentUser?.username}
+							{loggedInUser?.alpaca_account_identity?.given_name ||
+								loggedInUser?.username}
 						</p>
 					</div>
 					<div>
 						<p className='text-gray-500 text-[0.66rem]'>
-							{currentUser?.firebase_auth_email ?? ''}
+							{loggedInUser?.firebase_auth_email ?? ''}
 						</p>
 					</div>
 				</div>
@@ -63,25 +54,37 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 					{[
 						{
 							href: getHomeSiteRoute({
-								includeOrigin: true,
-								origin: siteOriginByTarget['HOME_SITE'],
+								includeOrigin,
+								origin: homeSiteOrigin,
+								queryParams: {},
+								routeStaticId: 'HOME_SITE__/ACCOUNT/OVERVIEW',
+							}),
+							target: '_self',
+							title: 'Account',
+						},
+						{
+							href: getHomeSiteRoute({
+								includeOrigin,
+								origin: homeSiteOrigin,
 								queryParams: {},
 								routeStaticId: 'HOME_SITE__/INDEX',
 							}),
+							target: '_blank',
 							title: 'Terms of Service',
 						},
 						{
 							href: getHomeSiteRoute({
-								includeOrigin: true,
-								origin: siteOriginByTarget['HOME_SITE'],
+								includeOrigin,
+								origin: homeSiteOrigin,
 								queryParams: {},
 								routeStaticId: 'HOME_SITE__/INDEX',
 							}),
+							target: '_blank',
 							title: 'Privacy Policy',
 						},
-					].map(({ href, title }) => {
+					].map(({ href, target, title }) => {
 						return (
-							<Link href={href} key={href} target='_blank'>
+							<Link href={href} key={href} target={target}>
 								<div
 									className={cn(
 										'group hover:bg-purple-50 px-3 py-1',
@@ -115,27 +118,14 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 						onClick={onLogOut}
 					>
 						<div>
-							{isLoggingOut ? (
-								<>
-									<div className='flex items-center space-x-2'>
-										<div
-											className={cn(
-												'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
-												'border-t-brand border-r-brand border-b-brand',
-											)}
-										></div>
-									</div>
-								</>
-							) : (
-								<p
-									className={cn(
-										'group-hover:font-medium text-sm',
-										'duration-200 ease-in-out transition-all',
-									)}
-								>
-									Log Out
-								</p>
-							)}
+							<p
+								className={cn(
+									'group-hover:font-medium text-sm',
+									'duration-200 ease-in-out transition-all',
+								)}
+							>
+								Log Out
+							</p>
 						</div>
 					</button>
 				</div>
