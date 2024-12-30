@@ -16,6 +16,8 @@ import {
 	requestAlpacaAchTransfer,
 	createAlpacaAchRelationship,
 	retrieveAlpacaAchRelationship,
+	retrieveAlpacaDocuments,
+	downloadAlpacaDocument,
 	estimateAlpacaOrder,
 	placeAlpacaOrder,
 	retrieveAlpacaOrder,
@@ -56,6 +58,7 @@ export const getServices = (
 	const alpacaBrokerClient = getAlpacaBrokerApiClient(secrets);
 	const alpacaBrokerEstimationClient =
 		getAlpacaBrokerEstimationApiClient(secrets);
+	// const alpacaBrokerDownloadClient = getAlpacaBrokerDownloadClient(secrets);
 	const decrypt = decryptString(
 		secrets.SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY,
 	);
@@ -77,6 +80,9 @@ export const getServices = (
 				),
 				retrieveAlpacaAchRelationship:
 					retrieveAlpacaAchRelationship(alpacaBrokerClient),
+				// Alpaca Documents
+				retrieveAlpacaDocuments: retrieveAlpacaDocuments(alpacaBrokerClient),
+				downloadAlpacaDocument: downloadAlpacaDocument(secrets),
 				// Alpaca Orders
 				estimateAlpacaOrder: estimateAlpacaOrder(
 					alpacaBrokerEstimationClient,

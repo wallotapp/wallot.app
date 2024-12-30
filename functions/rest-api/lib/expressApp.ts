@@ -31,6 +31,7 @@ import {
 	RequestNewAchTransferParams,
 	RequestNewOrderParams,
 	RequestNewOrderResponse,
+	AlpacaDocument,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -150,6 +151,57 @@ app.post(
 			req,
 			res,
 			createRouterFunction(auth, secrets)(tokenizeBankAccount)(req, res, next),
+		);
+	},
+);
+
+// Documents
+import { retrieveDocuments } from './app/wallot/users/retrieveDocuments.js';
+app.options('*/v0/documents', corsPolicy);
+app.get(
+	'*/v0/documents',
+	(
+		req: express.Request<
+			Record<string, never>,
+			AlpacaDocument[],
+			Record<string, never>,
+			Record<string, never>
+		>,
+		res: express.Response<
+			AlpacaDocument[],
+			GeneralizedResLocals<AlpacaDocument[]>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(retrieveDocuments)(req, res, next),
+		);
+	},
+);
+
+import { downloadDocument } from './app/wallot/users/downloadDocument.js';
+app.options('*/v0/documents/:documentId/download', corsPolicy);
+app.get(
+	'*/v0/documents/:documentId/download',
+	(
+		req: express.Request<
+			{ documentId: string },
+			{ download_url: string },
+			Record<string, never>,
+			Record<string, never>
+		>,
+		res: express.Response<
+			{ download_url: string },
+			GeneralizedResLocals<{ download_url: string }>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(downloadDocument)(req, res, next),
 		);
 	},
 );
