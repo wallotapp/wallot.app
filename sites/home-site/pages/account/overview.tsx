@@ -5,7 +5,7 @@ import {
 	PageStaticProps,
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { HomeSiteRouteQueryParams } from '@wallot/js';
+import { getHomeSiteRoute, HomeSiteRouteQueryParams } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import Link from 'next/link';
@@ -14,6 +14,9 @@ import {
 	useQueryLoggedInUserStatus,
 } from '@wallot/react/src/features/users';
 import { GoArrowRight, GoCheckCircle } from 'react-icons/go';
+import { Fragment } from 'react';
+import { useQueryAssetOrdersForLoggedInUser } from '@wallot/react/src/features/assetOrders';
+import { getCurrencyUsdStringFromCents } from 'ergonomic';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -22,9 +25,11 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const router = useRouter();
 
 	// Router
-	const { loggedInUserDisplayName } = useQueryLoggedInUser();
+	const { loggedInUserEquityBalanceUsdString, loggedInUserDisplayName } =
+		useQueryLoggedInUser();
 	const { state, tasks, isUserActivatedByAlpaca } =
 		useQueryLoggedInUserStatus();
+	const { assetOrdersForLoggedInUser } = useQueryAssetOrdersForLoggedInUser();
 
 	// ==== Constants ==== //
 
@@ -162,24 +167,102 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							'lg:grid-cols-3 lg:gap-x-4 lg:gap-y-0',
 						)}
 					>
-						<div className='bg-white rounded-md shadow-sm p-4 border border-gray-200'>
-							{/* Equity Section */}
-							<div>
-								<p className='font-medium text-base'>Equity</p>
-							</div>
-						</div>
-						<div className='bg-white rounded-md shadow-sm p-4 border border-gray-200'>
-							{/* Recent Orders Section */}
-							<div>
-								<p className='font-medium text-base'>Recent orders</p>
-							</div>
-						</div>
-						<div className='bg-white rounded-md shadow-sm p-4 border border-gray-200'>
-							{/* Billing Information Section */}
-							<div>
-								<p className='font-medium text-base'>Billing information</p>
-							</div>
-						</div>
+						{[
+							{
+								CardContent: (
+									<Fragment>
+										<div className='flex flex-col items-center justify-center h-full'>
+											<p className='font-extralight text-2xl'>
+												{loggedInUserEquityBalanceUsdString}
+											</p>
+										</div>
+									</Fragment>
+								),
+								title: 'Equity',
+							},
+							{
+								CardContent: (
+									<Fragment>
+										<div className=''>
+											{assetOrdersForLoggedInUser.map(
+												(
+													{
+														order,
+														amount,
+														alpaca_order_symbol,
+														alpaca_order_filled_avg_price,
+													},
+													assetOrderIdx,
+												) => {
+													const amountUsdString =
+														getCurrencyUsdStringFromCents(amount);
+													const isFilled =
+														alpaca_order_filled_avg_price != null &&
+														alpaca_order_filled_avg_price !== '';
+													const ctaText = isFilled ? 'View' : 'Place order';
+													return (
+														<div
+															key={alpaca_order_symbol}
+															className={cn(
+																'flex items-center space-x-2 justify-between',
+																assetOrderIdx > 0 ? 'mt-2' : '',
+															)}
+														>
+															<div className='flex items-center space-x-2'>
+																<div>
+																	<p className='font-light text-xs'>
+																		{amountUsdString}
+																	</p>
+																</div>
+																<div>
+																	<p className='font-light text-sm'>
+																		{alpaca_order_symbol}
+																	</p>
+																</div>
+															</div>
+															<div>
+																<Link
+																	href={getHomeSiteRoute({
+																		includeOrigin: false,
+																		origin: null,
+																		queryParams: { order_id: order },
+																		routeStaticId: isFilled
+																			? 'HOME_SITE__/ORDERS/[ORDER_ID]/TRACK'
+																			: 'HOME_SITE__/ORDERS/[ORDER_ID]/CHECKOUT',
+																	})}
+																>
+																	<div className='cursor-pointer rounded-lg flex items-center justify-center space-x-2 px-2 py-1'>
+																		<div>
+																			<p className='text-xs underline'>
+																				{ctaText}
+																			</p>
+																		</div>
+																	</div>
+																</Link>
+															</div>
+														</div>
+													);
+												},
+											)}
+										</div>
+									</Fragment>
+								),
+								title: 'Orders',
+							},
+							{
+								CardContent: <Fragment></Fragment>,
+								title: 'Billing Information',
+							},
+						].map(({ CardContent, title }) => {
+							return (
+								<div className='bg-white rounded-md shadow-sm px-4 py-4 border border-gray-200 flex flex-col'>
+									<div>
+										<p className='font-medium text-base'>{title}</p>
+									</div>
+									<div className='mt-2 h-full'>{CardContent}</div>
+								</div>
+							);
+						})}
 					</div>
 					{tasks.length === 0 &&
 						state !==
