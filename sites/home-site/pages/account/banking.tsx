@@ -20,7 +20,7 @@ import {
 	isAchTransferRejectedByAlpaca,
 	isAchTransferWithFundsReceivedByAlpaca,
 	isBankAccountApprovedByAlpaca,
-	RequestNewTransferParams,
+	RequestNewAchTransferParams,
 } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
@@ -39,7 +39,7 @@ import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/Lite
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
-import { useRequestNewTransferMutation } from '@wallot/react/src/features/achTransfers/hooks/useRequestNewTransferMutation';
+import { useRequestNewAchTransferMutation } from '@wallot/react/src/features/achTransfers/hooks/useRequestNewAchTransferMutation';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== State ==== //
@@ -112,7 +112,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const ApprovedBankAccountIdEnum = getEnum(approvedBankAccountIds);
 	const newTransferFormProperties = {
 		amount: YupHelpers.usd().required(),
-		bank_account_id: ApprovedBankAccountIdEnum.getDefinedSchema()
+		bank_account: ApprovedBankAccountIdEnum.getDefinedSchema()
 			.default(approvedBankAccountIds[0])
 			.required()
 			.meta({ label_by_enum_option: approvedBankAccountNameById })
@@ -124,14 +124,14 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const newTransferFormSchema = yup.object(newTransferFormProperties);
 	const newTransferFormFieldSpecByFieldKey = getFieldSpecByFieldKey(
 		newTransferFormSchema,
-		['bank_account_id', 'amount', 'direction'],
+		['bank_account', 'amount', 'direction'],
 	);
 	const resolver = useYupValidationResolver(newTransferFormSchema, {
 		...defaultGeneralizedFormDataTransformationOptions,
 		currencyFieldKeys: ['amount'],
 	});
 	const { control, formState, handleSubmit, reset, setError, watch } =
-		useForm<RequestNewTransferParams>({
+		useForm<RequestNewAchTransferParams>({
 			defaultValues: newTransferFormSchema.getDefault(),
 			resolver,
 			shouldUnregister: false,
@@ -140,48 +140,52 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const isNewTransferFormReady =
 		String(liveData.amount).length > 0 &&
 		String(liveData.amount) !== '$0.00' &&
-		liveData.bank_account_id != null &&
-		liveData.bank_account_id.length > 0;
+		liveData.bank_account != null &&
+		liveData.bank_account.length > 0;
 
 	// Mutation
-	const { mutate: requestNewTransfer, isLoading: isRequestNewTransferRunning } =
-		useRequestNewTransferMutation({
-			onError: ({ error: { message } }) => {
-				// Show the error message
-				toast({
-					title: 'Error',
-					description: message,
-				});
-				setError('root', {
-					type: 'manual',
-					message: 'An error occurred. Please try again.',
-				});
+	const {
+		mutate: requestNewAchTransfer,
+		isLoading: isRequestNewAchTransferRunning,
+	} = useRequestNewAchTransferMutation({
+		onError: ({ error: { message } }) => {
+			// Show the error message
+			toast({
+				title: 'Error',
+				description: message,
+			});
+			setError('root', {
+				type: 'manual',
+				message: 'An error occurred. Please try again.',
+			});
 
-				// Reset form
-				reset();
-			},
-			onSuccess: async () => {
-				// Refetch ACH transfers
-				await refetchAchTransfersForLoggedInUser();
+			// Reset form
+			reset();
+		},
+		onSuccess: async () => {
+			// Refetch ACH transfers
+			await refetchAchTransfersForLoggedInUser();
 
-				// Show success toast
-				toast({
-					title: 'Success',
-					description: 'Your transfer is queued for processing.',
-				});
+			// Show success toast
+			toast({
+				title: 'Success',
+				description: 'Your transfer is queued for processing.',
+			});
 
-				// Switch back to bank accounts mode
-				setMode('bank_accounts');
-			},
-		});
+			// Switch back to bank accounts mode
+			setMode('bank_accounts');
+		},
+	});
 
 	// Form
 	const formStatus =
-		formState.isSubmitting || isRequestNewTransferRunning ? 'running' : 'idle';
+		formState.isSubmitting || isRequestNewAchTransferRunning
+			? 'running'
+			: 'idle';
 	const isFormSubmitting = formStatus === 'running';
-	const fields: LiteFormFieldProps<RequestNewTransferParams>[] = [
+	const fields: LiteFormFieldProps<RequestNewAchTransferParams>[] = [
 		{
-			fieldKey: 'bank_account_id' as const,
+			fieldKey: 'bank_account' as const,
 		},
 		{
 			fieldKey: 'amount' as const,
@@ -200,13 +204,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	}));
 
 	// Form Submit Handler
-	const onSubmit = (data: RequestNewTransferParams) => {
+	const onSubmit = (data: RequestNewAchTransferParams) => {
 		console.log('Requesting new transfer with following data:', data);
 		toast({
 			title: 'Requesting your transfer',
 			description: 'This may take a few moments...',
 		});
-		requestNewTransfer(data);
+		requestNewAchTransfer(data);
 	};
 	const isSubmitButtonDisabled = !isNewTransferFormReady || isFormSubmitting;
 

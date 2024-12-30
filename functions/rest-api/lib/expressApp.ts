@@ -27,6 +27,8 @@ import {
 	RetrieveAssetPriceQueryParams,
 	RetrieveAssetPriceResponse,
 	AlpacaPosition,
+	RequestNewAchTransferResponse,
+	RequestNewAchTransferParams,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -42,6 +44,36 @@ const app = express.default();
 app.use(express.json());
 
 // ---- Application Routes: Wallot ---- //
+
+// ACH Transfers
+import { requestNewAchTransfer } from './app/wallot/achTransfers/requestNewAchTransfer.js';
+app.options('*/v0/transfers', corsPolicy);
+app.post(
+	'*/v0/transfers',
+	(
+		req: express.Request<
+			Record<string, never>,
+			RequestNewAchTransferResponse,
+			RequestNewAchTransferParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			RequestNewAchTransferResponse,
+			GeneralizedResLocals<RequestNewAchTransferResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(requestNewAchTransfer)(
+				req,
+				res,
+				next,
+			),
+		);
+	},
+);
 
 // Assets
 import { retrieveAssetPrice } from './app/wallot/assets/retrieveAssetPrice.js';

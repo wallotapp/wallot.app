@@ -2,13 +2,13 @@ import { User as FirebaseUser } from 'firebase/auth';
 import { handleKyError } from 'ergonomic';
 import { getAuthenticatedKyInstance } from '@wallot/react/src/lib/ky';
 import {
-	RequestNewTransferParams,
-	RequestNewTransferResponse,
+	RequestNewAchTransferParams,
+	RequestNewAchTransferResponse,
 } from '@wallot/js';
 
-export const requestNewTransfer = async (
+export const requestNewAchTransfer = async (
 	firebaseUser: FirebaseUser | null,
-	params: RequestNewTransferParams,
+	params: RequestNewAchTransferParams,
 ) => {
 	try {
 		if (!firebaseUser) {
@@ -19,7 +19,7 @@ export const requestNewTransfer = async (
 			.post('v0/transfers', {
 				json: params,
 			})
-			.json<RequestNewTransferResponse>();
+			.json<RequestNewAchTransferResponse>();
 		return data;
 	} catch (err) {
 		const kyErr = await handleKyError(err);
