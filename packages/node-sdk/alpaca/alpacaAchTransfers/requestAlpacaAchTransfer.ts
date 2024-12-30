@@ -10,7 +10,10 @@ export const requestAlpacaAchTransfer =
 	(alpacaBrokerClient: KyInstance) =>
 	async (
 		user: UserActivatedByAlpaca,
-		bankAccount: BankAccountApprovedByAlpaca,
+		bankAccount: Pick<
+			BankAccountApprovedByAlpaca,
+			'alpaca_ach_relationship_id'
+		>,
 		amountInCents: number,
 	) => {
 		try {
