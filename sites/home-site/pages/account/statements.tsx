@@ -1,3 +1,4 @@
+import * as changeCase from 'change-case';
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -7,12 +8,19 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { HomeSiteRouteQueryParams } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
+import { useRetrieveDocuments } from '@wallot/react/src/features/users/hooks/useRetrieveDocuments';
+import { default as cn } from 'ergonomic-react/src/lib/cn';
+import { DateTime } from 'luxon';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
 
 	// Router
 	const router = useRouter();
+
+	// Documents
+	const { data: documentsData } = useRetrieveDocuments();
+	const documents = documentsData ?? [];
 
 	// ==== Constants ==== //
 
@@ -34,8 +42,52 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<AccountDashboardPage>
-				<div>Here are your statements!</div>
+			<AccountDashboardPage className={cn('lg:max-w-3xl')}>
+				<div>
+					<div>
+						<p className='font-semibold text-2xl'>Documents</p>
+					</div>
+					<div className='mt-1'>
+						<p className='font-light text-base text-gray-600'>
+							Below are the current documents in your account.
+						</p>
+					</div>
+					<div className='mt-3 border-b border-gray-200 py-1'>
+						<div className='grid grid-cols-3 gap-4'>
+							{['Date', 'Name', 'Type of Document'].map((header) => {
+								return (
+									<div key={header}>
+										<p className='font-semibold text-base text-gray-600'>
+											{header}
+										</p>
+									</div>
+								);
+							})}
+						</div>
+					</div>
+					<div className='mt-2 flex flex-col gap-2'>
+						{documents.map(({ date, id, type, name }) => {
+							const dateString =
+								date == null
+									? 'Pending'
+									: DateTime.fromISO(date).toLocaleString(DateTime.DATE_SHORT);
+
+							return (
+								<div key={id} className={cn('grid grid-cols-3 gap-4')}>
+									{[dateString, name, changeCase.capitalCase(type ?? '')].map(
+										(value, valueIdx) => {
+											return (
+												<div key={valueIdx}>
+													<p className='font-light text-sm'>{value}</p>
+												</div>
+											);
+										},
+									)}
+								</div>
+							);
+						})}
+					</div>
+				</div>
 			</AccountDashboardPage>
 		</PageComponent>
 	);
