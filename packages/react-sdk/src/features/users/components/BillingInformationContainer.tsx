@@ -22,6 +22,7 @@ import { FiChevronDown } from 'react-icons/fi';
 import { GoCheckCircleFill } from 'react-icons/go';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
+import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
 
 const BillingInformationSectionEnum = getEnum([
 	'Contact Details',
@@ -370,7 +371,14 @@ export function BillingInformationContainer({
 				setActiveBillingInformationSection('Tax Details');
 			}
 		}
-		reset(defaultValues);
+		const defaultFormValues = getGeneralizedFormDataFromServerData(
+			defaultValues,
+			{
+				...defaultGeneralizedFormDataTransformationOptions,
+				phoneNumberFieldKeys: ['phone_number'],
+			},
+		);
+		reset(defaultFormValues);
 		setHasInitializedDefaultValues(true);
 	}, [
 		defaultOpen,
