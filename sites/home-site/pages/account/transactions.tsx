@@ -13,6 +13,7 @@ import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import { DateTime } from 'luxon';
 import { GoPlus } from 'react-icons/go';
+import { ScheduleCallDialog } from '@wallot/home-site/src/components/ScheduleCallDialog';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -60,20 +61,24 @@ const Page: NextPage<PageStaticProps> = (props) => {
 								({ ctaText }) => {
 									return (
 										<div key={ctaText}>
-											<button
-												className={cn(
-													'bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100',
-													'flex items-center space-x-1',
-													'text-center',
-												)}
-											>
-												<div>
-													<GoPlus />
-												</div>
-												<div>
-													<p className='font-light text-sm'>{ctaText}</p>
-												</div>
-											</button>
+											<ScheduleCallDialog
+												TriggerComponent={
+													<button
+														className={cn(
+															'bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100',
+															'flex items-center space-x-1',
+															'text-center',
+														)}
+													>
+														<div>
+															<GoPlus />
+														</div>
+														<div>
+															<p className='font-light text-sm'>{ctaText}</p>
+														</div>
+													</button>
+												}
+											/>
 										</div>
 									);
 								},
