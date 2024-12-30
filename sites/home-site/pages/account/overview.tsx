@@ -16,12 +16,16 @@ import { useQueryAssetOrdersForLoggedInUser } from '@wallot/react/src/features/a
 import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import { Fragment } from 'react';
 import { BsBank } from 'react-icons/bs';
+import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
 
 	// Router
 	const router = useRouter();
+
+	// Toaster
+	const { toast } = useToast();
 
 	// Router
 	const {
@@ -72,11 +76,18 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						<div className='mt-1'>
 							<p className='font-light text-base text-gray-600'>
 								Browse our{' '}
-								<Link href='/knowledge-base' target='_blank'>
-									<span className='font-normal text-brand hover:text-brand-dark'>
-										knowledge base
-									</span>
-								</Link>{' '}
+								<span
+									className='font-normal text-brand hover:text-brand-dark cursor-pointer'
+									onClick={() => {
+										toast({
+											title: 'Coming Soon',
+											description:
+												"This feature isn't available yet. Stay tuned!",
+										});
+									}}
+								>
+									knowledge base
+								</span>{' '}
 								or{' '}
 								<Link href='https://instagram.com/wallotapp' target='_blank'>
 									<span className='font-normal text-brand hover:text-brand-dark'>

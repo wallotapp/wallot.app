@@ -11,12 +11,12 @@ export function HomeLink({ className = '' }: BaseComponent) {
 		routeState: { currentRouteStaticId },
 	} = useRouteStateContext();
 	const siteOriginByTarget = useSiteOriginByTarget();
-	const homeSiteOrigin = siteOriginByTarget['HOME_SITE'];
+	const homeSiteOrigin = siteOriginByTarget.HOME_SITE;
 	const homeHref = getHomeSiteRoute({
 		includeOrigin: SITE_ORIGIN !== homeSiteOrigin,
 		origin: homeSiteOrigin,
 		queryParams: {},
-		routeStaticId: 'HOME_SITE__/INDEX',
+		routeStaticId: 'HOME_SITE__/ACCOUNT/OVERVIEW',
 	});
 	const homeTarget = SITE_ORIGIN !== homeSiteOrigin ? '_blank' : '';
 	return (
@@ -24,7 +24,7 @@ export function HomeLink({ className = '' }: BaseComponent) {
 			<p
 				className={cn(
 					'font-light text-sm',
-					currentRouteStaticId === 'HOME_SITE__/INDEX' &&
+					currentRouteStaticId === 'HOME_SITE__/ACCOUNT/OVERVIEW' &&
 						'underline underline-offset-4',
 				)}
 			>
