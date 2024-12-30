@@ -1,4 +1,4 @@
-export const SuspensePage: React.FC = () => {
+export function SuspensePage() {
 	return (
 		<div className='flex items-center justify-center h-screen'>
 			<div className='relative h-20 w-20'>
@@ -7,4 +7,4 @@ export const SuspensePage: React.FC = () => {
 			</div>
 		</div>
 	);
-};
+}

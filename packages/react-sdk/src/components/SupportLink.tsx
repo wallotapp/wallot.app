@@ -6,7 +6,7 @@ import { getSupportSiteRoute } from '@wallot/js';
 import { useRouteStateContext } from 'ergonomic-react/src/hooks/useRouteStateContext';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 
-export const SupportLink: React.FC<BaseComponent> = ({ className = '' }) => {
+export function SupportLink({ className = '' }: BaseComponent) {
 	const {
 		routeState: { currentRouteStaticId },
 	} = useRouteStateContext();
@@ -31,4 +31,4 @@ export const SupportLink: React.FC<BaseComponent> = ({ className = '' }) => {
 			</p>
 		</Link>
 	);
-};
+}

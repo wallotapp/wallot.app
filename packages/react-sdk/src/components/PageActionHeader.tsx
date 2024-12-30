@@ -6,9 +6,7 @@ import { GoChevronRight } from 'react-icons/go';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 
 export type PageActionHeaderProps = BaseComponent;
-export const PageActionHeader: React.FC<PageActionHeaderProps> = ({
-	className = '',
-}) => {
+export function PageActionHeader({ className = '' }: PageActionHeaderProps) {
 	// Site Origin by Target
 	const siteOriginByTarget = useSiteOriginByTarget();
 	return (
@@ -59,4 +57,4 @@ export const PageActionHeader: React.FC<PageActionHeaderProps> = ({
 			</div>
 		</div>
 	);
-};
+}

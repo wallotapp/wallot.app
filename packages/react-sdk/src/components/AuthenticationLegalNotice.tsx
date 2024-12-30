@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export const AuthenticationLegalNotice: React.FC = () => {
+export function AuthenticationLegalNotice() {
 	return (
 		<div className='text-center mt-5 mx-auto'>
 			<p className='text-gray-400 text-sm'>
@@ -23,4 +23,4 @@ export const AuthenticationLegalNotice: React.FC = () => {
 			</p>
 		</div>
 	);
-};
+}

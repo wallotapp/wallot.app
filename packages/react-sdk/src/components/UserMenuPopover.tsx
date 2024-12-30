@@ -16,10 +16,10 @@ import { useRouter } from 'next/router';
 export type UserMenuPopover = BaseComponent & {
 	TriggerComponent: React.ReactNode;
 };
-export const UserMenuPopover: React.FC<UserMenuPopover> = ({
+export function UserMenuPopover({
 	TriggerComponent,
 	className = '',
-}) => {
+}: UserMenuPopover) {
 	// const [isLoggingOut, setIsLoggingOut] = useState(false);
 	const { loggedInUser } = useQueryLoggedInUser();
 	// Router
@@ -132,4 +132,4 @@ export const UserMenuPopover: React.FC<UserMenuPopover> = ({
 			</PopoverContent>
 		</Popover>
 	);
-};
+}

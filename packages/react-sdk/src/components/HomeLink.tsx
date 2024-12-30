@@ -6,7 +6,7 @@ import { getHomeSiteRoute } from '@wallot/js';
 import { useRouteStateContext } from 'ergonomic-react/src/hooks/useRouteStateContext';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 
-export const HomeLink: React.FC<BaseComponent> = ({ className = '' }) => {
+export function HomeLink({ className = '' }: BaseComponent) {
 	const {
 		routeState: { currentRouteStaticId },
 	} = useRouteStateContext();
@@ -32,4 +32,4 @@ export const HomeLink: React.FC<BaseComponent> = ({ className = '' }) => {
 			</p>
 		</Link>
 	);
-};
+}

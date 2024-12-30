@@ -20,11 +20,11 @@ export type PageHeaderProps = BaseComponent & {
 	getCustomLogoButton?: (props: BaseComponent) => JSX.Element;
 	showHomeLink?: boolean;
 };
-export const PageHeader: React.FC<PageHeaderProps> = ({
+export function PageHeader({
 	className = '',
 	getCustomLogoButton,
 	showHomeLink = true,
-}) => {
+}: PageHeaderProps) {
 	// ==== Components ==== //
 	const navbarComponents = [
 		showHomeLink ? { Component: HomeLink, key: 'Home' } : null,
@@ -93,4 +93,4 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
 			</Sheet>
 		</div>
 	);
-};
+}

@@ -4,11 +4,12 @@ import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
 import { FiTrendingUp } from 'react-icons/fi';
 
-export const AssetOrderCartItem: React.FC<
-	{
-		assetOrder: AssetOrder;
-	} & BaseComponent
-> = ({ assetOrder: { alpaca_order_symbol, amount }, className = '' }) => {
+export function AssetOrderCartItem({
+	assetOrder: { alpaca_order_symbol, amount },
+	className = '',
+}: {
+	assetOrder: AssetOrder;
+} & BaseComponent) {
 	const amountUsdString = getCurrencyUsdStringFromCents(amount);
 
 	return (
@@ -37,4 +38,4 @@ export const AssetOrderCartItem: React.FC<
 			</div>
 		</div>
 	);
-};
+}

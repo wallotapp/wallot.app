@@ -5,7 +5,7 @@ import { SITE_ORIGIN } from 'ergonomic-react/src/config/originConfig';
 import { getSsoSiteRoute } from '@wallot/js';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 
-export const RegisterButton: React.FC<BaseComponent> = ({ className = '' }) => {
+export function RegisterButton({ className = '' }: BaseComponent) {
 	const siteOriginByTarget = useSiteOriginByTarget();
 	const ssoSiteOrigin = siteOriginByTarget['SSO_SITE'];
 	const registerHref = getSsoSiteRoute({
@@ -25,4 +25,4 @@ export const RegisterButton: React.FC<BaseComponent> = ({ className = '' }) => {
 			</button>
 		</Link>
 	);
-};
+}

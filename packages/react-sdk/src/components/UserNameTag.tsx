@@ -11,11 +11,11 @@ export type UserNameTagProps = BaseComponent & {
 	user: User | undefined;
 	showSubtitle?: 'email' | 'username' | false;
 };
-export const UserNameTag: React.FC<UserNameTagProps> = ({
+export function UserNameTag({
 	className = '',
 	user,
 	showSubtitle = false,
-}) => {
+}: UserNameTagProps) {
 	return (
 		<div
 			className={cn('flex items-center px-4 py-3 space-x-2 w-full', className)}
@@ -57,4 +57,4 @@ export const UserNameTag: React.FC<UserNameTagProps> = ({
 			</div>
 		</div>
 	);
-};
+}

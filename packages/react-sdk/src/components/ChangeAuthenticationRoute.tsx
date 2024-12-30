@@ -6,9 +6,10 @@ export type ChangeAuthenticationRouteProps = {
 	oppositeRoute: string;
 	text: string;
 };
-export const ChangeAuthenticationRoute: React.FC<
-	ChangeAuthenticationRouteProps
-> = ({ oppositeRoute, text }) => {
+export function ChangeAuthenticationRoute({
+	oppositeRoute,
+	text,
+}: ChangeAuthenticationRouteProps) {
 	return (
 		<div className='flex flex-col items-center justify-center w-fit py-16 px-8 mx-auto'>
 			<div>
@@ -26,4 +27,4 @@ export const ChangeAuthenticationRoute: React.FC<
 			</div>
 		</div>
 	);
-};
+}

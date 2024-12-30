@@ -20,9 +20,11 @@ export type AuthenticatedPageHeaderProps = BaseComponent & {
 	getCustomLogoButton?: (props: BaseComponent) => JSX.Element;
 	showHomeLink?: boolean;
 };
-export const AuthenticatedPageHeader: React.FC<
-	AuthenticatedPageHeaderProps
-> = ({ className = '', getCustomLogoButton, showHomeLink = true }) => {
+export function AuthenticatedPageHeader({
+	className = '',
+	getCustomLogoButton,
+	showHomeLink = true,
+}: AuthenticatedPageHeaderProps) {
 	// ==== Hooks ==== //
 	const { loggedInUser } = useQueryLoggedInUser();
 
@@ -103,4 +105,4 @@ export const AuthenticatedPageHeader: React.FC<
 			</Sheet>
 		</div>
 	);
-};
+}

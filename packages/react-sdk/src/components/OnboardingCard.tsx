@@ -9,12 +9,12 @@ export type OnboardingCardProps = BaseComponentWithChildren & {
 	subtitle: string;
 	title: string;
 };
-export const OnboardingCard: React.FC<OnboardingCardProps> = ({
+export function OnboardingCard({
 	children,
 	step,
 	subtitle,
 	title,
-}) => {
+}: OnboardingCardProps) {
 	return (
 		<Fragment>
 			<div className='mb-10 flex items-center justify-center'>
@@ -72,4 +72,4 @@ export const OnboardingCard: React.FC<OnboardingCardProps> = ({
 			</div>
 		</Fragment>
 	);
-};
+}

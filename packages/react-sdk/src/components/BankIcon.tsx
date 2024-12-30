@@ -91,13 +91,13 @@ type BankIconProps = BaseComponent & {
 	size?: number;
 	subtitle?: string;
 };
-export const BankIcon: React.FC<BankIconProps> = ({
+export function BankIcon({
 	bankName,
 	className = '',
 	showBankNameAsTitle = false,
 	size = 32,
 	subtitle = '',
-}) => {
+}: BankIconProps) {
 	const bankLogo = bankName == null ? null : BANK_LOGOS[bankName];
 
 	if (bankLogo == null) {
@@ -169,4 +169,4 @@ export const BankIcon: React.FC<BankIconProps> = ({
 			)}
 		</div>
 	);
-};
+}

@@ -8,13 +8,13 @@ export type SubmitButtonProps = BaseComponent & {
 	textClassName?: string;
 	type?: 'submit' | 'button';
 };
-export const SubmitButton: React.FC<SubmitButtonProps> = ({
+export function SubmitButton({
 	className = '',
 	isSubmitting,
 	text = 'Continue',
 	textClassName = '',
 	type = 'submit',
-}) => {
+}: SubmitButtonProps) {
 	return (
 		<Button className={className} disabled={isSubmitting} type={type}>
 			<div>
@@ -35,4 +35,4 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
 			</div>
 		</Button>
 	);
-};
+}
