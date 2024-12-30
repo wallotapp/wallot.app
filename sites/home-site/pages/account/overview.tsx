@@ -149,9 +149,12 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							</div>
 						</div>
 					)}
+					<div className='mt-6'>
+						<p className='font-medium text-lg'>Dashboard</p>
+					</div>
 					<div
 						className={cn(
-							'mt-4',
+							'mt-3',
 							'grid grid-cols-1 gap-y-4',
 							'lg:grid-cols-3 lg:gap-x-4 lg:gap-y-0',
 						)}
