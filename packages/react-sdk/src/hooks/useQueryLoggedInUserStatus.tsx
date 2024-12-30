@@ -22,9 +22,9 @@ import {
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountsForLoggedInUser';
 import { useQueryOrdersForLoggedInUser } from '@wallot/react/src/features/orders/hooks/useQueryOrdersForLoggedInUser';
-import { useQueryAchTransferPage } from '@wallot/react/src/features/achTransfers/hooks/useQueryAchTransferPage';
-import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders/hooks/useQueryAssetOrderPage';
+import { useQueryAchTransfersForLoggedInUser } from '@wallot/react/src/features/achTransfers/hooks/useQueryAchTransfersForLoggedInUser';
 import { useRetrievePositions } from '@wallot/react/src/features/positions/hooks/useRetrievePositions';
+import { useQueryAssetOrdersForLoggedInUser } from '@wallot/react/src/features/assetOrders/hooks/useQueryAssetOrdersForLoggedInUser';
 
 export type LoggedInUserStatus = {
 	isLoggedInUserStatusLoading: boolean;
@@ -53,25 +53,10 @@ export function useQueryLoggedInUserStatus(): LoggedInUserStatus {
 		isResourcePageLoading: isOrderPageLoading,
 	} = useQueryOrdersForLoggedInUser();
 
-	const bankAccountIds = bankAccountsForLoggedInUser.map(({ _id }) => _id);
-	const {
-		data: achTransferPage,
-		isLoading: isAchTransfersForLoggedInUserLoading,
-	} = useQueryAchTransferPage({
-		firestoreQueryOptions: {
-			whereClauses: [['bank_account', 'in', bankAccountIds]],
-		},
-	});
-	const achTransfersForLoggedInUser = achTransferPage?.documents ?? [];
-
-	const orderIds = ordersForLoggedInUser.map(({ _id }) => _id);
-	const { data: assetOrderPage, isLoading: isAssetOrderPageLoading } =
-		useQueryAssetOrderPage({
-			firestoreQueryOptions: {
-				whereClauses: [['order', 'in', orderIds]],
-			},
-		});
-	const assetOrdersForLoggedInUser = assetOrderPage?.documents ?? [];
+	const { achTransfersForLoggedInUser, isAchTransfersForLoggedInUserLoading } =
+		useQueryAchTransfersForLoggedInUser();
+	const { assetOrdersForLoggedInUser, isAssetOrdersForLoggedInUserLoading } =
+		useQueryAssetOrdersForLoggedInUser();
 
 	const { isLoading: isRetrievePositionsLoading } = useRetrievePositions();
 
@@ -81,7 +66,7 @@ export function useQueryLoggedInUserStatus(): LoggedInUserStatus {
 		achTransfersForLoggedInUser,
 		isAchTransfersForLoggedInUserLoading,
 		assetOrdersForLoggedInUser,
-		isAssetOrderPageLoading,
+		isAssetOrdersForLoggedInUserLoading,
 		bankAccountsForLoggedInUser,
 		isBankAccountPageLoading,
 		ordersForLoggedInUser,
@@ -96,7 +81,7 @@ function getLoggedInUserStatus({
 	achTransfersForLoggedInUser,
 	isAchTransfersForLoggedInUserLoading,
 	assetOrdersForLoggedInUser,
-	isAssetOrderPageLoading,
+	isAssetOrdersForLoggedInUserLoading,
 	bankAccountsForLoggedInUser,
 	isBankAccountPageLoading,
 	ordersForLoggedInUser,
@@ -108,7 +93,7 @@ function getLoggedInUserStatus({
 	achTransfersForLoggedInUser: AchTransfer[];
 	isAchTransfersForLoggedInUserLoading: boolean;
 	assetOrdersForLoggedInUser: AssetOrder[];
-	isAssetOrderPageLoading: boolean;
+	isAssetOrdersForLoggedInUserLoading: boolean;
 	bankAccountsForLoggedInUser: BankAccount[];
 	isBankAccountPageLoading: boolean;
 	ordersForLoggedInUser: Order[];
@@ -120,7 +105,7 @@ function getLoggedInUserStatus({
 		[
 			isLoggedInUserLoading,
 			isAchTransfersForLoggedInUserLoading,
-			isAssetOrderPageLoading,
+			isAssetOrdersForLoggedInUserLoading,
 			isBankAccountPageLoading,
 			isOrderPageLoading,
 			isRetrievePositionsLoading,
