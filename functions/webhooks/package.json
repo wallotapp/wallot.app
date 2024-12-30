@@ -1,7 +1,7 @@
 {
 	"dependencies": {
 		"@google-cloud/storage": "^7.4.0",
-		"@wallot/js": "0.1.1-rc.4",
+		"@wallot/js": "0.1.1-rc.5",
 		"change-case": "^4.1.2",
 		"ergonomic": "^0.5.8",
 		"google-libphonenumber": "^3.2.31",
@@ -14,7 +14,7 @@
 		"xstate": "^4.38.2",
 		"yup": "^0.32.11",
 		"@google-cloud/pubsub": "^4.9.0",
-		"@wallot/node": "^0.1.1-rc.7",
+		"@wallot/node": "^0.1.1-rc.8",
 		"cors": "^2.8.5",
 		"ergonomic-node": "^0.3.16",
 		"express": "^4.18.2",
