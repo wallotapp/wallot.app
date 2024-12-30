@@ -34,6 +34,11 @@ export type LoggedInUserStatus = {
 		subtitle: string;
 		title: string;
 	}[];
+	isActivatedUser: boolean;
+	isKycUser: boolean;
+	isUserActivatedByAlpaca: boolean;
+	isUserRejectedByAlpaca: boolean;
+	isUserWithAlpacaEquity: boolean;
 };
 
 export function useQueryLoggedInUserStatus(): LoggedInUserStatus {
@@ -118,6 +123,11 @@ function getLoggedInUserStatus({
 		isLoggedInUserStatusLoading,
 		state: 'registered',
 		tasks: [],
+		isActivatedUser: false,
+		isKycUser: false,
+		isUserActivatedByAlpaca: false,
+		isUserRejectedByAlpaca: false,
+		isUserWithAlpacaEquity: false,
 	};
 
 	if (isLoggedInUserStatusLoading) {
@@ -143,6 +153,7 @@ function getLoggedInUserStatus({
 		});
 		return status;
 	}
+	status.isActivatedUser = true;
 
 	const firstOrder = ordersForLoggedInUser[0];
 	if (firstOrder == null) return status;
@@ -162,6 +173,7 @@ function getLoggedInUserStatus({
 		});
 		return status;
 	}
+	status.isKycUser = true;
 
 	const { default_bank_account } = loggedInUser;
 	const defaultBankAccount = bankAccountsForLoggedInUser.find(
@@ -218,6 +230,7 @@ function getLoggedInUserStatus({
 				'Your account activation was unsuccessful. Please contact support to resolve this issue.',
 			title: 'Account activation failed',
 		});
+		status.isUserRejectedByAlpaca = true;
 		return status;
 	}
 	if (!isUserActivatedByAlpaca(loggedInUser)) {
@@ -225,6 +238,7 @@ function getLoggedInUserStatus({
 			'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAccountToChangeFromSubmittedToActive';
 		return status;
 	}
+	status.isUserActivatedByAlpaca = true;
 
 	// Alpaca ACH Relationship
 	if (isBankAccountRejectedByAlpaca(defaultBankAccount)) {
@@ -261,6 +275,7 @@ function getLoggedInUserStatus({
 			'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchTransferToChangeFromQueuedToComplete';
 		return status;
 	}
+	status.isUserWithAlpacaEquity = true;
 
 	// Alpaca Order
 	if (assetOrdersForLoggedInUser.some(isAssetOrderRejectedByAlpaca)) {
