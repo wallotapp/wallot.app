@@ -94,29 +94,29 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	};
 
 	// Add a new transfer form
-	const alpacaAchRelationshipIds = approvedBankAccountsForLoggedInUser.map(
-		({ alpaca_ach_relationship_id }) => alpaca_ach_relationship_id,
+	const approvedBankAccountIds = approvedBankAccountsForLoggedInUser.map(
+		({ _id }) => _id,
 	);
-	const bankAccountNameByAlpacaAchRelationshipId =
+	const approvedBankAccountNameById =
 		approvedBankAccountsForLoggedInUser.reduce(
-			(acc, { alpaca_ach_relationship_id, last_4, account_type }) => {
+			(acc, { _id, last_4, account_type }) => {
 				if (last_4 == null) {
 					return acc;
 				}
 
-				acc[alpaca_ach_relationship_id] =
-					`${account_type} account ending in ${last_4}`.trim();
+				acc[_id] = `${account_type} account ending in ${last_4}`.trim();
 				return acc;
 			},
 			{} as Record<string, string>,
 		);
-	const AlpacaAchRelationshipIdEnum = getEnum(alpacaAchRelationshipIds);
+	const ApprovedBankAccountIdEnum = getEnum(approvedBankAccountIds);
 	const newTransferFormProperties = {
 		amount: YupHelpers.usd().required(),
-		alpaca_ach_relationship_id: AlpacaAchRelationshipIdEnum.getDefinedSchema()
-			.default(alpacaAchRelationshipIds[0])
+		bank_account_id: ApprovedBankAccountIdEnum.getDefinedSchema()
+			.default(approvedBankAccountIds[0])
 			.required()
-			.meta({ label_by_enum_option: bankAccountNameByAlpacaAchRelationshipId }),
+			.meta({ label_by_enum_option: approvedBankAccountNameById })
+			.label('Bank Account'),
 		direction: AlpacaAchTransferDirectionEnum.getDefinedSchema()
 			.default('' as AlpacaAchTransferDirection)
 			.required(),
@@ -124,7 +124,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const newTransferFormSchema = yup.object(newTransferFormProperties);
 	const newTransferFormFieldSpecByFieldKey = getFieldSpecByFieldKey(
 		newTransferFormSchema,
-		['alpaca_ach_relationship_id', 'amount', 'direction'],
+		['bank_account_id', 'amount', 'direction'],
 	);
 	const resolver = useYupValidationResolver(newTransferFormSchema, {
 		...defaultGeneralizedFormDataTransformationOptions,
@@ -140,8 +140,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const isNewTransferFormReady =
 		String(liveData.amount).length > 0 &&
 		String(liveData.amount) !== '$0.00' &&
-		liveData.alpaca_ach_relationship_id != null &&
-		liveData.alpaca_ach_relationship_id.length > 0;
+		liveData.bank_account_id != null &&
+		liveData.bank_account_id.length > 0;
 
 	// Mutation
 	const { mutate: requestNewTransfer, isLoading: isRequestNewTransferRunning } =
@@ -181,7 +181,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const isFormSubmitting = formStatus === 'running';
 	const fields: LiteFormFieldProps<RequestNewTransferParams>[] = [
 		{
-			fieldKey: 'alpaca_ach_relationship_id' as const,
+			fieldKey: 'bank_account_id' as const,
 		},
 		{
 			fieldKey: 'amount' as const,

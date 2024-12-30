@@ -1,7 +1,7 @@
 import { AlpacaAchTransferDirection } from './alpacaAchTransfers.js';
 
 export type RequestNewTransferParams = {
-	alpaca_ach_relationship_id: string;
+	bank_account_id: string;
 	amount: number;
 	direction: AlpacaAchTransferDirection;
 };
