@@ -129,7 +129,10 @@ const Page: NextPage<PageStaticProps> = (props) => {
 												<Link href={ctaHref}>
 													<div
 														className={cn(
-															'bg-black px-4 py-2 rounded-lg cursor-pointer flex items-center space-x-2 hover:bg-brand-dark',
+															'bg-black hover:bg-brand-dark cursor-pointer rounded-lg',
+															'flex items-center justify-center space-x-2',
+															'mt-4 px-4 py-2',
+															'lg:mt-0',
 														)}
 													>
 														<div>
