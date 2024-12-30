@@ -6,16 +6,34 @@ import {
 	PageStaticProps,
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { HomeSiteRouteQueryParams } from '@wallot/js';
+import {
+	HomeSiteRouteQueryParams,
+	RequestNewAchTransferParams,
+} from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
 import { useQueryAssetOrdersForLoggedInUser } from '@wallot/react/src/features/assetOrders/hooks/useQueryAssetOrdersForLoggedInUser';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
-import { getCurrencyUsdStringFromCents } from 'ergonomic';
+import {
+	getCurrencyUsdStringFromCents,
+	getFieldSpecByFieldKey,
+	YupHelpers,
+} from 'ergonomic';
 import { DateTime } from 'luxon';
 import { GoPlus } from 'react-icons/go';
 import { useQueryLoggedInUserStatus } from '@wallot/react/src/hooks/useQueryLoggedInUserStatus';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
-import { useState } from 'react';
+import { FiChevronLeft } from 'react-icons/fi';
+import { useEffect, useState } from 'react';
+import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
+import { useForm } from 'react-hook-form';
+import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
+import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
+import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
+import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
+import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
+import { useRequestNewAchTransferMutation } from '@wallot/react/src/features/achTransfers/hooks/useRequestNewAchTransferMutation';
+import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
+import * as yup from 'yup';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== State ==== //
@@ -32,7 +50,10 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const { toast } = useToast();
 
 	// Asset orders
-	const { assetOrdersForLoggedInUser } = useQueryAssetOrdersForLoggedInUser();
+	const {
+		assetOrdersForLoggedInUser,
+		refetch: refetchAssetOrdersForLoggedInUser,
+	} = useQueryAssetOrdersForLoggedInUser();
 
 	// Status
 	const { isUserWithAlpacaEquity } = useQueryLoggedInUserStatus();
@@ -53,6 +74,116 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		...props,
 		routeId: ROUTE_RUNTIME_ID,
 	};
+
+	const newTransferFormProperties = {
+		amount: YupHelpers.usd().required(),
+	} as const;
+	const newTransferFormSchema = yup.object(newTransferFormProperties);
+	const newTransferFormFieldSpecByFieldKey = getFieldSpecByFieldKey(
+		newTransferFormSchema,
+		['amount'],
+	);
+	const resolver = useYupValidationResolver(newTransferFormSchema, {
+		...defaultGeneralizedFormDataTransformationOptions,
+		currencyFieldKeys: ['amount'],
+	});
+	const { control, formState, handleSubmit, reset, setError, watch } =
+		useForm<RequestNewAchTransferParams>({
+			defaultValues: newTransferFormSchema.getDefault(),
+			resolver,
+			shouldUnregister: false,
+		});
+	const liveData = watch();
+	const isNewTransferFormReady =
+		String(liveData.amount).length > 0 &&
+		String(liveData.amount) !== '$0.00' &&
+		liveData.bank_account != null &&
+		liveData.bank_account.length > 0;
+
+	// Mutation
+	const {
+		mutate: requestNewAchTransfer,
+		isLoading: isRequestNewAchTransferRunning,
+	} = useRequestNewAchTransferMutation({
+		onError: ({ error: { message } }) => {
+			// Show the error message
+			toast({
+				title: 'Error',
+				description: message,
+			});
+			setError('root', {
+				type: 'manual',
+				message: 'An error occurred. Please try again.',
+			});
+
+			// Reset form
+			reset();
+		},
+		onSuccess: async () => {
+			// Refetch transactions
+			await refetchAssetOrdersForLoggedInUser();
+
+			// Show success toast
+			toast({
+				title: 'Success',
+				description: 'Your transaction is queued for processing.',
+			});
+
+			// Switch back to bank accounts mode
+			setMode('transactions');
+		},
+	});
+
+	// Form
+	const formStatus =
+		formState.isSubmitting || isRequestNewAchTransferRunning
+			? 'running'
+			: 'idle';
+	const isFormSubmitting = formStatus === 'running';
+	const fields: LiteFormFieldProps<RequestNewAchTransferParams>[] = [
+		{
+			fieldKey: 'amount' as const,
+		},
+	].map(({ fieldKey }) => ({
+		control,
+		fieldErrors: formState.errors,
+		fieldKey,
+		fieldSpec: newTransferFormFieldSpecByFieldKey[fieldKey],
+		hideRequiredIndicator: true,
+		initialFormData: newTransferFormSchema.getDefault(),
+		isSubmitting: isFormSubmitting,
+		operation: 'create',
+		renderTooltipContent: undefined,
+		setError: (message) => setError(fieldKey, { message }),
+	}));
+
+	// Form Submit Handler
+	const onSubmit = (data: RequestNewAchTransferParams) => {
+		console.log('Requesting new order with following data:', data);
+		toast({
+			title: 'Requesting your order',
+			description: 'This may take a few moments...',
+		});
+		requestNewAchTransfer(data);
+	};
+	const isSubmitButtonDisabled = !isNewTransferFormReady || isFormSubmitting;
+
+	// ==== Effects ==== //
+	const [hasInitializedDefaultValues, setHasInitializedDefaultValues] =
+		useState(false);
+	useEffect(() => {
+		if (hasInitializedDefaultValues) return;
+
+		const initialValues = getGeneralizedFormDataFromServerData(
+			newTransferFormSchema.getDefault(),
+			{
+				...defaultGeneralizedFormDataTransformationOptions,
+				currencyFieldKeys: ['amount'],
+			},
+		);
+		reset(initialValues);
+		setHasInitializedDefaultValues(true);
+	}, [hasInitializedDefaultValues]);
 
 	// ==== Render ==== //
 	return (
@@ -183,6 +314,62 @@ const Page: NextPage<PageStaticProps> = (props) => {
 								);
 							},
 						)}
+					</div>
+				</div>
+				<div className={cn(mode === 'new_transaction' ? 'block' : 'hidden')}>
+					<div className={cn('flex flex-col space-y-5')}>
+						<div>
+							<button
+								onClick={() => setMode('transactions')}
+								className={cn(
+									'flex items-center space-x-0.5 cursor-pointer text-brand-dark',
+									'',
+								)}
+							>
+								<div>
+									<FiChevronLeft />
+								</div>
+								<div>
+									<p className='text-sm font-semibold'>Back to Transactions</p>
+								</div>
+							</button>
+						</div>
+						<div>
+							<p className='font-semibold text-2xl'>New Order</p>
+						</div>
+					</div>
+					<div className='mt-4 lg:mt-1'>
+						<p className='font-light text-base text-gray-600'>
+							Select the stock symbol, order amount and order type to place a
+							new order.
+						</p>
+					</div>
+					<div className='mt-4 lg:max-w-lg'>
+						<form onSubmit={handleSubmit(onSubmit) as () => void}>
+							<div>
+								{fields.map((fieldProps) => (
+									<LiteFormFieldContainer
+										key={fieldProps.fieldKey}
+										{...fieldProps}
+									/>
+								))}
+							</div>
+							<div className='mt-4 text-right w-full'>
+								<SubmitButton
+									className='w-full'
+									isDisabled={isSubmitButtonDisabled}
+									isSubmitting={isFormSubmitting}
+									text='Place Order'
+								/>
+							</div>
+							{Boolean(formState.errors['root']?.message) && (
+								<div className='mt-4'>
+									<LiteFormFieldError
+										fieldErrorMessage={formState.errors['root']?.message ?? ''}
+									/>
+								</div>
+							)}
+						</form>
 					</div>
 				</div>
 			</AccountDashboardPage>
