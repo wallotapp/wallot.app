@@ -7,12 +7,17 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { HomeSiteRouteQueryParams } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
+import { useRetrievePositions } from '@wallot/react/src/features/positions';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
 
 	// Router
 	const router = useRouter();
+
+	// Positions
+	const { data: positionsData } = useRetrievePositions();
+	const positions = positionsData ?? [];
 
 	// ==== Constants ==== //
 
@@ -36,6 +41,18 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		<PageComponent {...pageProps}>
 			<AccountDashboardPage>
 				<div>Here are your positions!</div>
+				<div>
+					{positions.map(({ avg_entry_price, qty, side, symbol }) => {
+						return (
+							<div key={symbol}>
+								<div>{symbol}</div>
+								<div>{qty}</div>
+								<div>{avg_entry_price}</div>
+								<div>{side}</div>
+							</div>
+						);
+					})}
+				</div>
 			</AccountDashboardPage>
 		</PageComponent>
 	);

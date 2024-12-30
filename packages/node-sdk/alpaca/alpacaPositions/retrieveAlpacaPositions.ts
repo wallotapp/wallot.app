@@ -6,7 +6,7 @@ export const retrieveAlpacaPositions =
 	(alpacaBrokerClient: KyInstance) => async (user: KycUser) => {
 		try {
 			const response = await alpacaBrokerClient.get<AlpacaPosition[]>(
-				`v1/accounts/${user.alpaca_account_id}/positions`,
+				`v1/trading/accounts/${user.alpaca_account_id}/positions`,
 			);
 			return response.json();
 		} catch (err) {
