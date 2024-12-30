@@ -241,11 +241,27 @@ const Page: NextPage = () => {
 								<div className='mt-6'>
 									<p className='font-normal text-sm'>
 										By clicking "Complete Purchase", you agree to our{' '}
-										<Link href='/terms'>
+										<Link
+											href={getHomeSiteRoute({
+												includeOrigin: true,
+												origin: siteOriginByTarget.HOME_SITE,
+												queryParams: {},
+												routeStaticId: 'HOME_SITE__/TERMS',
+											})}
+											target='_blank'
+										>
 											<span className='underline'>Terms of Service</span>
 										</Link>{' '}
 										and{' '}
-										<Link href='/privacy'>
+										<Link
+											href={getHomeSiteRoute({
+												includeOrigin: true,
+												origin: siteOriginByTarget.HOME_SITE,
+												queryParams: {},
+												routeStaticId: 'HOME_SITE__/PRIVACY',
+											})}
+											target='_blank'
+										>
 											<span className='underline'>Privacy Policy</span>
 										</Link>
 										, and affirm that the billing information you provided is

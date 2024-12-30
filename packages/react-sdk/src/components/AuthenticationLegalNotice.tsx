@@ -1,12 +1,20 @@
+import { getHomeSiteRoute } from '@wallot/js';
 import Link from 'next/link';
+import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 
 export function AuthenticationLegalNotice() {
+	const siteOriginByTarget = useSiteOriginByTarget();
 	return (
 		<div className='text-center mt-5 mx-auto'>
 			<p className='text-gray-400 text-sm'>
 				By clicking continue, you agree to our{' '}
 				<Link
-					href='https://wallot.app/terms'
+					href={getHomeSiteRoute({
+						includeOrigin: true,
+						origin: siteOriginByTarget.HOME_SITE,
+						queryParams: {},
+						routeStaticId: 'HOME_SITE__/TERMS',
+					})}
 					rel='noopener noreferrer'
 					target='_blank'
 				>
@@ -14,7 +22,12 @@ export function AuthenticationLegalNotice() {
 				</Link>{' '}
 				and{' '}
 				<Link
-					href='https://wallot.app/privacy'
+					href={getHomeSiteRoute({
+						includeOrigin: true,
+						origin: siteOriginByTarget.HOME_SITE,
+						queryParams: {},
+						routeStaticId: 'HOME_SITE__/PRIVACY',
+					})}
 					rel='noopener noreferrer'
 					target='_blank'
 				>
