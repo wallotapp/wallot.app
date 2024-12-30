@@ -20,9 +20,28 @@ export function useQueryLoggedInUser() {
 	});
 
 	const loggedInUser = loggedInUserQueryObserver.data?.documents?.[0];
+
+	// Full name
+	const loggedInUserFirstName =
+		loggedInUser?.alpaca_account_identity?.given_name ?? '';
+	const loggedInUserLastName =
+		loggedInUser?.alpaca_account_identity?.family_name ?? '';
+	const loggedInUserFullName =
+		`${loggedInUserFirstName} ${loggedInUserLastName}`.trim();
+
+	// Address
+	const contact = loggedInUser?.alpaca_account_contact;
+	const streetAddressLine1 = contact?.street_address?.[0] ?? '';
+	const loggedInUserAddress = `${streetAddressLine1},${' '}${contact?.city}, ${
+		contact?.state
+	}${' '}${contact?.postal_code}`;
+
+	// Display name
 	const loggedInUserDisplayName = getUserDisplayName(loggedInUser);
 	const loggedInUserDisplayNameWithFallback =
 		getUserDisplayNameWithFallback(loggedInUser);
+
+	// Equity balance
 	const loggedInUserEquityBalance =
 		loggedInUser?.alpaca_account_last_equity ?? '0';
 	const loggedInUserEquityBalanceCents =
@@ -33,6 +52,10 @@ export function useQueryLoggedInUser() {
 
 	return {
 		loggedInUser,
+		loggedInUserFirstName,
+		loggedInUserLastName,
+		loggedInUserFullName,
+		loggedInUserAddress,
 		loggedInUserDisplayName,
 		loggedInUserDisplayNameWithFallback,
 		loggedInUserEquityBalanceCents,

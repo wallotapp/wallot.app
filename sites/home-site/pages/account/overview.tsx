@@ -13,10 +13,10 @@ import {
 	useQueryLoggedInUser,
 	useQueryLoggedInUserStatus,
 } from '@wallot/react/src/features/users';
-import { GoArrowRight, GoCheckCircle } from 'react-icons/go';
-import { Fragment } from 'react';
+import { GoArrowRight, GoCheckCircle, GoPerson } from 'react-icons/go';
 import { useQueryAssetOrdersForLoggedInUser } from '@wallot/react/src/features/assetOrders';
 import { getCurrencyUsdStringFromCents } from 'ergonomic';
+import { Fragment } from 'react';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -25,9 +25,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const router = useRouter();
 
 	// Router
-	const { loggedInUserEquityBalanceUsdString, loggedInUserDisplayName } =
-		useQueryLoggedInUser();
-	const { state, tasks, isUserActivatedByAlpaca } =
+	const {
+		loggedInUserEquityBalanceUsdString,
+		loggedInUserDisplayName,
+		loggedInUserFullName,
+		loggedInUserAddress,
+	} = useQueryLoggedInUser();
+	const { state, tasks, isUserActivatedByAlpaca, isKycUser } =
 		useQueryLoggedInUserStatus();
 	const { assetOrdersForLoggedInUser } = useQueryAssetOrdersForLoggedInUser();
 
@@ -246,7 +250,60 @@ const Page: NextPage<PageStaticProps> = (props) => {
 								title: 'Orders',
 							},
 							{
-								CardContent: <Fragment></Fragment>,
+								CardContent: (
+									<Fragment>
+										{isKycUser ? (
+											<div>
+												<div>
+													<p className='font-semibold text-xs'>
+														{loggedInUserFullName}
+													</p>
+												</div>
+												<div>
+													<p className='font-semibold text-xs'>
+														{loggedInUserAddress}
+													</p>
+												</div>
+												<div>
+													<Link
+														className='text-center'
+														href={getHomeSiteRoute({
+															includeOrigin: false,
+															origin: null,
+															queryParams: {},
+															routeStaticId: 'HOME_SITE__/ACCOUNT/SETTINGS',
+														})}
+													>
+														<div>
+															<p className='font-light text-sm underline'>
+																Make changes
+															</p>
+														</div>
+													</Link>
+												</div>
+											</div>
+										) : (
+											<Link
+												className='flex flex-col items-center justify-center h-full space-y-2 px-4 text-center'
+												href={getHomeSiteRoute({
+													includeOrigin: false,
+													origin: null,
+													queryParams: {},
+													routeStaticId: 'HOME_SITE__/ACCOUNT/SETTINGS',
+												})}
+											>
+												<div>
+													<GoPerson className='font-light text-4xl' />
+												</div>
+												<div>
+													<p className='font-light text-sm underline'>
+														Complete billing information
+													</p>
+												</div>
+											</Link>
+										)}
+									</Fragment>
+								),
 								title: 'Billing Information',
 							},
 						].map(({ CardContent, title }) => {
