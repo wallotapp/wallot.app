@@ -6,10 +6,7 @@ import {
 	PageStaticProps,
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import {
-	HomeSiteRouteQueryParams,
-	RequestNewAchTransferParams,
-} from '@wallot/js';
+import { HomeSiteRouteQueryParams, RequestNewOrderParams } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
 import { useQueryAssetOrdersForLoggedInUser } from '@wallot/react/src/features/assetOrders/hooks/useQueryAssetOrdersForLoggedInUser';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
@@ -31,7 +28,7 @@ import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/Lite
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
-import { useRequestNewAchTransferMutation } from '@wallot/react/src/features/achTransfers/hooks/useRequestNewAchTransferMutation';
+import { useRequestNewOrderMutation } from '@wallot/react/src/features/orders/hooks/useRequestNewOrderMutation';
 import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
 import * as yup from 'yup';
 
@@ -88,7 +85,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		currencyFieldKeys: ['amount'],
 	});
 	const { control, formState, handleSubmit, reset, setError, watch } =
-		useForm<RequestNewAchTransferParams>({
+		useForm<RequestNewOrderParams>({
 			defaultValues: newTransferFormSchema.getDefault(),
 			resolver,
 			shouldUnregister: false,
@@ -101,46 +98,42 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		liveData.bank_account.length > 0;
 
 	// Mutation
-	const {
-		mutate: requestNewAchTransfer,
-		isLoading: isRequestNewAchTransferRunning,
-	} = useRequestNewAchTransferMutation({
-		onError: ({ error: { message } }) => {
-			// Show the error message
-			toast({
-				title: 'Error',
-				description: message,
-			});
-			setError('root', {
-				type: 'manual',
-				message: 'An error occurred. Please try again.',
-			});
+	const { mutate: requestNewOrder, isLoading: isRequestNewOrderRunning } =
+		useRequestNewOrderMutation({
+			onError: ({ error: { message } }) => {
+				// Show the error message
+				toast({
+					title: 'Error',
+					description: message,
+				});
+				setError('root', {
+					type: 'manual',
+					message: 'An error occurred. Please try again.',
+				});
 
-			// Reset form
-			reset();
-		},
-		onSuccess: async () => {
-			// Refetch transactions
-			await refetchAssetOrdersForLoggedInUser();
+				// Reset form
+				reset();
+			},
+			onSuccess: async () => {
+				// Refetch transactions
+				await refetchAssetOrdersForLoggedInUser();
 
-			// Show success toast
-			toast({
-				title: 'Success',
-				description: 'Your transaction is queued for processing.',
-			});
+				// Show success toast
+				toast({
+					title: 'Success',
+					description: 'Your transaction is queued for processing.',
+				});
 
-			// Switch back to bank accounts mode
-			setMode('transactions');
-		},
-	});
+				// Switch back to bank accounts mode
+				setMode('transactions');
+			},
+		});
 
 	// Form
 	const formStatus =
-		formState.isSubmitting || isRequestNewAchTransferRunning
-			? 'running'
-			: 'idle';
+		formState.isSubmitting || isRequestNewOrderRunning ? 'running' : 'idle';
 	const isFormSubmitting = formStatus === 'running';
-	const fields: LiteFormFieldProps<RequestNewAchTransferParams>[] = [
+	const fields: LiteFormFieldProps<RequestNewOrderParams>[] = [
 		{
 			fieldKey: 'amount' as const,
 		},
@@ -158,13 +151,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	}));
 
 	// Form Submit Handler
-	const onSubmit = (data: RequestNewAchTransferParams) => {
+	const onSubmit = (data: RequestNewOrderParams) => {
 		console.log('Requesting new order with following data:', data);
 		toast({
 			title: 'Requesting your order',
 			description: 'This may take a few moments...',
 		});
-		requestNewAchTransfer(data);
+		requestNewOrder(data);
 	};
 	const isSubmitButtonDisabled = !isNewTransferFormReady || isFormSubmitting;
 
