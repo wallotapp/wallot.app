@@ -9,7 +9,7 @@ import { getSsoSiteRoute } from '@wallot/js';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
-import { useQueryLoggedInUserStatus } from '@wallot/react/src/features/users';
+import { useQueryLoggedInUserStatus } from '@wallot/react/src/hooks/useQueryLoggedInUserStatus';
 
 export type AccountDashboardPageProps = BaseComponentWithChildren;
 export const AccountDashboardPage: React.FC<AccountDashboardPageProps> = ({

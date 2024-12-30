@@ -14,7 +14,7 @@ import { LogoButton } from '@wallot/react/src/components/LogoButton';
 import { SupportLink } from '@wallot/react/src/components/SupportLink';
 import { UserMenuPopover } from '@wallot/react/src/components/UserMenuPopover';
 import { UserNameTag } from '@wallot/react/src/components/UserNameTag';
-import { useQueryLoggedInUser } from '@wallot/react/src/features/users';
+import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 
 export type AuthenticatedPageHeaderProps = BaseComponent & {
 	getCustomLogoButton?: (props: BaseComponent) => JSX.Element;

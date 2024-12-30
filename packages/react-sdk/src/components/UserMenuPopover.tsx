@@ -7,7 +7,7 @@ import {
 import cn from 'ergonomic-react/src/lib/cn';
 import { SITE_ORIGIN } from 'ergonomic-react/src/config/originConfig';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
-import { useQueryLoggedInUser } from '@wallot/react/src/features/users';
+import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import Link from 'next/link';
 import { getHomeSiteRoute } from '@wallot/js';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';

@@ -34,10 +34,8 @@ import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useController, useForm } from 'react-hook-form';
-import {
-	useQueryLoggedInUser,
-	useUpdateUserMutation,
-} from '@wallot/react/src/features/users';
+import { useUpdateUserMutation } from '@wallot/react/src/features/users';
+import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
@@ -46,10 +44,10 @@ import { FiChevronDown, FiChevronLeft } from 'react-icons/fi';
 import { GoCheckCircleFill, GoPlus } from 'react-icons/go';
 import {
 	useCreateStripeFinancialConnectionSessionMutation,
-	useQueryBankAccountsForLoggedInUser,
 	useConnectBankAccountsMutation,
 	useTokenizeBankAccountMutation,
 } from '@wallot/react/src/features/bankAccounts';
+import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountsForLoggedInUser';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { stripePromise } from 'ergonomic-react/src/lib/stripe';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';

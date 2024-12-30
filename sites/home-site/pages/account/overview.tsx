@@ -9,12 +9,10 @@ import { getHomeSiteRoute, HomeSiteRouteQueryParams } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import Link from 'next/link';
-import {
-	useQueryLoggedInUser,
-	useQueryLoggedInUserStatus,
-} from '@wallot/react/src/features/users';
+import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
+import { useQueryLoggedInUserStatus } from '@wallot/react/src/hooks/useQueryLoggedInUserStatus';
 import { GoArrowRight, GoCheckCircle, GoPerson } from 'react-icons/go';
-import { useQueryAssetOrdersForLoggedInUser } from '@wallot/react/src/features/assetOrders';
+import { useQueryAssetOrdersForLoggedInUser } from '@wallot/react/src/features/assetOrders/hooks/useQueryAssetOrdersForLoggedInUser';
 import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import { Fragment } from 'react';
 import { BsBank } from 'react-icons/bs';

@@ -19,7 +19,7 @@ import { PlatformIcon } from 'ergonomic-react/src/components/brand/PlatformIcon'
 import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
 import Link from 'next/link';
 import { GoCheck } from 'react-icons/go';
-import { useQueryLoggedInUser } from '@wallot/react/src/features/users';
+import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import Confetti from 'react-confetti';
 import { SuspensePage } from '@wallot/react/src/components/SuspensePage';
 import {

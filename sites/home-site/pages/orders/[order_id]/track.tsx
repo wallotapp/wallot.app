@@ -27,7 +27,7 @@ import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTa
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 import { GoCheckCircleFill, GoCircle } from 'react-icons/go';
-import { useQueryLoggedInUser } from '@wallot/react/src/features/users';
+import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import { useQueryAchTransferPage } from '@wallot/react/src/features/achTransfers';
 
 // ==== Static Page Props ==== //
