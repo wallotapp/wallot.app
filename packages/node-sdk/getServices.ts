@@ -81,7 +81,11 @@ export const getServices = (
 					alpacaBrokerEstimationClient,
 					secrets,
 				),
-				placeAlpacaOrder: placeAlpacaOrder(alpacaBrokerClient),
+				placeAlpacaOrder: placeAlpacaOrder(
+					alpacaBrokerClient,
+					alpacaBrokerEstimationClient,
+					secrets,
+				),
 				retrieveAlpacaOrder: retrieveAlpacaOrder(alpacaBrokerClient),
 			},
 		},
