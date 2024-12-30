@@ -181,6 +181,31 @@ app.get(
 	},
 );
 
+import { downloadDocument } from './app/wallot/users/downloadDocument.js';
+app.options('*/v0/documents/:documentId/download', corsPolicy);
+app.get(
+	'*/v0/documents/:documentId/download',
+	(
+		req: express.Request<
+			{ documentId: string },
+			{ download_url: string },
+			Record<string, never>,
+			Record<string, never>
+		>,
+		res: express.Response<
+			{ download_url: string },
+			GeneralizedResLocals<{ download_url: string }>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(downloadDocument)(req, res, next),
+		);
+	},
+);
+
 // Orders
 import { confirmOrder } from './app/wallot/orders/confirmOrder.js';
 app.options('*/v0/orders/:orderId/confirm', corsPolicy);

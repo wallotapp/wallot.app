@@ -11,6 +11,7 @@ import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDa
 import { useRetrieveDocuments } from '@wallot/react/src/features/users/hooks/useRetrieveDocuments';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { DateTime } from 'luxon';
+import { GoDownload } from 'react-icons/go';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -45,16 +46,16 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			<AccountDashboardPage className={cn('lg:max-w-3xl')}>
 				<div>
 					<div>
-						<p className='font-semibold text-2xl'>Documents</p>
+						<p className='font-semibold text-2xl'>Statements</p>
 					</div>
 					<div className='mt-1'>
 						<p className='font-light text-base text-gray-600'>
-							Below are the current documents in your account.
+							Below are the statements for your account.
 						</p>
 					</div>
 					<div className='mt-3 border-b border-gray-200 py-1'>
-						<div className='grid grid-cols-3 gap-4'>
-							{['Date', 'Name', 'Type of Document'].map((header) => {
+						<div className='grid grid-cols-3'>
+							{['Date', 'Type of Document', 'Download'].map((header) => {
 								return (
 									<div key={header}>
 										<p className='font-semibold text-base text-gray-600'>
@@ -66,15 +67,15 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</div>
 					</div>
 					<div className='mt-2 flex flex-col gap-2'>
-						{documents.map(({ date, id, type, name }) => {
+						{documents.map(({ date, id, type }) => {
 							const dateString =
 								date == null
 									? 'Pending'
 									: DateTime.fromISO(date).toLocaleString(DateTime.DATE_SHORT);
 
 							return (
-								<div key={id} className={cn('grid grid-cols-3 gap-4')}>
-									{[dateString, name, changeCase.capitalCase(type ?? '')].map(
+								<div key={id} className={cn('grid grid-cols-3')}>
+									{[dateString, changeCase.capitalCase(type ?? '')].map(
 										(value, valueIdx) => {
 											return (
 												<div key={valueIdx}>
@@ -83,6 +84,16 @@ const Page: NextPage<PageStaticProps> = (props) => {
 											);
 										},
 									)}
+									<div>
+										<button className='flex items-center gap-1'>
+											<div>
+												<GoDownload className='text-gray-400' />
+											</div>
+											<div>
+												<p className='font-light text-sm'>Download</p>
+											</div>
+										</button>
+									</div>
 								</div>
 							);
 						})}
