@@ -14,6 +14,8 @@ import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import { DateTime } from 'luxon';
 import { GoPlus } from 'react-icons/go';
 import { ScheduleCallDialog } from '@wallot/home-site/src/components/ScheduleCallDialog';
+import { useQueryLoggedInUserStatus } from '@wallot/react/src/hooks/useQueryLoggedInUserStatus';
+import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -21,8 +23,14 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// Router
 	const router = useRouter();
 
+	// Toaster
+	const { toast } = useToast();
+
 	// Asset orders
 	const { assetOrdersForLoggedInUser } = useQueryAssetOrdersForLoggedInUser();
+
+	// Status
+	const { isUserWithAlpacaEquity } = useQueryLoggedInUserStatus();
 
 	// ==== Constants ==== //
 
@@ -59,26 +67,55 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						<div className='mt-4 lg:mt-0 flex items-center space-x-5'>
 							{[{ ctaText: 'Buy Order' }, { ctaText: 'Sell Order' }].map(
 								({ ctaText }) => {
+									if (isUserWithAlpacaEquity) {
+										return (
+											<div key={ctaText}>
+												<ScheduleCallDialog
+													TriggerComponent={
+														<button
+															className={cn(
+																'bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100',
+																'flex items-center space-x-1',
+																'text-center',
+															)}
+														>
+															<div>
+																<GoPlus />
+															</div>
+															<div>
+																<p className='font-light text-sm'>{ctaText}</p>
+															</div>
+														</button>
+													}
+												/>
+											</div>
+										);
+									}
+
 									return (
 										<div key={ctaText}>
-											<ScheduleCallDialog
-												TriggerComponent={
-													<button
-														className={cn(
-															'bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100',
-															'flex items-center space-x-1',
-															'text-center',
-														)}
-													>
-														<div>
-															<GoPlus />
-														</div>
-														<div>
-															<p className='font-light text-sm'>{ctaText}</p>
-														</div>
-													</button>
-												}
-											/>
+											<button
+												className={cn(
+													'bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100',
+													'flex items-center space-x-1',
+													'text-center',
+												)}
+												onClick={() => {
+													toast({
+														title:
+															'Error - your account must be funded to trade.',
+														description:
+															'If you have recently made a deposit, please wait a few minutes and try again.',
+													});
+												}}
+											>
+												<div>
+													<GoPlus />
+												</div>
+												<div>
+													<p className='font-light text-sm'>{ctaText}</p>
+												</div>
+											</button>
 										</div>
 									);
 								},
