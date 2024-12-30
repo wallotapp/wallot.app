@@ -65,7 +65,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							</div>
 						</div>
 						<div className='mt-4 lg:mt-0 flex items-center space-x-5'>
-							{[{ ctaText: 'Buy Order' }, { ctaText: 'Sell Order' }].map(
+							{[{ ctaText: 'New Order' }].map(
 								({ ctaText }) => {
 									if (isUserWithAlpacaEquity) {
 										return (
