@@ -23,11 +23,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 
 	// Router
 	const { loggedInUserDisplayName } = useQueryLoggedInUser();
-	const { isLoggedInUserStatusLoading, state, tasks } =
-		useQueryLoggedInUserStatus();
-	isLoggedInUserStatusLoading;
-	state;
-	tasks;
+	const { tasks, isUserActivatedByAlpaca } = useQueryLoggedInUserStatus();
 
 	// ==== Constants ==== //
 
@@ -84,13 +80,26 @@ const Page: NextPage<PageStaticProps> = (props) => {
 								<div>
 									<p className='font-medium text-lg'>Account Status</p>
 								</div>
-								<div className='bg-red-200 px-2 py-1 rounded-md'>
-									<p className='font-light text-red-800 text-xs'>
+								<div
+									className={cn(
+										'px-2 py-1 rounded-md',
+										isUserActivatedByAlpaca ? 'bg-green-200' : 'bg-red-200',
+									)}
+								>
+									<p
+										className={cn(
+											'font-light text-xs',
+											isUserActivatedByAlpaca ? 'text-red-800' : 'text-red-800',
+										)}
+									>
 										Not Activated
 									</p>
 								</div>
 							</div>
-							<div className='mt-2'>
+							<div className='mt-2.5'>
+								<p className='font-medium text-xs'>Tasks</p>
+							</div>
+							<div className='mt-1.5'>
 								{tasks.map(({ ctaHref, ctaText, title, subtitle }, taskIdx) => {
 									return (
 										<div
@@ -147,10 +156,14 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					{tasks.length === 0 && (
 						<div className='mt-4'>
 							{/* Account Status Section */}
-							<div>
-								<p className='font-medium text-lg'>Account Status</p>
+							<div className='flex items-center space-x-2 w-fit'>
+								<div>
+									<p className='font-medium text-lg'>Account Status</p>
+								</div>
+								<div className='bg-green-200 px-2 py-1 rounded-md'>
+									<p className='font-light text-green-800 text-xs'>Activated</p>
+								</div>
 							</div>
-							<div className='mt-2 hidden'></div>
 							<div className='bg-slate-100 mt-2 flex flex-col items-center justify-center p-4 rounded-lg space-y-1'>
 								<div>
 									<GoCheckCircle className='font-light text-xl' />
