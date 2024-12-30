@@ -7,9 +7,9 @@ import {
 	UseCreateParameterMutationOptions,
 } from '@wallot/react/src/features/parameters/types/ParameterReactTypes';
 
-export const useCreateParameterMutation = (
+export function useCreateParameterMutation(
 	options?: UseCreateParameterMutationOptions,
-) => {
+) {
 	return useMutation<
 		CreateParameterMutationData,
 		CreateParameterMutationError,
@@ -23,4 +23,4 @@ export const useCreateParameterMutation = (
 		},
 		...(options ?? {}),
 	});
-};
+}

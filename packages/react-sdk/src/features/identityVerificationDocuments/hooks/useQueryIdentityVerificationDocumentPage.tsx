@@ -24,14 +24,14 @@ export const getQueryIdentityVerificationDocumentPageReactQueryOptions: UseQuery
 		...(props.reactQueryOptions ?? {}),
 	});
 
-export const useQueryIdentityVerificationDocumentPage = ({
+export function useQueryIdentityVerificationDocumentPage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryIdentityVerificationDocumentPageProps) => {
+}: UseQueryIdentityVerificationDocumentPageProps) {
 	return ReactQuery.useQuery(
 		getQueryIdentityVerificationDocumentPageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

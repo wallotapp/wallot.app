@@ -7,9 +7,9 @@ import {
 	UseUpdateInvoiceMutationOptions,
 } from '@wallot/react/src/features/invoices/types/InvoiceReactTypes';
 
-export const useUpdateInvoiceMutation = (
+export function useUpdateInvoiceMutation(
 	options?: UseUpdateInvoiceMutationOptions,
-) => {
+) {
 	return useMutation<
 		UpdateInvoiceMutationData,
 		UpdateInvoiceMutationError,
@@ -23,4 +23,4 @@ export const useUpdateInvoiceMutation = (
 		},
 		...(options ?? {}),
 	});
-};
+}

@@ -7,9 +7,9 @@ import {
 	UseUpdateAchTransferMutationOptions,
 } from '@wallot/react/src/features/achTransfers/types/AchTransferReactTypes';
 
-export const useUpdateAchTransferMutation = (
+export function useUpdateAchTransferMutation(
 	options?: UseUpdateAchTransferMutationOptions,
-) => {
+) {
 	return useMutation<
 		UpdateAchTransferMutationData,
 		UpdateAchTransferMutationError,
@@ -23,4 +23,4 @@ export const useUpdateAchTransferMutation = (
 		},
 		...(options ?? {}),
 	});
-};
+}

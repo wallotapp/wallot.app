@@ -8,14 +8,14 @@ import {
 import { tokenizeBankAccount } from '@wallot/react/src/features/bankAccounts/api/tokenizeBankAccount';
 import { GeneralizedError } from 'ergonomic';
 
-export const useTokenizeBankAccountMutation = (
+export function useTokenizeBankAccountMutation(
 	bankAccountId: string,
 	options?: UseMutationOptions<
 		TokenizeBankAccountResponse,
 		GeneralizedError,
 		TokenizeBankAccountParams
 	>,
-) => {
+) {
 	const { user: firebaseUser } = useContext(AuthContext);
 	return useMutation<
 		TokenizeBankAccountResponse,
@@ -30,4 +30,4 @@ export const useTokenizeBankAccountMutation = (
 		},
 		...options,
 	});
-};
+}

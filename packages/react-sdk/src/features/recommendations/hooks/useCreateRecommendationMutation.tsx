@@ -7,9 +7,9 @@ import {
 	UseCreateRecommendationMutationOptions,
 } from '@wallot/react/src/features/recommendations/types/RecommendationReactTypes';
 
-export const useCreateRecommendationMutation = (
+export function useCreateRecommendationMutation(
 	options?: UseCreateRecommendationMutationOptions,
-) => {
+) {
 	return useMutation<
 		CreateRecommendationMutationData,
 		CreateRecommendationMutationError,
@@ -27,4 +27,4 @@ export const useCreateRecommendationMutation = (
 			...(options ?? {}),
 		},
 	);
-};
+}

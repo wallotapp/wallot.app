@@ -7,9 +7,9 @@ import {
 	UseCreateIdentityVerificationDocumentMutationOptions,
 } from '@wallot/react/src/features/identityVerificationDocuments/types/IdentityVerificationDocumentReactTypes';
 
-export const useCreateIdentityVerificationDocumentMutation = (
+export function useCreateIdentityVerificationDocumentMutation(
 	options?: UseCreateIdentityVerificationDocumentMutationOptions,
-) => {
+) {
 	return useMutation<
 		CreateIdentityVerificationDocumentMutationData,
 		CreateIdentityVerificationDocumentMutationError,
@@ -27,4 +27,4 @@ export const useCreateIdentityVerificationDocumentMutation = (
 			...(options ?? {}),
 		},
 	);
-};
+}

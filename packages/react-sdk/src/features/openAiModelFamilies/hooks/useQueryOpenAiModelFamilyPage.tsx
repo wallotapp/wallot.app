@@ -23,14 +23,14 @@ export const getQueryOpenAiModelFamilyPageReactQueryOptions: UseQueryOpenAiModel
 		...(props.reactQueryOptions ?? {}),
 	});
 
-export const useQueryOpenAiModelFamilyPage = ({
+export function useQueryOpenAiModelFamilyPage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryOpenAiModelFamilyPageProps) => {
+}: UseQueryOpenAiModelFamilyPageProps) {
 	return ReactQuery.useQuery(
 		getQueryOpenAiModelFamilyPageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

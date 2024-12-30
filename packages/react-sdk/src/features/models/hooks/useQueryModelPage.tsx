@@ -23,14 +23,14 @@ export const getQueryModelPageReactQueryOptions: UseQueryModelPageOptionsFn = (
 	...(props.reactQueryOptions ?? {}),
 });
 
-export const useQueryModelPage = ({
+export function useQueryModelPage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryModelPageProps) => {
+}: UseQueryModelPageProps) {
 	return ReactQuery.useQuery(
 		getQueryModelPageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

@@ -23,14 +23,14 @@ export const getQueryUserPageReactQueryOptions: UseQueryUserPageOptionsFn = (
 	...(props.reactQueryOptions ?? {}),
 });
 
-export const useQueryUserPage = ({
+export function useQueryUserPage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryUserPageProps) => {
+}: UseQueryUserPageProps) {
 	return ReactQuery.useQuery(
 		getQueryUserPageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

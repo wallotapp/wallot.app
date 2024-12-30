@@ -5,14 +5,14 @@ import { ConfirmOrderParams, ConfirmOrderResponse } from '@wallot/js';
 import { confirmOrder } from '@wallot/react/src/features/orders/api/confirmOrder';
 import { GeneralizedError } from 'ergonomic';
 
-export const useConfirmOrderMutation = (
+export function useConfirmOrderMutation(
 	orderId: string | null | undefined,
 	options?: UseMutationOptions<
 		ConfirmOrderResponse,
 		GeneralizedError,
 		ConfirmOrderParams
 	>,
-) => {
+) {
 	const { user: firebaseUser } = useContext(AuthContext);
 	return useMutation<
 		ConfirmOrderResponse,
@@ -27,4 +27,4 @@ export const useConfirmOrderMutation = (
 		},
 		...options,
 	});
-};
+}

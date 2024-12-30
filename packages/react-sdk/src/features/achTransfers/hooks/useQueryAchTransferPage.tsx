@@ -21,14 +21,14 @@ export const getQueryAchTransferPageReactQueryOptions: UseQueryAchTransferPageOp
 		...(props.reactQueryOptions ?? {}),
 	});
 
-export const useQueryAchTransferPage = ({
+export function useQueryAchTransferPage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryAchTransferPageProps) => {
+}: UseQueryAchTransferPageProps) {
 	return ReactQuery.useQuery(
 		getQueryAchTransferPageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

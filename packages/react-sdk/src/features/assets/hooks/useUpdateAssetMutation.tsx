@@ -7,9 +7,9 @@ import {
 	UseUpdateAssetMutationOptions,
 } from '@wallot/react/src/features/assets/types/AssetReactTypes';
 
-export const useUpdateAssetMutation = (
+export function useUpdateAssetMutation(
 	options?: UseUpdateAssetMutationOptions,
-) => {
+) {
 	return useMutation<
 		UpdateAssetMutationData,
 		UpdateAssetMutationError,
@@ -23,4 +23,4 @@ export const useUpdateAssetMutation = (
 		},
 		...(options ?? {}),
 	});
-};
+}

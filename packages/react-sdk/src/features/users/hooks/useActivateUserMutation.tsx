@@ -5,13 +5,13 @@ import { AuthContext } from 'ergonomic-react/src/features/authentication/provide
 import { ActivateUserParams, ActivateUserResponse } from '@wallot/js';
 import { activateUser } from '@wallot/react/src/features/users/api/activateUser';
 
-export const useActivateUserMutation = (
+export function useActivateUserMutation(
 	options?: UseMutationOptions<
 		ActivateUserResponse,
 		GeneralizedError,
 		ActivateUserParams
 	>,
-) => {
+) {
 	const { user: firebaseUser } = useContext(AuthContext);
 	return useMutation<
 		ActivateUserResponse,
@@ -26,4 +26,4 @@ export const useActivateUserMutation = (
 		},
 		...(options ?? {}),
 	});
-};
+}

@@ -7,9 +7,9 @@ import {
 	UseUpdateAssetPriceMutationOptions,
 } from '@wallot/react/src/features/assetPrices/types/AssetPriceReactTypes';
 
-export const useUpdateAssetPriceMutation = (
+export function useUpdateAssetPriceMutation(
 	options?: UseUpdateAssetPriceMutationOptions,
-) => {
+) {
 	return useMutation<
 		UpdateAssetPriceMutationData,
 		UpdateAssetPriceMutationError,
@@ -23,4 +23,4 @@ export const useUpdateAssetPriceMutation = (
 		},
 		...(options ?? {}),
 	});
-};
+}

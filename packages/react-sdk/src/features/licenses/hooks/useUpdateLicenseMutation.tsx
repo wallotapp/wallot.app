@@ -7,9 +7,9 @@ import {
 	UseUpdateLicenseMutationOptions,
 } from '@wallot/react/src/features/licenses/types/LicenseReactTypes';
 
-export const useUpdateLicenseMutation = (
+export function useUpdateLicenseMutation(
 	options?: UseUpdateLicenseMutationOptions,
-) => {
+) {
 	return useMutation<
 		UpdateLicenseMutationData,
 		UpdateLicenseMutationError,
@@ -23,4 +23,4 @@ export const useUpdateLicenseMutation = (
 		},
 		...(options ?? {}),
 	});
-};
+}

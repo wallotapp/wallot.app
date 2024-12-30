@@ -75,7 +75,7 @@ interface Options {
 	onChange?: (width: number, height: number) => void; // Callback function to execute on window resize (optional)
 }
 
-export const useWindowSize = ({ onChange }: Options = {}) => {
+export function useWindowSize({ onChange }: Options = {}) {
 	// Use the useRafState hook to maintain the current window size (width and height)
 	const [state, setState] = useRafState<{
 		width: number | null;
@@ -122,4 +122,4 @@ export const useWindowSize = ({ onChange }: Options = {}) => {
 
 	// Return the current window size (width and height)
 	return state;
-};
+}

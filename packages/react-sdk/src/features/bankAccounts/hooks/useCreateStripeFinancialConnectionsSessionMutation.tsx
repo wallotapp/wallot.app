@@ -8,13 +8,13 @@ import {
 import { createStripeFinancialConnectionSession } from '@wallot/react/src/features/bankAccounts/api/createStripeFinancialConnectionsSession';
 import { GeneralizedError } from 'ergonomic';
 
-export const useCreateStripeFinancialConnectionSessionMutation = (
+export function useCreateStripeFinancialConnectionSessionMutation(
 	options?: UseMutationOptions<
 		CreateStripeFinancialConnectionsSessionResponse,
 		GeneralizedError,
 		CreateStripeFinancialConnectionsSessionParams
 	>,
-) => {
+) {
 	const { user: firebaseUser } = useContext(AuthContext);
 	return useMutation<
 		CreateStripeFinancialConnectionsSessionResponse,
@@ -39,4 +39,4 @@ export const useCreateStripeFinancialConnectionSessionMutation = (
 			...options,
 		},
 	);
-};
+}

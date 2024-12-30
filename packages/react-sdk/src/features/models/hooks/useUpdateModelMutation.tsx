@@ -7,9 +7,9 @@ import {
 	UseUpdateModelMutationOptions,
 } from '@wallot/react/src/features/models/types/ModelReactTypes';
 
-export const useUpdateModelMutation = (
+export function useUpdateModelMutation(
 	options?: UseUpdateModelMutationOptions,
-) => {
+) {
 	return useMutation<
 		UpdateModelMutationData,
 		UpdateModelMutationError,
@@ -23,4 +23,4 @@ export const useUpdateModelMutation = (
 		},
 		...(options ?? {}),
 	});
-};
+}

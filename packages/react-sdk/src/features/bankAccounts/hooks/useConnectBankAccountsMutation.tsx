@@ -9,13 +9,13 @@ import {
 import { connectBankAccounts } from '@wallot/react/src/features/bankAccounts/api/connectBankAccounts';
 import { GeneralizedError } from 'ergonomic';
 
-export const useConnectBankAccountsMutation = (
+export function useConnectBankAccountsMutation(
 	options?: UseMutationOptions<
 		ConnectBankAccountsResponse,
 		GeneralizedError,
 		ConnectBankAccountsParams<FinancialConnectionsSession.Account>
 	>,
-) => {
+) {
 	const { user: firebaseUser } = useContext(AuthContext);
 	return useMutation<
 		ConnectBankAccountsResponse,
@@ -34,4 +34,4 @@ export const useConnectBankAccountsMutation = (
 			...options,
 		},
 	);
-};
+}

@@ -21,14 +21,14 @@ export const getQueryBankAccountPageReactQueryOptions: UseQueryBankAccountPageOp
 		...(props.reactQueryOptions ?? {}),
 	});
 
-export const useQueryBankAccountPage = ({
+export function useQueryBankAccountPage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryBankAccountPageProps) => {
+}: UseQueryBankAccountPageProps) {
 	return ReactQuery.useQuery(
 		getQueryBankAccountPageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

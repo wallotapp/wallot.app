@@ -21,14 +21,14 @@ export const getQueryPositionPageReactQueryOptions: UseQueryPositionPageOptionsF
 		...(props.reactQueryOptions ?? {}),
 	});
 
-export const useQueryPositionPage = ({
+export function useQueryPositionPage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryPositionPageProps) => {
+}: UseQueryPositionPageProps) {
 	return ReactQuery.useQuery(
 		getQueryPositionPageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

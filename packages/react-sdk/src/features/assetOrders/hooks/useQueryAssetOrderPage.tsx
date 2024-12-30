@@ -21,14 +21,14 @@ export const getQueryAssetOrderPageReactQueryOptions: UseQueryAssetOrderPageOpti
 		...(props.reactQueryOptions ?? {}),
 	});
 
-export const useQueryAssetOrderPage = ({
+export function useQueryAssetOrderPage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryAssetOrderPageProps) => {
+}: UseQueryAssetOrderPageProps) {
 	return ReactQuery.useQuery(
 		getQueryAssetOrderPageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

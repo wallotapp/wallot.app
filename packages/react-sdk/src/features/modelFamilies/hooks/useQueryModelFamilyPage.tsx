@@ -21,14 +21,14 @@ export const getQueryModelFamilyPageReactQueryOptions: UseQueryModelFamilyPageOp
 		...(props.reactQueryOptions ?? {}),
 	});
 
-export const useQueryModelFamilyPage = ({
+export function useQueryModelFamilyPage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryModelFamilyPageProps) => {
+}: UseQueryModelFamilyPageProps) {
 	return ReactQuery.useQuery(
 		getQueryModelFamilyPageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

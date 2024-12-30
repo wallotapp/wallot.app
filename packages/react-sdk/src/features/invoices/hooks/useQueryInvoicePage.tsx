@@ -22,14 +22,14 @@ export const getQueryInvoicePageReactQueryOptions: UseQueryInvoicePageOptionsFn 
 		...(props.reactQueryOptions ?? {}),
 	});
 
-export const useQueryInvoicePage = ({
+export function useQueryInvoicePage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryInvoicePageProps) => {
+}: UseQueryInvoicePageProps) {
 	return ReactQuery.useQuery(
 		getQueryInvoicePageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

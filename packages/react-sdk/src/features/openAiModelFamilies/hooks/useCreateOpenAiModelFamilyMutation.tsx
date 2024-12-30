@@ -7,9 +7,9 @@ import {
 	UseCreateOpenAiModelFamilyMutationOptions,
 } from '@wallot/react/src/features/openAiModelFamilies/types/OpenAiModelFamilyReactTypes';
 
-export const useCreateOpenAiModelFamilyMutation = (
+export function useCreateOpenAiModelFamilyMutation(
 	options?: UseCreateOpenAiModelFamilyMutationOptions,
-) => {
+) {
 	return useMutation<
 		CreateOpenAiModelFamilyMutationData,
 		CreateOpenAiModelFamilyMutationError,
@@ -27,4 +27,4 @@ export const useCreateOpenAiModelFamilyMutation = (
 			...(options ?? {}),
 		},
 	);
-};
+}

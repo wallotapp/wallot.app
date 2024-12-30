@@ -7,9 +7,9 @@ import {
 	UseCreateOrderMutationOptions,
 } from '@wallot/react/src/features/orders/types/OrderReactTypes';
 
-export const useCreateOrderMutation = (
+export function useCreateOrderMutation(
 	options?: UseCreateOrderMutationOptions,
-) => {
+) {
 	return useMutation<
 		CreateOrderMutationData,
 		CreateOrderMutationError,
@@ -23,4 +23,4 @@ export const useCreateOrderMutation = (
 		},
 		...(options ?? {}),
 	});
-};
+}

@@ -7,9 +7,9 @@ import {
 	UseUpdateNewsReportMutationOptions,
 } from '@wallot/react/src/features/newsReports/types/NewsReportReactTypes';
 
-export const useUpdateNewsReportMutation = (
+export function useUpdateNewsReportMutation(
 	options?: UseUpdateNewsReportMutationOptions,
-) => {
+) {
 	return useMutation<
 		UpdateNewsReportMutationData,
 		UpdateNewsReportMutationError,
@@ -23,4 +23,4 @@ export const useUpdateNewsReportMutation = (
 		},
 		...(options ?? {}),
 	});
-};
+}

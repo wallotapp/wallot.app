@@ -1,6 +1,6 @@
 import { DEPLOYMENT_ENV } from 'ergonomic-react/src/config/deploymentEnv';
 
-export const useSiteOriginByTarget = () => {
+export function useSiteOriginByTarget() {
 	return {
 		live: {
 			HOME_SITE: process.env.NEXT_PUBLIC_LIVE_SITE_URL_HOME_SITE,
@@ -25,4 +25,4 @@ export const useSiteOriginByTarget = () => {
 			SUPPORT_SITE: process.env.NEXT_PUBLIC_TEST_SITE_URL_SUPPORT_SITE,
 		},
 	}[DEPLOYMENT_ENV];
-};
+}

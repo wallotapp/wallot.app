@@ -5,13 +5,13 @@ import { AuthContext } from 'ergonomic-react/src/features/authentication/provide
 import { FirebaseUserCustomTokenResponse } from 'ergonomic';
 import { createFirebaseAuthCustomToken } from '@wallot/react/src/features/users/api/createFirebaseAuthCustomToken';
 
-export const useCreateFirebaseAuthCustomTokenMutation = (
+export function useCreateFirebaseAuthCustomTokenMutation(
 	options?: UseMutationOptions<
 		FirebaseUserCustomTokenResponse,
 		GeneralizedError,
 		Record<string, never>
 	>,
-) => {
+) {
 	const { user: firebaseUser } = useContext(AuthContext);
 	return useMutation<
 		FirebaseUserCustomTokenResponse,
@@ -30,4 +30,4 @@ export const useCreateFirebaseAuthCustomTokenMutation = (
 			...(options ?? {}),
 		},
 	);
-};
+}

@@ -8,7 +8,7 @@ import {
 import { retrieveAssetPrice } from '@wallot/react/src/features/assetOrders/api/retrieveAssetPrice';
 import { GeneralizedError } from 'ergonomic';
 
-export const useRetrieveAssetPrice = (
+export function useRetrieveAssetPrice(
 	searchParams: RetrieveAssetPriceQueryParams,
 	options?: UseQueryOptions<
 		RetrieveAssetPriceResponse,
@@ -16,7 +16,7 @@ export const useRetrieveAssetPrice = (
 		RetrieveAssetPriceResponse,
 		['retrieveAssetPrice', RetrieveAssetPriceQueryParams]
 	>,
-) => {
+) {
 	const { user: firebaseUser } = useContext(AuthContext);
 
 	return useQuery<
@@ -36,4 +36,4 @@ export const useRetrieveAssetPrice = (
 		...options,
 		enabled: firebaseUser != null && (options?.enabled ?? true),
 	});
-};
+}

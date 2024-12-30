@@ -23,14 +23,14 @@ export const getQueryRecommendationPageReactQueryOptions: UseQueryRecommendation
 		...(props.reactQueryOptions ?? {}),
 	});
 
-export const useQueryRecommendationPage = ({
+export function useQueryRecommendationPage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryRecommendationPageProps) => {
+}: UseQueryRecommendationPageProps) {
 	return ReactQuery.useQuery(
 		getQueryRecommendationPageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

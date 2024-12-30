@@ -23,14 +23,14 @@ export const getQueryAssetPageReactQueryOptions: UseQueryAssetPageOptionsFn = (
 	...(props.reactQueryOptions ?? {}),
 });
 
-export const useQueryAssetPage = ({
+export function useQueryAssetPage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryAssetPageProps) => {
+}: UseQueryAssetPageProps) {
 	return ReactQuery.useQuery(
 		getQueryAssetPageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

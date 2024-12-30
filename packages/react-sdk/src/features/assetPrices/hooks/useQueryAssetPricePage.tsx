@@ -21,14 +21,14 @@ export const getQueryAssetPricePageReactQueryOptions: UseQueryAssetPricePageOpti
 		...(props.reactQueryOptions ?? {}),
 	});
 
-export const useQueryAssetPricePage = ({
+export function useQueryAssetPricePage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryAssetPricePageProps) => {
+}: UseQueryAssetPricePageProps) {
 	return ReactQuery.useQuery(
 		getQueryAssetPricePageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

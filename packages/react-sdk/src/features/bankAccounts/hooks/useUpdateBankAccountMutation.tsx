@@ -7,9 +7,9 @@ import {
 	UseUpdateBankAccountMutationOptions,
 } from '@wallot/react/src/features/bankAccounts/types/BankAccountReactTypes';
 
-export const useUpdateBankAccountMutation = (
+export function useUpdateBankAccountMutation(
 	options?: UseUpdateBankAccountMutationOptions,
-) => {
+) {
 	return useMutation<
 		UpdateBankAccountMutationData,
 		UpdateBankAccountMutationError,
@@ -23,4 +23,4 @@ export const useUpdateBankAccountMutation = (
 		},
 		...(options ?? {}),
 	});
-};
+}

@@ -2,14 +2,14 @@ import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 import { deleteAssetOrder } from '@wallot/react/src/features/assetOrders/api/deleteAssetOrder';
 import { GeneralizedError } from 'ergonomic';
 
-export const useDeleteAssetOrderMutation = (
+export function useDeleteAssetOrderMutation(
 	assetOrderId: string,
 	options?: UseMutationOptions<
 		Record<string, never>,
 		GeneralizedError,
 		Record<string, never>
 	>,
-) => {
+) {
 	return useMutation<
 		Record<string, never>,
 		GeneralizedError,
@@ -23,4 +23,4 @@ export const useDeleteAssetOrderMutation = (
 		},
 		...options,
 	});
-};
+}

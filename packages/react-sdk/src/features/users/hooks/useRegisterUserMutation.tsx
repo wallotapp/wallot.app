@@ -3,13 +3,13 @@ import { GeneralizedError } from 'ergonomic';
 import { RegisterUserParams, RegisterUserResponse } from '@wallot/js';
 import { registerUser } from '@wallot/react/src/features/users/api/registerUser';
 
-export const useRegisterUserMutation = (
+export function useRegisterUserMutation(
 	options?: UseMutationOptions<
 		RegisterUserResponse,
 		GeneralizedError,
 		RegisterUserParams
 	>,
-) => {
+) {
 	return useMutation<
 		RegisterUserResponse,
 		GeneralizedError,
@@ -23,4 +23,4 @@ export const useRegisterUserMutation = (
 		},
 		...(options ?? {}),
 	});
-};
+}

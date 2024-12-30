@@ -21,14 +21,14 @@ export const getQueryOpenAiModelPageReactQueryOptions: UseQueryOpenAiModelPageOp
 		...(props.reactQueryOptions ?? {}),
 	});
 
-export const useQueryOpenAiModelPage = ({
+export function useQueryOpenAiModelPage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryOpenAiModelPageProps) => {
+}: UseQueryOpenAiModelPageProps) {
 	return ReactQuery.useQuery(
 		getQueryOpenAiModelPageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

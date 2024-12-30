@@ -7,9 +7,9 @@ import {
 	UseUpdateAssetOrderMutationOptions,
 } from '@wallot/react/src/features/assetOrders/types/AssetOrderReactTypes';
 
-export const useUpdateAssetOrderMutation = (
+export function useUpdateAssetOrderMutation(
 	options?: UseUpdateAssetOrderMutationOptions,
-) => {
+) {
 	return useMutation<
 		UpdateAssetOrderMutationData,
 		UpdateAssetOrderMutationError,
@@ -23,4 +23,4 @@ export const useUpdateAssetOrderMutation = (
 		},
 		...(options ?? {}),
 	});
-};
+}

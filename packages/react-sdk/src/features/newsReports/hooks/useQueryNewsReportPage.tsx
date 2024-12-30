@@ -21,14 +21,14 @@ export const getQueryNewsReportPageReactQueryOptions: UseQueryNewsReportPageOpti
 		...(props.reactQueryOptions ?? {}),
 	});
 
-export const useQueryNewsReportPage = ({
+export function useQueryNewsReportPage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryNewsReportPageProps) => {
+}: UseQueryNewsReportPageProps) {
 	return ReactQuery.useQuery(
 		getQueryNewsReportPageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}
