@@ -24,6 +24,7 @@ import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/
 import { useQueryOrdersForLoggedInUser } from '@wallot/react/src/features/orders/hooks/useQueryOrdersForLoggedInUser';
 import { useQueryAchTransferPage } from '@wallot/react/src/features/achTransfers/hooks/useQueryAchTransferPage';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders/hooks/useQueryAssetOrderPage';
+import { useRetrievePositions } from '@wallot/react/src/features/positions/hooks/useRetrievePositions';
 
 export type LoggedInUserStatus = {
 	isLoggedInUserStatusLoading: boolean;
@@ -72,6 +73,8 @@ export function useQueryLoggedInUserStatus(): LoggedInUserStatus {
 		});
 	const assetOrdersForLoggedInUser = assetOrderPage?.documents ?? [];
 
+	const { isLoading: isRetrievePositionsLoading } = useRetrievePositions();
+
 	return getLoggedInUserStatus({
 		loggedInUser,
 		isLoggedInUserLoading,
@@ -83,6 +86,7 @@ export function useQueryLoggedInUserStatus(): LoggedInUserStatus {
 		isBankAccountPageLoading,
 		ordersForLoggedInUser,
 		isOrderPageLoading,
+		isRetrievePositionsLoading,
 	});
 }
 
@@ -97,6 +101,7 @@ function getLoggedInUserStatus({
 	isBankAccountPageLoading,
 	ordersForLoggedInUser,
 	isOrderPageLoading,
+	isRetrievePositionsLoading,
 }: {
 	loggedInUser: User | undefined;
 	isLoggedInUserLoading: boolean;
@@ -108,6 +113,7 @@ function getLoggedInUserStatus({
 	isBankAccountPageLoading: boolean;
 	ordersForLoggedInUser: Order[];
 	isOrderPageLoading: boolean;
+	isRetrievePositionsLoading: boolean;
 }): LoggedInUserStatus {
 	const isLoggedInUserStatusLoading =
 		loggedInUser == null ||
@@ -117,6 +123,7 @@ function getLoggedInUserStatus({
 			isAssetOrderPageLoading,
 			isBankAccountPageLoading,
 			isOrderPageLoading,
+			isRetrievePositionsLoading,
 		].some(Boolean);
 
 	const status: LoggedInUserStatus = {
