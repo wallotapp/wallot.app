@@ -8,16 +8,14 @@ import {
 	ordersApi,
 	RequestNewOrderParams,
 	RequestNewOrderResponse,
+	usersApi,
+	User,
+	isKycUser,
 } from '@wallot/js';
 import { db, gcp } from '../../../services.js';
 
 export const requestNewOrder = async (
-	{
-		amount: amountInCents,
-		bank_account: bankAccountId,
-		side,
-		symbol,
-	}: RequestNewOrderParams,
+	{ amount: amountInCents, side, symbol }: RequestNewOrderParams,
 	_params: Record<string, never>,
 	_query: Record<string, never>,
 	firebaseUser: FirebaseUser | null,
@@ -36,6 +34,18 @@ export const requestNewOrder = async (
 	const assetDoc = assetSnapshot.docs[0];
 	if (assetDoc == null) throw new Error('Asset not found');
 	const assetId = assetDoc.id;
+
+	// Query the user where the _id matches
+	const userSnapshot = await db
+		.collection(usersApi.collectionId)
+		.where('_id', '==', firebaseUser.uid)
+		.limit(1)
+		.get();
+	const userDoc = userSnapshot.docs[0];
+	if (userDoc == null) throw new Error('Asset not found');
+	const user = userDoc.data() as User;
+	if (!isKycUser(user)) throw new Error('User is not KYC verified');
+	const { default_bank_account: defaultBankAccountId } = user;
 
 	// Create the asset order
 	const orderId = ordersApi.generateId();
@@ -61,7 +71,7 @@ export const requestNewOrder = async (
 
 	// Create the order
 	const createOrderParams: CreateOrderParams = {
-		bank_account: bankAccountId,
+		bank_account: defaultBankAccountId,
 		user: firebaseUser.uid,
 		name: '',
 		category: 'default',
