@@ -6,13 +6,21 @@ import {
 	PageStaticProps,
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { HomeSiteRouteQueryParams, RequestNewOrderParams } from '@wallot/js';
+import {
+	AlpacaOrderSideEnum,
+	AlpacaOrderSide,
+	HomeSiteRouteQueryParams,
+	RequestNewOrderParams,
+	getHomeSiteRoute,
+} from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
 import { useQueryAssetOrdersForLoggedInUser } from '@wallot/react/src/features/assetOrders/hooks/useQueryAssetOrdersForLoggedInUser';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import {
+	GeneralizedFieldTypeEnum,
 	getCurrencyUsdStringFromCents,
 	getFieldSpecByFieldKey,
+	Keys,
 	YupHelpers,
 } from 'ergonomic';
 import { DateTime } from 'luxon';
@@ -31,6 +39,7 @@ import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components
 import { useRequestNewOrderMutation } from '@wallot/react/src/features/orders/hooks/useRequestNewOrderMutation';
 import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
 import * as yup from 'yup';
+import Link from 'next/link';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== State ==== //
@@ -73,12 +82,19 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	};
 
 	const newTransferFormProperties = {
+		symbol: yup.string().required().min(1).label('Stock Symbol').meta({
+			label_message_user_text: 'e.g. AAPL or TSLA',
+			type: GeneralizedFieldTypeEnum.obj.short_text,
+		}),
 		amount: YupHelpers.usd().required(),
+		side: AlpacaOrderSideEnum.getDefinedSchema()
+			.default('' as AlpacaOrderSide)
+			.required(),
 	} as const;
 	const newTransferFormSchema = yup.object(newTransferFormProperties);
 	const newTransferFormFieldSpecByFieldKey = getFieldSpecByFieldKey(
 		newTransferFormSchema,
-		['amount'],
+		Keys(newTransferFormProperties),
 	);
 	const resolver = useYupValidationResolver(newTransferFormSchema, {
 		...defaultGeneralizedFormDataTransformationOptions,
@@ -92,10 +108,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		});
 	const liveData = watch();
 	const isNewTransferFormReady =
-		String(liveData.amount).length > 0 &&
-		String(liveData.amount) !== '$0.00' &&
-		liveData.bank_account != null &&
-		liveData.bank_account.length > 0;
+		String(liveData.amount).length > 0 && String(liveData.amount) !== '$0.00';
 
 	// Mutation
 	const { mutate: requestNewOrder, isLoading: isRequestNewOrderRunning } =
@@ -135,7 +148,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const isFormSubmitting = formStatus === 'running';
 	const fields: LiteFormFieldProps<RequestNewOrderParams>[] = [
 		{
+			fieldKey: 'symbol' as const,
+		},
+		{
 			fieldKey: 'amount' as const,
+		},
+		{
+			fieldKey: 'side' as const,
 		},
 	].map(({ fieldKey }) => ({
 		control,
@@ -181,7 +200,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<AccountDashboardPage className={cn('lg:max-w-3xl')}>
+			<AccountDashboardPage className={cn('lg:max-w-2xl')}>
 				<div className={cn(mode === 'transactions' ? 'block' : 'hidden')}>
 					<div
 						className={cn(
@@ -333,8 +352,19 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					</div>
 					<div className='mt-4 lg:mt-1'>
 						<p className='font-light text-base text-gray-600'>
-							Select the stock symbol, order amount and order type to place a
-							new order.
+							Enter the stock symbol, amount (in USD) and transaction type for
+							your order. We'll use your{' '}
+							<Link
+								href={getHomeSiteRoute({
+									includeOrigin: false,
+									origin: null,
+									queryParams: {},
+									routeStaticId: 'HOME_SITE__/ACCOUNT/BANKING',
+								})}
+							>
+								<span className='underline'>default bank account</span>
+							</Link>{' '}
+							to process the order.
 						</p>
 					</div>
 					<div className='mt-4 lg:max-w-lg'>
