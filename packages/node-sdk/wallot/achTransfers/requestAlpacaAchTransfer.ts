@@ -1,16 +1,17 @@
 import { getFunctions } from 'firebase-admin/functions';
 import { PlaceAlpacaOrdersTaskParams } from '../orders/placeAlpacaOrders.js';
 
-export type RequestAlpacaAchTransferTaskParams = PlaceAlpacaOrdersTaskParams & {
+export type RequestAlpacaAchTransferTaskParams = {
 	amountInCents: number;
 	bankAccountId: string;
+	orderId: PlaceAlpacaOrdersTaskParams['orderId'];
 	userId: string;
 };
-export type RefreshAlpacaAchTransferStatusTaskParams =
-	PlaceAlpacaOrdersTaskParams & {
-		achTransferId: string;
-		userId: string;
-	};
+export type RefreshAlpacaAchTransferStatusTaskParams = {
+	achTransferId: string;
+	orderId: PlaceAlpacaOrdersTaskParams['orderId'];
+	userId: string;
+};
 
 export const enqueueRequestAlpacaAchTransfer =
 	(
