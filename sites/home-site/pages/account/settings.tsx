@@ -7,6 +7,8 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { HomeSiteRouteQueryParams } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
+import { BillingInformationContainer } from '@wallot/react/src/features/users/components/BillingInformationContainer';
+import { default as cn } from 'ergonomic-react/src/lib/cn';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -34,8 +36,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<AccountDashboardPage>
-				<div>Here is your billing information!</div>
+			<AccountDashboardPage className={cn('lg:max-w-3xl')}>
+				<BillingInformationContainer defaultOpen />
 			</AccountDashboardPage>
 		</PageComponent>
 	);
