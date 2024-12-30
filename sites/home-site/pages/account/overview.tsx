@@ -170,82 +170,78 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						{[
 							{
 								CardContent: (
-									<Fragment>
-										<div className='flex flex-col items-center justify-center h-full'>
-											<p className='font-extralight text-2xl'>
-												{loggedInUserEquityBalanceUsdString}
-											</p>
-										</div>
-									</Fragment>
+									<div className='flex flex-col items-center justify-center h-full'>
+										<p className='font-extralight text-2xl'>
+											{loggedInUserEquityBalanceUsdString}
+										</p>
+									</div>
 								),
 								title: 'Equity',
 							},
 							{
 								CardContent: (
-									<Fragment>
-										<div className=''>
-											{assetOrdersForLoggedInUser.map(
-												(
-													{
-														order,
-														amount,
-														alpaca_order_symbol,
-														alpaca_order_filled_avg_price,
-													},
-													assetOrderIdx,
-												) => {
-													const amountUsdString =
-														getCurrencyUsdStringFromCents(amount);
-													const isFilled =
-														alpaca_order_filled_avg_price != null &&
-														alpaca_order_filled_avg_price !== '';
-													const ctaText = isFilled ? 'View' : 'Place order';
-													return (
-														<div
-															key={alpaca_order_symbol}
-															className={cn(
-																'flex items-center space-x-2 justify-between',
-																assetOrderIdx > 0 ? 'mt-2' : '',
-															)}
-														>
-															<div className='flex items-center space-x-2'>
-																<div>
-																	<p className='font-light text-xs'>
-																		{amountUsdString}
-																	</p>
-																</div>
-																<div>
-																	<p className='font-light text-sm'>
-																		{alpaca_order_symbol}
-																	</p>
-																</div>
+									<div className=''>
+										{assetOrdersForLoggedInUser.map(
+											(
+												{
+													order,
+													amount,
+													alpaca_order_symbol,
+													alpaca_order_filled_avg_price,
+												},
+												assetOrderIdx,
+											) => {
+												const amountUsdString =
+													getCurrencyUsdStringFromCents(amount);
+												const isFilled =
+													alpaca_order_filled_avg_price != null &&
+													alpaca_order_filled_avg_price !== '';
+												const ctaText = isFilled ? 'View' : 'Place order';
+												return (
+													<div
+														key={alpaca_order_symbol}
+														className={cn(
+															'flex items-center space-x-2 justify-between',
+															assetOrderIdx > 0 ? 'mt-2' : '',
+														)}
+													>
+														<div className='flex items-center space-x-2'>
+															<div>
+																<p className='font-light text-xs'>
+																	{amountUsdString}
+																</p>
 															</div>
 															<div>
-																<Link
-																	href={getHomeSiteRoute({
-																		includeOrigin: false,
-																		origin: null,
-																		queryParams: { order_id: order },
-																		routeStaticId: isFilled
-																			? 'HOME_SITE__/ORDERS/[ORDER_ID]/TRACK'
-																			: 'HOME_SITE__/ORDERS/[ORDER_ID]/CHECKOUT',
-																	})}
-																>
-																	<div className='cursor-pointer rounded-lg flex items-center justify-center space-x-2 px-2 py-1'>
-																		<div>
-																			<p className='text-xs underline'>
-																				{ctaText}
-																			</p>
-																		</div>
-																	</div>
-																</Link>
+																<p className='font-light text-sm'>
+																	{alpaca_order_symbol}
+																</p>
 															</div>
 														</div>
-													);
-												},
-											)}
-										</div>
-									</Fragment>
+														<div>
+															<Link
+																href={getHomeSiteRoute({
+																	includeOrigin: false,
+																	origin: null,
+																	queryParams: { order_id: order },
+																	routeStaticId: isFilled
+																		? 'HOME_SITE__/ORDERS/[ORDER_ID]/TRACK'
+																		: 'HOME_SITE__/ORDERS/[ORDER_ID]/CHECKOUT',
+																})}
+															>
+																<div className='cursor-pointer rounded-lg flex items-center justify-center space-x-2 px-2 py-1'>
+																	<div>
+																		<p className='text-xs underline'>
+																			{ctaText}
+																		</p>
+																	</div>
+																</div>
+															</Link>
+														</div>
+													</div>
+												);
+											},
+										)}
+									</div>
 								),
 								title: 'Orders',
 							},
