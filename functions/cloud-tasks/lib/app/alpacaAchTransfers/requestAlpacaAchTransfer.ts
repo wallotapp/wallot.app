@@ -26,17 +26,28 @@ export const handleRequestAlpacaAchTransferTaskOptions = {
  */
 export const handleRequestAlpacaAchTransferTask: CloudTaskHandler<
 	RequestAlpacaAchTransferTaskParams
-> = async ({ data: { amountInCents, bankAccountId, orderId, userId } }) => {
-	// Query the ACH_TRANSFERs
+> = async ({
+	data: {
+		achTransferId,
+		amountInCents,
+		bankAccountId,
+		direction = 'INCOMING',
+		orderId,
+		userId,
+	},
+}) => {
+	// Query the ACH_TRANSFER
 	const achTransfersQuery = await db
 		.collection(achTransfersApi.collectionId)
-		.where('bank_account', '==', bankAccountId)
+		.where('_id', '==', achTransferId)
 		.get();
 	if (!achTransfersQuery.empty) {
 		// Precondition failed
-		// There is already an ACH_TRANSFER pending, so this task is not necessary
+		// There is already an ACH_TRANSFER pending with this ID, so this task is not necessary
 		log({
-			message: 'Requested ACH Transfer, but ACH Transfer already pending',
+			message:
+				'Requested ACH Transfer, but ACH Transfer already pending with ID: ' +
+				achTransferId,
 		});
 		return Promise.resolve();
 	}
@@ -64,6 +75,7 @@ export const handleRequestAlpacaAchTransferTask: CloudTaskHandler<
 		// Kick to the `createAlpacaAchRelationship` task
 		log({ message: 'Requested ACH Transfer, but bank account not approved' });
 		await gcp.tasks.enqueueCreateAlpacaAchRelationship({
+			achTransferId,
 			amountInCents,
 			bankAccountId,
 			orderId,
@@ -94,11 +106,15 @@ export const handleRequestAlpacaAchTransferTask: CloudTaskHandler<
 		user,
 		bankAccount,
 		amountInCents,
+		direction,
 	);
 	const achTransferCreateParams: CreateAchTransferParams = {
+		_id: achTransferId,
 		bank_account: bankAccount._id,
 		name: '',
-		category: 'incoming',
+		category: { INCOMING: 'incoming' as const, OUTGOING: 'outgoing' as const }[
+			direction
+		],
 		...getAchTransferPropertiesFromAlpacaAchTransfer(alpacaAchTransfer),
 	};
 	const achTransfer = achTransfersApi.mergeCreateParams({
@@ -111,8 +127,8 @@ export const handleRequestAlpacaAchTransferTask: CloudTaskHandler<
 
 	// Kick to the `refreshAlpacaAchTransferStatus` task
 	await gcp.tasks.enqueueRefreshAlpacaAchTransferStatus({
-		orderId,
 		achTransferId: achTransfer._id,
+		orderId,
 		userId,
 	});
 

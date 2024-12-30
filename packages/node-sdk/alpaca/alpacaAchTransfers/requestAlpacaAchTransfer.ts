@@ -10,8 +10,12 @@ export const requestAlpacaAchTransfer =
 	(alpacaBrokerClient: KyInstance) =>
 	async (
 		user: UserActivatedByAlpaca,
-		bankAccount: BankAccountApprovedByAlpaca,
+		bankAccount: Pick<
+			BankAccountApprovedByAlpaca,
+			'alpaca_ach_relationship_id'
+		>,
 		amountInCents: number,
+		direction: AlpacaAchTransfer['direction'] = 'INCOMING',
 	) => {
 		try {
 			if (amountInCents <= 0) {
@@ -27,7 +31,7 @@ export const requestAlpacaAchTransfer =
 				amount: getCurrencyUsdStringFromCents(amountInCents)
 					.replace('$', '')
 					.replace(/,/g, ''),
-				direction: 'INCOMING',
+				direction,
 				relationship_id: bankAccount.alpaca_ach_relationship_id,
 				transfer_type: 'ach',
 			};

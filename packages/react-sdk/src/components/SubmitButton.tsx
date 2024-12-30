@@ -3,6 +3,7 @@ import { Button } from 'ergonomic-react/src/components/ui/button';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 
 export type SubmitButtonProps = BaseComponent & {
+	isDisabled?: boolean | null;
 	isSubmitting: boolean;
 	text?: string;
 	textClassName?: string;
@@ -10,13 +11,18 @@ export type SubmitButtonProps = BaseComponent & {
 };
 export function SubmitButton({
 	className = '',
+	isDisabled = null,
 	isSubmitting,
 	text = 'Continue',
 	textClassName = '',
 	type = 'submit',
 }: SubmitButtonProps) {
 	return (
-		<Button className={className} disabled={isSubmitting} type={type}>
+		<Button
+			className={className}
+			disabled={isDisabled == null ? isSubmitting : isDisabled}
+			type={type}
+		>
 			<div>
 				{isSubmitting ? (
 					<>

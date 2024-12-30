@@ -1,10 +1,18 @@
 import { getFunctions } from 'firebase-admin/functions';
 import { CreateAlpacaAchRelationshipTaskParams } from '../bankAccounts/createAlpacaAchRelationship.js';
 
-export type CreateAlpacaAccountTaskParams =
-	CreateAlpacaAchRelationshipTaskParams;
-export type RefreshAlpacaAccountStatusTaskParams =
-	CreateAlpacaAchRelationshipTaskParams;
+export type CreateAlpacaAccountTaskParams = {
+	amountInCents: CreateAlpacaAchRelationshipTaskParams['amountInCents'];
+	bankAccountId: CreateAlpacaAchRelationshipTaskParams['bankAccountId'];
+	orderId: CreateAlpacaAchRelationshipTaskParams['orderId'];
+	userId: CreateAlpacaAchRelationshipTaskParams['userId'];
+};
+export type RefreshAlpacaAccountStatusTaskParams = {
+	amountInCents: CreateAlpacaAchRelationshipTaskParams['amountInCents'];
+	bankAccountId: CreateAlpacaAchRelationshipTaskParams['bankAccountId'];
+	orderId: CreateAlpacaAchRelationshipTaskParams['orderId'];
+	userId: CreateAlpacaAchRelationshipTaskParams['userId'];
+};
 
 export const enqueueCreateAlpacaAccount =
 	(

@@ -26,6 +26,9 @@ import {
 	ConfirmOrderResponse,
 	RetrieveAssetPriceQueryParams,
 	RetrieveAssetPriceResponse,
+	AlpacaPosition,
+	RequestNewAchTransferResponse,
+	RequestNewAchTransferParams,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -41,6 +44,36 @@ const app = express.default();
 app.use(express.json());
 
 // ---- Application Routes: Wallot ---- //
+
+// ACH Transfers
+import { requestNewAchTransfer } from './app/wallot/achTransfers/requestNewAchTransfer.js';
+app.options('*/v0/transfers', corsPolicy);
+app.post(
+	'*/v0/transfers',
+	(
+		req: express.Request<
+			Record<string, never>,
+			RequestNewAchTransferResponse,
+			RequestNewAchTransferParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			RequestNewAchTransferResponse,
+			GeneralizedResLocals<RequestNewAchTransferResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(requestNewAchTransfer)(
+				req,
+				res,
+				next,
+			),
+		);
+	},
+);
 
 // Assets
 import { retrieveAssetPrice } from './app/wallot/assets/retrieveAssetPrice.js';
@@ -141,6 +174,32 @@ app.post(
 			req,
 			res,
 			createRouterFunction(auth, secrets)(confirmOrder)(req, res, next),
+		);
+	},
+);
+
+// Positions
+import { retrievePositions } from './app/wallot/positions/retrievePositions.js';
+app.options('*/v0/positions', corsPolicy);
+app.get(
+	'*/v0/positions',
+	(
+		req: express.Request<
+			Record<string, never>,
+			AlpacaPosition[],
+			Record<string, never>,
+			Record<string, never>
+		>,
+		res: express.Response<
+			AlpacaPosition[],
+			GeneralizedResLocals<AlpacaPosition[]>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(retrievePositions)(req, res, next),
 		);
 	},
 );

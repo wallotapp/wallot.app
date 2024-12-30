@@ -12,6 +12,7 @@ import {
 	UpdateAssetOrderParams,
 	isAssetOrderPendingAlpacaFill,
 	isOrderConfirmedByUser,
+	achTransfersApi,
 } from '@wallot/js';
 import { PlaceAlpacaOrdersTaskParams } from '@wallot/node';
 import { alpaca, db, gcp, log } from '../../services.js';
@@ -116,8 +117,10 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 			orderId,
 		});
 		await gcp.tasks.enqueueRequestAlpacaAchTransfer({
+			achTransferId: achTransfersApi.generateId(),
 			amountInCents: orderSubtotalAmount,
 			bankAccountId: order.bank_account,
+			direction: 'INCOMING',
 			orderId,
 			userId: order.user,
 		});

@@ -88,7 +88,8 @@ const AssetOrderCard: React.FC<{
 		shouldUnregister: false,
 	});
 	const liveData = watch();
-	const isAmountInputComplete = String(liveData.amount).length > 0;
+	const isAmountInputComplete =
+		String(liveData.amount).length > 0 && String(liveData.amount) !== '$0.00';
 
 	// Mutation for updates
 	const { mutate: updateAssetOrder, isLoading: isUpdateAssetOrderRunning } =

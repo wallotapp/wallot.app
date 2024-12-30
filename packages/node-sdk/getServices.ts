@@ -19,6 +19,7 @@ import {
 	estimateAlpacaOrder,
 	placeAlpacaOrder,
 	retrieveAlpacaOrder,
+	retrieveAlpacaPositions,
 } from './alpaca/index.js';
 import { getAlphaVantageClient } from './alphaVantage/index.js';
 import { encryptString } from './crypto/encryptString.js';
@@ -87,6 +88,8 @@ export const getServices = (
 					secrets,
 				),
 				retrieveAlpacaOrder: retrieveAlpacaOrder(alpacaBrokerClient),
+				// Alpaca Positions
+				retrieveAlpacaPositions: retrieveAlpacaPositions(alpacaBrokerClient),
 			},
 		},
 		alphaVantage: getAlphaVantageClient(secrets),

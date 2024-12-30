@@ -66,9 +66,9 @@ const fallbackPageQueryHookForResource = (() => ({
  * const hook = getPageQueryHookForResource(resourceName);
  * const { data, isLoading, error } = hook({ firestoreQueryOptions });
  */
-export const getPageQueryHookForResource = (
+export function getPageQueryHookForResource(
 	resourceName: string | null,
-): PageQueryHook => {
+): PageQueryHook {
 	if (resourceName == null) {
 		return fallbackPageQueryHookForResource;
 	}
@@ -78,4 +78,4 @@ export const getPageQueryHookForResource = (
 		throw new Error(`No hook found for resource: ${resourceName}`);
 	}
 	return hook;
-};
+}
