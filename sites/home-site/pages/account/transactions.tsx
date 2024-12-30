@@ -13,11 +13,16 @@ import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import { DateTime } from 'luxon';
 import { GoPlus } from 'react-icons/go';
-import { ScheduleCallDialog } from '@wallot/home-site/src/components/ScheduleCallDialog';
 import { useQueryLoggedInUserStatus } from '@wallot/react/src/hooks/useQueryLoggedInUserStatus';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
+import { useState } from 'react';
 
 const Page: NextPage<PageStaticProps> = (props) => {
+	// ==== State ==== //
+	const [mode, setMode] = useState<'transactions' | 'new_transaction'>(
+		'transactions',
+	);
+
 	// ==== Hooks ==== //
 
 	// Router
@@ -53,7 +58,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	return (
 		<PageComponent {...pageProps}>
 			<AccountDashboardPage className={cn('lg:max-w-3xl')}>
-				<div>
+				<div className={cn(mode === 'transactions' ? 'block' : 'hidden')}>
 					<div
 						className={cn(
 							'lg:flex lg:items-center lg:justify-between lg:space-x-20',
@@ -65,33 +70,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							</div>
 						</div>
 						<div className='mt-4 lg:mt-0 flex items-center space-x-5'>
-							{[{ ctaText: 'New Order' }].map(
-								({ ctaText }) => {
-									if (isUserWithAlpacaEquity) {
-										return (
-											<div key={ctaText}>
-												<ScheduleCallDialog
-													TriggerComponent={
-														<button
-															className={cn(
-																'bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100',
-																'flex items-center space-x-1',
-																'text-center',
-															)}
-														>
-															<div>
-																<GoPlus />
-															</div>
-															<div>
-																<p className='font-normal text-sm'>{ctaText}</p>
-															</div>
-														</button>
-													}
-												/>
-											</div>
-										);
-									}
-
+							{[{ ctaText: 'New Order' }].map(({ ctaText }) => {
+								if (isUserWithAlpacaEquity) {
 									return (
 										<div key={ctaText}>
 											<button
@@ -101,12 +81,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 													'text-center',
 												)}
 												onClick={() => {
-													toast({
-														title:
-															'Error - your account must be funded to trade.',
-														description:
-															'If you have recently made a deposit, please wait a few minutes and try again.',
-													});
+													setMode('new_transaction');
 												}}
 											>
 												<div>
@@ -118,8 +93,35 @@ const Page: NextPage<PageStaticProps> = (props) => {
 											</button>
 										</div>
 									);
-								},
-							)}
+								}
+
+								return (
+									<div key={ctaText}>
+										<button
+											className={cn(
+												'bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100',
+												'flex items-center space-x-1',
+												'text-center',
+											)}
+											onClick={() => {
+												toast({
+													title:
+														'Error - your account must be funded to trade.',
+													description:
+														'If you have recently made a deposit, please wait a few minutes and try again.',
+												});
+											}}
+										>
+											<div>
+												<GoPlus />
+											</div>
+											<div>
+												<p className='font-normal text-sm'>{ctaText}</p>
+											</div>
+										</button>
+									</div>
+								);
+							})}
 						</div>
 					</div>
 					<div className='mt-4 lg:mt-1'>
