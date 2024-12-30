@@ -26,6 +26,7 @@ import {
 	ConfirmOrderResponse,
 	RetrieveAssetPriceQueryParams,
 	RetrieveAssetPriceResponse,
+	AlpacaPosition,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -141,6 +142,32 @@ app.post(
 			req,
 			res,
 			createRouterFunction(auth, secrets)(confirmOrder)(req, res, next),
+		);
+	},
+);
+
+// Positions
+import { retrievePositions } from './app/wallot/positions/retrievePositions.js';
+app.options('*/v0/positions', corsPolicy);
+app.get(
+	'*/v0/positions',
+	(
+		req: express.Request<
+			Record<string, never>,
+			AlpacaPosition[],
+			Record<string, never>,
+			Record<string, never>
+		>,
+		res: express.Response<
+			AlpacaPosition[],
+			GeneralizedResLocals<AlpacaPosition[]>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(retrievePositions)(req, res, next),
 		);
 	},
 );
