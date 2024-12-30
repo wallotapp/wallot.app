@@ -177,13 +177,34 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					>
 						{[
 							{
+								ActionContent: isUserWithAlpacaEquity ? (
+									<div className=''>
+										<Link
+											className='text-center flex items-center justify-center space-x-2'
+											href={getHomeSiteRoute({
+												includeOrigin: false,
+												origin: null,
+												queryParams: {},
+												routeStaticId: 'HOME_SITE__/ACCOUNT/BANKING',
+											})}
+										>
+											<div>
+												<p className='font-light text-sm underline'>
+													Deposit or withdraw
+												</p>
+											</div>
+										</Link>
+									</div>
+								) : null,
 								CardContent: (
 									<Fragment>
 										{isUserWithAlpacaEquity ? (
-											<div className='flex flex-col items-center justify-center h-full'>
-												<p className='font-extralight text-2xl'>
-													{loggedInUserEquityBalanceUsdString}
-												</p>
+											<div className='flex flex-col justify-around h-full'>
+												<div>
+													<p className='font-light text-2xl'>
+														{loggedInUserEquityBalanceUsdString}
+													</p>
+												</div>
 											</div>
 										) : (
 											<Link
@@ -210,8 +231,27 @@ const Page: NextPage<PageStaticProps> = (props) => {
 								title: 'Equity',
 							},
 							{
-								CardContent: (
+								ActionContent: (
 									<div className=''>
+										<Link
+											className='text-center flex items-center justify-center space-x-2'
+											href={getHomeSiteRoute({
+												includeOrigin: false,
+												origin: null,
+												queryParams: {},
+												routeStaticId: 'HOME_SITE__/ACCOUNT/TRANSACTIONS',
+											})}
+										>
+											<div>
+												<p className='font-light text-sm underline'>
+													New order
+												</p>
+											</div>
+										</Link>
+									</div>
+								),
+								CardContent: (
+									<div className='w-full'>
 										{assetOrdersForLoggedInUser.map(
 											(
 												{
@@ -280,6 +320,23 @@ const Page: NextPage<PageStaticProps> = (props) => {
 								title: 'Orders',
 							},
 							{
+								ActionContent: isKycUser ? (
+									<div>
+										<Link
+											className='text-center'
+											href={getHomeSiteRoute({
+												includeOrigin: false,
+												origin: null,
+												queryParams: {},
+												routeStaticId: 'HOME_SITE__/ACCOUNT/SETTINGS',
+											})}
+										>
+											<div>
+												<p className='font-light text-sm underline'>Edit</p>
+											</div>
+										</Link>
+									</div>
+								) : null,
 								CardContent: (
 									<Fragment>
 										{isKycUser ? (
@@ -295,23 +352,6 @@ const Page: NextPage<PageStaticProps> = (props) => {
 															{loggedInUserAddress}
 														</p>
 													</div>
-												</div>
-												<div>
-													<Link
-														className='text-center'
-														href={getHomeSiteRoute({
-															includeOrigin: false,
-															origin: null,
-															queryParams: {},
-															routeStaticId: 'HOME_SITE__/ACCOUNT/SETTINGS',
-														})}
-													>
-														<div>
-															<p className='font-light text-sm underline'>
-																Make changes
-															</p>
-														</div>
-													</Link>
 												</div>
 											</div>
 										) : (
@@ -338,11 +378,14 @@ const Page: NextPage<PageStaticProps> = (props) => {
 								),
 								title: 'Billing Information',
 							},
-						].map(({ CardContent, title }) => {
+						].map(({ ActionContent = <div />, CardContent, title }) => {
 							return (
 								<div className='bg-white rounded-md shadow-sm px-4 py-4 border border-gray-200 flex flex-col'>
-									<div>
-										<p className='font-medium text-base'>{title}</p>
+									<div className='flex items-center justify-between'>
+										<div>
+											<p className='font-medium text-base'>{title}</p>
+										</div>
+										<div>{ActionContent}</div>
 									</div>
 									<div className='mt-2 h-full'>{CardContent}</div>
 								</div>
