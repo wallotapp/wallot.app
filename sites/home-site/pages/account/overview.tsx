@@ -13,7 +13,7 @@ import {
 	useQueryLoggedInUser,
 	useQueryLoggedInUserStatus,
 } from '@wallot/react/src/features/users';
-import { GoArrowRight } from 'react-icons/go';
+import { GoArrowRight, GoCheckCircle } from 'react-icons/go';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -77,52 +77,61 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							</p>
 						</div>
 					</div>
-					<div className='mt-4'>
-						{/* Tasks Section */}
-						<div>
-							<p className='font-medium text-lg'>Tasks</p>
-						</div>
-						<div className='mt-2'>
-							{tasks.map(({ ctaHref, ctaText, title, subtitle }, taskIdx) => {
-								return (
-									<div
-										key={ctaHref}
-										className={cn(
-											'p-4 bg-white rounded-lg shadow-sm border',
-											'lg:flex lg:items-center lg:justify-between lg:space-x-16',
-											taskIdx > 0 ? 'mt-4' : '',
-											taskIdx === 0 ? 'border-red-800' : '',
-										)}
-									>
-										<div>
-											<div className='font-medium'>{title}</div>
-											<div className='font-extralight text-gray-600 text-sm'>
-												{subtitle}
+					{tasks.length > 0 && (
+						<div className='mt-4'>
+							{/* Account Status Section */}
+							<div className='flex items-center space-x-2 w-fit'>
+								<div>
+									<p className='font-medium text-lg'>Account Status</p>
+								</div>
+								<div className='bg-red-200 px-2 py-1 rounded-md'>
+									<p className='font-light text-red-800 text-xs'>
+										Not Activated
+									</p>
+								</div>
+							</div>
+							<div className='mt-2'>
+								{tasks.map(({ ctaHref, ctaText, title, subtitle }, taskIdx) => {
+									return (
+										<div
+											key={ctaHref}
+											className={cn(
+												'p-4 bg-white rounded-lg shadow-sm border',
+												'lg:flex lg:items-center lg:justify-between lg:space-x-16',
+												taskIdx > 0 ? 'mt-4' : '',
+												taskIdx === 0 ? 'border-red-800' : '',
+											)}
+										>
+											<div>
+												<div className='font-medium'>{title}</div>
+												<div className='font-extralight text-gray-600 text-sm'>
+													{subtitle}
+												</div>
+											</div>
+											<div>
+												<Link href={ctaHref}>
+													<div
+														className={cn(
+															'bg-black px-4 py-2 rounded-lg cursor-pointer flex items-center space-x-2 hover:bg-brand-dark',
+														)}
+													>
+														<div>
+															<p className='text-white text-sm font-semibold'>
+																{ctaText}
+															</p>
+														</div>
+														<div>
+															<GoArrowRight className='text-white text-sm' />
+														</div>
+													</div>
+												</Link>
 											</div>
 										</div>
-										<div>
-											<Link href={ctaHref}>
-												<div
-													className={cn(
-														'bg-black px-4 py-2 rounded-lg cursor-pointer flex items-center space-x-2 hover:bg-brand-dark',
-													)}
-												>
-													<div>
-														<p className='text-white text-sm font-semibold'>
-															{ctaText}
-														</p>
-													</div>
-													<div>
-														<GoArrowRight className='text-white text-sm' />
-													</div>
-												</div>
-											</Link>
-										</div>
-									</div>
-								);
-							})}
+									);
+								})}
+							</div>
 						</div>
-					</div>
+					)}
 					<div className='mt-4'>
 						{/* Equity Section */}
 						<div>Equity</div>
@@ -135,6 +144,23 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						{/* Billing Information */}
 						<div>Billing information</div>
 					</div>
+					{tasks.length === 0 && (
+						<div className='mt-4'>
+							{/* Account Status Section */}
+							<div>
+								<p className='font-medium text-lg'>Account Status</p>
+							</div>
+							<div className='mt-2 hidden'></div>
+							<div className='bg-slate-100 mt-2 flex flex-col items-center justify-center p-4 rounded-lg space-y-1'>
+								<div>
+									<GoCheckCircle className='font-light text-xl' />
+								</div>
+								<div>
+									<p className='font-light text-sm'>Your account is active</p>
+								</div>
+							</div>
+						</div>
+					)}
 				</div>
 			</AccountDashboardPage>
 		</PageComponent>
