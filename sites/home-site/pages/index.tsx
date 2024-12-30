@@ -48,7 +48,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 				includeOrigin: false,
 				origin: null,
 				queryParams: { client_token },
-				routeStaticId: 'HOME_SITE__/GET_STARTED',
+				routeStaticId: 'HOME_SITE__/ACCOUNT/OVERVIEW',
 			});
 			await router.replace(getStartedRoute);
 		})();
