@@ -1,10 +1,11 @@
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { FunctionResponse } from '@wallot/node';
 import {
+	achTransfersApi,
 	RequestNewAchTransferParams,
 	RequestNewAchTransferResponse,
 } from '@wallot/js';
-import {  gcp, } from '../../../services.js';
+import { gcp } from '../../../services.js';
 
 export const requestNewAchTransfer = async (
 	{
@@ -17,16 +18,12 @@ export const requestNewAchTransfer = async (
 	firebaseUser: FirebaseUser | null,
 ): Promise<FunctionResponse<RequestNewAchTransferResponse>> => {
 	if (firebaseUser == null) throw new Error('Unauthorized');
-	amountInCents;
-	bankAccountId;
-	direction;
-	const { uid: userId } = firebaseUser;
-  userId;
-  await gcp.tasks.enqueueRequestAlpacaAchTransfer({
-    amountInCents,
-    bankAccountId,
-    // direction,
-    userId,
-  })
+	await gcp.tasks.enqueueRequestAlpacaAchTransfer({
+		achTransferId: achTransfersApi.generateId(),
+		amountInCents,
+		bankAccountId,
+		direction,
+		userId: firebaseUser.uid,
+	});
 	return { json: {} };
 };

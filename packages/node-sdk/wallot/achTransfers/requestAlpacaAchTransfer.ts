@@ -1,9 +1,13 @@
 import { getFunctions } from 'firebase-admin/functions';
 import { PlaceAlpacaOrdersTaskParams } from '../orders/placeAlpacaOrders.js';
+import { AlpacaAchTransfer } from '@wallot/js';
 
 export type RequestAlpacaAchTransferTaskParams = {
+	/** Used to ensure there are no duplicate transfers */
+	achTransferId: string;
 	amountInCents: number;
 	bankAccountId: string;
+	direction?: AlpacaAchTransfer['direction'];
 	orderId?: PlaceAlpacaOrdersTaskParams['orderId'];
 	userId: string;
 };

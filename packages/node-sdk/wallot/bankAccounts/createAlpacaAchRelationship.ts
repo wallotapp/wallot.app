@@ -2,12 +2,14 @@ import { getFunctions } from 'firebase-admin/functions';
 import { RequestAlpacaAchTransferTaskParams } from '../achTransfers/requestAlpacaAchTransfer.js';
 
 export type CreateAlpacaAchRelationshipTaskParams = {
+	achTransferId?: RequestAlpacaAchTransferTaskParams['achTransferId'];
 	amountInCents?: RequestAlpacaAchTransferTaskParams['amountInCents'];
 	bankAccountId: RequestAlpacaAchTransferTaskParams['bankAccountId'];
 	orderId?: RequestAlpacaAchTransferTaskParams['orderId'];
 	userId: RequestAlpacaAchTransferTaskParams['userId'];
 };
 export type RefreshAlpacaAchRelationshipStatusTaskParams = {
+	achTransferId?: RequestAlpacaAchTransferTaskParams['achTransferId'];
 	amountInCents?: RequestAlpacaAchTransferTaskParams['amountInCents'];
 	bankAccountId: RequestAlpacaAchTransferTaskParams['bankAccountId'];
 	orderId?: RequestAlpacaAchTransferTaskParams['orderId'];
