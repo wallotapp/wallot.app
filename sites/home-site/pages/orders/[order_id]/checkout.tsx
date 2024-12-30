@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -15,7 +15,6 @@ import {
 	getHomeSiteRoute,
 	HomeSiteRouteQueryParams,
 	getSsoSiteRoute,
-	isBankAccountTokenized,
 } from '@wallot/js';
 import { useQueryAssetOrderPage } from '@wallot/react/src/features/assetOrders';
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
@@ -38,18 +37,9 @@ import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/Lite
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { FiChevronDown, FiChevronLeft } from 'react-icons/fi';
-import { GoCheckCircleFill, GoPlus } from 'react-icons/go';
-import {
-	BankAccountManager,
-	useCreateStripeFinancialConnectionSessionMutation,
-	useConnectBankAccountsMutation,
-} from '@wallot/react/src/features/bankAccounts';
-import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountsForLoggedInUser';
-import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
-import { stripePromise } from 'ergonomic-react/src/lib/stripe';
+import { GoCheckCircleFill } from 'react-icons/go';
+import { BankAccountsContainer } from '@wallot/react/src/features/bankAccounts/components/BankAccountsContainer';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
-import { BsFillCaretDownFill, BsFillCaretRightFill } from 'react-icons/bs';
-import { BankIcon } from '@wallot/react/src/components/BankIcon';
 import { useConfirmOrderMutation } from '@wallot/react/src/features/orders';
 
 const BillingInformationSectionEnum = getEnum([
@@ -115,76 +105,6 @@ const Page: NextPage = () => {
 	} = useQueryLoggedInUser();
 	const defaultBankAccountId = loggedInUser?.default_bank_account ?? 'null';
 
-	// Bank Accounts for Logged In User
-	const {
-		resourcesForLoggedInUser: bankAccountsForLoggedInUserUnsorted,
-		isResourcePageLoading: isBankAccountPageLoading,
-		refetch: refetchBankAccountsForLoggedInUser,
-	} = useQueryBankAccountsForLoggedInUser();
-	const bankAccountsForLoggedInUser =
-		bankAccountsForLoggedInUserUnsorted.toSorted(
-			// Put the default bank account first
-			(a, b) => {
-				if (a._id === defaultBankAccountId) {
-					return -1;
-				}
-				if (b._id === defaultBankAccountId) {
-					return 1;
-				}
-				return 0;
-			},
-		);
-	const userHasAtLeastOneBankAccount = bankAccountsForLoggedInUser.length > 0;
-	const defaultBankAccount = bankAccountsForLoggedInUser.find(
-		({ _id }) => _id === defaultBankAccountId,
-	);
-	const isDefaultBankAccountTokenized =
-		defaultBankAccount != null && isBankAccountTokenized(defaultBankAccount);
-	const [institutionAccordionsClosed, setInstitutionAccordionsClosed] =
-		useState<string[]>([]);
-	const isInstitutionAccordionClosed = (institutionName: string) => {
-		return institutionAccordionsClosed.includes(institutionName);
-	};
-	const toggleInstitutionAccordion = (institutionName: string) => () => {
-		setInstitutionAccordionsClosed((prev) =>
-			prev.includes(institutionName)
-				? prev.filter((x) => x !== institutionName)
-				: [...prev, institutionName],
-		);
-	};
-	const bankAccountsByInstitution = R.groupBy(
-		({ institution_name }) => institution_name ?? 'Bank',
-		bankAccountsForLoggedInUser,
-	);
-	const [
-		bankAccountIdsWithTokenizationFormShown,
-		setBankAccountIdsWithTokenizationFormShown,
-	] = useState<string[]>([]);
-	const isTokenizationFormShown = (bankAccountId: string) => {
-		return bankAccountIdsWithTokenizationFormShown.includes(bankAccountId);
-	};
-	const toggleTokenizationFormShown = (bankAccountId: string) => () => {
-		setBankAccountIdsWithTokenizationFormShown((prev) =>
-			prev.includes(bankAccountId)
-				? prev.filter((x) => x !== bankAccountId)
-				: [...prev, bankAccountId],
-		);
-	};
-	const [
-		bankAccountIdsWithRoutingNumberShown,
-		setBankAccountIdsWithRoutingNumberShown,
-	] = useState<string[]>([]);
-	const isRoutingNumberShown = (bankAccountId: string) => {
-		return bankAccountIdsWithRoutingNumberShown.includes(bankAccountId);
-	};
-	const toggleRoutingNumberShown = (bankAccountId: string) => () => {
-		setBankAccountIdsWithRoutingNumberShown((prev) =>
-			prev.includes(bankAccountId)
-				? prev.filter((x) => x !== bankAccountId)
-				: [...prev, bankAccountId],
-		);
-	};
-
 	// Form
 	const initialFormData = kycFormDataSchema.getDefault() as KycFormDataParams;
 	const { control, formState, handleSubmit, reset, setError, watch } =
@@ -224,77 +144,6 @@ const Page: NextPage = () => {
 				});
 			},
 		});
-
-	// Mutation
-	const {
-		mutate: connectBankAccounts,
-		isLoading: isConnectBankAccountsRunning,
-	} = useConnectBankAccountsMutation({
-		onError: ({ error: { message } }) => {
-			// Show the error message
-			toast({
-				title: 'Error connecting to your bank account',
-				description: message,
-			});
-			setError('root', {
-				type: 'manual',
-				message:
-					'An error occurred connecting to your bank account. Please try again.',
-			});
-		},
-		onSuccess: async () => {
-			// Refetch the bank accounts
-			await refetchBankAccountsForLoggedInUser();
-
-			// Show success toast
-			toast({
-				title: 'Success',
-				description: 'Connecting your bank accounts...',
-			});
-		},
-	});
-	const {
-		mutate: createStripeFinancialConnectionSession,
-		isLoading: isCreateStripeFinancialConnectionSessionRunning,
-	} = useCreateStripeFinancialConnectionSessionMutation({
-		onError: ({ error: { message } }) => {
-			// Show the error message
-			toast({
-				title: 'Error connecting to your bank account',
-				description: message,
-			});
-			setError('root', {
-				type: 'manual',
-				message:
-					'An error occurred connecting to your bank account. Please try again.',
-			});
-		},
-		onSuccess: async ({ client_secret: clientSecret }) => {
-			const stripe = await stripePromise;
-			if (!stripe) {
-				toast({
-					title: 'Error',
-					description: 'Failed to connect to Stripe',
-				});
-				return;
-			}
-			const { financialConnectionsSession } =
-				await stripe.collectFinancialConnectionsAccounts({
-					clientSecret,
-				});
-			if (!financialConnectionsSession) {
-				throw new Error('Failed to collect financial connections accounts');
-			}
-			console.log(
-				'Financial connections session:',
-				financialConnectionsSession,
-			);
-			connectBankAccounts({
-				stripe_financial_connections_accounts:
-					financialConnectionsSession.accounts,
-			});
-		},
-	});
 
 	// ==== Constants ==== //
 
@@ -409,17 +258,11 @@ const Page: NextPage = () => {
 		isContactDetailsSectionComplete && isTaxDetailsSectionComplete;
 	const isContinueButtonDisabled =
 		isFormSubmitting ||
-		isConnectBankAccountsRunning ||
-		isCreateStripeFinancialConnectionSessionRunning ||
 		(activeBillingInformationSection === 'Contact Details'
 			? !isContactDetailsSectionComplete
 			: activeBillingInformationSection === 'Tax Details'
 			? !isTaxDetailsSectionComplete
 			: false);
-	const isConnectBankButtonDisabled =
-		isFormSubmitting ||
-		isConnectBankAccountsRunning ||
-		isCreateStripeFinancialConnectionSessionRunning;
 
 	// ==== Functions ==== //
 
@@ -586,27 +429,6 @@ const Page: NextPage = () => {
 		setHasInitializedDefaultValues(true);
 	}, [loggedInUser, isLoggedInUserLoading, hasInitializedDefaultValues]);
 
-	const [
-		isBankAccountInterfaceInitialized,
-		setIsBankAccountInterfaceInitialized,
-	] = useState(false);
-	useEffect(() => {
-		if (isBankAccountInterfaceInitialized) return;
-		if (isBankAccountPageLoading) return;
-		if (isLoggedInUserLoading) return;
-		if (defaultBankAccount == null) return;
-		if (isDefaultBankAccountTokenized) return;
-
-		setIsBankAccountInterfaceInitialized(true);
-		setBankAccountIdsWithTokenizationFormShown([defaultBankAccount._id]);
-	}, [
-		isLoggedInUserLoading,
-		isBankAccountPageLoading,
-		defaultBankAccount,
-		isDefaultBankAccountTokenized,
-		isBankAccountInterfaceInitialized,
-	]);
-
 	// ==== Complete Purchase ==== //
 	const { mutate: confirmOrder, isLoading: isConfirmOrderRunning } =
 		useConfirmOrderMutation(order_id, {
@@ -631,7 +453,6 @@ const Page: NextPage = () => {
 	const isCompletePurchaseButtonDisabled =
 		isContinueButtonDisabled ||
 		!isBillingInformationSectionComplete ||
-		!isDefaultBankAccountTokenized ||
 		isConfirmOrderRunning;
 
 	// ==== Render ==== //
@@ -997,160 +818,10 @@ const Page: NextPage = () => {
 										</div>
 									</div>
 								</div>
-								<div
-									className={cn(
-										'mt-8 rounded-xl bg-white border px-5 py-6 w-full text-left',
-										isDefaultBankAccountTokenized
-											? 'border-slate-400'
-											: 'border-slate-200',
-									)}
-								>
-									<div className='flex justify-between'>
-										<div className='flex items-center space-x-2'>
-											{isDefaultBankAccountTokenized && (
-												<div>
-													<GoCheckCircleFill className='text-2xl text-slate-700 font-semibold' />
-												</div>
-											)}
-											<div>
-												<p className='font-semibold text-xl'>Payment</p>
-											</div>
-										</div>
-										{isBankAccountPageLoading ? (
-											<div>
-												<Skeleton className='w-36 h-8' />
-											</div>
-										) : (
-											<div>
-												<button
-													className={cn(
-														'bg-slate-50 border border-slate-300',
-														'flex items-center justify-center space-x-2',
-														'rounded-md text-center p-2 w-fit',
-													)}
-													type='button'
-													disabled={isConnectBankButtonDisabled}
-													onClick={() =>
-														createStripeFinancialConnectionSession({})
-													}
-												>
-													<Fragment>
-														<div>
-															<GoPlus />
-														</div>
-														<div>
-															<p className='font-normal text-sm'>
-																Add
-																{userHasAtLeastOneBankAccount
-																	? ' another'
-																	: ' a'}{' '}
-																bank account
-															</p>
-														</div>
-													</Fragment>
-												</button>
-											</div>
-										)}
-									</div>
-									{userHasAtLeastOneBankAccount && (
-										<Fragment>
-											<Separator className='my-5' />
-											<div className=''>
-												<div>
-													<p className='font-semibold text-base'>
-														Linked Accounts
-													</p>
-												</div>
-												<div>
-													<p className='font-light text-sm'>
-														Manage the linked accounts that fund your Wallot
-														account
-													</p>
-												</div>
-												<div className='mt-4'>
-													{Object.entries(bankAccountsByInstitution).map(
-														(
-															[institutionName, bankAccounts = []],
-															institutionGroupIdx,
-														) => {
-															const isInstitutionAccordionOpen =
-																!isInstitutionAccordionClosed(institutionName);
-															return (
-																<div
-																	className={cn(
-																		institutionGroupIdx > 0 ? 'mt-6' : '',
-																	)}
-																	key={institutionName}
-																>
-																	<div
-																		className={cn(
-																			'flex items-center space-x-3',
-																			'cursor-pointer',
-																		)}
-																		onClick={toggleInstitutionAccordion(
-																			institutionName,
-																		)}
-																	>
-																		<div>
-																			{isInstitutionAccordionOpen ? (
-																				<BsFillCaretDownFill className='text-gray-400 text-xs' />
-																			) : (
-																				<BsFillCaretRightFill className='text-gray-400 text-xs' />
-																			)}
-																		</div>
-																		<div>
-																			<BankIcon
-																				bankName={institutionName}
-																				showBankNameAsTitle
-																				subtitle={`${
-																					bankAccounts.length
-																				} linked account${
-																					bankAccounts.length > 1 ? 's' : ''
-																				}`}
-																			/>
-																		</div>
-																	</div>
-																	<div
-																		className={cn(
-																			'overflow-hidden mt-4 px-6',
-																			isInstitutionAccordionOpen
-																				? ''
-																				: 'hidden',
-																		)}
-																	>
-																		{bankAccounts.map((bankAccount) => {
-																			return (
-																				<BankAccountManager
-																					bankAccount={bankAccount}
-																					isRoutingNumberShown={
-																						isRoutingNumberShown
-																					}
-																					isTokenizationFormShown={
-																						isTokenizationFormShown
-																					}
-																					key={bankAccount._id}
-																					refetchBankAccountsForLoggedInUser={
-																						refetchBankAccountsForLoggedInUser
-																					}
-																					toggleRoutingNumberShown={
-																						toggleRoutingNumberShown
-																					}
-																					toggleTokenizationFormShown={
-																						toggleTokenizationFormShown
-																					}
-																				/>
-																			);
-																		})}
-																	</div>
-																</div>
-															);
-														},
-													)}
-												</div>
-											</div>
-										</Fragment>
-									)}
-								</div>
+								<BankAccountsContainer
+									className='mt-8'
+									disableConnectionCallback={isFormSubmitting}
+								/>
 							</div>
 							<div
 								className={cn(

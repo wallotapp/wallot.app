@@ -7,23 +7,23 @@ import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { GoCheckCircleFill, GoPlus } from 'react-icons/go';
-import {
-	BankAccountManager,
-	useCreateStripeFinancialConnectionSessionMutation,
-	useConnectBankAccountsMutation,
-} from '@wallot/react/src/features/bankAccounts';
 import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountsForLoggedInUser';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { stripePromise } from 'ergonomic-react/src/lib/stripe';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 import { BsFillCaretDownFill, BsFillCaretRightFill } from 'react-icons/bs';
 import { BankIcon } from '@wallot/react/src/components/BankIcon';
+import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
+import { BankAccountManager } from '@wallot/react/src/features/bankAccounts/components/BankAccountManager';
+import { useCreateStripeFinancialConnectionsSessionMutation } from '@wallot/react/src/features/bankAccounts/hooks/useCreateStripeFinancialConnectionsSessionMutation';
+import { useConnectBankAccountsMutation } from '@wallot/react/src/features/bankAccounts/hooks/useConnectBankAccountsMutation';
 
-export type BankAccountsContainerProps = {
+export type BankAccountsContainerProps = BaseComponent & {
 	/** Use this for instance if the parent component has a form that is submitting */
 	disableConnectionCallback: boolean;
 };
 export function BankAccountsContainer({
+	className = '',
 	disableConnectionCallback,
 }: BankAccountsContainerProps) {
 	// ==== Hooks ==== //
@@ -146,7 +146,7 @@ export function BankAccountsContainer({
 	const {
 		mutate: createStripeFinancialConnectionSession,
 		isLoading: isCreateStripeFinancialConnectionSessionRunning,
-	} = useCreateStripeFinancialConnectionSessionMutation({
+	} = useCreateStripeFinancialConnectionsSessionMutation({
 		onError: ({ error: { message } }) => {
 			// Show the error message
 			toast({
@@ -212,8 +212,9 @@ export function BankAccountsContainer({
 	return (
 		<div
 			className={cn(
-				'mt-8 rounded-xl bg-white border px-5 py-6 w-full text-left',
+				'rounded-xl bg-white border px-5 py-6 w-full text-left',
 				isDefaultBankAccountTokenized ? 'border-slate-400' : 'border-slate-200',
+				className,
 			)}
 		>
 			<div className='flex justify-between'>

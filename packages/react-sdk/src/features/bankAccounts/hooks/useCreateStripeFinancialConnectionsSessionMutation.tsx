@@ -8,7 +8,7 @@ import {
 import { createStripeFinancialConnectionSession } from '@wallot/react/src/features/bankAccounts/api/createStripeFinancialConnectionsSession';
 import { GeneralizedError } from 'ergonomic';
 
-export function useCreateStripeFinancialConnectionSessionMutation(
+export function useCreateStripeFinancialConnectionsSessionMutation(
 	options?: UseMutationOptions<
 		CreateStripeFinancialConnectionsSessionResponse,
 		GeneralizedError,
