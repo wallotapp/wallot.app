@@ -16,6 +16,7 @@ import {
 	requestAlpacaAchTransfer,
 	createAlpacaAchRelationship,
 	retrieveAlpacaAchRelationship,
+	retrieveAlpacaDocuments,
 	estimateAlpacaOrder,
 	placeAlpacaOrder,
 	retrieveAlpacaOrder,
@@ -77,6 +78,8 @@ export const getServices = (
 				),
 				retrieveAlpacaAchRelationship:
 					retrieveAlpacaAchRelationship(alpacaBrokerClient),
+				// Alpaca Documents
+				retrieveAlpacaDocuments: retrieveAlpacaDocuments(alpacaBrokerClient),
 				// Alpaca Orders
 				estimateAlpacaOrder: estimateAlpacaOrder(
 					alpacaBrokerEstimationClient,
