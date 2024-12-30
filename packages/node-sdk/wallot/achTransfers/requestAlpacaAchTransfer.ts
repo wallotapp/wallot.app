@@ -9,7 +9,7 @@ export type RequestAlpacaAchTransferTaskParams = {
 };
 export type RefreshAlpacaAchTransferStatusTaskParams = {
 	achTransferId: string;
-	orderId: PlaceAlpacaOrdersTaskParams['orderId'];
+	orderId?: PlaceAlpacaOrdersTaskParams['orderId'];
 	userId: string;
 };
 

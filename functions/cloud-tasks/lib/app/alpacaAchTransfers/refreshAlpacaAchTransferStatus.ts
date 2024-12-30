@@ -24,7 +24,7 @@ export const handleRefreshAlpacaAchTransferStatusTaskOptions = {
 
 export const handleRefreshAlpacaAchTransferStatusTask: CloudTaskHandler<
 	RefreshAlpacaAchTransferStatusTaskParams
-> = async ({ data: { achTransferId, orderId, userId } }) => {
+> = async ({ data: { achTransferId, orderId = null, userId } }) => {
 	// Query the ACH_TRANSFER
 	const achTransferDoc = await db
 		.collection(achTransfersApi.collectionId)
@@ -109,22 +109,6 @@ export const handleRefreshAlpacaAchTransferStatusTask: CloudTaskHandler<
 		.doc(userId)
 		.update(updateUserParams);
 
-	// Check if Alpaca received the funds and updated the User's equity
-	if (
-		isAchTransferWithFundsReceivedByAlpacaParams(updateAchTransferParams) &&
-		isUserWithAlpacaEquityParams(updateUserParams)
-	) {
-		// Alpaca received the funds and updated the User's equity
-		// Kick back to the `placeAlpacaOrders` task
-		log({
-			message:
-				"Alpaca received the funds and updated the User's equity. Next up: Place Alpaca Orders",
-		});
-		await gcp.tasks.enqueuePlaceAlpacaOrders({
-			orderId,
-		});
-		return Promise.resolve();
-	}
 	if (isAchTransferRejectedByAlpacaParams(updateAchTransferParams)) {
 		// Alpaca rejected the ACH transfer
 		// End the process
@@ -136,6 +120,36 @@ export const handleRefreshAlpacaAchTransferStatusTask: CloudTaskHandler<
 			alpacaAchTransfer,
 		});
 		return Promise.resolve();
+	}
+
+	// Check if Alpaca received the funds and updated the User's equity
+	if (orderId == null) {
+		// This was not kicked off by the order workflow
+		if (isAchTransferWithFundsReceivedByAlpacaParams(updateAchTransferParams)) {
+			// Alpaca received the funds
+			// End the process
+			log({
+				message: 'Alpaca received the funds. AchTransfer updated with success',
+			});
+			return Promise.resolve();
+		}
+	} else {
+		// This was kicked off by the order workflow
+		if (
+			isAchTransferWithFundsReceivedByAlpacaParams(updateAchTransferParams) &&
+			isUserWithAlpacaEquityParams(updateUserParams)
+		) {
+			// Alpaca received the funds and updated the User's equity
+			// Kick back to the `placeAlpacaOrders` task
+			log({
+				message:
+					"Alpaca received the funds and updated the User's equity. Next up: Place Alpaca Orders",
+			});
+			await gcp.tasks.enqueuePlaceAlpacaOrders({
+				orderId,
+			});
+			return Promise.resolve();
+		}
 	}
 
 	// Alpaca is still processing the transfer
