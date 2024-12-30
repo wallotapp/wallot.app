@@ -21,7 +21,9 @@ export const handleRefreshAlpacaAchRelationshipStatusTaskOptions = {
 
 export const handleRefreshAlpacaAchRelationshipStatusTask: CloudTaskHandler<
 	RefreshAlpacaAchRelationshipStatusTaskParams
-> = async ({ data: { amountInCents, bankAccountId, orderId, userId } }) => {
+> = async ({
+	data: { amountInCents = null, bankAccountId, orderId = null, userId },
+}) => {
 	// Query the BANK_ACCOUNT
 	const bankAccountDoc = await db
 		.collection(bankAccountsApi.collectionId)
@@ -103,6 +105,14 @@ export const handleRefreshAlpacaAchRelationshipStatusTask: CloudTaskHandler<
 	// Check if Alpaca activated or rejected the account
 	if (isBankAccountApprovedByAlpacaParams(updateBankAccountParams)) {
 		// Alpaca approved the ACH relationship
+		if (amountInCents == null) {
+			// End the process
+			log({
+				message: 'Alpaca approved the ACH relationship',
+			});
+			return Promise.resolve();
+		}
+
 		// Kick back to the `requestAlpacaAchTransfer` task
 		log({
 			message: 'Alpaca approved the ACH relationship. Next up: ACH transfer',
@@ -110,7 +120,7 @@ export const handleRefreshAlpacaAchRelationshipStatusTask: CloudTaskHandler<
 		await gcp.tasks.enqueueRequestAlpacaAchTransfer({
 			amountInCents,
 			bankAccountId,
-			orderId,
+			orderId: orderId ?? undefined,
 			userId,
 		});
 		return Promise.resolve();

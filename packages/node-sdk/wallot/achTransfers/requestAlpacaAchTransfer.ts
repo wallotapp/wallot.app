@@ -4,7 +4,7 @@ import { PlaceAlpacaOrdersTaskParams } from '../orders/placeAlpacaOrders.js';
 export type RequestAlpacaAchTransferTaskParams = {
 	amountInCents: number;
 	bankAccountId: string;
-	orderId: PlaceAlpacaOrdersTaskParams['orderId'];
+	orderId?: PlaceAlpacaOrdersTaskParams['orderId'];
 	userId: string;
 };
 export type RefreshAlpacaAchTransferStatusTaskParams = {
