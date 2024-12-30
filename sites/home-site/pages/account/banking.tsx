@@ -13,11 +13,17 @@ import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDa
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { BankAccountsContainer } from '@wallot/react/src/features/bankAccounts/components/BankAccountsContainer';
 import { GoPlus } from 'react-icons/go';
-import { ScheduleCallDialog } from '@wallot/home-site/src/components/ScheduleCallDialog';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountsForLoggedInUser';
+import { useState } from 'react';
+import { FiChevronLeft } from 'react-icons/fi';
 
 const Page: NextPage<PageStaticProps> = (props) => {
+	// ==== State ==== //
+	const [mode, setMode] = useState<'bank_accounts' | 'new_ach_transfer'>(
+		'bank_accounts',
+	);
+
 	// ==== Hooks ==== //
 
 	// Router
@@ -55,7 +61,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	return (
 		<PageComponent {...pageProps}>
 			<AccountDashboardPage className={cn('lg:max-w-3xl')}>
-				<div>
+				<div className={cn(mode === 'bank_accounts' ? 'block' : 'hidden')}>
 					<div
 						className={cn(
 							'lg:flex lg:items-center lg:justify-between lg:space-x-20',
@@ -68,56 +74,33 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</div>
 						<div className='mt-4 lg:mt-0 flex items-center space-x-5'>
 							{[{ ctaText: 'ACH Transfer' }].map(({ ctaText }) => {
-								if (hasAtLeastOneApprovedBankAccounts) {
-									return (
-										<div key={ctaText}>
-											<ScheduleCallDialog
-												TriggerComponent={
-													<button
-														className={cn(
-															'bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100',
-															'flex items-center space-x-1',
-															'text-center',
-														)}
-													>
-														<div>
-															<GoPlus />
-														</div>
-														<div>
-															<p className='font-normal text-sm'>{ctaText}</p>
-														</div>
-													</button>
-												}
-											/>
-										</div>
-									);
-								}
-
 								return (
-									<div key={ctaText}>
-										<button
-											className={cn(
-												'bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100',
-												'flex items-center space-x-1',
-												'text-center',
-											)}
-											onClick={() => {
+									<button
+										className={cn(
+											'bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100',
+											'flex items-center space-x-1',
+											'text-center',
+										)}
+										onClick={() => {
+											if (hasAtLeastOneApprovedBankAccounts) {
+												setMode('new_ach_transfer');
+											} else {
 												toast({
 													title:
 														'Unable to start a new ACH transfer at this time',
 													description:
 														'If you have recently made a bank account connection, please wait a few minutes and try again.',
 												});
-											}}
-										>
-											<div>
-												<GoPlus />
-											</div>
-											<div>
-												<p className='font-normal text-sm'>{ctaText}</p>
-											</div>
-										</button>
-									</div>
+											}
+										}}
+									>
+										<div>
+											<GoPlus />
+										</div>
+										<div>
+											<p className='font-normal text-sm'>{ctaText}</p>
+										</div>
+									</button>
 								);
 							})}
 						</div>
@@ -130,6 +113,37 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					<div className='mt-4'>
 						<BankAccountsContainer disableConnectionCallback={false} />
 					</div>
+				</div>
+				<div className={cn(mode === 'new_ach_transfer' ? 'block' : 'hidden')}>
+					<div className={cn('flex flex-col space-y-5')}>
+						<div>
+							<button
+								onClick={() => setMode('bank_accounts')}
+								className={cn(
+									'flex items-center space-x-0.5 cursor-pointer text-brand-dark',
+									'',
+								)}
+							>
+								<div>
+									<FiChevronLeft />
+								</div>
+								<div>
+									<p className='text-sm font-semibold'>Cancel</p>
+								</div>
+							</button>
+						</div>
+						<div>
+							<p className='font-semibold text-2xl'>New ACH Transfer</p>
+						</div>
+					</div>
+					<div className='mt-4 lg:mt-1'>
+						<p className='font-light text-base text-gray-600'>
+							Select the bank account you would like to transfer funds from and
+							the details of your transfer. Transfers are typically completed
+							within 1-2 business days.
+						</p>
+					</div>
+					<div className='mt-4'></div>
 				</div>
 			</AccountDashboardPage>
 		</PageComponent>
