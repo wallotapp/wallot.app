@@ -17,6 +17,7 @@ import { GoArrowRight, GoCheckCircle, GoPerson } from 'react-icons/go';
 import { useQueryAssetOrdersForLoggedInUser } from '@wallot/react/src/features/assetOrders';
 import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import { Fragment } from 'react';
+import { BsBank } from 'react-icons/bs';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -31,8 +32,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		loggedInUserFullName,
 		loggedInUserAddress,
 	} = useQueryLoggedInUser();
-	const { state, tasks, isUserActivatedByAlpaca, isKycUser } =
-		useQueryLoggedInUserStatus();
+	const {
+		state,
+		tasks,
+		isUserActivatedByAlpaca,
+		isKycUser,
+		isUserWithAlpacaEquity,
+	} = useQueryLoggedInUserStatus();
 	const { assetOrdersForLoggedInUser } = useQueryAssetOrdersForLoggedInUser();
 
 	// ==== Constants ==== //
@@ -174,11 +180,34 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						{[
 							{
 								CardContent: (
-									<div className='flex flex-col items-center justify-center h-full'>
-										<p className='font-extralight text-2xl'>
-											{loggedInUserEquityBalanceUsdString}
-										</p>
-									</div>
+									<Fragment>
+										{isUserWithAlpacaEquity ? (
+											<div className='flex flex-col items-center justify-center h-full'>
+												<p className='font-extralight text-2xl'>
+													{loggedInUserEquityBalanceUsdString}
+												</p>
+											</div>
+										) : (
+											<Link
+												className='flex flex-col items-center justify-center h-full space-y-2 px-4 text-center'
+												href={getHomeSiteRoute({
+													includeOrigin: false,
+													origin: null,
+													queryParams: {},
+													routeStaticId: 'HOME_SITE__/ACCOUNT/SETTINGS',
+												})}
+											>
+												<div>
+													<BsBank className='font-light text-4xl' />
+												</div>
+												<div>
+													<p className='font-light text-sm underline'>
+														Fund your account
+													</p>
+												</div>
+											</Link>
+										)}
+									</Fragment>
 								),
 								title: 'Equity',
 							},
@@ -200,13 +229,15 @@ const Page: NextPage<PageStaticProps> = (props) => {
 												const isFilled =
 													alpaca_order_filled_avg_price != null &&
 													alpaca_order_filled_avg_price !== '';
-												const ctaText = isFilled ? 'View' : 'Place order';
+												const ctaText = isFilled ? 'View' : 'Finish order';
 												return (
 													<div
 														key={alpaca_order_symbol}
 														className={cn(
 															'flex items-center space-x-2 justify-between',
-															assetOrderIdx > 0 ? 'mt-2' : '',
+															assetOrderIdx > 0
+																? 'py-1.5 border-t border-t-gray-200'
+																: '',
 														)}
 													>
 														<div className='flex items-center space-x-2'>
@@ -223,6 +254,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 														</div>
 														<div>
 															<Link
+																className='text-right'
 																href={getHomeSiteRoute({
 																	includeOrigin: false,
 																	origin: null,
@@ -253,16 +285,18 @@ const Page: NextPage<PageStaticProps> = (props) => {
 								CardContent: (
 									<Fragment>
 										{isKycUser ? (
-											<div>
+											<div className='flex flex-col h-full justify-between'>
 												<div>
-													<p className='font-semibold text-xs'>
-														{loggedInUserFullName}
-													</p>
-												</div>
-												<div>
-													<p className='font-semibold text-xs'>
-														{loggedInUserAddress}
-													</p>
+													<div>
+														<p className='font-semibold text-xs'>
+															{loggedInUserFullName}
+														</p>
+													</div>
+													<div>
+														<p className='font-semibold text-xs'>
+															{loggedInUserAddress}
+														</p>
+													</div>
 												</div>
 												<div>
 													<Link
