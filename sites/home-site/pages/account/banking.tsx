@@ -1,3 +1,5 @@
+import * as changeCase from 'change-case';
+import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -20,10 +22,11 @@ import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/
 import { useState } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
 import { useQueryAchTransfersForLoggedInUser } from '@wallot/react/src/features/achTransfers/hooks/useQueryAchTransfersForLoggedInUser';
+import { DateTime } from 'luxon';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== State ==== //
-	const [mode, setMode] = useState<'bank_accounts' | 'new_ach_transfer'>(
+	const [mode, setMode] = useState<'bank_accounts' | 'ach_transfers'>(
 		'bank_accounts',
 	);
 
@@ -75,18 +78,34 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		<PageComponent {...pageProps}>
 			<AccountDashboardPage className={cn('lg:max-w-3xl')}>
 				<div className={cn(mode === 'bank_accounts' ? 'block' : 'hidden')}>
-					<div
-						className={cn(
-							'lg:flex lg:items-center lg:justify-between lg:space-x-20',
-						)}
-					>
+					<div className={cn('mt-8')}>
 						<div>
 							<div>
 								<p className='font-semibold text-2xl'>Bank Accounts</p>
 							</div>
 						</div>
+					</div>
+					<div className='mt-4 lg:mt-1'>
+						<p className='font-light text-base text-gray-600'>
+							Connected bank accounts help you fund your Wallot account
+						</p>
+					</div>
+					<div className='mt-4'>
+						<BankAccountsContainer disableConnectionCallback={false} />
+					</div>
+					<div
+						className={cn(
+							'mt-8',
+							'lg:flex lg:items-center lg:justify-between lg:space-x-20',
+						)}
+					>
+						<div>
+							<div>
+								<p className='font-semibold text-2xl'>ACH Transfers</p>
+							</div>
+						</div>
 						<div className='mt-4 lg:mt-0 flex items-center space-x-5'>
-							{[{ ctaText: 'ACH Transfer' }].map(({ ctaText }) => {
+							{[{ ctaText: 'New ACH Transfer' }].map(({ ctaText }) => {
 								return (
 									<button
 										className={cn(
@@ -110,7 +129,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 														'You already have a pending ACH transfer. Please wait for the transfer to complete before starting a new one.',
 												});
 											} else {
-												setMode('new_ach_transfer');
+												setMode('ach_transfers');
 											}
 										}}
 									>
@@ -126,15 +145,65 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</div>
 					</div>
 					<div className='mt-4 lg:mt-1'>
-						<p className='font-light text-base text-gray-600'>
-							Connected bank accounts help you fund your Wallot account
-						</p>
-					</div>
-					<div className='mt-4'>
-						<BankAccountsContainer disableConnectionCallback={false} />
+						<div className='mt-3 border-b border-gray-200 py-1'>
+							<div className='grid grid-cols-3 gap-2'>
+								{['Date', 'Details', 'Status'].map((header) => {
+									return (
+										<div key={header}>
+											<p className='font-semibold text-base text-gray-600'>
+												{header}
+											</p>
+										</div>
+									);
+								})}
+							</div>
+						</div>
+						<div className='mt-2 flex flex-col gap-2'>
+							{achTransfersForLoggedInUser.map(
+								({
+									_id,
+									alpaca_ach_transfer_created_at,
+									alpaca_ach_transfer_amount,
+									alpaca_ach_transfer_direction,
+									alpaca_ach_transfer_status,
+								}) => {
+									const date =
+										alpaca_ach_transfer_created_at == null
+											? 'Pending'
+											: DateTime.fromISO(
+													alpaca_ach_transfer_created_at,
+											  ).toLocaleString(DateTime.DATE_SHORT);
+									const avgEntryPriceCents =
+										alpaca_ach_transfer_amount == null
+											? 0
+											: parseFloat(alpaca_ach_transfer_amount) * 100;
+									const avgEntryPriceUsdString =
+										getCurrencyUsdStringFromCents(avgEntryPriceCents);
+									return (
+										<div key={_id} className={cn('grid grid-cols-3 gap-2')}>
+											{[
+												date,
+												`${avgEntryPriceUsdString} ${changeCase.capitalCase(
+													alpaca_ach_transfer_direction ?? '',
+												)} Transfer`,
+												changeCase.capitalCase(
+													alpaca_ach_transfer_status ?? '',
+												),
+											].map((value, valueIdx) => {
+												return (
+													<div key={valueIdx}>
+														<p className='font-light text-sm'>{value}</p>
+													</div>
+												);
+											})}
+										</div>
+									);
+								},
+							)}
+						</div>
 					</div>
 				</div>
-				<div className={cn(mode === 'new_ach_transfer' ? 'block' : 'hidden')}>
+				<div className={cn(mode === 'ach_transfers' ? 'block' : 'hidden')}>
 					<div className={cn('flex flex-col space-y-5')}>
 						<div>
 							<button
@@ -148,7 +217,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 									<FiChevronLeft />
 								</div>
 								<div>
-									<p className='text-sm font-semibold'>Cancel</p>
+									<p className='text-sm font-semibold'>Back to Accounts</p>
 								</div>
 							</button>
 						</div>
