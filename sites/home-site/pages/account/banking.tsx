@@ -20,6 +20,7 @@ import {
 	isAchTransferRejectedByAlpaca,
 	isAchTransferWithFundsReceivedByAlpaca,
 	isBankAccountApprovedByAlpaca,
+	RequestNewTransferParams,
 } from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
@@ -38,6 +39,7 @@ import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/Lite
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
+import { useRequestNewTransferMutation } from '@wallot/react/src/features/achTransfers/hooks/useRequestNewTransferMutation';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== State ==== //
@@ -60,18 +62,6 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		bankAccountsForLoggedInUser.filter(isBankAccountApprovedByAlpaca);
 	const hasAtLeastOneApprovedBankAccounts =
 		approvedBankAccountsForLoggedInUser.length > 0;
-	const bankAccountIds = bankAccountsForLoggedInUser.map(({ _id }) => _id);
-	const bankAccountNameById = bankAccountsForLoggedInUser.reduce(
-		(acc, { _id, last_4, account_type }) => {
-			if (last_4 == null) {
-				return acc;
-			}
-
-			acc[_id] = `${account_type} account ending in ${last_4}`.trim();
-			return acc;
-		},
-		{} as Record<string, string>,
-	);
 
 	// ACH Transfers
 	const {
@@ -104,13 +94,29 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	};
 
 	// Add a new transfer form
-	const BankAccountIdEnum = getEnum(bankAccountIds);
+	const alpacaAchRelationshipIds = approvedBankAccountsForLoggedInUser.map(
+		({ alpaca_ach_relationship_id }) => alpaca_ach_relationship_id,
+	);
+	const bankAccountNameByAlpacaAchRelationshipId =
+		approvedBankAccountsForLoggedInUser.reduce(
+			(acc, { alpaca_ach_relationship_id, last_4, account_type }) => {
+				if (last_4 == null) {
+					return acc;
+				}
+
+				acc[alpaca_ach_relationship_id] =
+					`${account_type} account ending in ${last_4}`.trim();
+				return acc;
+			},
+			{} as Record<string, string>,
+		);
+	const AlpacaAchRelationshipIdEnum = getEnum(alpacaAchRelationshipIds);
 	const newTransferFormProperties = {
 		amount: YupHelpers.usd().required(),
-		bank_account_id: BankAccountIdEnum.getDefinedSchema()
-			.default(bankAccountIds[0])
+		alpaca_ach_relationship_id: AlpacaAchRelationshipIdEnum.getDefinedSchema()
+			.default(alpacaAchRelationshipIds[0])
 			.required()
-			.meta({ label_by_enum_option: bankAccountNameById }),
+			.meta({ label_by_enum_option: bankAccountNameByAlpacaAchRelationshipId }),
 		direction: AlpacaAchTransferDirectionEnum.getDefinedSchema()
 			.default('' as AlpacaAchTransferDirection)
 			.required(),
@@ -118,14 +124,14 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const newTransferFormSchema = yup.object(newTransferFormProperties);
 	const newTransferFormFieldSpecByFieldKey = getFieldSpecByFieldKey(
 		newTransferFormSchema,
-		['amount', 'bank_account_id', 'direction'],
+		['alpaca_ach_relationship_id', 'amount', 'direction'],
 	);
 	const resolver = useYupValidationResolver(newTransferFormSchema, {
 		...defaultGeneralizedFormDataTransformationOptions,
 		currencyFieldKeys: ['amount'],
 	});
 	const { control, formState, handleSubmit, reset, setError, watch } =
-		useForm<NewTransferFormData>({
+		useForm<RequestNewTransferParams>({
 			defaultValues: newTransferFormSchema.getDefault(),
 			resolver,
 			shouldUnregister: false,
@@ -134,8 +140,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const isNewTransferFormReady =
 		String(liveData.amount).length > 0 &&
 		String(liveData.amount) !== '$0.00' &&
-		liveData.bank_account_id != null &&
-		liveData.bank_account_id.length > 0;
+		liveData.alpaca_ach_relationship_id != null &&
+		liveData.alpaca_ach_relationship_id.length > 0;
 
 	// Mutation
 	const { mutate: requestNewTransfer, isLoading: isRequestNewTransferRunning } =
@@ -173,9 +179,9 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const formStatus =
 		formState.isSubmitting || isRequestNewTransferRunning ? 'running' : 'idle';
 	const isFormSubmitting = formStatus === 'running';
-	const fields: LiteFormFieldProps<NewTransferFormData>[] = [
+	const fields: LiteFormFieldProps<RequestNewTransferParams>[] = [
 		{
-			fieldKey: 'bank_account_id' as const,
+			fieldKey: 'alpaca_ach_relationship_id' as const,
 		},
 		{
 			fieldKey: 'amount' as const,
@@ -194,31 +200,15 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	}));
 
 	// Form Submit Handler
-	const onSubmit = (data: NewTransferFormData) => {
-		const { bank_account_id } = data;
-		const bankAccount = approvedBankAccountsForLoggedInUser.find(
-			({ _id }) => _id === bank_account_id,
-		);
-		if (bankAccount == null) {
-			toast({
-				title: 'Invalid bank account',
-				description: 'Please select a valid bank account to transfer from.',
-			});
-			reset();
-			return;
-		}
-		const { alpaca_ach_relationship_id } = bankAccount;
+	const onSubmit = (data: RequestNewTransferParams) => {
 		console.log('Requesting new transfer with following data:', data);
 		toast({
 			title: 'Requesting your transfer',
 			description: 'This may take a few moments...',
 		});
-		requestNewTransfer({
-			alpaca_ach_relationship_id,
-			amount: data.amount,
-			direction: data.direction,
-		});
+		requestNewTransfer(data);
 	};
+	const isSubmitButtonDisabled = !isNewTransferFormReady || isFormSubmitting;
 
 	// ==== Render ==== //
 	return (
@@ -395,6 +385,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							<div className='mt-4 text-right w-full'>
 								<SubmitButton
 									className='w-full'
+									isDisabled={isSubmitButtonDisabled}
 									isSubmitting={isFormSubmitting}
 								/>
 							</div>
@@ -432,10 +423,4 @@ export const getStaticProps: GetStaticProps<PageStaticProps> = () => {
 	return Promise.resolve({
 		props: ROUTE_STATIC_PROPS,
 	});
-};
-
-type NewTransferFormData = {
-	amount: number;
-	bank_account_id: string;
-	direction: AlpacaAchTransferDirection;
 };
