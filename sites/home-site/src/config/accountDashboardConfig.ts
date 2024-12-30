@@ -7,7 +7,7 @@ export const AccountDashboardRouteEnum = getEnum([
 	HomeSiteRouteStaticIdEnum.obj['HOME_SITE__/ACCOUNT/TRANSACTIONS'],
 	HomeSiteRouteStaticIdEnum.obj['HOME_SITE__/ACCOUNT/STATEMENTS'],
 	HomeSiteRouteStaticIdEnum.obj['HOME_SITE__/ACCOUNT/SETTINGS'],
-	HomeSiteRouteStaticIdEnum.obj['HOME_SITE__/ACCOUNT/PLANS'],
+	// HomeSiteRouteStaticIdEnum.obj['HOME_SITE__/ACCOUNT/PLANS'],
 	HomeSiteRouteStaticIdEnum.obj['HOME_SITE__/ACCOUNT/BANKING'],
 ]);
 export type AccountDashboardRoute = EnumMember<
@@ -63,13 +63,13 @@ export const accountDashboardConfigByRouteTyped: Record<
 		}),
 		title: 'Billing Information',
 	},
-	'HOME_SITE__/ACCOUNT/PLANS': {
-		href: getHomeSiteRoute({
-			...defaultRouteOptions,
-			routeStaticId: 'HOME_SITE__/ACCOUNT/PLANS',
-		}),
-		title: 'Plans',
-	},
+	// 'HOME_SITE__/ACCOUNT/PLANS': {
+	// 	href: getHomeSiteRoute({
+	// 		...defaultRouteOptions,
+	// 		routeStaticId: 'HOME_SITE__/ACCOUNT/PLANS',
+	// 	}),
+	// 	title: 'Plans',
+	// },
 	'HOME_SITE__/ACCOUNT/BANKING': {
 		href: getHomeSiteRoute({
 			...defaultRouteOptions,
