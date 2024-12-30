@@ -5,16 +5,34 @@ import {
 	PageStaticProps,
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { HomeSiteRouteQueryParams } from '@wallot/js';
+import {
+	HomeSiteRouteQueryParams,
+	isBankAccountApprovedByAlpaca,
+} from '@wallot/js';
 import { AccountDashboardPage } from '@wallot/home-site/src/components/AccountDashboardPage';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { BankAccountsContainer } from '@wallot/react/src/features/bankAccounts/components/BankAccountsContainer';
+import { GoPlus } from 'react-icons/go';
+import { ScheduleCallDialog } from '@wallot/home-site/src/components/ScheduleCallDialog';
+import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
+import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountsForLoggedInUser';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
 
 	// Router
 	const router = useRouter();
+
+	// Toaster
+	const { toast } = useToast();
+
+	// Bank Accounts
+	const { resourcesForLoggedInUser: bankAccountsForLoggedInUser } =
+		useQueryBankAccountsForLoggedInUser();
+	const approvedBankAccountsForLoggedInUser =
+		bankAccountsForLoggedInUser.filter(isBankAccountApprovedByAlpaca);
+	const hasAtLeastOneApprovedBankAccounts =
+		approvedBankAccountsForLoggedInUser.length > 0;
 
 	// ==== Constants ==== //
 
@@ -47,6 +65,61 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							<div>
 								<p className='font-semibold text-2xl'>Bank Accounts</p>
 							</div>
+						</div>
+						<div className='mt-4 lg:mt-0 flex items-center space-x-5'>
+							{[{ ctaText: 'ACH Transfer' }].map(({ ctaText }) => {
+								if (hasAtLeastOneApprovedBankAccounts) {
+									return (
+										<div key={ctaText}>
+											<ScheduleCallDialog
+												TriggerComponent={
+													<button
+														className={cn(
+															'bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100',
+															'flex items-center space-x-1',
+															'text-center',
+														)}
+													>
+														<div>
+															<GoPlus />
+														</div>
+														<div>
+															<p className='font-normal text-sm'>{ctaText}</p>
+														</div>
+													</button>
+												}
+											/>
+										</div>
+									);
+								}
+
+								return (
+									<div key={ctaText}>
+										<button
+											className={cn(
+												'bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100',
+												'flex items-center space-x-1',
+												'text-center',
+											)}
+											onClick={() => {
+												toast({
+													title:
+														'Unable to start a new ACH transfer at this time',
+													description:
+														'If you have recently made a bank account connection, please wait a few minutes and try again.',
+												});
+											}}
+										>
+											<div>
+												<GoPlus />
+											</div>
+											<div>
+												<p className='font-normal text-sm'>{ctaText}</p>
+											</div>
+										</button>
+									</div>
+								);
+							})}
 						</div>
 					</div>
 					<div className='mt-4 lg:mt-1'>

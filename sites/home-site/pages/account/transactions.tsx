@@ -83,7 +83,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 																<GoPlus />
 															</div>
 															<div>
-																<p className='font-light text-sm'>{ctaText}</p>
+																<p className='font-normal text-sm'>{ctaText}</p>
 															</div>
 														</button>
 													}
@@ -113,7 +113,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 													<GoPlus />
 												</div>
 												<div>
-													<p className='font-light text-sm'>{ctaText}</p>
+													<p className='font-normal text-sm'>{ctaText}</p>
 												</div>
 											</button>
 										</div>
