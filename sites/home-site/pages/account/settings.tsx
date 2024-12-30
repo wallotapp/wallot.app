@@ -37,7 +37,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	return (
 		<PageComponent {...pageProps}>
 			<AccountDashboardPage className={cn('lg:max-w-3xl')}>
-				<BillingInformationContainer />
+				<BillingInformationContainer defaultOpen />
 			</AccountDashboardPage>
 		</PageComponent>
 	);

@@ -31,10 +31,12 @@ const BillingInformationSectionEnum = getEnum([
 type BillingInformationSection = keyof typeof BillingInformationSectionEnum.obj;
 
 export type BillingInformationContainerProps = BaseComponent & {
+	defaultOpen?: boolean;
 	disableEdits?: boolean;
 };
 export function BillingInformationContainer({
 	className = '',
+	defaultOpen = false,
 	disableEdits = false,
 }: BillingInformationContainerProps) {
 	// ==== State ==== //
@@ -359,14 +361,23 @@ export function BillingInformationContainer({
 			defaultValues.date_of_birth &&
 			defaultValues.tax_id_type &&
 			defaultValues.tax_id;
-		if (!isContactDetailsSectionCompleteInDefaultValues) {
+		if (defaultOpen) {
 			setActiveBillingInformationSection('Contact Details');
-		} else if (!isTaxDetailsSectionCompleteInDefaultValues) {
-			setActiveBillingInformationSection('Tax Details');
+		} else {
+			if (!isContactDetailsSectionCompleteInDefaultValues) {
+				setActiveBillingInformationSection('Contact Details');
+			} else if (!isTaxDetailsSectionCompleteInDefaultValues) {
+				setActiveBillingInformationSection('Tax Details');
+			}
 		}
 		reset(defaultValues);
 		setHasInitializedDefaultValues(true);
-	}, [loggedInUser, isLoggedInUserLoading, hasInitializedDefaultValues]);
+	}, [
+		defaultOpen,
+		loggedInUser,
+		isLoggedInUserLoading,
+		hasInitializedDefaultValues,
+	]);
 
 	// ==== Render ==== //
 	return (
