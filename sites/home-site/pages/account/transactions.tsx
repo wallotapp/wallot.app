@@ -12,6 +12,7 @@ import { useQueryAssetOrdersForLoggedInUser } from '@wallot/react/src/features/a
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getCurrencyUsdStringFromCents } from 'ergonomic';
 import { DateTime } from 'luxon';
+import { GoPlus } from 'react-icons/go';
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Hooks ==== //
@@ -44,10 +45,42 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		<PageComponent {...pageProps}>
 			<AccountDashboardPage className={cn('lg:max-w-3xl')}>
 				<div>
-					<div>
-						<p className='font-semibold text-2xl'>Transactions</p>
+					<div
+						className={cn(
+							'lg:flex lg:items-center lg:justify-between lg:space-x-20',
+						)}
+					>
+						<div>
+							<div>
+								<p className='font-semibold text-2xl'>Transactions</p>
+							</div>
+						</div>
+						<div className='mt-4 lg:mt-0 flex items-center space-x-5'>
+							{[{ ctaText: 'Buy Order' }, { ctaText: 'Sell Order' }].map(
+								({ ctaText }) => {
+									return (
+										<div key={ctaText}>
+											<button
+												className={cn(
+													'bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300 hover:bg-slate-100',
+													'flex items-center space-x-1',
+													'text-center',
+												)}
+											>
+												<div>
+													<GoPlus />
+												</div>
+												<div>
+													<p className='font-light text-sm'>{ctaText}</p>
+												</div>
+											</button>
+										</div>
+									);
+								},
+							)}
+						</div>
 					</div>
-					<div className='mt-1'>
+					<div className='mt-4 lg:mt-1'>
 						<p className='font-light text-base text-gray-600'>
 							Below are all of the buy and sell orders you have made to date.
 						</p>
