@@ -32,9 +32,15 @@ export function useQueryLoggedInUser() {
 	// Address
 	const contact = loggedInUser?.alpaca_account_contact;
 	const streetAddressLine1 = contact?.street_address?.[0] ?? '';
-	const loggedInUserAddress = `${streetAddressLine1},${' '}${contact?.city}, ${
-		contact?.state
-	}${' '}${contact?.postal_code}`;
+	const loggedInUserAddressString = `${streetAddressLine1 ?? ''},${' '}${
+		contact?.city ?? ''
+	}, ${contact?.state ?? ''}${' '}${contact?.postal_code ?? ''}`;
+	const isLoggedInUserAddressStringEmpty = loggedInUserAddressString
+		.split('')
+		.every((char) => char === ' ' || char === ',');
+	const loggedInUserAddress = isLoggedInUserAddressStringEmpty
+		? ''
+		: loggedInUserAddressString;
 
 	// Display name
 	const loggedInUserDisplayName = getUserDisplayName(loggedInUser);
