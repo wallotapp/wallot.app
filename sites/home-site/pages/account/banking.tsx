@@ -91,7 +91,10 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</p>
 					</div>
 					<div className='mt-4'>
-						<BankAccountsContainer disableConnectionCallback={false} />
+						<BankAccountsContainer
+							defaultInstitutionAccordionsOpen={false}
+							disableConnectionCallback={false}
+						/>
 					</div>
 					<div
 						className={cn(

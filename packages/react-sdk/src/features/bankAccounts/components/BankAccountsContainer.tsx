@@ -19,11 +19,14 @@ import { useCreateStripeFinancialConnectionsSessionMutation } from '@wallot/reac
 import { useConnectBankAccountsMutation } from '@wallot/react/src/features/bankAccounts/hooks/useConnectBankAccountsMutation';
 
 export type BankAccountsContainerProps = BaseComponent & {
+	/** Should each Institutions accordion begin in their open state, defaults to `true` */
+	defaultInstitutionAccordionsOpen?: boolean;
 	/** Use this for instance if the parent component has a form that is submitting */
 	disableConnectionCallback: boolean;
 };
 export function BankAccountsContainer({
 	className = '',
+	defaultInstitutionAccordionsOpen = true,
 	disableConnectionCallback,
 }: BankAccountsContainerProps) {
 	// ==== Hooks ==== //
@@ -197,11 +200,20 @@ export function BankAccountsContainer({
 		if (isBankAccountPageLoading) return;
 		if (isLoggedInUserLoading) return;
 		if (defaultBankAccount == null) return;
-		if (isDefaultBankAccountTokenized) return;
 
 		setIsBankAccountInterfaceInitialized(true);
+
+		if (!defaultInstitutionAccordionsOpen) {
+			setInstitutionAccordionsClosed(() =>
+				Object.keys(bankAccountsByInstitution),
+			);
+		}
+
+		if (isDefaultBankAccountTokenized) return;
+
 		setBankAccountIdsWithTokenizationFormShown([defaultBankAccount._id]);
 	}, [
+		defaultInstitutionAccordionsOpen,
 		isLoggedInUserLoading,
 		isBankAccountPageLoading,
 		defaultBankAccount,
