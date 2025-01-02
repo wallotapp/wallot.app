@@ -5,13 +5,13 @@ import {
 	Order,
 	usersApi,
 	User,
-	isUserWithAlpacaEquity,
 	assetOrdersApi,
 	AssetOrder,
 	getAssetOrderPropertiesFromAlpacaOrder,
 	UpdateAssetOrderParams,
 	isAssetOrderPendingAlpacaFill,
 	isOrderConfirmedByUser,
+	isUserActivatedByAlpaca,
 } from '@wallot/js';
 import { PlaceAlpacaOrdersTaskParams } from '@wallot/node';
 import { alpaca, db, gcp, log } from '../../services.js';
@@ -74,6 +74,15 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 		return Promise.resolve();
 	}
 	const user = userDoc.data() as User;
+	if (!isUserActivatedByAlpaca(user)) {
+		// Precondition failed
+		// The user is not activated by Alpaca, so this task is not possible
+		log({
+			message: 'Requested order placement, but user not activated by Alpaca',
+			orderId,
+		});
+		return Promise.resolve();
+	}
 
 	// Query the ASSET_ORDERs
 	const assetOrdersQuery = await db
@@ -101,7 +110,84 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 		return Promise.resolve();
 	}
 
-	if (!isUserWithAlpacaEquity(user)) {
+	if (achTransferId == null) {
+		// Place the ALPACA_ORDERs such that the promise only rejects if all orders reject
+		const alpacaOrderPromises = assetOrders.map((assetOrder) =>
+			alpaca.broker.placeAlpacaOrder(user, assetOrder).then(
+				(alpacaOrder) => ({
+					alpacaOrder,
+					assetOrder,
+					error: null,
+					success: true,
+				}),
+				(error) => ({ alpacaOrder: null, assetOrder, success: false, error }),
+			),
+		);
+		const results = await Promise.all(alpacaOrderPromises);
+
+		if (results.every((result) => !result.success)) {
+			// If all Alpaca Order placements failed, throw an error
+			throw new firebaseFunctions.https.HttpsError(
+				'internal',
+				'All Alpaca Order placements failed',
+			);
+		}
+
+		// Initialize a batch
+		const batch = db.batch();
+		const assetOrdersToRefresh = new Set<string>();
+
+		// Add updates to batch
+		for (const { alpacaOrder, assetOrder, success, error } of results) {
+			if (success) {
+				if (alpacaOrder == null) throw new Error('Alpaca order is null'); // this shouldn't happen
+
+				const assetOrderUpdateParams: UpdateAssetOrderParams =
+					getAssetOrderPropertiesFromAlpacaOrder(alpacaOrder);
+				const assetOrderDoc = db
+					.collection(assetOrdersApi.collectionId)
+					.doc(assetOrder._id);
+				batch.update(assetOrderDoc, assetOrderUpdateParams);
+				assetOrdersToRefresh.add(assetOrder._id);
+			} else {
+				log(
+					{
+						message: 'Alpaca order placement failed',
+						code: 'ALPACA_ORDER_PLACEMENT_FAILED',
+						assetOrder,
+						error,
+					},
+					{ type: 'error' },
+				);
+				const assetOrderUpdateParams: UpdateAssetOrderParams = {
+					description: 'Alpaca order placement failed',
+				};
+				const assetOrderDoc = db
+					.collection(assetOrdersApi.collectionId)
+					.doc(assetOrder._id);
+				batch.update(assetOrderDoc, assetOrderUpdateParams);
+			}
+		}
+
+		// Commit the batch
+		await batch.commit();
+
+		// Kick to the `refreshAlpacaOrderStatus` task for each ASSET_ORDER
+		for (const assetOrderId of assetOrdersToRefresh) {
+			await gcp.tasks.enqueueRefreshAlpacaOrderStatus({
+				assetOrderId,
+				userId: user._id,
+			});
+		}
+
+		// Task complete
+		log({
+			message: 'Alpaca orders placed',
+			orderId,
+			assetOrdersToRefresh: Array.from(assetOrdersToRefresh).join(', '),
+		});
+		return Promise.resolve();
+	} else {
 		// Precondition 1 failed
 		// Kick to the `requestAlpacaAchTransfer` task
 
@@ -125,81 +211,4 @@ export const handlePlaceAlpacaOrdersTask: CloudTaskHandler<
 		});
 		return Promise.resolve();
 	}
-
-	// Place the ALPACA_ORDERs such that the promise only rejects if all orders reject
-	const alpacaOrderPromises = assetOrders.map((assetOrder) =>
-		alpaca.broker.placeAlpacaOrder(user, assetOrder).then(
-			(alpacaOrder) => ({
-				alpacaOrder,
-				assetOrder,
-				error: null,
-				success: true,
-			}),
-			(error) => ({ alpacaOrder: null, assetOrder, success: false, error }),
-		),
-	);
-	const results = await Promise.all(alpacaOrderPromises);
-
-	if (results.every((result) => !result.success)) {
-		// If all Alpaca Order placements failed, throw an error
-		throw new firebaseFunctions.https.HttpsError(
-			'internal',
-			'All Alpaca Order placements failed',
-		);
-	}
-
-	// Initialize a batch
-	const batch = db.batch();
-	const assetOrdersToRefresh = new Set<string>();
-
-	// Add updates to batch
-	for (const { alpacaOrder, assetOrder, success, error } of results) {
-		if (success) {
-			if (alpacaOrder == null) throw new Error('Alpaca order is null'); // this shouldn't happen
-
-			const assetOrderUpdateParams: UpdateAssetOrderParams =
-				getAssetOrderPropertiesFromAlpacaOrder(alpacaOrder);
-			const assetOrderDoc = db
-				.collection(assetOrdersApi.collectionId)
-				.doc(assetOrder._id);
-			batch.update(assetOrderDoc, assetOrderUpdateParams);
-			assetOrdersToRefresh.add(assetOrder._id);
-		} else {
-			log(
-				{
-					message: 'Alpaca order placement failed',
-					code: 'ALPACA_ORDER_PLACEMENT_FAILED',
-					assetOrder,
-					error,
-				},
-				{ type: 'error' },
-			);
-			const assetOrderUpdateParams: UpdateAssetOrderParams = {
-				description: 'Alpaca order placement failed',
-			};
-			const assetOrderDoc = db
-				.collection(assetOrdersApi.collectionId)
-				.doc(assetOrder._id);
-			batch.update(assetOrderDoc, assetOrderUpdateParams);
-		}
-	}
-
-	// Commit the batch
-	await batch.commit();
-
-	// Kick to the `refreshAlpacaOrderStatus` task for each ASSET_ORDER
-	for (const assetOrderId of assetOrdersToRefresh) {
-		await gcp.tasks.enqueueRefreshAlpacaOrderStatus({
-			assetOrderId,
-			userId: user._id,
-		});
-	}
-
-	// Task complete
-	log({
-		message: 'Alpaca orders placed',
-		orderId,
-		assetOrdersToRefresh: Array.from(assetOrdersToRefresh).join(', '),
-	});
-	return Promise.resolve();
 };

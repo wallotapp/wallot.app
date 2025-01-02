@@ -1,6 +1,6 @@
 import { handleKyError } from 'ergonomic';
 import { KyInstance } from 'ky-universal';
-import { AlpacaOrder, AssetOrder, UserWithAlpacaEquity } from '@wallot/js';
+import { AlpacaOrder, AssetOrder, UserActivatedByAlpaca } from '@wallot/js';
 import { estimateAlpacaOrder } from './estimateAlpacaOrder.js';
 import { SecretData } from '../../SecretDataTypes.js';
 
@@ -10,7 +10,7 @@ export const placeAlpacaOrder =
 		alpacaBrokerEstimationClient: KyInstance,
 		secrets: SecretData,
 	) =>
-	async (user: UserWithAlpacaEquity, assetOrder: AssetOrder) => {
+	async (user: UserActivatedByAlpaca, assetOrder: AssetOrder) => {
 		try {
 			const defaultPlaceAlpacaOrderParams: {
 				side: NonNullable<AlpacaOrder['side']>;
