@@ -2,7 +2,6 @@ import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import {
 	ActivateUserParams,
 	ActivateUserResponse,
-	UpdateUserParams,
 	assetOrdersApi,
 	getHomeSiteRoute,
 	ordersApi,
@@ -46,7 +45,11 @@ export const activateUser = async (
 
 	// Set USER.parameters as an array of the PARAMETER._id values
 	const compatibleParameterIds = compatibleParameters.map(({ _id }) => _id);
-	const updateUserParams: UpdateUserParams = {
+	const updateUserParams: ActivateUserParams & { parameters: string[] } = {
+		age_range,
+		capital_level,
+		investing_goals,
+		risk_preference,
 		parameters: compatibleParameterIds,
 	};
 	batch.update(
