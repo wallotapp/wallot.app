@@ -232,8 +232,8 @@ export const completeUserKycProperties = {
 	// - tax_id
 	// - tax_id_type
 	alpaca_account_identity: yup
-		.object(
-			R.pick(
+		.object({
+			...R.pick(
 				[
 					'country_of_birth',
 					'country_of_citizenship',
@@ -241,12 +241,17 @@ export const completeUserKycProperties = {
 					'date_of_birth',
 					'family_name',
 					'given_name',
-					'tax_id',
 					'tax_id_type',
 				] as const,
 				kycFormDataProperties,
 			),
-		)
+			tax_id: alpacaAccountIdentityProperties.tax_id
+				.default('')
+				.nullable(true)
+				.optional()
+				.label('Tax ID Number')
+				.meta({ type: GeneralizedFieldTypeEnum.obj.short_text }),
+		})
 		.nullable(false)
 		.defined()
 		.default({
