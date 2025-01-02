@@ -2,7 +2,8 @@ import { secrets } from '../../../secrets.js';
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { FunctionResponse } from '@wallot/node';
 import {
-	getHomeSiteRoute, // route function
+	achTransfersApi,
+	getHomeSiteRoute,
 	ConfirmOrderParams,
 	ConfirmOrderRouteParams,
 	ConfirmOrderResponse,
@@ -106,7 +107,10 @@ export const confirmOrder = async (
 	const onFinished = async () => {
 		if (variables.SERVER_VAR_FEATURE_FLAGS.ENABLE_ALPACA) {
 			// Enqueue placeAlpacaOrders task
-			await gcp.tasks.enqueuePlaceAlpacaOrders({ orderId });
+			await gcp.tasks.enqueuePlaceAlpacaOrders({
+				achTransferId: achTransfersApi.generateId(),
+				orderId,
+			});
 		}
 	};
 

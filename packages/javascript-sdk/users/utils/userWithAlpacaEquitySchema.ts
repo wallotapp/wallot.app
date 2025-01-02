@@ -5,19 +5,9 @@ import { UserActivatedByAlpaca } from './userActivatedByAlpacaSchema.js';
 
 export const userWithAlpacaEquityProperties = {
 	alpaca_account_last_equity: alpacaAccountProperties.alpaca_account_last_equity
-		.min(1)
-		.nullable(false)
-		.test({
-			name: 'hasFunds',
-			message: 'User does not have funds',
-			test: (value) => {
-				if (value == null) return false;
-				const equity = parseFloat(value);
-				if (isNaN(equity)) return false;
-
-				return equity > 0;
-			},
-		}),
+		.optional()
+		.nullable(true)
+		.default(null), // <= changing to a no-op for now
 };
 export const userWithAlpacaEquitySchema = yup.object(
 	userWithAlpacaEquityProperties,
