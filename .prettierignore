@@ -85,7 +85,7 @@ web_modules/
 
 # Next.js build output
 .next
-out
+# out
 
 # Nuxt.js build / generate output
 .nuxt
@@ -141,7 +141,7 @@ commander-clis/**/*.d.ts
 
 # Express Output Directories
 functions/**/dist
-functions/**/out
+# functions/**/out
 functions/**/*.js.map
 functions/**/*.ts.map
 functions/**/*.d.ts
