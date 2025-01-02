@@ -6,6 +6,7 @@ import {
 	kycFormDataSchema,
 	kycFormDataSchemaFieldSpecByFieldKey,
 	getSsoSiteRoute,
+	CompleteUserKycParams,
 } from '@wallot/js';
 import { getEnum, UsaStateCodeEnum } from 'ergonomic';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
@@ -237,8 +238,12 @@ export function BillingInformationContainer({
 			title: 'Saving your preferences',
 			description: 'This may take a few moments.',
 		});
-		updateUser({
+		const updateUserParams: Omit<
+			CompleteUserKycParams,
+			'default_bank_account'
+		> & { _id: string } = {
 			_id: loggedInUser._id,
+			alpaca_account_agreements: [],
 			alpaca_account_contact: {
 				...R.pick(
 					['email_address', 'phone_number', 'city', 'postal_code'] as const,
@@ -273,7 +278,8 @@ export function BillingInformationContainer({
 				] as const,
 				data,
 			),
-		});
+		};
+		updateUser(updateUserParams);
 	};
 
 	// ==== Effects ==== //
