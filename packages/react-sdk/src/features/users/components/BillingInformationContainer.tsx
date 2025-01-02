@@ -243,7 +243,7 @@ export function BillingInformationContainer({
 			'default_bank_account'
 		> & { _id: string } = {
 			_id: loggedInUser._id,
-			alpaca_account_agreements: [],
+			alpaca_account_agreements: data.alpaca_account_agreements,
 			alpaca_account_contact: {
 				...R.pick(
 					['email_address', 'phone_number', 'city', 'postal_code'] as const,
@@ -290,6 +290,9 @@ export function BillingInformationContainer({
 		if (isLoggedInUserLoading) return;
 		const { firebase_auth_email: fallbackEmail } = loggedInUser ?? {};
 		const defaultValues: KycFormDataParams = {
+			alpaca_account_agreements:
+				loggedInUser?.alpaca_account_agreements ??
+				initialFormData.alpaca_account_agreements,
 			city: loggedInUser?.alpaca_account_contact?.city ?? initialFormData.city,
 			email_address:
 				loggedInUser?.alpaca_account_contact?.email_address ??

@@ -8,6 +8,7 @@ import {
 	getFieldSpecByFieldKey,
 	YupHelpers,
 	USA_STATE_BY_CODE,
+	getUtcDateNow,
 } from 'ergonomic';
 import { ActivatedUser } from './activateUserSchema.js';
 import { User, usersApi } from '../models/userProperties.js';
@@ -20,6 +21,27 @@ import {
 
 // ==== Form Schema ==== //
 export const kycFormDataProperties = {
+	alpaca_account_agreements: yup
+		.array()
+		.of(
+			yup.object({
+				agreement: alpacaAccountAgreementsProperties.agreement.nullable(false),
+				ip_address: alpacaAccountAgreementsProperties.ip_address
+					.nullable(false)
+					.min(1),
+				signed_at: alpacaAccountAgreementsProperties.signed_at.nullable(false),
+			}),
+		)
+		.min(1)
+		.defined()
+		.default([
+			{
+				agreement: 'customer_agreement',
+				ip_address: '127.0.0.1',
+				signed_at: getUtcDateNow(),
+			},
+		])
+		.nullable(false),
 	// Contact
 	city: alpacaAccountContactProperties.city
 		.nullable(false)
@@ -136,21 +158,7 @@ export const completeUserKycProperties = {
 	// - agreement (e.g. "customer_agreement")
 	// - signed_at
 	// - ip_address
-	alpaca_account_agreements: yup
-		.array()
-		.of(
-			yup.object({
-				agreement: alpacaAccountAgreementsProperties.agreement.nullable(false),
-				ip_address: alpacaAccountAgreementsProperties.ip_address
-					.nullable(false)
-					.min(1),
-				signed_at: alpacaAccountAgreementsProperties.signed_at.nullable(false),
-			}),
-		)
-		.min(1)
-		.defined()
-		.default([])
-		.nullable(false),
+	alpaca_account_agreements: kycFormDataProperties.alpaca_account_agreements,
 	// contact
 	// - email_address
 	// - street_address[]
