@@ -1,6 +1,7 @@
 import { getFunctions } from 'firebase-admin/functions';
 
 export type PlaceAlpacaOrdersTaskParams = {
+	achTransferId?: string;
 	orderId: string;
 };
 export type RefreshAlpacaOrderStatusTaskParams = {

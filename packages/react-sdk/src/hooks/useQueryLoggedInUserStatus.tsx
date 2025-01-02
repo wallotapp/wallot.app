@@ -14,10 +14,10 @@ import {
 	isOrderConfirmedByUser,
 	isUserActivatedByAlpaca,
 	isUserRejectedByAlpaca,
-	isUserWithAlpacaEquity,
 	Order,
 	User,
 	UserExperienceState,
+	isAchTransferWithFundsReceivedByAlpaca,
 } from '@wallot/js';
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountsForLoggedInUser';
@@ -262,7 +262,9 @@ function getLoggedInUserStatus({
 		});
 		return status;
 	}
-	if (!isUserWithAlpacaEquity(loggedInUser)) {
+	if (
+		!achTransfersForLoggedInUser.some(isAchTransferWithFundsReceivedByAlpaca)
+	) {
 		status.state =
 			'trackingProgress.waitingForOrderToBeFilled.waitingForAlpacaAchTransferToChangeFromQueuedToComplete';
 		return status;

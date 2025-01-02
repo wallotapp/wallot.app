@@ -4,7 +4,7 @@ import { AlpacaAchTransfer } from '@wallot/js';
 
 export type RequestAlpacaAchTransferTaskParams = {
 	/** Used to ensure there are no duplicate transfers */
-	achTransferId: string;
+	achTransferId: PlaceAlpacaOrdersTaskParams['achTransferId'];
 	amountInCents: number;
 	bankAccountId: string;
 	direction?: AlpacaAchTransfer['direction'];
