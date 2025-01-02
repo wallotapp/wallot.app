@@ -22,7 +22,9 @@ export const handleCreateAlpacaAccountTaskOptions = {
  */
 export const handleCreateAlpacaAccountTask: CloudTaskHandler<
 	CreateAlpacaAccountTaskParams
-> = async ({ data: { amountInCents, bankAccountId, orderId, userId } }) => {
+> = async ({
+	data: { achTransferId = null, amountInCents, bankAccountId, orderId, userId },
+}) => {
 	// Query the USER
 	const userDoc = await db.collection(usersApi.collectionId).doc(userId).get();
 	if (!userDoc.exists) {
@@ -64,6 +66,7 @@ export const handleCreateAlpacaAccountTask: CloudTaskHandler<
 
 	// Kick to the `refreshAlpacaAccountStatus` task
 	await gcp.tasks.enqueueRefreshAlpacaAccountStatus({
+		achTransferId: achTransferId ?? undefined,
 		amountInCents,
 		bankAccountId,
 		orderId,

@@ -17,7 +17,9 @@ export const handleRefreshAlpacaAccountStatusTaskOptions = {
 
 export const handleRefreshAlpacaAccountStatusTask: CloudTaskHandler<
 	RefreshAlpacaAccountStatusTaskParams
-> = async ({ data: { amountInCents, bankAccountId, orderId, userId } }) => {
+> = async ({
+	data: { achTransferId = null, amountInCents, bankAccountId, orderId, userId },
+}) => {
 	// Query the USER
 	const userDoc = await db.collection(usersApi.collectionId).doc(userId).get();
 	if (!userDoc.exists) {
@@ -74,6 +76,7 @@ export const handleRefreshAlpacaAccountStatusTask: CloudTaskHandler<
 		// Kick back to the `createAlpacaAchRelationship` task
 		log({ message: 'Alpaca activated the account. Next up: ACH relationship' });
 		await gcp.tasks.enqueueCreateAlpacaAchRelationship({
+			achTransferId: achTransferId ?? undefined,
 			amountInCents,
 			bankAccountId,
 			orderId,

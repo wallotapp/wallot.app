@@ -26,7 +26,9 @@ export const handleCreateAlpacaAchRelationshipTaskOptions = {
  */
 export const handleCreateAlpacaAchRelationshipTask: CloudTaskHandler<
 	CreateAlpacaAchRelationshipTaskParams
-> = async ({ data: { amountInCents, bankAccountId, orderId, userId } }) => {
+> = async ({
+	data: { achTransferId = null, amountInCents, bankAccountId, orderId, userId },
+}) => {
 	// Query the BANK_ACCOUNT
 	const bankAccountDoc = await db
 		.collection(bankAccountsApi.collectionId)
@@ -80,6 +82,7 @@ export const handleCreateAlpacaAchRelationshipTask: CloudTaskHandler<
 			message: 'Requested ACH Relationship, but user not activated by Alpaca',
 		});
 		await gcp.tasks.enqueueCreateAlpacaAccount({
+			achTransferId: achTransferId ?? undefined,
 			amountInCents,
 			bankAccountId,
 			orderId,
@@ -104,6 +107,7 @@ export const handleCreateAlpacaAchRelationshipTask: CloudTaskHandler<
 
 	// Kick to the `refreshAlpacaAchRelationshipStatus` task
 	await gcp.tasks.enqueueRefreshAlpacaAchRelationshipStatus({
+		achTransferId: achTransferId ?? undefined,
 		amountInCents,
 		bankAccountId,
 		orderId,

@@ -2,12 +2,14 @@ import { getFunctions } from 'firebase-admin/functions';
 import { CreateAlpacaAchRelationshipTaskParams } from '../bankAccounts/createAlpacaAchRelationship.js';
 
 export type CreateAlpacaAccountTaskParams = {
+	achTransferId?: CreateAlpacaAchRelationshipTaskParams['achTransferId'];
 	amountInCents: CreateAlpacaAchRelationshipTaskParams['amountInCents'];
 	bankAccountId: CreateAlpacaAchRelationshipTaskParams['bankAccountId'];
 	orderId: CreateAlpacaAchRelationshipTaskParams['orderId'];
 	userId: CreateAlpacaAchRelationshipTaskParams['userId'];
 };
 export type RefreshAlpacaAccountStatusTaskParams = {
+	achTransferId?: CreateAlpacaAchRelationshipTaskParams['achTransferId'];
 	amountInCents: CreateAlpacaAchRelationshipTaskParams['amountInCents'];
 	bankAccountId: CreateAlpacaAchRelationshipTaskParams['bankAccountId'];
 	orderId: CreateAlpacaAchRelationshipTaskParams['orderId'];
