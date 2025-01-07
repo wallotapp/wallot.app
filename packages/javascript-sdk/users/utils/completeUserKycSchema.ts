@@ -20,6 +20,7 @@ import {
 } from './alpacaAccounts.js';
 
 // ==== Form Schema ==== //
+export const FALLBACK_IP_ADDRESS = '127.0.0.1';
 export const kycFormDataProperties = {
 	alpaca_account_agreements: yup
 		.array()
@@ -37,7 +38,7 @@ export const kycFormDataProperties = {
 		.default([
 			{
 				agreement: 'customer_agreement',
-				ip_address: '127.0.0.1',
+				ip_address: FALLBACK_IP_ADDRESS,
 				signed_at: getUtcDateNow(),
 			},
 		])

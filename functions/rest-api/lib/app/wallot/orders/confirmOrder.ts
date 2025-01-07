@@ -16,15 +16,20 @@ import {
 	usersApi,
 	User,
 	ProLicenseParams,
+	FALLBACK_IP_ADDRESS,
+	UpdateUserParams,
+	CompleteUserKycParams,
 } from '@wallot/js';
 import { db, gcp, log, stripe } from '../../../services.js';
 import { siteOriginByTarget, variables } from '../../../variables.js';
+import { getUtcDateNow } from 'ergonomic';
 
 export const confirmOrder = async (
 	{ bank_account }: ConfirmOrderParams,
 	{ orderId }: ConfirmOrderRouteParams,
 	_query: Record<string, never>,
 	firebaseUser: FirebaseUser | null,
+	headers: Record<string, unknown>,
 ): Promise<FunctionResponse<ConfirmOrderResponse>> => {
 	if (!firebaseUser) throw new Error('Unauthorized');
 
@@ -38,6 +43,41 @@ export const confirmOrder = async (
 
 	// Create a batch
 	const batch = db.batch();
+
+	// Create agreements object
+	const ipAddress = String(
+		headers['x-forwarded-for'] ?? headers['x-real-ip'] ?? FALLBACK_IP_ADDRESS,
+	);
+	const customerAgreement = (
+		(user.alpaca_account_agreements ??
+			[]) as CompleteUserKycParams['alpaca_account_agreements']
+	).find((agreement) => agreement?.agreement === 'customer_agreement');
+	if (customerAgreement == null || ipAddress !== customerAgreement.ip_address) {
+		const updatedAgreements = (
+			(user.alpaca_account_agreements ??
+				[]) as CompleteUserKycParams['alpaca_account_agreements']
+		)
+			.filter((agreement) => agreement?.agreement !== 'customer_agreement')
+			.concat({
+				...(customerAgreement ?? {
+					agreement: 'customer_agreement',
+					signed_at: getUtcDateNow(),
+				}),
+				ip_address: ipAddress,
+			});
+		const updateUserParams: UpdateUserParams = {
+			alpaca_account_agreements: updatedAgreements,
+		};
+		log({
+			message: 'Updating customer agreement for user',
+			updateUserParams,
+			userId: user._id,
+		});
+		batch.update(
+			db.collection(usersApi.collectionId).doc(user._id),
+			updateUserParams,
+		);
+	}
 
 	// Subscribe the user to Wallot Pro if they are on free plan
 	const licensesQuerySnapshot = await db
