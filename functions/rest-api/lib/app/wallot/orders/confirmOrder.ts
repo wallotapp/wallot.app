@@ -92,6 +92,7 @@ export const confirmOrder = async (
 		log({ message: 'User does not have a pro license' });
 		const stripeSubscription = await stripe.subscriptions.create({
 			customer: user.stripe_customer_id,
+			expand: ['latest_invoice.payment_intent'],
 			items: [
 				{
 					price:
@@ -103,6 +104,16 @@ export const confirmOrder = async (
 				user_id: user._id,
 				firebase_auth_email: user.firebase_auth_email || 'No email',
 				license_id: license._id,
+			},
+			payment_behavior: 'error_if_incomplete',
+			payment_settings: {
+				payment_method_types: ['us_bank_account'],
+				payment_method_options: {
+					us_bank_account: {
+						verification_method: 'automatic',
+					},
+				},
+				save_default_payment_method: 'on_subscription',
 			},
 		});
 		const licenseUpdateParams: ProLicenseParams = {
