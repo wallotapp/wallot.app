@@ -3,7 +3,6 @@ name: Deploy Test Cloud Tasks
 'on':
   workflow_run:
     workflows: ['Publish Test Node SDK']
-    branches: ['staging']
     types:
       - completed
 
