@@ -16,6 +16,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          # Use the exact commit SHA that triggered the "Publish JavaScript SDK" workflow
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Install jq
         run: sudo apt-get install jq
