@@ -3,7 +3,7 @@ name: Deploy Cronjobs
 'on':
   workflow_run:
     workflows: ['Publish Node SDK']
-    branches: ['master', 'staging']
+    branches: ['staging']
     types:
       - completed
 
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     environment:
-      name: ${{ github.ref_name == 'master' && 'live' || 'test' }}
+      name: 'test'
 
     env:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
