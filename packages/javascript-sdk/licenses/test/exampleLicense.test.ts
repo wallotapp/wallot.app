@@ -7,6 +7,8 @@ describe('License', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My License',
+			stripe_subscription_id: '',
+			user: '',
 		};
 		expect(exampleLicense).toEqual<typeof exampleLicense>({
 			_id: expect.any(String),
@@ -19,6 +21,9 @@ describe('License', () => {
 			_deleted: false,
 			description: '',
 			name: 'My License',
+			plan: 'free',
+			stripe_subscription_id: '',
+			user: '',
 		});
 	});
 });

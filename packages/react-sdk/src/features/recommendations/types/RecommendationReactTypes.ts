@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -42,20 +42,14 @@ export type UseCreateRecommendationMutationOptions =
 		Recommendation,
 		CreateRecommendationParams
 	>;
-export type CreateRecommendationMutationData =
-	GeneralizedResponse<Recommendation>;
-export type CreateRecommendationMutationError =
-	GeneralizedResponse<Recommendation>;
+export type CreateRecommendationMutationData = Recommendation[];
+export type CreateRecommendationMutationError = GeneralizedError;
 export type CreateRecommendationMutationParams =
 	FirestoreDocumentCreateParams<CreateRecommendationParams>;
 
 export type UseUpdateRecommendationMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<
-		Recommendation,
-		UpdateRecommendationParams
-	>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateRecommendationParams>;
 export type UpdateRecommendationMutationData = unknown;
-export type UpdateRecommendationMutationError =
-	GeneralizedResponse<Recommendation>;
+export type UpdateRecommendationMutationError = GeneralizedError;
 export type UpdateRecommendationMutationParams =
 	FirestoreDocumentUpdateParams<UpdateRecommendationParams>;

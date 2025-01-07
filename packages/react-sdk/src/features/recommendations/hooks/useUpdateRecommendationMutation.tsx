@@ -7,9 +7,9 @@ import {
 	UseUpdateRecommendationMutationOptions,
 } from '@wallot/react/src/features/recommendations/types/RecommendationReactTypes';
 
-export const useUpdateRecommendationMutation = (
+export function useUpdateRecommendationMutation(
 	options?: UseUpdateRecommendationMutationOptions,
-) => {
+) {
 	return useMutation<
 		UpdateRecommendationMutationData,
 		UpdateRecommendationMutationError,
@@ -24,7 +24,7 @@ export const useUpdateRecommendationMutation = (
 			onSuccess: (data: UpdateRecommendationMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
-};
+}

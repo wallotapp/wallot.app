@@ -15,6 +15,22 @@
 			"type": "shell"
 		},
 		{
+			"command": "npm run format",
+			"label": "Format the Project",
+			"options": {
+				"statusbar": {
+					"detail": "Formats the project using Prettier and Doctoc",
+					"label": "$(output) format"
+				}
+			},
+			"presentation": {
+				"group": "Formatter",
+				"reveal": "silent"
+			},
+			"problemMatcher": [],
+			"type": "shell"
+		},
+		{
 			"command": "npm run watch",
 			"label": "Start TypeScript Compiler",
 			"options": {
@@ -31,7 +47,7 @@
 			"type": "shell"
 		},
 		{
-			"command": "npm run dev-server --server_name=\"rest-api\"",
+			"command": "npm run dev-function --function_name=\"rest-api\"",
 			"label": "Run REST API Locally in Test Environment",
 			"options": {
 				"statusbar": {
@@ -40,135 +56,151 @@
 				}
 			},
 			"presentation": {
-				"group": "Express Servers",
+				"group": "Functions",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
 			"type": "shell"
 		},
 		{
-			"command": "npm run dev-web-app --web_app_name=\"home-web-app\"",
-			"label": "Run Home Web App Locally in Test Environment",
+			"command": "npm run dev-function --function_name=\"webhooks\"",
+			"label": "Run Webhooks Locally in Test Environment",
 			"options": {
 				"statusbar": {
-					"detail": "Run Home Web App Locally in Test Environment",
+					"detail": "Run Webhooks Locally in Test Environment",
+					"label": "$(terminal) webhooks"
+				}
+			},
+			"presentation": {
+				"group": "Functions",
+				"reveal": "always"
+			},
+			"problemMatcher": [],
+			"type": "shell"
+		},
+		{
+			"command": "npm run dev-site --site_name=\"home-site\"",
+			"label": "Run Home Site Locally in Test Environment",
+			"options": {
+				"statusbar": {
+					"detail": "Run Home Site Locally in Test Environment",
 					"label": "$(globe) home"
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
 			"type": "shell"
 		},
 		{
-			"command": "npm run dev-web-app --web_app_name=\"admin-web-app\"",
-			"label": "Run Admin Web App Locally in Test Environment",
+			"command": "npm run dev-site --site_name=\"admin-site\"",
+			"label": "Run Admin Site Locally in Test Environment",
 			"options": {
 				"statusbar": {
-					"detail": "Run Admin Web App Locally in Test Environment",
+					"detail": "Run Admin Site Locally in Test Environment",
 					"label": "$(globe) admin"
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
 			"type": "shell"
 		},
 		{
-			"command": "npm run dev-web-app --web_app_name=\"blog-web-app\"",
-			"label": "Run Blog Web App Locally in Test Environment",
+			"command": "npm run dev-site --site_name=\"blog-site\"",
+			"label": "Run Blog Site Locally in Test Environment",
 			"options": {
 				"statusbar": {
-					"detail": "Run Blog Web App Locally in Test Environment",
+					"detail": "Run Blog Site Locally in Test Environment",
 					"label": "$(globe) blog"
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
 			"type": "shell"
 		},
 		{
-			"command": "npm run dev-web-app --web_app_name=\"knowledge-base-web-app\"",
-			"label": "Run Knowledge Base Web App Locally in Test Environment",
+			"command": "npm run dev-site --site_name=\"knowledge-base-site\"",
+			"label": "Run Knowledge Base Site Locally in Test Environment",
 			"options": {
 				"statusbar": {
-					"detail": "Run Knowledge Base Web App Locally in Test Environment",
+					"detail": "Run Knowledge Base Site Locally in Test Environment",
 					"label": "$(globe) knowledge-base"
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
 			"type": "shell"
 		},
 		{
-			"command": "npm run dev-web-app --web_app_name=\"referrals-web-app\"",
-			"label": "Run Referrals Web App Locally in Test Environment",
+			"command": "npm run dev-site --site_name=\"referrals-site\"",
+			"label": "Run Referrals Site Locally in Test Environment",
 			"options": {
 				"statusbar": {
-					"detail": "Run Referrals Web App Locally in Test Environment",
+					"detail": "Run Referrals Site Locally in Test Environment",
 					"label": "$(globe) referrals"
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
 			"type": "shell"
 		},
 		{
-			"command": "npm run dev-web-app --web_app_name=\"sso-web-app\"",
-			"label": "Run SSO Web App Locally in Test Environment",
+			"command": "npm run dev-site --site_name=\"sso-site\"",
+			"label": "Run SSO Site Locally in Test Environment",
 			"options": {
 				"statusbar": {
-					"detail": "Run SSO Web App Locally in Test Environment",
+					"detail": "Run SSO Site Locally in Test Environment",
 					"label": "$(globe) sso"
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
 			"type": "shell"
 		},
 		{
-			"command": "npm run dev-web-app --web_app_name=\"status-web-app\"",
-			"label": "Run Status Web App Locally in Test Environment",
+			"command": "npm run dev-site --site_name=\"status-site\"",
+			"label": "Run Status Site Locally in Test Environment",
 			"options": {
 				"statusbar": {
-					"detail": "Run Status Web App Locally in Test Environment",
+					"detail": "Run Status Site Locally in Test Environment",
 					"label": "$(globe) status"
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],
 			"type": "shell"
 		},
 		{
-			"command": "npm run dev-web-app --web_app_name=\"support-web-app\"",
-			"label": "Run Support Web App Locally in Test Environment",
+			"command": "npm run dev-site --site_name=\"support-site\"",
+			"label": "Run Support Site Locally in Test Environment",
 			"options": {
 				"statusbar": {
-					"detail": "Run Support Web App Locally in Test Environment",
+					"detail": "Run Support Site Locally in Test Environment",
 					"label": "$(globe) support"
 				}
 			},
 			"presentation": {
-				"group": "Web Apps",
+				"group": "Sites",
 				"reveal": "always"
 			},
 			"problemMatcher": [],

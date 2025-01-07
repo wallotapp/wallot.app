@@ -13,12 +13,13 @@
 		"preconnect",
 		"rrule",
 		"tailwindcss",
-		"tanstack"
+		"tanstack",
+		"wallot"
 	],
 	"clock.format": "isoUtcDateTime",
 	"cloudcode.project": "app-wallot-staging",
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"editor.formatOnSave": true,
+	"editor.formatOnSave": false,
 	"files.eol": "\n",
 	"github.copilot.enable": {
 		"properties": false,

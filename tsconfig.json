@@ -21,16 +21,22 @@
 	"files": [],
 	"include": [],
 	"references": [
-		{ "path": "expressjs-servers/rest-api/tsconfig.ref.json" },
-		{ "path": "nextjs-web-apps/home-web-app/tsconfig.ref.json" },
-		{ "path": "nextjs-web-apps/admin-web-app/tsconfig.ref.json" },
-		{ "path": "nextjs-web-apps/blog-web-app/tsconfig.ref.json" },
-		{ "path": "nextjs-web-apps/knowledge-base-web-app/tsconfig.ref.json" },
-		{ "path": "nextjs-web-apps/referrals-web-app/tsconfig.ref.json" },
-		{ "path": "nextjs-web-apps/sso-web-app/tsconfig.ref.json" },
-		{ "path": "nextjs-web-apps/status-web-app/tsconfig.ref.json" },
-		{ "path": "nextjs-web-apps/support-web-app/tsconfig.ref.json" },
+		{ "path": "functions/cloud-tasks/tsconfig.ref.json" },
+		{ "path": "functions/cronjobs/tsconfig.ref.json" },
+		{ "path": "functions/pubsub/tsconfig.ref.json" },
+		{ "path": "functions/rest-api/tsconfig.ref.json" },
+		{ "path": "functions/triggers/tsconfig.ref.json" },
+		{ "path": "functions/webhooks/tsconfig.ref.json" },
+		{ "path": "sites/home-site/tsconfig.ref.json" },
+		{ "path": "sites/admin-site/tsconfig.ref.json" },
+		{ "path": "sites/blog-site/tsconfig.ref.json" },
+		{ "path": "sites/knowledge-base-site/tsconfig.ref.json" },
+		{ "path": "sites/referrals-site/tsconfig.ref.json" },
+		{ "path": "sites/sso-site/tsconfig.ref.json" },
+		{ "path": "sites/status-site/tsconfig.ref.json" },
+		{ "path": "sites/support-site/tsconfig.ref.json" },
 		{ "path": "packages/javascript-sdk/tsconfig.ref.json" },
-		{ "path": "packages/react-sdk/tsconfig.ref.json" }
+		{ "path": "packages/react-sdk/tsconfig.ref.json" },
+		{ "path": "packages/node-sdk/tsconfig.ref.json" }
 	]
 }

@@ -7,6 +7,10 @@ describe('Invoice', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My Invoice',
+			amount: 0,
+			bank_account: '',
+			license: '',
+			stripe_invoice_id: '',
 		};
 		expect(exampleInvoice).toEqual<typeof exampleInvoice>({
 			_id: expect.any(String),
@@ -19,6 +23,10 @@ describe('Invoice', () => {
 			_deleted: false,
 			description: '',
 			name: 'My Invoice',
+			amount: 0,
+			bank_account: '',
+			license: '',
+			stripe_invoice_id: '',
 		});
 	});
 });

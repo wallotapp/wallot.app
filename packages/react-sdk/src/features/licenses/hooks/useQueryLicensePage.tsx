@@ -22,14 +22,14 @@ export const getQueryLicensePageReactQueryOptions: UseQueryLicensePageOptionsFn 
 		...(props.reactQueryOptions ?? {}),
 	});
 
-export const useQueryLicensePage = ({
+export function useQueryLicensePage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryLicensePageProps) => {
+}: UseQueryLicensePageProps) {
 	return ReactQuery.useQuery(
 		getQueryLicensePageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

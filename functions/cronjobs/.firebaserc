@@ -1,0 +1,6 @@
+{
+	"projects": {
+		"live": "app-wallot-production",
+		"test": "app-wallot-staging"
+	}
+}

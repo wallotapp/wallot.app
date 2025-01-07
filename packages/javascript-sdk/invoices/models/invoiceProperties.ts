@@ -7,10 +7,11 @@ import {
 	YupHelpers,
 	getApiResourceSpec,
 	getEnum,
+	GeneralizedFieldTypeEnum,
 } from 'ergonomic';
 import {
 	apiYupHelpers,
-	idPrefixByCollection,
+	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 
 export const InvoiceCategoryEnum = getEnum(['default']);
@@ -18,6 +19,10 @@ export type InvoiceCategory = keyof typeof InvoiceCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'amount',
+	'bank_account',
+	'license',
+	'stripe_invoice_id',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -26,14 +31,23 @@ const properties = {
 	...GeneralizedApiResourceProperties,
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
+	amount: YupHelpers.usd(),
+	bank_account: apiYupHelpers
+		.idRef(['bank_account'])
+		.min(1)
+		.meta({ unique_key: false }),
 	category: InvoiceCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	license: apiYupHelpers.idRef(['license']).min(1).meta({ unique_key: false }),
+	stripe_invoice_id: yup.string().defined().min(1).meta({
+		unique_key: true,
+		type: GeneralizedFieldTypeEnum.obj.short_text,
+	}),
 } as const;
 type U = typeof properties;
 
 export const invoicesApi = getApiResourceSpec<keyof U, U, T>({
 	createParamsRequiredFieldEnum,
-	idPrefix: idPrefixByCollection[_object],
+	idPrefix: idPrefixByResourceName[_object],
 	properties,
 } as const);
 export type Invoice = yup.InferType<typeof invoicesApi.apiResourceJsonSchema>;

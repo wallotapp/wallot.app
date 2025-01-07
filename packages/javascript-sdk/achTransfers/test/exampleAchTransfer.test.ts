@@ -1,0 +1,60 @@
+import { AchTransfer, achTransfersApi } from '../models/index.js';
+
+describe('AchTransfer', () => {
+	test('exampleAchTransfer', () => {
+		const { apiResourceDefaultJson } = achTransfersApi;
+		const exampleAchTransfer: AchTransfer = {
+			...apiResourceDefaultJson,
+			category: 'incoming',
+			name: 'My AchTransfer',
+			alpaca_ach_transfer_amount: '',
+			alpaca_ach_transfer_created_at: null,
+			alpaca_ach_transfer_direction: 'INCOMING',
+			alpaca_ach_transfer_expires_at: null,
+			alpaca_ach_transfer_hold_until: null,
+			alpaca_ach_transfer_id: '',
+			alpaca_ach_transfer_instant_amount: null,
+			alpaca_ach_transfer_reason: null,
+			alpaca_ach_transfer_relationship_id: null,
+			alpaca_ach_transfer_status: 'QUEUED',
+			alpaca_ach_transfer_account_id: null,
+			alpaca_ach_transfer_updated_at: null,
+			alpaca_ach_transfer_additional_information: null,
+			alpaca_ach_transfer_bank_id: null,
+			alpaca_ach_transfer_fee: null,
+			alpaca_ach_transfer_fee_payment_method: null,
+			alpaca_ach_transfer_requested_amount: null,
+			bank_account: '',
+		};
+		expect(exampleAchTransfer).toEqual<typeof exampleAchTransfer>({
+			_id: expect.any(String),
+			_date_last_modified: expect.any(String),
+			_created_by: expect.any(String),
+			_object: 'ach_transfer',
+			category: 'incoming',
+			_archived: false,
+			_date_created: expect.any(String),
+			_deleted: false,
+			description: '',
+			name: 'My AchTransfer',
+			alpaca_ach_transfer_amount: '',
+			alpaca_ach_transfer_created_at: null,
+			alpaca_ach_transfer_direction: 'INCOMING',
+			alpaca_ach_transfer_expires_at: null,
+			alpaca_ach_transfer_hold_until: null,
+			alpaca_ach_transfer_id: '',
+			alpaca_ach_transfer_instant_amount: null,
+			alpaca_ach_transfer_reason: null,
+			alpaca_ach_transfer_relationship_id: null,
+			alpaca_ach_transfer_status: 'QUEUED',
+			alpaca_ach_transfer_account_id: null,
+			alpaca_ach_transfer_updated_at: null,
+			alpaca_ach_transfer_additional_information: null,
+			alpaca_ach_transfer_bank_id: null,
+			alpaca_ach_transfer_fee: null,
+			alpaca_ach_transfer_fee_payment_method: null,
+			alpaca_ach_transfer_requested_amount: null,
+			bank_account: '',
+		});
+	});
+});

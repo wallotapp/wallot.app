@@ -10,7 +10,7 @@ import {
 } from 'ergonomic';
 import {
 	apiYupHelpers,
-	idPrefixByCollection,
+	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 
 export const ModelCategoryEnum = getEnum(['default']);
@@ -18,6 +18,9 @@ export type ModelCategory = keyof typeof ModelCategoryEnum.obj;
 
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'date_published',
+	'model_family',
+	'open_ai_model',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -27,13 +30,22 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: ModelCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	date_published: YupHelpers.dateTime(),
+	name: GeneralizedApiResourceProperties.name.meta({ unique_key: true }),
+	model_family: apiYupHelpers
+		.idRef(['model_family'])
+		.min(1)
+		.meta({ unique_key: false }),
+	open_ai_model: apiYupHelpers
+		.idRef(['open_ai_model'])
+		.min(1)
+		.meta({ unique_key: true }),
 } as const;
 type U = typeof properties;
 
 export const modelsApi = getApiResourceSpec<keyof U, U, T>({
 	createParamsRequiredFieldEnum,
-	idPrefix: idPrefixByCollection[_object],
+	idPrefix: idPrefixByResourceName[_object],
 	properties,
 } as const);
 export type Model = yup.InferType<typeof modelsApi.apiResourceJsonSchema>;

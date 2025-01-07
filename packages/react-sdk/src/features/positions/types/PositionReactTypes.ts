@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -37,14 +37,14 @@ export type UseQueryPositionPageObserver =
 
 export type UseCreatePositionMutationOptions =
 	GeneralizedUseCreateDocumentsMutationOptions<Position, CreatePositionParams>;
-export type CreatePositionMutationData = GeneralizedResponse<Position>;
-export type CreatePositionMutationError = GeneralizedResponse<Position>;
+export type CreatePositionMutationData = Position[];
+export type CreatePositionMutationError = GeneralizedError;
 export type CreatePositionMutationParams =
 	FirestoreDocumentCreateParams<CreatePositionParams>;
 
 export type UseUpdatePositionMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<Position, UpdatePositionParams>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdatePositionParams>;
 export type UpdatePositionMutationData = unknown;
-export type UpdatePositionMutationError = GeneralizedResponse<Position>;
+export type UpdatePositionMutationError = GeneralizedError;
 export type UpdatePositionMutationParams =
 	FirestoreDocumentUpdateParams<UpdatePositionParams>;

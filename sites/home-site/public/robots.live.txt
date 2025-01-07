@@ -1,0 +1,5 @@
+# All user agents are allowed to crawl the site, aside from orders and account routes
+
+User-agent: *
+Disallow: /orders
+Disallow: /account

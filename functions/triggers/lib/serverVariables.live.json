@@ -1,0 +1,47 @@
+{
+	"SERVER_VAR_EXPRESS_PORT": 17103,
+	"SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_EMAIL": "support@wallot.app",
+	"SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_NAME": "Wallot Support",
+	"SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID": "support@wallot.app",
+	"SERVER_VAR_ORIGIN_HTTP": "http://localhost:17103",
+	"SERVER_VAR_ORIGIN_HTTPS": "https://us-central1-app-wallot-production.cloudfunctions.net/triggers",
+	"SERVER_VAR_SITE_ORIGIN_BY_PROTOCOL_BY_TARGET": {
+		"HOME_SITE": {
+			"http": "http://localhost:17150",
+			"https": "https://wallot.app"
+		},
+		"ADMIN_SITE": {
+			"http": "http://localhost:17159",
+			"https": "https://admin.wallot.app"
+		},
+		"BLOG_SITE": {
+			"http": "http://localhost:17157",
+			"https": "https://blog.wallot.app"
+		},
+		"KNOWLEDGE_BASE_SITE": {
+			"http": "http://localhost:17152",
+			"https": "https://learn.wallot.app"
+		},
+		"REFERRALS_SITE": {
+			"http": "http://localhost:17153",
+			"https": "https://signup.wallot.app"
+		},
+		"SSO_SITE": {
+			"http": "http://localhost:17154",
+			"https": "https://sso.wallot.app"
+		},
+		"STATUS_SITE": {
+			"http": "http://localhost:17158",
+			"https": "https://status.wallot.app"
+		},
+		"SUPPORT_SITE": {
+			"http": "http://localhost:17151",
+			"https": "https://support.wallot.app"
+		}
+	},
+	"SERVER_VAR_FEATURE_FLAGS": {
+		"ENABLE_ACCOUNT_NUMBERS_STRIPE_PERMISSION": false,
+		"ENABLE_ALL_US_EQUITIES": true,
+		"ENABLE_ALPACA": false
+	}
+}

@@ -23,14 +23,14 @@ export const getQueryOrderPageReactQueryOptions: UseQueryOrderPageOptionsFn = (
 	...(props.reactQueryOptions ?? {}),
 });
 
-export const useQueryOrderPage = ({
+export function useQueryOrderPage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryOrderPageProps) => {
+}: UseQueryOrderPageProps) {
 	return ReactQuery.useQuery(
 		getQueryOrderPageReactQueryOptions({
 			firestoreQueryOptions,
 			reactQueryOptions,
 		}),
 	);
-};
+}

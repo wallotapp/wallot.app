@@ -7,6 +7,7 @@
 		"actboy168.tasks",
 		"adam-bender.commit-message-editor",
 		"angelo-breuer.clock",
+		"bierner.markdown-mermaid",
 		"bradlc.vscode-tailwindcss",
 		"christian-kohler.path-intellisense",
 		"dbaeumer.vscode-eslint",
@@ -18,6 +19,7 @@
 		"github.vscode-github-actions",
 		"github.vscode-pull-request-github",
 		"huytd.tokyo-city",
+		"jacobparis.stripe-docs-theme",
 		"mechatroner.rainbow-csv",
 		"ms-vscode-remote.remote-containers",
 		"naumovs.color-highlight",
@@ -26,6 +28,7 @@
 		"streetsidesoftware.code-spell-checker",
 		"tomoki1207.pdf",
 		"unifiedjs.vscode-mdx",
+		"vsls-contrib.gistfs",
 		"wix.vscode-import-cost"
 	]
 }

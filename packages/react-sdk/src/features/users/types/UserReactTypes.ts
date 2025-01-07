@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -29,14 +29,14 @@ export type UseQueryUserPageObserver = GeneralizedUseQueryPageObserver<User>;
 
 export type UseCreateUserMutationOptions =
 	GeneralizedUseCreateDocumentsMutationOptions<User, CreateUserParams>;
-export type CreateUserMutationData = GeneralizedResponse<User>;
-export type CreateUserMutationError = GeneralizedResponse<User>;
+export type CreateUserMutationData = User[];
+export type CreateUserMutationError = GeneralizedError;
 export type CreateUserMutationParams =
 	FirestoreDocumentCreateParams<CreateUserParams>;
 
 export type UseUpdateUserMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<User, UpdateUserParams>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateUserParams>;
 export type UpdateUserMutationData = unknown;
-export type UpdateUserMutationError = GeneralizedResponse<User>;
+export type UpdateUserMutationError = GeneralizedError;
 export type UpdateUserMutationParams =
 	FirestoreDocumentUpdateParams<UpdateUserParams>;

@@ -7,9 +7,9 @@ import {
 	UseUpdateOrderMutationOptions,
 } from '@wallot/react/src/features/orders/types/OrderReactTypes';
 
-export const useUpdateOrderMutation = (
+export function useUpdateOrderMutation(
 	options?: UseUpdateOrderMutationOptions,
-) => {
+) {
 	return useMutation<
 		UpdateOrderMutationData,
 		UpdateOrderMutationError,
@@ -21,6 +21,6 @@ export const useUpdateOrderMutation = (
 		onSuccess: (data: UpdateOrderMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
-};
+}

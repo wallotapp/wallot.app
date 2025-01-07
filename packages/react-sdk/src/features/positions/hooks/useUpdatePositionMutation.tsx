@@ -7,9 +7,9 @@ import {
 	UseUpdatePositionMutationOptions,
 } from '@wallot/react/src/features/positions/types/PositionReactTypes';
 
-export const useUpdatePositionMutation = (
+export function useUpdatePositionMutation(
 	options?: UseUpdatePositionMutationOptions,
-) => {
+) {
 	return useMutation<
 		UpdatePositionMutationData,
 		UpdatePositionMutationError,
@@ -21,6 +21,6 @@ export const useUpdatePositionMutation = (
 		onSuccess: (data: UpdatePositionMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
-};
+}

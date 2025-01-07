@@ -7,6 +7,9 @@ describe('Order', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My Order',
+			bank_account: '',
+			status: 'pending',
+			user: '',
 		};
 		expect(exampleOrder).toEqual<typeof exampleOrder>({
 			_id: expect.any(String),
@@ -19,6 +22,9 @@ describe('Order', () => {
 			_deleted: false,
 			description: '',
 			name: 'My Order',
+			bank_account: '',
+			status: 'pending',
+			user: '',
 		});
 	});
 });

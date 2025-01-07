@@ -7,9 +7,7 @@ import {
 	UseUpdateUserMutationOptions,
 } from '@wallot/react/src/features/users/types/UserReactTypes';
 
-export const useUpdateUserMutation = (
-	options?: UseUpdateUserMutationOptions,
-) => {
+export function useUpdateUserMutation(options?: UseUpdateUserMutationOptions) {
 	return useMutation<
 		UpdateUserMutationData,
 		UpdateUserMutationError,
@@ -21,6 +19,6 @@ export const useUpdateUserMutation = (
 		onSuccess: (data: UpdateUserMutationData) => {
 			console.log('Update operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
-};
+}

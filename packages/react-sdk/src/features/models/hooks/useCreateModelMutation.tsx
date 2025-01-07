@@ -7,9 +7,9 @@ import {
 	UseCreateModelMutationOptions,
 } from '@wallot/react/src/features/models/types/ModelReactTypes';
 
-export const useCreateModelMutation = (
+export function useCreateModelMutation(
 	options?: UseCreateModelMutationOptions,
-) => {
+) {
 	return useMutation<
 		CreateModelMutationData,
 		CreateModelMutationError,
@@ -21,6 +21,6 @@ export const useCreateModelMutation = (
 		onSuccess: (data: CreateModelMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
-};
+}

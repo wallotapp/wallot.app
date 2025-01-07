@@ -7,9 +7,7 @@ import {
 	UseCreateUserMutationOptions,
 } from '@wallot/react/src/features/users/types/UserReactTypes';
 
-export const useCreateUserMutation = (
-	options?: UseCreateUserMutationOptions,
-) => {
+export function useCreateUserMutation(options?: UseCreateUserMutationOptions) {
 	return useMutation<
 		CreateUserMutationData,
 		CreateUserMutationError,
@@ -21,6 +19,6 @@ export const useCreateUserMutation = (
 		onSuccess: (data: CreateUserMutationData) => {
 			console.log('Create operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
-};
+}

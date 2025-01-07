@@ -18,7 +18,7 @@
 		"strictPropertyInitialization": true,
 		// End -- Shared compiler options for the entire workspace
 
-		// Start -- Compiler options for Next.js web apps
+		// Start -- Compiler options for Next.js sites
 		"allowJs": true,
 		"forceConsistentCasingInFileNames": true,
 		"incremental": true,
@@ -29,7 +29,7 @@
 		"moduleResolution": "node",
 		"noEmit": true,
 		"target": "esnext"
-		// End -- Compiler options for Next.js web apps
+		// End -- Compiler options for Next.js sites
 	},
 	"exclude": ["node_modules"],
 	"extends": "../../tsconfig.template-nextjs.json",

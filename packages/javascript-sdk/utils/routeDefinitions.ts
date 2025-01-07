@@ -1,157 +1,229 @@
 import { getEnum, EnumMember } from 'ergonomic';
 
-// Home Web App
-export const HomeWebAppRouteStaticIdEnum = getEnum([
-	'HOME_WEB_APP__/INDEX',
-	'HOME_WEB_APP__/POSTS/[SLUG]/CONTENT',
+// Home Site
+export const HomeSiteRouteStaticIdEnum = getEnum([
+	'HOME_SITE__/ACCOUNT/BANKING',
+	'HOME_SITE__/ACCOUNT/OVERVIEW',
+	'HOME_SITE__/ACCOUNT/PLANS',
+	'HOME_SITE__/ACCOUNT/POSITIONS',
+	'HOME_SITE__/ACCOUNT/SETTINGS',
+	'HOME_SITE__/ACCOUNT/STATEMENTS',
+	'HOME_SITE__/ACCOUNT/TRANSACTIONS',
+	'HOME_SITE__/INDEX',
+	'HOME_SITE__/GET_STARTED',
+	'HOME_SITE__/ORDERS/[ORDER_ID]/ASSETS',
+	'HOME_SITE__/ORDERS/[ORDER_ID]/CART',
+	'HOME_SITE__/ORDERS/[ORDER_ID]/CHECKOUT',
+	'HOME_SITE__/ORDERS/[ORDER_ID]/CONGRATULATIONS',
+	'HOME_SITE__/ORDERS/[ORDER_ID]/TRACK',
+	'HOME_SITE__/PRIVACY',
+	'HOME_SITE__/TERMS',
 ]);
-export type HomeWebAppRouteStaticId = EnumMember<
-	typeof HomeWebAppRouteStaticIdEnum
+export type HomeSiteRouteStaticId = EnumMember<
+	typeof HomeSiteRouteStaticIdEnum
 >;
 
-export type HomeWebAppRouteQueryParams = {
-	'HOME_WEB_APP__/INDEX': {
+export type HomeSiteRouteQueryParams = {
+	'HOME_SITE__/ACCOUNT/BANKING': {
+		client_token?: string | undefined;
+	};
+	'HOME_SITE__/ACCOUNT/OVERVIEW': {
+		client_token?: string | undefined;
+	};
+	'HOME_SITE__/ACCOUNT/PLANS': {
+		client_token?: string | undefined;
+	};
+	'HOME_SITE__/ACCOUNT/POSITIONS': {
+		client_token?: string | undefined;
+	};
+	'HOME_SITE__/ACCOUNT/SETTINGS': {
+		client_token?: string | undefined;
+	};
+	'HOME_SITE__/ACCOUNT/STATEMENTS': {
+		client_token?: string | undefined;
+	};
+	'HOME_SITE__/ACCOUNT/TRANSACTIONS': {
+		client_token?: string | undefined;
+	};
+	'HOME_SITE__/INDEX': {
+		client_token?: string | undefined;
+	};
+	'HOME_SITE__/GET_STARTED': {
+		client_token?: string | undefined;
+	};
+	'HOME_SITE__/ORDERS/[ORDER_ID]/ASSETS': {
+		client_token?: string | undefined;
+		order_id: string | undefined;
+	};
+	'HOME_SITE__/ORDERS/[ORDER_ID]/CART': {
+		client_token?: string | undefined;
+		order_id: string | undefined;
+	};
+	'HOME_SITE__/ORDERS/[ORDER_ID]/CHECKOUT': {
+		client_token?: string | undefined;
+		order_id: string | undefined;
+	};
+	'HOME_SITE__/ORDERS/[ORDER_ID]/CONGRATULATIONS': {
+		client_token?: string | undefined;
+		order_id: string | undefined;
+	};
+	'HOME_SITE__/ORDERS/[ORDER_ID]/TRACK': {
+		client_token?: string | undefined;
+		order_id: string | undefined;
+	};
+	'HOME_SITE__/PRIVACY': { client_token?: string | undefined };
+	'HOME_SITE__/TERMS': { client_token?: string | undefined };
+};
+
+// Admin Site
+export const AdminSiteRouteStaticIdEnum = getEnum([
+	'ADMIN_SITE__/INDEX',
+	'ADMIN_SITE__/RESOURCE/[RESOURCE_NAME]/ALL',
+	'ADMIN_SITE__/RESOURCE/[RESOURCE_NAME]/CREATE',
+	'ADMIN_SITE__/RESOURCE/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT',
+]);
+export type AdminSiteRouteStaticId = EnumMember<
+	typeof AdminSiteRouteStaticIdEnum
+>;
+
+export type AdminSiteRouteQueryParams = {
+	'ADMIN_SITE__/INDEX': {
 		//
 	};
-	'HOME_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
+	'ADMIN_SITE__/RESOURCE/[RESOURCE_NAME]/ALL': {
+		resource_name: string | undefined;
+	};
+	'ADMIN_SITE__/RESOURCE/[RESOURCE_NAME]/CREATE': {
+		resource_name: string | undefined;
+	};
+	'ADMIN_SITE__/RESOURCE/[RESOURCE_NAME]/[DOCUMENT_ID]/EDIT': {
+		document_id: string | undefined;
+		resource_name: string | undefined;
 	};
 };
 
-// Admin Web App
-export const AdminWebAppRouteStaticIdEnum = getEnum([
-	'ADMIN_WEB_APP__/INDEX',
-	'ADMIN_WEB_APP__/POSTS/[SLUG]/CONTENT',
+// Blog Site
+export const BlogSiteRouteStaticIdEnum = getEnum([
+	'BLOG_SITE__/INDEX',
+	'BLOG_SITE__/POSTS/[SLUG]/CONTENT',
 ]);
-export type AdminWebAppRouteStaticId = EnumMember<
-	typeof AdminWebAppRouteStaticIdEnum
+export type BlogSiteRouteStaticId = EnumMember<
+	typeof BlogSiteRouteStaticIdEnum
 >;
 
-export type AdminWebAppRouteQueryParams = {
-	'ADMIN_WEB_APP__/INDEX': {
+export type BlogSiteRouteQueryParams = {
+	'BLOG_SITE__/INDEX': {
 		//
 	};
-	'ADMIN_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
+	'BLOG_SITE__/POSTS/[SLUG]/CONTENT': {
+		slug: string | undefined;
 	};
 };
 
-// Blog Web App
-export const BlogWebAppRouteStaticIdEnum = getEnum([
-	'BLOG_WEB_APP__/INDEX',
-	'BLOG_WEB_APP__/POSTS/[SLUG]/CONTENT',
+// Knowledge Base Site
+export const KnowledgeBaseSiteRouteStaticIdEnum = getEnum([
+	'KNOWLEDGE_BASE_SITE__/INDEX',
+	'KNOWLEDGE_BASE_SITE__/POSTS/[SLUG]/CONTENT',
 ]);
-export type BlogWebAppRouteStaticId = EnumMember<
-	typeof BlogWebAppRouteStaticIdEnum
+export type KnowledgeBaseSiteRouteStaticId = EnumMember<
+	typeof KnowledgeBaseSiteRouteStaticIdEnum
 >;
 
-export type BlogWebAppRouteQueryParams = {
-	'BLOG_WEB_APP__/INDEX': {
+export type KnowledgeBaseSiteRouteQueryParams = {
+	'KNOWLEDGE_BASE_SITE__/INDEX': {
 		//
 	};
-	'BLOG_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
+	'KNOWLEDGE_BASE_SITE__/POSTS/[SLUG]/CONTENT': {
+		slug: string | undefined;
 	};
 };
 
-// Knowledge Base Web App
-export const KnowledgeBaseWebAppRouteStaticIdEnum = getEnum([
-	'KNOWLEDGE_BASE_WEB_APP__/INDEX',
-	'KNOWLEDGE_BASE_WEB_APP__/POSTS/[SLUG]/CONTENT',
+// Referrals Site
+export const ReferralsSiteRouteStaticIdEnum = getEnum([
+	'REFERRALS_SITE__/INDEX',
+	'REFERRALS_SITE__/POSTS/[SLUG]/CONTENT',
 ]);
-export type KnowledgeBaseWebAppRouteStaticId = EnumMember<
-	typeof KnowledgeBaseWebAppRouteStaticIdEnum
+export type ReferralsSiteRouteStaticId = EnumMember<
+	typeof ReferralsSiteRouteStaticIdEnum
 >;
 
-export type KnowledgeBaseWebAppRouteQueryParams = {
-	'KNOWLEDGE_BASE_WEB_APP__/INDEX': {
+export type ReferralsSiteRouteQueryParams = {
+	'REFERRALS_SITE__/INDEX': {
 		//
 	};
-	'KNOWLEDGE_BASE_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
+	'REFERRALS_SITE__/POSTS/[SLUG]/CONTENT': {
+		slug: string | undefined;
 	};
 };
 
-// Referrals Web App
-export const ReferralsWebAppRouteStaticIdEnum = getEnum([
-	'REFERRALS_WEB_APP__/INDEX',
-	'REFERRALS_WEB_APP__/POSTS/[SLUG]/CONTENT',
+// SSO Site
+export const SsoSiteRouteStaticIdEnum = getEnum([
+	'SSO_SITE__/INDEX',
+	'SSO_SITE__/LOGIN',
+	'SSO_SITE__/LOGOUT',
+	'SSO_SITE__/REGISTER',
 ]);
-export type ReferralsWebAppRouteStaticId = EnumMember<
-	typeof ReferralsWebAppRouteStaticIdEnum
->;
+export type SsoSiteRouteStaticId = EnumMember<typeof SsoSiteRouteStaticIdEnum>;
 
-export type ReferralsWebAppRouteQueryParams = {
-	'REFERRALS_WEB_APP__/INDEX': {
+export type SsoSiteRouteQueryParams = {
+	'SSO_SITE__/INDEX': {
+		dest?: string | undefined;
+	};
+	'SSO_SITE__/LOGIN': {
+		dest?: string | undefined;
+	};
+	'SSO_SITE__/LOGOUT': {
 		//
 	};
-	'REFERRALS_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
+	'SSO_SITE__/REGISTER': {
+		dest?: string | undefined;
 	};
 };
 
-// SSO Web App
-export const SsoWebAppRouteStaticIdEnum = getEnum([
-	'SSO_WEB_APP__/INDEX',
-	'SSO_WEB_APP__/POSTS/[SLUG]/CONTENT',
+// Status Site
+export const StatusSiteRouteStaticIdEnum = getEnum([
+	'STATUS_SITE__/INDEX',
+	'STATUS_SITE__/POSTS/[SLUG]/CONTENT',
 ]);
-export type SsoWebAppRouteStaticId = EnumMember<
-	typeof SsoWebAppRouteStaticIdEnum
+export type StatusSiteRouteStaticId = EnumMember<
+	typeof StatusSiteRouteStaticIdEnum
 >;
 
-export type SsoWebAppRouteQueryParams = {
-	'SSO_WEB_APP__/INDEX': {
+export type StatusSiteRouteQueryParams = {
+	'STATUS_SITE__/INDEX': {
 		//
 	};
-	'SSO_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
+	'STATUS_SITE__/POSTS/[SLUG]/CONTENT': {
+		slug: string | undefined;
 	};
 };
 
-// Status Web App
-export const StatusWebAppRouteStaticIdEnum = getEnum([
-	'STATUS_WEB_APP__/INDEX',
-	'STATUS_WEB_APP__/POSTS/[SLUG]/CONTENT',
+// Support Site
+export const SupportSiteRouteStaticIdEnum = getEnum([
+	'SUPPORT_SITE__/INDEX',
+	'SUPPORT_SITE__/POSTS/[SLUG]/CONTENT',
 ]);
-export type StatusWebAppRouteStaticId = EnumMember<
-	typeof StatusWebAppRouteStaticIdEnum
+export type SupportSiteRouteStaticId = EnumMember<
+	typeof SupportSiteRouteStaticIdEnum
 >;
 
-export type StatusWebAppRouteQueryParams = {
-	'STATUS_WEB_APP__/INDEX': {
+export type SupportSiteRouteQueryParams = {
+	'SUPPORT_SITE__/INDEX': {
 		//
 	};
-	'STATUS_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
-	};
-};
-
-// Support Web App
-export const SupportWebAppRouteStaticIdEnum = getEnum([
-	'SUPPORT_WEB_APP__/INDEX',
-	'SUPPORT_WEB_APP__/POSTS/[SLUG]/CONTENT',
-]);
-export type SupportWebAppRouteStaticId = EnumMember<
-	typeof SupportWebAppRouteStaticIdEnum
->;
-
-export type SupportWebAppRouteQueryParams = {
-	'SUPPORT_WEB_APP__/INDEX': {
-		//
-	};
-	'SUPPORT_WEB_APP__/POSTS/[SLUG]/CONTENT': {
-		slug: string;
+	'SUPPORT_SITE__/POSTS/[SLUG]/CONTENT': {
+		slug: string | undefined;
 	};
 };
 
 export const RouteStaticIdEnum = getEnum([
-	...HomeWebAppRouteStaticIdEnum.arr,
-	...AdminWebAppRouteStaticIdEnum.arr,
-	...BlogWebAppRouteStaticIdEnum.arr,
-	...KnowledgeBaseWebAppRouteStaticIdEnum.arr,
-	...ReferralsWebAppRouteStaticIdEnum.arr,
-	...SsoWebAppRouteStaticIdEnum.arr,
-	...StatusWebAppRouteStaticIdEnum.arr,
-	...SupportWebAppRouteStaticIdEnum.arr,
+	...HomeSiteRouteStaticIdEnum.arr,
+	...AdminSiteRouteStaticIdEnum.arr,
+	...BlogSiteRouteStaticIdEnum.arr,
+	...KnowledgeBaseSiteRouteStaticIdEnum.arr,
+	...ReferralsSiteRouteStaticIdEnum.arr,
+	...SsoSiteRouteStaticIdEnum.arr,
+	...StatusSiteRouteStaticIdEnum.arr,
+	...SupportSiteRouteStaticIdEnum.arr,
 ]);
 export type RouteStaticId = EnumMember<typeof RouteStaticIdEnum>;

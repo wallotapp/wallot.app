@@ -1,4 +1,4 @@
-import { GeneralizedResponse } from 'ergonomic';
+import { GeneralizedError } from 'ergonomic';
 import {
 	GeneralizedUseQueryKeyFn,
 	GeneralizedUseQueryOptionsFn,
@@ -33,14 +33,14 @@ export type UseQueryLicensePageObserver =
 
 export type UseCreateLicenseMutationOptions =
 	GeneralizedUseCreateDocumentsMutationOptions<License, CreateLicenseParams>;
-export type CreateLicenseMutationData = GeneralizedResponse<License>;
-export type CreateLicenseMutationError = GeneralizedResponse<License>;
+export type CreateLicenseMutationData = License[];
+export type CreateLicenseMutationError = GeneralizedError;
 export type CreateLicenseMutationParams =
 	FirestoreDocumentCreateParams<CreateLicenseParams>;
 
 export type UseUpdateLicenseMutationOptions =
-	GeneralizedUseUpdateDocumentsMutationOptions<License, UpdateLicenseParams>;
+	GeneralizedUseUpdateDocumentsMutationOptions<UpdateLicenseParams>;
 export type UpdateLicenseMutationData = unknown;
-export type UpdateLicenseMutationError = GeneralizedResponse<License>;
+export type UpdateLicenseMutationError = GeneralizedError;
 export type UpdateLicenseMutationParams =
 	FirestoreDocumentUpdateParams<UpdateLicenseParams>;
