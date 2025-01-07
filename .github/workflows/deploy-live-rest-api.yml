@@ -1,18 +1,18 @@
-name: Deploy REST API
+name: Deploy Live REST API
 
 'on':
   workflow_run:
-    workflows: ['Publish Node SDK']
-    branches: ['master', 'staging']
+    workflows: ['Publish Live Node SDK']
+    branches: ['master']
     types:
       - completed
 
 jobs:
-  deploy-rest-api:
+  deploy-live-rest-api:
     runs-on: ubuntu-latest
 
     environment:
-      name: ${{ github.ref_name == 'master' && 'live' || 'test' }}
+      name: 'live'
 
     env:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
@@ -72,7 +72,7 @@ jobs:
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_REST_API == 'true')
         run: docker build -t monorepo-image .
 
-      - name: Deploy function:rest_api
+      - name: Deploy live function:rest_api
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_REST_API == 'true')
         run: |
           chmod +x ./scripts/deploy-firebase-cloud-function.sh && ./scripts/deploy-firebase-cloud-function.sh rest-api

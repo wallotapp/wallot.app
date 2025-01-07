@@ -3,6 +3,7 @@ name: Deploy Test Webhooks
 'on':
   workflow_run:
     workflows: ['Publish Test Node SDK']
+    branches: ['staging']
     types:
       - completed
 
@@ -36,7 +37,6 @@ jobs:
       SECRET_CRED_ALPACA_BROKER_API_KEY: ${{ secrets.SECRET_CRED_ALPACA_BROKER_API_KEY }}
       SECRET_CRED_ALPACA_BROKER_API_SECRET: ${{ secrets.SECRET_CRED_ALPACA_BROKER_API_SECRET }}
       SECRET_CRED_ALPACA_BROKER_ESTIMATION_ACCOUNT_ID: ${{ secrets.SECRET_CRED_ALPACA_BROKER_ESTIMATION_ACCOUNT_ID }}
-      SECRET_CRED_ALPACA_BROKER_ESTIMATION_API_BASE_URL: ${{ secrets.SECRET_CRED_ALPACA_BROKER_ESTIMATION_API_BASE_URL }}
       SECRET_CRED_ALPACA_BROKER_ESTIMATION_API_KEY: ${{ secrets.SECRET_CRED_ALPACA_BROKER_ESTIMATION_API_KEY }}
       SECRET_CRED_ALPACA_BROKER_ESTIMATION_API_SECRET: ${{ secrets.SECRET_CRED_ALPACA_BROKER_ESTIMATION_API_SECRET }}
       SECRET_CRED_ALPHA_VANTAGE_API_KEY: ${{ secrets.SECRET_CRED_ALPHA_VANTAGE_API_KEY }}
@@ -48,8 +48,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: staging
 
       - name: Install jq
         run: sudo apt-get install jq
