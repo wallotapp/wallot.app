@@ -128,7 +128,11 @@ export function BillingInformationContainer({
 		useUpdateUserMutation({
 			onError: onMutationError,
 			onSuccess: async () => {
-				if (loggedInUser?.alpaca_account_id == null) {
+				if (
+					loggedInUser?.alpaca_account_id == null ||
+					typeof loggedInUser.alpaca_account_id !== 'string' ||
+					loggedInUser.alpaca_account_id.length === 0
+				) {
 					await onMutationSuccess();
 				} else {
 					updateAlpacaAccount({

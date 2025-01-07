@@ -4,7 +4,7 @@ import {
 	UpdateAlpacaAccountParams,
 	UpdateAlpacaAccountResponse,
 } from '@wallot/js';
-import { alpaca } from '../../../services.js';
+import { alpaca, log } from '../../../services.js';
 
 export const updateAlpacaAccount = async (
 	params: UpdateAlpacaAccountParams,
@@ -13,7 +13,17 @@ export const updateAlpacaAccount = async (
 	firebaseUser: FirebaseUser | null,
 ): Promise<FunctionResponse<UpdateAlpacaAccountResponse>> => {
 	if (!firebaseUser) throw new Error('Unauthorized');
+	log({
+		message: 'Starting updateAlpacaAccount',
+		params,
+		userId: firebaseUser.uid,
+	});
 	const json = await alpaca.broker.updateAlpacaAccount(params);
+	log({
+		message: 'updateAlpacaAccount Successful',
+		json,
+		userId: firebaseUser.uid,
+	});
 
 	return { json };
 };
