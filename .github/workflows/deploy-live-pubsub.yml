@@ -3,7 +3,6 @@ name: Deploy Live PubSub
 'on':
   workflow_run:
     workflows: ['Publish Live Node SDK']
-    branches: ['master']
     types:
       - completed
 
