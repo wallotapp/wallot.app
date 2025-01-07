@@ -1,0 +1,58 @@
+name: Publish Live Node SDK
+
+'on':
+  workflow_run:
+    workflows: ['Publish JavaScript SDK']
+    branches: ['master']
+    types:
+      - completed
+
+jobs:
+  publish-live-node-sdk:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: 'live'
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # Use the exact commit SHA that triggered the "Publish JavaScript SDK" workflow
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Get the commit message which triggered this run
+        id: get_commit_message
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:"%B" | tr '\n' '::::' | sed "s/'/::::/g")
+          echo "Commit message: $COMMIT_MESSAGE"
+          echo "GIT_COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
+
+      - id: check_commit
+        uses: ./.github/actions/check-commit-message
+        with:
+          commit_message: ${{ env.GIT_COMMIT_MESSAGE }}
+
+      - name: Build Docker image
+        if: env.SKIP_BUILD == 'false' && (env.PUBLISH_ALL_PACKAGES == 'true' || env.PUBLISH_NODE_SDK == 'true')
+        run: docker build -t monorepo-image .
+
+      - name: Publish live package:node-sdk
+        if: env.SKIP_BUILD == 'false' && (env.PUBLISH_ALL_PACKAGES == 'true' || env.PUBLISH_NODE_SDK == 'true')
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/usr/src/app" \
+            -w "/usr/src/app" \
+            -e NPM_TOKEN \
+            monorepo-image \
+            /bin/bash -c "
+              npm ci &&
+              npm run build &&
+              npm run publish-public-package --package_name=node-sdk --deployment_environment=\"${SECRET_CRED_DEPLOYMENT_ENVIRONMENT}\"
+            "
+        env:
+          SECRET_CRED_DEPLOYMENT_ENVIRONMENT: ${{ secrets.SECRET_CRED_DEPLOYMENT_ENVIRONMENT }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
