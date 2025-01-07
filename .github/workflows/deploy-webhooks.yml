@@ -1,4 +1,4 @@
-name: Deploy REST API
+name: Deploy Webhooks
 
 'on':
   workflow_run:
@@ -8,7 +8,7 @@ name: Deploy REST API
       - completed
 
 jobs:
-  deploy-rest-api:
+  deploy-webhooks:
     runs-on: ubuntu-latest
 
     environment:
@@ -65,10 +65,10 @@ jobs:
           commit_message: ${{ env.GIT_COMMIT_MESSAGE }}
 
       - name: Build Docker image
-        if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_REST_API == 'true')
+        if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_WEBHOOKS == 'true')
         run: docker build -t monorepo-image .
 
-      - name: Deploy function:rest_api
-        if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_REST_API == 'true')
+      - name: Deploy function:webhooks
+        if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_WEBHOOKS == 'true')
         run: |
-          chmod +x ./scripts/deploy-firebase-cloud-function.sh && ./scripts/deploy-firebase-cloud-function.sh rest-api
+          chmod +x ./scripts/deploy-firebase-cloud-function.sh && ./scripts/deploy-firebase-cloud-function.sh webhooks

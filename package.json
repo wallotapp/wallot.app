@@ -18,25 +18,26 @@
 	"scripts": {
 		"authenticate-npm-cli": "echo \"//registry.npmjs.org/:_authToken=${NPM_TOKEN}\" >> $HOME/.npmrc && echo \"//registry.npmjs.org/:_authToken=${NPM_TOKEN}\" >> .npmrc",
 		"build": "tsc --build ./tsconfig.json",
-		"build-web-app": "cd ./nextjs-web-apps/$npm_config_web_app_name && npm run build && cd -",
+		"build-site": "cd ./sites/$npm_config_site_name && npm run build && cd -",
 		"ci": "echo 'ci is not implemented yet'",
 		"clean": "tsc --build ./tsconfig.json --clean",
-		"deploy-server": "cd ./expressjs-servers/$npm_config_server_name && npm run deploy && cd -",
-		"deploy-web-app": "cd ./nextjs-web-apps/$npm_config_web_app_name && npm run deploy && cd -",
-		"dev-server": "cd ./expressjs-servers/$npm_config_server_name && npm run dev",
-		"dev-web-app": "cd ./nextjs-web-apps/$npm_config_web_app_name && npm run dev",
+		"deploy-function": "cd ./functions/$npm_config_function_name && npm run deploy && cd -",
+		"deploy-site": "cd ./sites/$npm_config_site_name && npm run deploy && cd -",
+		"dev-function": "cd ./functions/$npm_config_function_name && npm run dev",
+		"dev-site": "cd ./sites/$npm_config_site_name && npm run dev",
 		"format": "doctoc . && prettier --write .",
 		"lint": "eslint . --ext .ts,.tsx",
+		"predev-site": "([ ! -s sites/$npm_config_site_name/.env.local ] && code sites/$npm_config_site_name/.env.local || true)",
 		"prepare": "husky install && chmod +x .husky/*",
 		"publish-public-package": "npm run authenticate-npm-cli && cd ./packages/$npm_config_package_name && npm publish --access public --tag $( [ \"$npm_config_deployment_environment\" = \"live\" ] && echo \"latest\" || echo \"next\" ) && cd -",
 		"publish-restricted-package": "npm run authenticate-npm-cli && cd ./packages/$npm_config_package_name && npm publish --access restricted --tag $( [ \"$npm_config_deployment_environment\" = \"live\" ] && echo \"latest\" || echo \"next\" ) && cd -",
 		"test": "NODE_OPTIONS=\"--experimental-vm-modules\" npx jest --config='jest.config.json' --verbose",
 		"watch": "tsc --build --watch ./tsconfig.json"
 	},
-	"version": "0.1.0",
+	"version": "0.1.1-rc.12",
 	"workspaces": [
-		"expressjs-servers/*",
-		"nextjs-web-apps/*",
+		"functions/*",
+		"sites/*",
 		"packages/*"
 	]
 }
