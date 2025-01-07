@@ -246,10 +246,15 @@ export function BillingInformationContainer({
 			alpaca_account_agreements: data.alpaca_account_agreements,
 			alpaca_account_contact: {
 				...R.pick(
-					['email_address', 'phone_number', 'city', 'postal_code'] as const,
+					[
+						'email_address',
+						'phone_number',
+						'city',
+						'postal_code',
+						'state',
+					] as const,
 					data,
 				),
-				state: data.state,
 				street_address: [
 					data.street_address_line_1,
 					data.street_address_line_2,
