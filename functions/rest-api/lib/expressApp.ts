@@ -227,7 +227,9 @@ app.post(
 		corsPolicy(
 			req,
 			res,
-			createRouterFunction(auth, secrets)(confirmOrder)(req, res, next),
+			createRouterFunction(auth, secrets)(confirmOrder, {
+				headers: req.headers,
+			})(req, res, next),
 		);
 	},
 );

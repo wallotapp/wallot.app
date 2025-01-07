@@ -25,8 +25,12 @@ export const createRouterFunction =
 			params: TParams,
 			query: TQuery,
 			firebaseUser: FirebaseUser | null,
+			headers: Record<string, unknown>,
 		) => Promise<FunctionResponse<TResponseBody>>,
-		options: { requiresAuth: boolean } = { requiresAuth: true },
+		options: { headers?: Record<string, unknown>; requiresAuth?: boolean } = {
+			headers: {},
+			requiresAuth: true,
+		},
 	) => {
 		return (
 				req: express.Request<TParams, TResponseBody, TRequestBody, TQuery>,
@@ -49,8 +53,8 @@ export const createRouterFunction =
 							if (!firebaseUserJwt) throw new Error('No firebaseUserJwt');
 							firebaseUser = await auth.verifyIdToken(firebaseUserJwt);
 						} catch (_) {
-							const { requiresAuth } = options;
-							if (requiresAuth) {
+							const { requiresAuth = true } = options;
+							if (requiresAuth === true) {
 								res.locals.json = getGeneralizedError({
 									message: 'Unauthorized',
 									type: 'request.unauthorized',
@@ -74,6 +78,7 @@ export const createRouterFunction =
 							params,
 							query,
 							firebaseUser ?? null,
+							options.headers ?? {},
 						);
 
 						// Set the response body in res.locals.json
