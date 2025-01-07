@@ -8,12 +8,13 @@ import {
 	getSsoSiteRoute,
 	CompleteUserKycParams,
 } from '@wallot/js';
-import { getEnum, UsaStateCodeEnum } from 'ergonomic';
+import { GeneralizedError, getEnum, UsaStateCodeEnum } from 'ergonomic';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useForm } from 'react-hook-form';
-import { useUpdateUserMutation } from '@wallot/react/src/features/users';
+import { useUpdateUserMutation } from '@wallot/react/src/features/users/hooks/useUpdateUserMutation';
+import { useUpdateAlpacaAccountMutation } from '@wallot/react/src/features/users/hooks/useUpdateAlpacaAccountMutation';
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
@@ -86,36 +87,55 @@ export function BillingInformationContainer({
 			resolver,
 			shouldUnregister: false,
 		});
+	const liveData = watch();
 
 	// Mutation
+	const onMutationError = ({ error: { message } }: GeneralizedError) => {
+		// Show the error message
+		toast({
+			title: 'Error',
+			description: message,
+		});
+		setError('root', {
+			type: 'manual',
+			message: 'An error occurred. Please try again.',
+		});
+
+		// Reset form
+		reset();
+	};
+	const onMutationSuccess = async () => {
+		// Refetch the user
+		await refetchUser();
+
+		// Close the billing information section
+		setActiveBillingInformationSection(null);
+
+		// Show success toast
+		toast({
+			title: 'Success',
+			description: 'Saved your billing information...',
+		});
+	};
+	const {
+		mutate: updateAlpacaAccount,
+		isLoading: isUpdateAlpacaAccountRunning,
+	} = useUpdateAlpacaAccountMutation({
+		onError: onMutationError,
+		onSuccess: onMutationSuccess,
+	});
 	const { mutate: updateUser, isLoading: isUpdateUserRunning } =
 		useUpdateUserMutation({
-			onError: ({ error: { message } }) => {
-				// Show the error message
-				toast({
-					title: 'Error',
-					description: message,
-				});
-				setError('root', {
-					type: 'manual',
-					message: 'An error occurred. Please try again.',
-				});
-
-				// Reset form
-				reset();
-			},
+			onError: onMutationError,
 			onSuccess: async () => {
-				// Refetch the user
-				await refetchUser();
-
-				// Close the billing information section
-				setActiveBillingInformationSection(null);
-
-				// Show success toast
-				toast({
-					title: 'Success',
-					description: 'Saved your billing information...',
-				});
+				if (loggedInUser?.alpaca_account_id == null) {
+					await onMutationSuccess();
+				} else {
+					updateAlpacaAccount({
+						...liveData,
+						alpaca_account_id: loggedInUser.alpaca_account_id,
+					});
+				}
 			},
 		});
 
@@ -123,7 +143,11 @@ export function BillingInformationContainer({
 
 	// Form
 	const formStatus =
-		formState.isSubmitting || isUpdateUserRunning ? 'running' : 'idle';
+		formState.isSubmitting ||
+		isUpdateUserRunning ||
+		isUpdateAlpacaAccountRunning
+			? 'running'
+			: 'idle';
 	const isFormSubmitting = formStatus === 'running';
 	const contactFields: LiteFormFieldProps<KycFormDataParams>[] = [
 		{ fieldKey: 'email_address' as const },
@@ -196,7 +220,6 @@ export function BillingInformationContainer({
 			: activeBillingInformationSection === 'Disclosures'
 			? 'Please answer the following questions to the best of your knowledge'
 			: '';
-	const liveData = watch();
 	const isContactDetailsSectionComplete =
 		liveData.email_address &&
 		liveData.phone_number &&
