@@ -1,14 +1,14 @@
-name: Deploy Triggers
+name: Deploy Test Triggers
 
 'on':
   workflow_run:
-    workflows: ['Publish Node SDK']
+    workflows: ['Publish Test Node SDK']
     branches: ['staging']
     types:
       - completed
 
 jobs:
-  deploy-triggers:
+  deploy-test-triggers:
     runs-on: ubuntu-latest
 
     environment:
@@ -68,7 +68,7 @@ jobs:
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_TRIGGERS == 'true')
         run: docker build -t monorepo-image .
 
-      - name: Deploy function:triggers
+      - name: Deploy test function:triggers
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_TRIGGERS == 'true')
         run: |
           chmod +x ./scripts/deploy-firebase-cloud-function.sh && ./scripts/deploy-firebase-cloud-function.sh triggers

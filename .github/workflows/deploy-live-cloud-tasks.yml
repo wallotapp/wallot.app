@@ -1,14 +1,14 @@
-name: Deploy Cloud Tasks
+name: Deploy Live Cloud Tasks
 
 'on':
   workflow_run:
-    workflows: ['Publish Node SDK']
+    workflows: ['Publish Live Node SDK']
     branches: ['master']
     types:
       - completed
 
 jobs:
-  deploy-cloud-tasks:
+  deploy-live-cloud-tasks:
     runs-on: ubuntu-latest
 
     environment:
@@ -68,7 +68,7 @@ jobs:
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_CLOUD_TASKS == 'true')
         run: docker build -t monorepo-image .
 
-      - name: Deploy function:cloud_tasks
+      - name: Deploy live function:cloud_tasks
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_CLOUD_TASKS == 'true')
         run: |
           chmod +x ./scripts/deploy-firebase-cloud-function.sh && ./scripts/deploy-firebase-cloud-function.sh cloud-tasks

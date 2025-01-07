@@ -1,14 +1,14 @@
-name: Deploy REST API
+name: Deploy Test REST API
 
 'on':
   workflow_run:
-    workflows: ['Publish Node SDK']
+    workflows: ['Publish Test Node SDK']
     branches: ['staging']
     types:
       - completed
 
 jobs:
-  deploy-rest-api:
+  deploy-test-rest-api:
     runs-on: ubuntu-latest
 
     environment:
@@ -68,7 +68,7 @@ jobs:
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_REST_API == 'true')
         run: docker build -t monorepo-image .
 
-      - name: Deploy function:rest_api
+      - name: Deploy test function:rest_api
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_REST_API == 'true')
         run: |
           chmod +x ./scripts/deploy-firebase-cloud-function.sh && ./scripts/deploy-firebase-cloud-function.sh rest-api

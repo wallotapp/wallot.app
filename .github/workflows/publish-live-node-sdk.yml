@@ -1,4 +1,4 @@
-name: Publish Node SDK
+name: Publish Live Node SDK
 
 'on':
   workflow_run:
@@ -8,7 +8,7 @@ name: Publish Node SDK
       - completed
 
 jobs:
-  publish-node-sdk:
+  publish-live-node-sdk:
     runs-on: ubuntu-latest
 
     environment:
@@ -40,7 +40,7 @@ jobs:
         if: env.SKIP_BUILD == 'false' && (env.PUBLISH_ALL_PACKAGES == 'true' || env.PUBLISH_NODE_SDK == 'true')
         run: docker build -t monorepo-image .
 
-      - name: Publish package:node-sdk
+      - name: Publish live package:node-sdk
         if: env.SKIP_BUILD == 'false' && (env.PUBLISH_ALL_PACKAGES == 'true' || env.PUBLISH_NODE_SDK == 'true')
         run: |
           docker run --rm \

@@ -1,14 +1,14 @@
-name: Deploy Webhooks
+name: Deploy Test Webhooks
 
 'on':
   workflow_run:
-    workflows: ['Publish Node SDK']
+    workflows: ['Publish Test Node SDK']
     branches: ['staging']
     types:
       - completed
 
 jobs:
-  deploy-webhooks:
+  deploy-test-webhooks:
     runs-on: ubuntu-latest
 
     environment:
@@ -68,7 +68,7 @@ jobs:
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_WEBHOOKS == 'true')
         run: docker build -t monorepo-image .
 
-      - name: Deploy function:webhooks
+      - name: Deploy test function:webhooks
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_WEBHOOKS == 'true')
         run: |
           chmod +x ./scripts/deploy-firebase-cloud-function.sh && ./scripts/deploy-firebase-cloud-function.sh webhooks

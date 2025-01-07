@@ -1,14 +1,14 @@
-name: Deploy PubSub
+name: Deploy Live PubSub
 
 'on':
   workflow_run:
-    workflows: ['Publish Node SDK']
+    workflows: ['Publish Live Node SDK']
     branches: ['master']
     types:
       - completed
 
 jobs:
-  deploy-pubsub:
+  deploy-live-pubsub:
     runs-on: ubuntu-latest
 
     environment:
@@ -72,7 +72,7 @@ jobs:
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_PUBSUB == 'true')
         run: docker build -t monorepo-image .
 
-      - name: Deploy function:pubsub
+      - name: Deploy live function:pubsub
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_FUNCTIONS == 'true' || env.DEPLOY_PUBSUB == 'true')
         run: |
           chmod +x ./scripts/deploy-firebase-cloud-function.sh && ./scripts/deploy-firebase-cloud-function.sh pubsub
