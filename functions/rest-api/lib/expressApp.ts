@@ -32,6 +32,8 @@ import {
 	RequestNewOrderParams,
 	RequestNewOrderResponse,
 	AlpacaDocument,
+	UpdateAlpacaAccountResponse,
+	UpdateAlpacaAccountParams,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -334,6 +336,31 @@ app.post(
 			req,
 			res,
 			createRouterFunction(auth, secrets)(activateUser)(req, res, next),
+		);
+	},
+);
+
+import { updateAlpacaAccount } from './app/wallot/users/updateAlpacaAccount.js';
+app.options('*/v0/users/alpaca-account', corsPolicy);
+app.patch(
+	'*/v0/users/alpaca-account',
+	(
+		req: express.Request<
+			Record<string, never>,
+			UpdateAlpacaAccountResponse,
+			UpdateAlpacaAccountParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			UpdateAlpacaAccountResponse,
+			GeneralizedResLocals<UpdateAlpacaAccountResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(updateAlpacaAccount)(req, res, next),
 		);
 	},
 );
