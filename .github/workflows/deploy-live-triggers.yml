@@ -47,6 +47,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+            ref: master
 
       - name: Install jq
         run: sudo apt-get install jq
