@@ -12,6 +12,7 @@ import {
 	getAlpacaBrokerEstimationApiClient,
 	createAlpacaAccount,
 	retrieveAlpacaAccount,
+	updateAlpacaAccount,
 	retrieveAlpacaAchTransfer,
 	requestAlpacaAchTransfer,
 	createAlpacaAchRelationship,
@@ -69,6 +70,7 @@ export const getServices = (
 				// Alpaca Accounts
 				createAlpacaAccount: createAlpacaAccount(alpacaBrokerClient),
 				retrieveAlpacaAccount: retrieveAlpacaAccount(alpacaBrokerClient),
+				updateAlpacaAccount: updateAlpacaAccount(alpacaBrokerClient),
 				// Alpaca ACH Transfers
 				retrieveAlpacaAchTransfer:
 					retrieveAlpacaAchTransfer(alpacaBrokerClient),
