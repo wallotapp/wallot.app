@@ -1,4 +1,3 @@
-import { v4 } from 'uuid';
 import {
 	RegisterUserParams,
 	RegisterUserResponse,
@@ -18,20 +17,20 @@ export const registerUser = async ({
 	password,
 	username,
 }: RegisterUserParams): Promise<FunctionResponse<RegisterUserResponse>> => {
-	// Check that the username is unique
-	const usernameDoc = await db
-		.collection(usersApi.collectionId)
-		.where('username', '==', username)
-		.get();
+	// Check that the username is unique and email is not already registered
+	const [usernameDoc, emailDoc] = await Promise.all([
+		db
+			.collection(usersApi.collectionId)
+			.where('username', '==', username)
+			.get(),
+		db
+			.collection(usersApi.collectionId)
+			.where('firebase_auth_email', '==', email)
+			.get(),
+	]);
 	if (!usernameDoc.empty) {
 		throw new Error('Username already exists');
 	}
-
-	// Check that the email is not already registered
-	const emailDoc = await db
-		.collection(usersApi.collectionId)
-		.where('firebase_auth_email', '==', email)
-		.get();
 	if (!emailDoc.empty) {
 		throw new Error('Email already registered');
 	}
@@ -50,22 +49,13 @@ export const registerUser = async ({
 		uid: userDocId,
 	});
 
-	// Create a Stripe Customer
-	const stripeCustomer = await createStripeCustomer({
-		email,
-		metadata: { user_id: userDocId },
-		username,
-	});
-
 	// Create a USER Firestore document
-	const activationReminderTaskId = v4();
 	const userDoc = usersApi.mergeCreateParams({
 		createParams: {
 			_id: userDocId,
 			category: 'default',
 			firebase_auth_email: email,
 			name: '',
-			stripe_customer_id: stripeCustomer.id,
 			username,
 		},
 	});
@@ -101,12 +91,24 @@ export const registerUser = async ({
 
 	// Construct the post-response callback
 	const onFinished = async () => {
+		// Create a Stripe Customer
+		const stripeCustomer = await createStripeCustomer({
+			email,
+			metadata: { user_id: userDocId },
+			username,
+		});
+
+		// Update the USER Firestore document with the Stripe Customer ID
+		await db
+			.collection(usersApi.collectionId)
+			.doc(userDocId)
+			.update({ stripe_customer_id: stripeCustomer.id });
+
 		// Send welcome email to USER
 		await sendWelcomeEmail({ email, username });
 
 		// Schedule activation reminder emails for USER
 		await scheduleActivationReminderEmails({
-			activationReminderTaskId,
 			email,
 			username,
 		});

@@ -90,6 +90,9 @@ export const confirmOrder = async (
 	log({ message: 'License found', license });
 	if (!isProLicense(license)) {
 		log({ message: 'User does not have a pro license' });
+		if (user.stripe_customer_id == null) {
+			throw new Error('User does not have a Stripe customer ID');
+		}
 		const stripeSubscription = await stripe.subscriptions.create({
 			customer: user.stripe_customer_id,
 			expand: ['latest_invoice.payment_intent'],
