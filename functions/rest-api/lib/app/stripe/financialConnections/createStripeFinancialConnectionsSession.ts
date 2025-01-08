@@ -26,6 +26,9 @@ export const createStripeFinancialConnectionsSession = async (
 		await db.collection(usersCollectionId).doc(firebaseUser.uid).get()
 	).data() as User;
 	const { stripe_customer_id } = user;
+	if (stripe_customer_id == null) {
+		throw new Error('User does not have a Stripe customer ID');
+	}
 
 	// Create a Financial Connections session
 	const session = await stripe.financialConnections.sessions.create({
