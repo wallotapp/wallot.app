@@ -44,3 +44,8 @@ export const siteOriginByTarget = {
 			SECRET_CRED_SERVER_PROTOCOL
 		],
 };
+
+export const restApiOrigin =
+	SECRET_CRED_SERVER_PROTOCOL === 'http'
+		? variables.SERVER_VAR_REST_API_ORIGIN_HTTP
+		: variables.SERVER_VAR_REST_API_ORIGIN_HTTPS;

@@ -5,6 +5,8 @@
 	"SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID": "support@wallot.app",
 	"SERVER_VAR_ORIGIN_HTTP": "http://localhost:7104",
 	"SERVER_VAR_ORIGIN_HTTPS": "https://us-central1-app-wallot-staging.cloudfunctions.net/cronjobs",
+	"SERVER_VAR_REST_API_ORIGIN_HTTP": "http://localhost:7101",
+	"SERVER_VAR_REST_API_ORIGIN_HTTPS": "https://us-central1-app-wallot-staging.cloudfunctions.net/rest_api",
 	"SERVER_VAR_SITE_ORIGIN_BY_PROTOCOL_BY_TARGET": {
 		"HOME_SITE": {
 			"http": "http://localhost:7150",
