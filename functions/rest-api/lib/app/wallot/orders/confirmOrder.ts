@@ -112,7 +112,12 @@ export const confirmOrder = async (
 				},
 				billing_details: {
 					email: user.firebase_auth_email,
-					name: user.name,
+					name:
+						(
+							(user.alpaca_account_identity?.given_name ?? '') +
+							' ' +
+							(user.alpaca_account_identity?.family_name ?? '')
+						).trim() || user.firebase_auth_email,
 				},
 			},
 			mandate_data: {
