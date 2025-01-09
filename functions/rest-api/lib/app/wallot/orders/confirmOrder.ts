@@ -3,6 +3,8 @@ import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { FunctionResponse } from '@wallot/node';
 import {
 	achTransfersApi,
+	bankAccountsApi,
+	BankAccount,
 	getHomeSiteRoute,
 	ConfirmOrderParams,
 	ConfirmOrderRouteParams,
@@ -33,11 +35,15 @@ export const confirmOrder = async (
 ): Promise<FunctionResponse<ConfirmOrderResponse>> => {
 	if (!firebaseUser) throw new Error('Unauthorized');
 
-	// Get USER
-	const userDoc = await db
-		.collection(usersApi.collectionId)
-		.doc(firebaseUser.uid)
-		.get();
+	// Get BANK_ACCOUNT and USER concurrently
+	const [bankAccountDoc, userDoc] = await Promise.all([
+		db.collection(bankAccountsApi.collectionId).doc(bank_account).get(),
+		db.collection(usersApi.collectionId).doc(firebaseUser.uid).get(),
+	]);
+
+	if (!bankAccountDoc.exists) throw new Error('Bank account not found');
+	const bankAccount = bankAccountDoc.data() as BankAccount;
+
 	if (!userDoc.exists) throw new Error('User not found');
 	const user = userDoc.data() as User;
 
@@ -93,8 +99,44 @@ export const confirmOrder = async (
 		if (user.stripe_customer_id == null) {
 			throw new Error('User does not have a Stripe customer ID');
 		}
+		// 1. Create and confirm a SetupIntent with mandate data
+		const userAgent = String(headers['user-agent'] ?? 'user-agent not found');
+		const setupIntent = await stripe.setupIntents.create({
+			payment_method_types: ['us_bank_account'],
+			customer: user.stripe_customer_id,
+			payment_method_data: {
+				type: 'us_bank_account',
+				us_bank_account: {
+					financial_connections_account:
+						bankAccount.stripe_financial_connections_account_id,
+				},
+				billing_details: {
+					email: user.firebase_auth_email,
+					name: user.name,
+				},
+			},
+			mandate_data: {
+				customer_acceptance: {
+					type: 'online',
+					online: {
+						ip_address: ipAddress,
+						user_agent: userAgent,
+					},
+				},
+			},
+			confirm: true,
+		});
+		log({ message: 'SetupIntent created', setupIntent });
+		if (setupIntent.payment_method == null) {
+			throw new Error('Payment method not found');
+		}
+
 		const stripeSubscription = await stripe.subscriptions.create({
 			customer: user.stripe_customer_id,
+			default_payment_method:
+				typeof setupIntent.payment_method === 'string'
+					? setupIntent.payment_method
+					: setupIntent.payment_method.id,
 			expand: ['latest_invoice.payment_intent'],
 			items: [
 				{
