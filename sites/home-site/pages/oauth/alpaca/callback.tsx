@@ -45,7 +45,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// Auth
 	const { user } = useContext(AuthContext);
 	const userId = user?.uid ?? null;
-	const isUserLoading = user === null;
+	const isUserLoading = userId == null;
 
 	// Mutation
 	const {
