@@ -8,9 +8,11 @@ import {
 } from 'ergonomic-node';
 import { SecretData } from './SecretDataTypes.js';
 import {
+	// Clients
 	getAlpacaBrokerApiClient,
 	getAlpacaBrokerEstimationApiClient,
 	getAlpacaOAuthApiClient,
+	// Broker API
 	createAlpacaAccount,
 	retrieveAlpacaAccount,
 	updateAlpacaAccount,
@@ -24,6 +26,8 @@ import {
 	placeAlpacaOrder,
 	retrieveAlpacaOrder,
 	retrieveAlpacaPositions,
+	// OAuth API
+	createAlpacaAccessToken,
 } from './alpaca/index.js';
 import { getAlphaVantageClient } from './alphaVantage/index.js';
 import { encryptString } from './crypto/encryptString.js';
