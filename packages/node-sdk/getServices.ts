@@ -10,6 +10,7 @@ import { SecretData } from './SecretDataTypes.js';
 import {
 	getAlpacaBrokerApiClient,
 	getAlpacaBrokerEstimationApiClient,
+	getAlpacaOAuthApiClient,
 	createAlpacaAccount,
 	retrieveAlpacaAccount,
 	updateAlpacaAccount,
@@ -59,7 +60,7 @@ export const getServices = (
 	const alpacaBrokerClient = getAlpacaBrokerApiClient(secrets);
 	const alpacaBrokerEstimationClient =
 		getAlpacaBrokerEstimationApiClient(secrets);
-	// const alpacaBrokerDownloadClient = getAlpacaBrokerDownloadClient(secrets);
+	const alpacaOAuthClient = getAlpacaOAuthApiClient(secrets);
 	const decrypt = decryptString(
 		secrets.SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY,
 	);
@@ -98,6 +99,9 @@ export const getServices = (
 				retrieveAlpacaOrder: retrieveAlpacaOrder(alpacaBrokerClient),
 				// Alpaca Positions
 				retrieveAlpacaPositions: retrieveAlpacaPositions(alpacaBrokerClient),
+			},
+			oauth: {
+				createAlpacaAccessToken: createAlpacaAccessToken(alpacaOAuthClient),
 			},
 		},
 		alphaVantage: getAlphaVantageClient(secrets),
