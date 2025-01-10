@@ -6,9 +6,9 @@ import {
 	DialogContent,
 	DialogTitle,
 	DialogDescription,
+	DialogClose,
 } from 'ergonomic-react/src/components/ui/dialog';
 import Link from 'next/link';
-import { DialogClose } from 'ergonomic-react/src/components/ui/dialog';
 import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 
