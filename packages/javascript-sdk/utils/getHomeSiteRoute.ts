@@ -29,6 +29,7 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 		'HOME_SITE__/ACCOUNT/TRANSACTIONS': '/account/transactions',
 		'HOME_SITE__/INDEX': '/',
 		'HOME_SITE__/GET_STARTED': '/get-started',
+		'HOME_SITE__/OAUTH/CALLBACK': '/oauth/callback',
 		'HOME_SITE__/ORDERS/[ORDER_ID]/ASSETS': '/assets',
 		'HOME_SITE__/ORDERS/[ORDER_ID]/CART': '/cart',
 		'HOME_SITE__/ORDERS/[ORDER_ID]/CHECKOUT': '/checkout',
@@ -38,7 +39,23 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 		'HOME_SITE__/PRIVACY': '/privacy',
 	}[routeStaticId];
 
-	const clientToken = options.queryParams.client_token;
+	if (routeStaticId === 'HOME_SITE__/OAUTH/CALLBACK') {
+		const queryParams =
+			options.queryParams as HomeSiteRouteQueryParams['HOME_SITE__/OAUTH/CALLBACK'];
+		const code = queryParams.code;
+		const codeQuery = code ? `code=${code}` : '';
+		const queries = [codeQuery].filter(Boolean);
+		const query = queries.length ? `?${queries.join('&')}` : '';
+		const fullPath = `${path}${query}`;
+		if (includeOrigin) return `${origin as string}${fullPath}`;
+		return fullPath;
+	}
+
+	const queryParams = options.queryParams as Exclude<
+		HomeSiteRouteQueryParams[T],
+		HomeSiteRouteQueryParams['HOME_SITE__/OAUTH/CALLBACK']
+	>;
+	const clientToken = queryParams.client_token;
 	const clientTokenQuery = clientToken ? `client_token=${clientToken}` : '';
 	const queries = [clientTokenQuery].filter(Boolean);
 	if (

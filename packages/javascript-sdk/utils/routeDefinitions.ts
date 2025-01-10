@@ -11,6 +11,7 @@ export const HomeSiteRouteStaticIdEnum = getEnum([
 	'HOME_SITE__/ACCOUNT/TRANSACTIONS',
 	'HOME_SITE__/INDEX',
 	'HOME_SITE__/GET_STARTED',
+	'HOME_SITE__/OAUTH/CALLBACK',
 	'HOME_SITE__/ORDERS/[ORDER_ID]/ASSETS',
 	'HOME_SITE__/ORDERS/[ORDER_ID]/CART',
 	'HOME_SITE__/ORDERS/[ORDER_ID]/CHECKOUT',
@@ -50,6 +51,9 @@ export type HomeSiteRouteQueryParams = {
 	};
 	'HOME_SITE__/GET_STARTED': {
 		client_token?: string | undefined;
+	};
+	'HOME_SITE__/OAUTH/CALLBACK': {
+		code?: string | undefined;
 	};
 	'HOME_SITE__/ORDERS/[ORDER_ID]/ASSETS': {
 		client_token?: string | undefined;
