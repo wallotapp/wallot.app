@@ -11,10 +11,7 @@ export const createAlpacaAccessToken =
 			SECRET_CRED_ALPACA_OAUTH_CLIENT_SECRET,
 		}: SecretData,
 	) =>
-	async ({
-		code,
-		redirect_uri,
-	}: CreateAlpacaAccessTokenParams & { redirect_uri: string }) => {
+	async ({ code, redirect_uri }: CreateAlpacaAccessTokenParams) => {
 		try {
 			const params: CreateAlpacaAccessTokenApiParams = {
 				client_id: SECRET_CRED_ALPACA_OAUTH_CLIENT_ID,
@@ -41,7 +38,6 @@ type CreateAlpacaAccessTokenApiParams = CreateAlpacaAccessTokenParams & {
 	client_id: string;
 	client_secret: string;
 	grant_type: 'authorization_code';
-	redirect_uri: string;
 };
 type CreateAlpacaAccessTokenApiResponse = {
 	access_token: string;
