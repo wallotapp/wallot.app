@@ -35,13 +35,13 @@ export const createAlpacaAccessToken = async (
 		userId: firebaseUser.uid,
 	});
 
-	const redirectUrl = getHomeSiteRoute({
+	const redirectUri = getHomeSiteRoute({
 		includeOrigin: true,
 		origin: siteOriginByTarget.HOME_SITE,
 		queryParams: {},
 		routeStaticId: 'HOME_SITE__/ACCOUNT/OVERVIEW',
 	});
-	const json = { redirect_url: redirectUrl };
+	const json = { redirect_uri: redirectUri };
 
 	const onFinished = async () => {
 		const { encrypt } = crypto;

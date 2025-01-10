@@ -200,7 +200,7 @@ export const confirmOrder = async (
 	await batch.commit();
 
 	// Construct redirect URL
-	const redirectUrl = getHomeSiteRoute({
+	const redirectUri = getHomeSiteRoute({
 		origin: siteOriginByTarget.HOME_SITE,
 		includeOrigin: true,
 		queryParams: { order_id: orderId },
@@ -217,5 +217,5 @@ export const confirmOrder = async (
 		}
 	};
 
-	return { json: { redirect_url: redirectUrl }, onFinished };
+	return { json: { redirect_uri: redirectUri }, onFinished };
 };

@@ -84,7 +84,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					// Reset form
 					reset();
 				},
-				onSuccess: async ({ redirect_url: redirectUrl }) => {
+				onSuccess: async ({ redirect_uri: redirectUri }) => {
 					// Show success toast
 					toast({
 						title: 'Success',
@@ -92,7 +92,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					});
 
 					// Redirect to next page
-					await router.push(redirectUrl);
+					await router.push(redirectUri);
 				},
 			});
 

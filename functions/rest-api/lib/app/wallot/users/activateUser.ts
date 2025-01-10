@@ -102,7 +102,7 @@ export const activateUser = async (
 	await batch.commit();
 
 	// Construct the redirect URL using ORDER
-	const redirectUrl = getHomeSiteRoute({
+	const redirectUri = getHomeSiteRoute({
 		includeOrigin: true,
 		origin: siteOriginByTarget.HOME_SITE,
 		queryParams: { order_id: orderDocId },
@@ -125,5 +125,5 @@ export const activateUser = async (
 	};
 
 	// Construct the redirect URL using ORDER
-	return { json: { redirect_url: redirectUrl }, onFinished };
+	return { json: { redirect_uri: redirectUri }, onFinished };
 };

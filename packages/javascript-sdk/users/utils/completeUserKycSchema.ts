@@ -278,7 +278,7 @@ export const completeUserKycSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
 
 export type CompleteUserKycParams = yup.InferType<typeof completeUserKycSchema>;
 export type CompleteUserKycResponse = {
-	redirect_url: string;
+	redirect_uri: string;
 };
 
 export type KycUser = ActivatedUser & CompleteUserKycParams;
