@@ -17,7 +17,6 @@ import { useWindowSize } from '@wallot/react/src/hooks/useWindowSize';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { PlatformIcon } from 'ergonomic-react/src/components/brand/PlatformIcon';
 import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
-import Link from 'next/link';
 import { GoCheck } from 'react-icons/go';
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import Confetti from 'react-confetti';
@@ -27,6 +26,11 @@ import {
 	useQueryAssetOrderPage,
 } from '@wallot/react/src/features/assetOrders';
 import { getCurrencyUsdStringFromCents } from 'ergonomic';
+import { AsyncLink } from 'ergonomic-react/src/components/custom-ui/async-link';
+import {
+	ALPACA_OAUTH_APP_BASE_URL,
+	ALPACA_OAUTH_CLIENT_ID,
+} from '@wallot/react/src/config/alpacaOAuthConfig';
 
 // ==== Static Page Props ==== //
 
@@ -73,6 +77,7 @@ const Page: NextPage = () => {
 		loggedInUser?.alpaca_account_contact?.email_address ??
 		loggedInUser?.firebase_auth_email ??
 		'your email on file';
+	const loggedInUserId = loggedInUser?._id;
 
 	// Window size
 	const { height, width } = useWindowSize();
@@ -96,6 +101,14 @@ const Page: NextPage = () => {
 		...ROUTE_STATIC_PROPS,
 		routeId: ROUTE_RUNTIME_ID,
 	};
+
+	// Connection Link
+	const homeSiteOrigin = siteOriginByTarget.HOME_SITE;
+	const isConnectionLinkReady =
+		homeSiteOrigin != null && loggedInUserId != null;
+	const connectionLink = isConnectionLinkReady
+		? getAlpacaConnectionLink(homeSiteOrigin, loggedInUserId)
+		: '/';
 
 	// ==== Hooks ==== //
 	const { data: assetOrderPage, isLoading: isAssetOrderPageLoading } =
@@ -179,22 +192,19 @@ const Page: NextPage = () => {
 							</div>
 							<div className='mt-3'>
 								<p className='font-light text-base'>
-									Stock purchase in progress. We'll take it from here.
+									Stock purchase in progress. Complete your trading account
+									setup below.
 								</p>
 							</div>
 							<div className='mt-8'>
-								<Link
-									href={getHomeSiteRoute({
-										includeOrigin: false,
-										origin: null,
-										queryParams: { order_id },
-										routeStaticId: 'HOME_SITE__/ORDERS/[ORDER_ID]/TRACK',
-									})}
+								<AsyncLink
+									href={connectionLink}
+									isReady={isConnectionLinkReady}
 								>
 									<div className='bg-black text-white rounded-md py-4 px-8 cursor-pointer w-fit'>
 										<p className='font-light'>Continue</p>
 									</div>
-								</Link>
+								</AsyncLink>
 							</div>
 						</div>
 						<div
@@ -265,3 +275,14 @@ const Page: NextPage = () => {
 };
 
 export default Page;
+
+function getAlpacaConnectionLink(homeSiteOrigin: string, userId: string) {
+	const redirectUri = getHomeSiteRoute({
+		includeOrigin: true,
+		origin: homeSiteOrigin,
+		queryParams: {},
+		routeStaticId: 'HOME_SITE__/OAUTH/ALPACA/CALLBACK',
+	});
+	const redirectUriEncoded = encodeURIComponent(redirectUri);
+	return `${ALPACA_OAUTH_APP_BASE_URL}/oauth/authorize?response_type=code&client_id=${ALPACA_OAUTH_CLIENT_ID}&redirect_uri=${redirectUriEncoded}&state=${userId}&scope=account:write%20trading`;
+}

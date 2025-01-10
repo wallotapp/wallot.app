@@ -17,5 +17,5 @@ export const registerUserSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
 export type RegisterUserParams = yup.InferType<typeof registerUserSchema>;
 export type RegisterUserResponse = {
 	custom_token: string;
-	redirect_url: string;
+	redirect_uri: string;
 };

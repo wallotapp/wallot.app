@@ -33,7 +33,7 @@ export const activateUserSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
 
 export type ActivateUserParams = yup.InferType<typeof activateUserSchema>;
 export type ActivateUserResponse = {
-	redirect_url: string;
+	redirect_uri: string;
 };
 
 export type ActivatedUser = User & ActivateUserParams;

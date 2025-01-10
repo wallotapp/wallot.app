@@ -112,7 +112,7 @@ const Page: NextPage = () => {
 					description: message,
 				});
 			},
-			onSuccess: async ({ redirect_url }) => {
+			onSuccess: async ({ redirect_uri }) => {
 				// Show success toast
 				toast({
 					title: 'Success',
@@ -120,7 +120,7 @@ const Page: NextPage = () => {
 				});
 
 				// Redirect to the order page
-				await router.push(redirect_url);
+				await router.push(redirect_uri);
 			},
 		});
 	const isCompletePurchaseButtonDisabled = isConfirmOrderRunning;

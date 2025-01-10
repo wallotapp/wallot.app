@@ -36,4 +36,4 @@ export const isOrderConfirmedByUser = (
 
 export type ConfirmOrderRouteParams = { orderId: string };
 export type ConfirmOrderParams = { bank_account: string };
-export type ConfirmOrderResponse = { redirect_url: string };
+export type ConfirmOrderResponse = { redirect_uri: string };

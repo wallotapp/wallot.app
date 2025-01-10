@@ -34,6 +34,8 @@ import {
 	AlpacaDocument,
 	UpdateAlpacaAccountResponse,
 	UpdateAlpacaAccountParams,
+	CreateAlpacaAccessTokenParams,
+	CreateAlpacaAccessTokenResponse,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -336,6 +338,35 @@ app.post(
 			req,
 			res,
 			createRouterFunction(auth, secrets)(activateUser)(req, res, next),
+		);
+	},
+);
+
+import { createAlpacaAccessToken } from './app/wallot/users/createAlpacaAccessToken.js';
+app.options('*/v0/users/alpaca-access-tokens', corsPolicy);
+app.post(
+	'*/v0/users/alpaca-access-tokens',
+	(
+		req: express.Request<
+			Record<string, never>,
+			CreateAlpacaAccessTokenResponse,
+			CreateAlpacaAccessTokenParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			CreateAlpacaAccessTokenResponse,
+			GeneralizedResLocals<CreateAlpacaAccessTokenResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(createAlpacaAccessToken)(
+				req,
+				res,
+				next,
+			),
 		);
 	},
 );

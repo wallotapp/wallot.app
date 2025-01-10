@@ -82,7 +82,7 @@ export const registerUser = async ({
 	const customToken = await auth.createCustomToken(firebaseUser.uid);
 
 	// Construct the redirect URL using custom token
-	const redirectUrl = getHomeSiteRoute({
+	const redirectUri = getHomeSiteRoute({
 		includeOrigin: true,
 		origin: siteOriginByTarget.HOME_SITE,
 		queryParams: { client_token: customToken },
@@ -115,7 +115,7 @@ export const registerUser = async ({
 	};
 
 	return {
-		json: { custom_token: customToken, redirect_url: redirectUrl },
+		json: { custom_token: customToken, redirect_uri: redirectUri },
 		onFinished,
 	};
 };

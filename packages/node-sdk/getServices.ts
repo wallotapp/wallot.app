@@ -8,8 +8,11 @@ import {
 } from 'ergonomic-node';
 import { SecretData } from './SecretDataTypes.js';
 import {
+	// Clients
 	getAlpacaBrokerApiClient,
 	getAlpacaBrokerEstimationApiClient,
+	getAlpacaOAuthApiClient,
+	// Broker API
 	createAlpacaAccount,
 	retrieveAlpacaAccount,
 	updateAlpacaAccount,
@@ -23,6 +26,8 @@ import {
 	placeAlpacaOrder,
 	retrieveAlpacaOrder,
 	retrieveAlpacaPositions,
+	// OAuth API
+	createAlpacaAccessToken,
 } from './alpaca/index.js';
 import { getAlphaVantageClient } from './alphaVantage/index.js';
 import { encryptString } from './crypto/encryptString.js';
@@ -59,7 +64,7 @@ export const getServices = (
 	const alpacaBrokerClient = getAlpacaBrokerApiClient(secrets);
 	const alpacaBrokerEstimationClient =
 		getAlpacaBrokerEstimationApiClient(secrets);
-	// const alpacaBrokerDownloadClient = getAlpacaBrokerDownloadClient(secrets);
+	const alpacaOAuthClient = getAlpacaOAuthApiClient(secrets);
 	const decrypt = decryptString(
 		secrets.SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY,
 	);
@@ -98,6 +103,12 @@ export const getServices = (
 				retrieveAlpacaOrder: retrieveAlpacaOrder(alpacaBrokerClient),
 				// Alpaca Positions
 				retrieveAlpacaPositions: retrieveAlpacaPositions(alpacaBrokerClient),
+			},
+			oauth: {
+				createAlpacaAccessToken: createAlpacaAccessToken(
+					alpacaOAuthClient,
+					secrets,
+				),
 			},
 		},
 		alphaVantage: getAlphaVantageClient(secrets),

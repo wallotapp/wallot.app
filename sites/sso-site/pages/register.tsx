@@ -91,7 +91,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			},
 			onSuccess: async ({
 				custom_token: customToken,
-				redirect_url: redirectUrl,
+				redirect_uri: redirectUri,
 			}) => {
 				try {
 					// Pause onAuthStateChanged listener
@@ -104,7 +104,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					await signInWithCustomToken(auth, customToken);
 
 					// Redirect to next page
-					await router.push(redirectUrl);
+					await router.push(redirectUri);
 					return;
 				} catch (err) {
 					console.error('Error:', err);
