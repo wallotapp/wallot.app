@@ -7,12 +7,13 @@ import {
 import { alpaca, log } from '../../../services.js';
 
 export const createAlpacaAccessToken = async (
-	params: CreateAlpacaAccessTokenParams,
+	{ code }: CreateAlpacaAccessTokenParams,
 	_params: Record<string, never>,
 	_query: Record<string, never>,
 	firebaseUser: FirebaseUser | null,
 ): Promise<FunctionResponse<CreateAlpacaAccessTokenResponse>> => {
 	if (!firebaseUser) throw new Error('Unauthorized');
+	const params = { code, redirect_uri: 'https://wallot.app/oauth/callback' };
 	log({
 		message: 'Starting createAlpacaAccessToken',
 		params,
