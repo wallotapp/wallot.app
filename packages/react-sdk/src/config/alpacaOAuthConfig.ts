@@ -14,3 +14,18 @@ if (!alpacaOAuthAppBaseUrl) {
 }
 
 export const ALPACA_OAUTH_APP_BASE_URL = alpacaOAuthAppBaseUrl;
+
+const liveAlpacaOAuthClientId =
+	process.env.NEXT_PUBLIC_LIVE_ALPACA_OAUTH_CLIENT_ID;
+const testAlpacaOAuthClientId =
+	process.env.NEXT_PUBLIC_TEST_ALPACA_OAUTH_CLIENT_ID;
+export const alpacaOAuthClientId = {
+	live: liveAlpacaOAuthClientId,
+	test: testAlpacaOAuthClientId,
+}[DEPLOYMENT_ENV];
+
+if (!alpacaOAuthClientId) {
+	throw new Error('Missing Alpaca OAuth Client ID');
+}
+
+export const ALPACA_OAUTH_CLIENT_ID = alpacaOAuthClientId;
