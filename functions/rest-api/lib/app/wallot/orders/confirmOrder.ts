@@ -200,7 +200,7 @@ export const confirmOrder = async (
 	await batch.commit();
 
 	// Construct redirect URL
-	const redirectUrl = getHomeSiteRoute({
+	const redirectUri = getHomeSiteRoute({
 		origin: siteOriginByTarget.HOME_SITE,
 		includeOrigin: true,
 		queryParams: { order_id: orderId },
@@ -208,7 +208,7 @@ export const confirmOrder = async (
 	});
 
 	const onFinished = async () => {
-		if (variables.SERVER_VAR_FEATURE_FLAGS.ENABLE_ALPACA) {
+		if (variables.SERVER_VAR_FEATURE_FLAGS.ENABLE_ALPACA_BROKER_API) {
 			// Enqueue placeAlpacaOrders task
 			await gcp.tasks.enqueuePlaceAlpacaOrders({
 				achTransferId: achTransfersApi.generateId(),
@@ -217,5 +217,5 @@ export const confirmOrder = async (
 		}
 	};
 
-	return { json: { redirect_url: redirectUrl }, onFinished };
+	return { json: { redirect_uri: redirectUri }, onFinished };
 };

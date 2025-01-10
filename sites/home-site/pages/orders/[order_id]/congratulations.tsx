@@ -17,7 +17,6 @@ import { useWindowSize } from '@wallot/react/src/hooks/useWindowSize';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { PlatformIcon } from 'ergonomic-react/src/components/brand/PlatformIcon';
 import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
-import Link from 'next/link';
 import { GoCheck } from 'react-icons/go';
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import Confetti from 'react-confetti';
@@ -27,6 +26,22 @@ import {
 	useQueryAssetOrderPage,
 } from '@wallot/react/src/features/assetOrders';
 import { getCurrencyUsdStringFromCents } from 'ergonomic';
+import { AsyncLink } from 'ergonomic-react/src/components/custom-ui/async-link';
+import {
+	ALPACA_OAUTH_APP_BASE_URL,
+	ALPACA_OAUTH_CLIENT_ID,
+} from '@wallot/react/src/config/alpacaOAuthConfig';
+import Image from 'next/image';
+import {
+	DialogHeader,
+	DialogFooter,
+	Dialog,
+	DialogTrigger,
+	DialogContent,
+	DialogTitle,
+	DialogDescription,
+} from 'ergonomic-react/src/components/ui/dialog';
+import { RxSlash } from 'react-icons/rx';
 
 // ==== Static Page Props ==== //
 
@@ -42,6 +57,37 @@ const ROUTE_STATIC_PROPS: PageStaticProps = {
 
 // Route Query Params Type
 type RouteQueryParams = HomeSiteRouteQueryParams[typeof ROUTE_STATIC_ID];
+
+const Icon = ({
+	size,
+}: {
+	size: 'md' | 'sm' | 'lg' | 'xl' | '2xl' | '3xl';
+}) => (
+	<div className='flex items-center justify-center'>
+		{OPEN_GRAPH_CONFIG.siteBrandIconDarkMode &&
+			OPEN_GRAPH_CONFIG.siteBrandIconLightMode && (
+				<PlatformIcon
+					height={380}
+					size={size}
+					srcMap={{
+						dark: OPEN_GRAPH_CONFIG.siteBrandIconDarkMode,
+						light: OPEN_GRAPH_CONFIG.siteBrandIconLightMode,
+					}}
+					width={2048}
+				/>
+			)}
+		{!(
+			OPEN_GRAPH_CONFIG.siteBrandIconDarkMode &&
+			OPEN_GRAPH_CONFIG.siteBrandIconLightMode
+		) && (
+			<div>
+				<p className={cn('text-2xl font-bold', 'lg:text-3xl')}>
+					{OPEN_GRAPH_CONFIG.siteName}
+				</p>
+			</div>
+		)}
+	</div>
+);
 
 const Page: NextPage = () => {
 	// ==== State ==== //
@@ -73,6 +119,7 @@ const Page: NextPage = () => {
 		loggedInUser?.alpaca_account_contact?.email_address ??
 		loggedInUser?.firebase_auth_email ??
 		'your email on file';
+	const loggedInUserId = loggedInUser?._id;
 
 	// Window size
 	const { height, width } = useWindowSize();
@@ -96,6 +143,14 @@ const Page: NextPage = () => {
 		...ROUTE_STATIC_PROPS,
 		routeId: ROUTE_RUNTIME_ID,
 	};
+
+	// Connection Link
+	const homeSiteOrigin = siteOriginByTarget.HOME_SITE;
+	const isConnectionLinkReady =
+		homeSiteOrigin != null && loggedInUserId != null;
+	const connectionLink = isConnectionLinkReady
+		? getAlpacaConnectionLink(homeSiteOrigin, loggedInUserId)
+		: '/';
 
 	// ==== Hooks ==== //
 	const { data: assetOrderPage, isLoading: isAssetOrderPageLoading } =
@@ -137,6 +192,8 @@ const Page: NextPage = () => {
 		return () => clearTimeout(timer); // Cleanup timeout when the component unmounts
 	}, [height, width]);
 
+	// Component
+
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
@@ -147,30 +204,7 @@ const Page: NextPage = () => {
 					<div
 						className={cn('h-screen relative', 'px-8 pt-12 overflow-hidden')}
 					>
-						<div className='flex items-center justify-center'>
-							{OPEN_GRAPH_CONFIG.siteBrandIconDarkMode &&
-								OPEN_GRAPH_CONFIG.siteBrandIconLightMode && (
-									<PlatformIcon
-										height={380}
-										size='md'
-										srcMap={{
-											dark: OPEN_GRAPH_CONFIG.siteBrandIconDarkMode,
-											light: OPEN_GRAPH_CONFIG.siteBrandIconLightMode,
-										}}
-										width={2048}
-									/>
-								)}
-							{!(
-								OPEN_GRAPH_CONFIG.siteBrandIconDarkMode &&
-								OPEN_GRAPH_CONFIG.siteBrandIconLightMode
-							) && (
-								<div>
-									<p className={cn('text-2xl font-bold', 'lg:text-3xl')}>
-										{OPEN_GRAPH_CONFIG.siteName}
-									</p>
-								</div>
-							)}
-						</div>
+						<Icon size='md' />
 						<div className='flex flex-col items-center text-center'>
 							<div className='mt-8'>
 								<p className='font-normal text-4xl'>
@@ -179,22 +213,89 @@ const Page: NextPage = () => {
 							</div>
 							<div className='mt-3'>
 								<p className='font-light text-base'>
-									Stock purchase in progress. We'll take it from here.
+									Stock purchase in progress. Complete your trading account
+									setup below.
 								</p>
 							</div>
 							<div className='mt-8'>
-								<Link
-									href={getHomeSiteRoute({
-										includeOrigin: false,
-										origin: null,
-										queryParams: { order_id },
-										routeStaticId: 'HOME_SITE__/ORDERS/[ORDER_ID]/TRACK',
-									})}
-								>
-									<div className='bg-black text-white rounded-md py-4 px-8 cursor-pointer w-fit'>
-										<p className='font-light'>Continue</p>
-									</div>
-								</Link>
+								<Dialog>
+									<DialogTrigger asChild>
+										<div
+											className={cn(
+												'bg-black text-white rounded-md py-4 px-8 cursor-pointer w-fit',
+												'flex items-center space-x-3 w-fit',
+											)}
+										>
+											<p>Continue</p>
+										</div>
+									</DialogTrigger>
+									<DialogContent className=''>
+										<div
+											className={cn(
+												'flex items-center justify-center space-x-3',
+											)}
+										>
+											<div>
+												<Icon size='lg' />
+											</div>
+											<RxSlash className={cn('text-gray-500 text-3xl')} />
+											<div>
+												<Image
+													alt='Alpaca Icon'
+													height={64}
+													src='/img/integrations/alpaca-icon.png'
+													width={64}
+												/>
+											</div>
+										</div>
+										<DialogHeader className='mt-2'>
+											<DialogTitle>Complete your Trading Account</DialogTitle>
+											<DialogDescription>
+												We've partnered with Alpaca to deliver a seamless
+												trading experience for you.
+											</DialogDescription>
+										</DialogHeader>
+										<AsyncLink
+											href={connectionLink}
+											isReady={isConnectionLinkReady}
+											className='w-full'
+										>
+											<div
+												className={cn(
+													'bg-black text-white rounded-md px-4 py-2.5 cursor-pointer',
+													'flex items-center justify-center space-x-3 w-full',
+												)}
+											>
+												<div>
+													<Image
+														alt='Alpaca Icon'
+														height={21}
+														src='/img/integrations/alpaca-icon.png'
+														width={21}
+													/>
+												</div>
+												<div>
+													<p className='font-light'>Connect Alpaca Account</p>
+												</div>
+											</div>
+										</AsyncLink>
+										<DialogFooter className=''>
+											<div className={cn('mt-1', 'lg:max-w-2xl')}>
+												<p className='font-semibold text-xs'>
+													Authorize Wallot
+												</p>
+												<p className='font-light text-[0.55rem]'>
+													By allowing Wallot to access your Alpaca account, you
+													are granting Wallot access to your account information
+													and authorization to place transactions in your
+													account at your direction. Alpaca does not warrant or
+													guarantee that Wallot will work as advertised or
+													expected. Before authorizing, learn more about Wallot.
+												</p>
+											</div>
+										</DialogFooter>
+									</DialogContent>
+								</Dialog>
 							</div>
 						</div>
 						<div
@@ -265,3 +366,14 @@ const Page: NextPage = () => {
 };
 
 export default Page;
+
+function getAlpacaConnectionLink(homeSiteOrigin: string, userId: string) {
+	const redirectUri = getHomeSiteRoute({
+		includeOrigin: true,
+		origin: homeSiteOrigin,
+		queryParams: {},
+		routeStaticId: 'HOME_SITE__/OAUTH/ALPACA/CALLBACK',
+	});
+	const redirectUriEncoded = encodeURIComponent(redirectUri);
+	return `${ALPACA_OAUTH_APP_BASE_URL}/oauth/authorize?response_type=code&client_id=${ALPACA_OAUTH_CLIENT_ID}&redirect_uri=${redirectUriEncoded}&state=${userId}&scope=account:write%20trading`;
+}
