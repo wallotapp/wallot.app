@@ -3,10 +3,12 @@ import { FunctionResponse } from '@wallot/node';
 import {
 	CreateAlpacaAccessTokenParams,
 	CreateAlpacaAccessTokenResponse,
+	getHomeSiteRoute,
 	UpdateUserParams,
 	usersApi,
 } from '@wallot/js';
 import { alpaca, crypto, db, log } from '../../../services.js';
+import { siteOriginByTarget } from '../../../variables.js';
 
 export const createAlpacaAccessToken = async (
 	params: CreateAlpacaAccessTokenParams,
@@ -20,16 +22,26 @@ export const createAlpacaAccessToken = async (
 		params,
 		userId: firebaseUser.uid,
 	});
-	const json = await alpaca.oauth.createAlpacaAccessToken(params);
-	const { access_token: accessToken } = json;
+	const alpacaAccessTokenResponse = await alpaca.oauth.createAlpacaAccessToken(
+		params,
+	);
+	const { access_token: accessToken } = alpacaAccessTokenResponse;
 	log({
 		message: 'createAlpacaAccessToken Successful',
-		json: {
-			...json,
+		alpacaAccessTokenResponse: {
+			...alpacaAccessTokenResponse,
 			access_token: accessToken.slice(0, 4) + '...',
 		},
 		userId: firebaseUser.uid,
 	});
+
+	const redirectUrl = getHomeSiteRoute({
+		includeOrigin: true,
+		origin: siteOriginByTarget.HOME_SITE,
+		queryParams: {},
+		routeStaticId: 'HOME_SITE__/ACCOUNT/OVERVIEW',
+	});
+	const json = { redirect_url: redirectUrl };
 
 	const onFinished = async () => {
 		const { encrypt } = crypto;
@@ -46,5 +58,5 @@ export const createAlpacaAccessToken = async (
 		});
 	};
 
-	return { json: {}, onFinished };
+	return { json, onFinished };
 };

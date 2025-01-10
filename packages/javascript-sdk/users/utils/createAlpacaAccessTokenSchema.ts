@@ -2,4 +2,4 @@ export type CreateAlpacaAccessTokenParams = {
 	code: string;
 	redirect_uri: string;
 };
-export type CreateAlpacaAccessTokenResponse = Record<string, never>;
+export type CreateAlpacaAccessTokenResponse = { redirect_url: string };
