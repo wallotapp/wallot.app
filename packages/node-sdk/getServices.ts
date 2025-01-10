@@ -105,7 +105,10 @@ export const getServices = (
 				retrieveAlpacaPositions: retrieveAlpacaPositions(alpacaBrokerClient),
 			},
 			oauth: {
-				createAlpacaAccessToken: createAlpacaAccessToken(alpacaOAuthClient),
+				createAlpacaAccessToken: createAlpacaAccessToken(
+					alpacaOAuthClient,
+					secrets,
+				),
 			},
 		},
 		alphaVantage: getAlphaVantageClient(secrets),

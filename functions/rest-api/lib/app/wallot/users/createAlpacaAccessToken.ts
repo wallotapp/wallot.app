@@ -19,11 +19,15 @@ export const createAlpacaAccessToken = async (
 		userId: firebaseUser.uid,
 	});
 	const json = await alpaca.oauth.createAlpacaAccessToken(params);
+	const { access_token: accessToken } = json;
 	log({
 		message: 'createAlpacaAccessToken Successful',
-		json,
+		json: {
+			...json,
+			access_token: accessToken.slice(0, 4) + '...',
+		},
 		userId: firebaseUser.uid,
 	});
 
-	return { json };
+	return { json: {} };
 };
