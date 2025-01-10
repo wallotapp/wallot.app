@@ -48,6 +48,8 @@ const properties = {
 		label_by_enum_option: AgeRangeEnum.obj,
 		label_message_user_text: 'Select your age range',
 	}),
+	alpaca_oauth_access_token_data: yup.string().nullable().default(null),
+	alpaca_oauth_access_token_iv_hex: yup.string().nullable().default(null),
 	capital_level: CapitalLevelEnum.getDefinedSchema()
 		.default(null)
 		.nullable()
