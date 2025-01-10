@@ -20,12 +20,11 @@ export const createAlpacaAccessToken =
 				grant_type: 'authorization_code',
 				redirect_uri,
 			};
+			const body = new URLSearchParams(params).toString();
 			const response =
 				await alpacaOAuthClient.post<CreateAlpacaAccessTokenApiResponse>(
 					'oauth/token',
-					{
-						json: params,
-					},
+					{ body },
 				);
 			return response.json();
 		} catch (err) {
