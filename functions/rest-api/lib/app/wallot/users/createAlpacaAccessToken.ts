@@ -8,7 +8,7 @@ import {
 	usersApi,
 } from '@wallot/js';
 import { alpaca, crypto, db, log } from '../../../services.js';
-import { siteOriginByTarget } from '../../../variables.js';
+import { siteOriginByTarget, variables } from '../../../variables.js';
 
 export const createAlpacaAccessToken = async (
 	params: CreateAlpacaAccessTokenParams,
@@ -17,6 +17,9 @@ export const createAlpacaAccessToken = async (
 	firebaseUser: FirebaseUser | null,
 ): Promise<FunctionResponse<CreateAlpacaAccessTokenResponse>> => {
 	if (!firebaseUser) throw new Error('Unauthorized');
+	if (!variables.SERVER_VAR_FEATURE_FLAGS.ENABLE_ALPACA_OAUTH) {
+		throw new Error('Alpaca OAuth is not enabled');
+	}
 	log({
 		message: 'Starting createAlpacaAccessToken',
 		params,
