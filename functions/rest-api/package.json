@@ -14,7 +14,7 @@
 		"xstate": "^4.38.2",
 		"yup": "^0.32.11",
 		"@google-cloud/pubsub": "^4.9.0",
-		"@wallot/node": "^0.1.11-rc.0",
+		"@wallot/node": "^0.1.12-rc.0",
 		"cors": "^2.8.5",
 		"ergonomic-node": "^0.3.16",
 		"express": "^4.18.2",
