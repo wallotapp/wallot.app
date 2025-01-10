@@ -11,5 +11,8 @@ export const getAlpacaOAuthApiClient = ({
 }: SecretData) =>
 	ky.create({
 		prefixUrl: SECRET_CRED_ALPACA_OAUTH_API_BASE_URL,
-		headers: { accept: 'application/json' },
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			accept: 'application/json',
+		},
 	});
