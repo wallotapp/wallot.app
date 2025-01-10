@@ -3,8 +3,10 @@ import { FunctionResponse } from '@wallot/node';
 import {
 	CreateAlpacaAccessTokenParams,
 	CreateAlpacaAccessTokenResponse,
+	UpdateUserParams,
+	usersApi,
 } from '@wallot/js';
-import { alpaca, log } from '../../../services.js';
+import { alpaca, crypto, db, log } from '../../../services.js';
 
 export const createAlpacaAccessToken = async (
 	{ code }: CreateAlpacaAccessTokenParams,
@@ -30,5 +32,20 @@ export const createAlpacaAccessToken = async (
 		userId: firebaseUser.uid,
 	});
 
-	return { json: {} };
+	const onFinished = async () => {
+		const { encrypt } = crypto;
+		const { data, ivHex } = encrypt(accessToken);
+		const updateParams: UpdateUserParams = {
+			alpaca_oauth_access_token_data: data,
+			alpaca_oauth_access_token_iv_hex: ivHex,
+		};
+		const userId = firebaseUser.uid;
+		await db.collection(usersApi.collectionId).doc(userId).update(updateParams);
+		log({
+			message: 'Updated user with alpaca_oauth_access_token',
+			json: { userId },
+		});
+	};
+
+	return { json: {}, onFinished };
 };
