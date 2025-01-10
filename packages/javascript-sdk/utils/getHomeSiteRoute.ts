@@ -29,7 +29,7 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 		'HOME_SITE__/ACCOUNT/TRANSACTIONS': '/account/transactions',
 		'HOME_SITE__/INDEX': '/',
 		'HOME_SITE__/GET_STARTED': '/get-started',
-		'HOME_SITE__/OAUTH/CALLBACK': '/oauth/callback',
+		'HOME_SITE__/OAUTH/ALPACA/CALLBACK': '/oauth/alpaca/callback',
 		'HOME_SITE__/ORDERS/[ORDER_ID]/ASSETS': '/assets',
 		'HOME_SITE__/ORDERS/[ORDER_ID]/CART': '/cart',
 		'HOME_SITE__/ORDERS/[ORDER_ID]/CHECKOUT': '/checkout',
@@ -39,9 +39,9 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 		'HOME_SITE__/PRIVACY': '/privacy',
 	}[routeStaticId];
 
-	if (routeStaticId === 'HOME_SITE__/OAUTH/CALLBACK') {
+	if (routeStaticId === 'HOME_SITE__/OAUTH/ALPACA/CALLBACK') {
 		const queryParams =
-			options.queryParams as HomeSiteRouteQueryParams['HOME_SITE__/OAUTH/CALLBACK'];
+			options.queryParams as HomeSiteRouteQueryParams['HOME_SITE__/OAUTH/ALPACA/CALLBACK'];
 		const code = queryParams.code;
 		const codeQuery = code ? `code=${code}` : '';
 		const queries = [codeQuery].filter(Boolean);
@@ -53,7 +53,7 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 
 	const queryParams = options.queryParams as Exclude<
 		HomeSiteRouteQueryParams[T],
-		HomeSiteRouteQueryParams['HOME_SITE__/OAUTH/CALLBACK']
+		HomeSiteRouteQueryParams['HOME_SITE__/OAUTH/ALPACA/CALLBACK']
 	>;
 	const clientToken = queryParams.client_token;
 	const clientTokenQuery = clientToken ? `client_token=${clientToken}` : '';
