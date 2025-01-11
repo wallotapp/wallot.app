@@ -34,18 +34,39 @@ export const estimateAlpacaOrder =
 			);
 			const json = await response.json();
 
-			if (notional <= fiveHundredDollarsInCents) return json;
-
 			const { filled_avg_price: approxPricePerShareString } = json;
 			if (approxPricePerShareString == null) {
 				throw new Error(
 					'Missing filled_avg_price in Alpaca order estimation response',
 				);
 			}
+			const approxPricePerShareStringHasDecimal =
+				approxPricePerShareString.includes('.');
+			const approxPricePerSharesPretty = approxPricePerShareStringHasDecimal
+				? approxPricePerShareString.split('.')[1]?.length === 1
+					? `${approxPricePerShareString}0`
+					: approxPricePerShareString
+				: `${approxPricePerShareString}.00`;
+			(json as Writeable<AlpacaOrder>).filled_avg_price =
+				approxPricePerSharesPretty;
+
+			if (notional <= fiveHundredDollarsInCents) return json;
+
 			const approxPricePerShare = parseFloat(approxPricePerShareString);
+			if (isNaN(approxPricePerShare)) {
+				throw new Error(
+					`Invalid filled_avg_price in Alpaca order estimation response: ${approxPricePerShareString}`,
+				);
+			}
+
 			const notionalDollars = notional / 100;
-			const approxNumShares = approxPricePerShare / notionalDollars;
+			const approxNumShares = notionalDollars / approxPricePerShare;
 			(json as Writeable<AlpacaOrder>).filled_qty = String(approxNumShares);
+			(json as Writeable<AlpacaOrder>).notional = getCurrencyUsdStringFromCents(
+				notional,
+			)
+				.replace('$', '')
+				.replace(/,/g, '');
 			return json;
 		} catch (err) {
 			const kyErr = await handleKyError(err);
