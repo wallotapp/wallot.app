@@ -71,7 +71,7 @@ export const deriveNetGainForInvestmentProduct = async (
 		// == Performance Summary == //
 		summary: globalNetGain > 0 ? 'win' : 'loss',
 		num_winners: numWinners,
-		num_losers: losers.length,
+		num_losers: numLosers,
 		hit_rate: hitRate,
 		average_net_gain_for_winners: averageNetGainForWinners,
 		average_net_gain_rate_for_winners: averageNetGainRateForWinners,
