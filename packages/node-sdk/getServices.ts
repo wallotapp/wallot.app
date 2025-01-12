@@ -32,6 +32,7 @@ import {
 } from './alpaca/index.js';
 import {
 	getAlphaVantageClient,
+	retrieveCompanyOverview,
 	retrieveTimeSeriesData,
 } from './alphaVantage/index.js';
 import { encryptString } from './crypto/encryptString.js';
@@ -119,6 +120,7 @@ export const getServices = (
 			},
 		},
 		alphaVantage: {
+			retrieveCompanyOverview: retrieveCompanyOverview(alphaVantageClient),
 			retrieveTimeSeriesData: retrieveTimeSeriesData(alphaVantageClient),
 		},
 		auth: getFirebaseAuth(secrets),
