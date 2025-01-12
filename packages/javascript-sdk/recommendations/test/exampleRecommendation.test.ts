@@ -26,6 +26,7 @@ describe('Recommendation', () => {
 			name: 'My Recommendation',
 			best_investments: [],
 			investment_product_path: null,
+			investment_product_net_gains_after_one_month_path: null,
 			model: '',
 			news_reports: [],
 			open_ai_api_request_ids: [],

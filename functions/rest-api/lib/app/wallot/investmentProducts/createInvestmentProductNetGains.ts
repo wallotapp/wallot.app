@@ -3,10 +3,18 @@ import { deriveNetGainForInvestmentProduct } from '../../../utils/deriveNetGainF
 
 export const createInvestmentProductNetGains = async (
 	investmentProducts: InvestmentProduct | InvestmentProduct[],
+	daysAfterEntry = 30,
+	investmentProductNetGainsIds: (string | null)[] | null = null,
 ) =>
 	Promise.all(
 		(Array.isArray(investmentProducts)
 			? investmentProducts
 			: [investmentProducts]
-		).map(deriveNetGainForInvestmentProduct),
+		).map((product, idx) =>
+			deriveNetGainForInvestmentProduct(
+				product,
+				daysAfterEntry,
+				investmentProductNetGainsIds?.[idx],
+			),
+		),
 	);

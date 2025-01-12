@@ -57,6 +57,7 @@ export type InvestmentProductNetGainResults = Omit<
 	hit_rate: number; // Decimal (e.g. 0.1 for 10%)
 };
 export type InvestmentProductNetGain = {
+	id: string; // UUID
 	investment_product: Omit<InvestmentProduct, 'trades'> & {
 		trades: TradeNetGain[];
 	};

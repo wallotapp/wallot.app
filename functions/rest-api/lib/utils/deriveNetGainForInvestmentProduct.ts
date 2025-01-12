@@ -6,10 +6,12 @@ import {
 	TradeNetGain,
 } from '@wallot/js';
 import { deriveNetGainForTrade } from './deriveNetGainForTrade.js';
+import { v4 } from 'uuid';
 
 export const deriveNetGainForInvestmentProduct = async (
 	investmentProduct: InvestmentProduct,
 	daysAfterEntry = 30,
+	id: string | null = null,
 ): Promise<InvestmentProductNetGain> => {
 	const tradeNetGains: TradeNetGain[] = await Promise.all(
 		investmentProduct.trades.map((trade) =>
@@ -80,6 +82,7 @@ export const deriveNetGainForInvestmentProduct = async (
 	};
 
 	return {
+		id: id ?? v4(),
 		investment_product: {
 			...investmentProduct,
 			trades: tradeNetGains,
