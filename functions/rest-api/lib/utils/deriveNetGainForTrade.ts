@@ -14,7 +14,7 @@ export const deriveNetGainForTrade = async (
 	daysAfterEntry = 30,
 ): Promise<TradeNetGain> => {
 	const entryDate = getNewYorkDate(trade.date);
-	const exitDate = getFutureDate(entryDate, daysAfterEntry);
+	const exitDate = getNewYorkDate(getFutureDate(entryDate, daysAfterEntry));
 	const entryAssetPriceParams: [string, string] = [trade.symbol, entryDate];
 	const exitAssetPriceParams: [string, string] = [trade.symbol, exitDate];
 	const [
