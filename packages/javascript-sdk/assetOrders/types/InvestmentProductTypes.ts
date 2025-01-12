@@ -63,3 +63,18 @@ export type InvestmentProductNetGain = {
 	};
 	results: InvestmentProductNetGainResults;
 };
+export type InvestmentProductNetGainPage = {
+	page: number;
+	num_pages: number;
+	page_size: number;
+	products: InvestmentProductNetGain[];
+	summary: {
+		description: string;
+		num_wins: number;
+		num_losses: number;
+		num_total: number;
+		hit_rate: number; // Percentage
+		avg_return_rate_for_wins: number; // Percentage
+		avg_loss_rate_for_losses: number; // Percentage
+	};
+};
