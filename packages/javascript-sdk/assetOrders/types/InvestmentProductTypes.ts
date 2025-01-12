@@ -46,10 +46,10 @@ export type InvestmentProductNetGainResults = Omit<
 	TradeNetGainResults,
 	'num_shares' | 'entry_share_price' | 'exit_share_price'
 > & {
-	average_net_gain_for_winners: number; // USD in cents
-	average_net_gain_rate_for_winners: number; // Decimal (e.g. 0.1 for 10%)
-	average_net_loss_for_losers: number; // USD in cents
-	average_net_loss_rate_for_losers: number; // Decimal (e.g. 0.1 for 10%)
+	average_net_gain_for_winners: number | null; // USD in cents -- null if no winners
+	average_net_gain_rate_for_winners: number | null; // Decimal (e.g. 0.1 for 10%) -- null if no winners
+	average_net_loss_for_losers: number | null; // USD in cents -- null if no losers
+	average_net_loss_rate_for_losers: number | null; // Decimal (e.g. 0.1 for 10%) -- null if no losers
 	num_winners: number;
 	num_losers: number;
 	hit_rate: number; // Decimal (e.g. 0.1 for 10%)

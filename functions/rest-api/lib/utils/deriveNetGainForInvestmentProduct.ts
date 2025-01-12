@@ -38,16 +38,26 @@ export const deriveNetGainForInvestmentProduct = async (
 
 	const numWinners = winners.length;
 	const averageNetGainForWinners =
-		winners.reduce((acc, curr) => acc + curr.results.net_gain, 0) / numWinners;
+		numWinners === 0
+			? null
+			: winners.reduce((acc, curr) => acc + curr.results.net_gain, 0) /
+			  numWinners;
 	const averageNetGainRateForWinners =
-		winners.reduce((acc, curr) => acc + curr.results.net_gain_rate, 0) /
-		numWinners;
+		numWinners === 0
+			? null
+			: winners.reduce((acc, curr) => acc + curr.results.net_gain_rate, 0) /
+			  numWinners;
 	const numLosers = losers.length;
 	const averageNetLossForLosers =
-		losers.reduce((acc, curr) => acc + curr.results.net_gain, 0) / numLosers;
+		numLosers === 0
+			? null
+			: losers.reduce((acc, curr) => acc + curr.results.net_gain, 0) /
+			  numLosers;
 	const averageNetLossRateForLosers =
-		losers.reduce((acc, curr) => acc + curr.results.net_gain_rate, 0) /
-		numLosers;
+		numLosers === 0
+			? null
+			: losers.reduce((acc, curr) => acc + curr.results.net_gain_rate, 0) /
+			  numLosers;
 
 	const results: InvestmentProductNetGainResults = {
 		// == Performance == //
