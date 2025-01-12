@@ -6,6 +6,7 @@ import { OpenAiModelFamily } from '../../openAiModelFamilies/models/openAiModelF
 export type Trade = {
 	amount: string; // String number of dollars, e.g. '1000' for $1,000.00
 	date: string; // UTC date, e.g. '2024-12-21T01:11:14.887Z'
+	id: string; // UUID
 	rationale: string; // Investment thesis
 	symbol: string;
 };
@@ -31,6 +32,7 @@ export type TradeNetGain = {
 
 export type InvestmentProduct = {
 	entry_date: string;
+	id: string; // UUID
 	model: {
 		financial_model: Model;
 		financial_model_family: ModelFamily;

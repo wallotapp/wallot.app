@@ -44,6 +44,8 @@ const properties = {
 		.defined()
 		.min(1),
 	category: RecommendationCategoryEnum.getDefinedSchema(),
+	/** Firestore DB collection path to the `InvestmentProduct`, e.g. 'investment_products/...' */
+	investment_product_path: yup.string().nullable().default(null),
 	model: apiYupHelpers.idRef(['model']).min(1).meta({ unique_key: false }),
 	news_reports: apiYupHelpers.idRefs(['news_report']).min(1),
 	open_ai_api_request_ids: YupHelpers.array(yup.string().defined())

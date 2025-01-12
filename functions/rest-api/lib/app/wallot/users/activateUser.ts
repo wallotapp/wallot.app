@@ -14,6 +14,7 @@ import { siteOriginByTarget } from '../../../variables.js';
 import { locateCompatibleParameters } from '../parameters/locateCompatibleParameters.js';
 import { createAssetOrdersFromRecommendation } from '../assetOrders/createAssetOrdersFromRecommendation.js';
 import { createRecommendationForUser } from '../recommendations/createRecommendationForUser.js';
+import { createInvestmentProductFromRecommendation } from '../recommendations/createInvestmentProductFromRecommendation.js';
 import { cancelActivationReminderEmails } from './cancelActivationReminderEmails.js';
 import { placeUserInEmailCohorts } from './placeUserInEmailCohorts.js';
 import { scheduleOrderCompletionReminderEmail } from './scheduleOrderCompletionReminderEmail.js';
@@ -111,6 +112,9 @@ export const activateUser = async (
 
 	// Construct the post-response callback
 	const onFinished = async () => {
+		// Create an InvestmentProduct for this recommendation
+		await createInvestmentProductFromRecommendation(recommendation);
+
 		// Cancel activation reminder emails for USER (if any are remaining)
 		await cancelActivationReminderEmails({ userId: firebaseUser.uid });
 
