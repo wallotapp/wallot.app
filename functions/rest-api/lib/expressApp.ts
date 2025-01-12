@@ -490,6 +490,13 @@ addHealthRoutesToExpressApp(app, {
 	mockApiResource,
 });
 
+// Hot reload check
+if (secrets.SECRET_CRED_SERVER_PROTOCOL === 'http') {
+	app.get('/v0/hot', (_req, res) => {
+		res.status(200).send({ noop: variables.NOOP });
+	});
+}
+
 // ---- End of Invocation Middleware ---- //
 app.use(sendExpressResponse());
 app.use(logExpressInvocation(secrets));
