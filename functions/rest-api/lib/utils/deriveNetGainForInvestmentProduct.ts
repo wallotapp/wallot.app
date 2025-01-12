@@ -31,7 +31,6 @@ export const deriveNetGainForInvestmentProduct = async (
 	);
 	const globalNetGain = globalExitPrice - globalEntryPrice;
 	const globalNetGainRate = globalNetGain / globalEntryPrice;
-	const globalWin = globalNetGain > 0;
 
 	const results: InvestmentProductNetGainResults = {
 		entry_date: firstTradeNetGain.results.entry_date,
@@ -44,7 +43,7 @@ export const deriveNetGainForInvestmentProduct = async (
 		// Decimal (e.g. 0.1 for 10%)
 		net_gain_rate: globalNetGainRate,
 		// Flag for win or loss
-		win: globalWin,
+		summary: globalNetGain > 0 ? 'win' : 'loss',
 	};
 
 	return {
