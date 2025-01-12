@@ -15,7 +15,7 @@ import { siteOriginByTarget } from '../../../variables.js';
 import { locateCompatibleParameters } from '../parameters/locateCompatibleParameters.js';
 import { createAssetOrdersFromRecommendation } from '../assetOrders/createAssetOrdersFromRecommendation.js';
 import { createRecommendationForUser } from '../recommendations/createRecommendationForUser.js';
-import { createInvestmentProductFromRecommendation } from '../recommendations/createInvestmentProductFromRecommendation.js';
+import { createInvestmentProductFromRecommendation } from '../investmentProducts/createInvestmentProductFromRecommendation.js';
 import { cancelActivationReminderEmails } from './cancelActivationReminderEmails.js';
 import { placeUserInEmailCohorts } from './placeUserInEmailCohorts.js';
 import { scheduleOrderCompletionReminderEmail } from './scheduleOrderCompletionReminderEmail.js';
