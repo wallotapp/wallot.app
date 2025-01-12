@@ -1,4 +1,20 @@
-import { InvestmentProductNetGain } from '../types/InvestmentProductTypes.js';
+import {
+	TradeNetGain,
+	InvestmentProductNetGain,
+} from '../types/InvestmentProductTypes.js';
+
+export const partitionTradesByResult = (investmentProducts: TradeNetGain[]) =>
+	investmentProducts.reduce(
+		([winningTrades, losingTrades], investmentProduct) => {
+			if (investmentProduct.results.summary === 'win') {
+				winningTrades.push(investmentProduct);
+			} else {
+				losingTrades.push(investmentProduct);
+			}
+			return [winningTrades, losingTrades] as TradeWinLossPartition;
+		},
+		[[], []] as TradeWinLossPartition,
+	);
 
 export const partitionInvestmentProductsByResult = (
 	investmentProducts: InvestmentProductNetGain[],
@@ -21,6 +37,7 @@ export const partitionInvestmentProductsByResult = (
 		[[], []] as InvestmentProductWinLossPartition,
 	);
 
+export type TradeWinLossPartition = [TradeNetGain[], TradeNetGain[]];
 export type InvestmentProductWinLossPartition = [
 	InvestmentProductNetGain[],
 	InvestmentProductNetGain[],
