@@ -7,7 +7,7 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { PageHeader } from '@wallot/react/src/components/PageHeader';
-import { HomeSiteRouteQueryParams } from '@wallot/js';
+import { HomeSiteRouteQueryParams, InvestmentProductNetGain } from '@wallot/js';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import {
 	initialRetrieveInvestmentProductNetGainPageQueryKey,
@@ -18,10 +18,28 @@ import { queryClient } from 'ergonomic-react/src/lib/tanstackQuery';
 import { dehydrate } from '@tanstack/react-query';
 import { retrieveInvestmentProductNetGainPage } from '@wallot/react/src/features/assetOrders/api/retrieveInvestmentProductNetGainPage';
 import { AccountDashboardPageSuspense } from '@wallot/home-site/src/components/AccountDashboardPage';
-import { getCurrencyUsdStringFromCents } from 'ergonomic';
+import { getCurrencyUsdStringFromCents, getEnum, EnumMember } from 'ergonomic';
 import { GoArrowUpRight } from 'react-icons/go';
+import { useState } from 'react';
 
+const MonthEnum = getEnum([
+	'2024-07',
+	'2024-08',
+	'2024-09',
+	'2024-10',
+	'2024-11',
+	'2024-12',
+]);
+type Month = EnumMember<typeof MonthEnum>;
 const Page: NextPage<PageProps> = (props) => {
+	// ==== State ==== //
+	const [months, setMonths] = useState<Month[] | null>(MonthEnum.arr.slice(-1));
+	const isProductInRange = (product: InvestmentProductNetGain) => {
+		const { exit_date } = product.results;
+		if (!months) return true;
+		return months.some((month) => exit_date.startsWith(month));
+	};
+
 	// ==== Hooks ==== //
 
 	// Router
@@ -92,176 +110,225 @@ const Page: NextPage<PageProps> = (props) => {
 								</p>
 							</section>
 
-							<div>
-								<h2 className='text-xl font-medium mt-6'>
-									Historical Performance
-								</h2>
+							<div
+								className={cn(
+									'mt-6',
+									'flex flex-col space-y-4',
+									'lg:flex lg:flex-row lg:items-center lg:justify-between lg:space-y-0',
+								)}
+							>
+								<div>
+									<h2 className='text-xl font-medium'>
+										Historical Performance
+									</h2>
+								</div>
+								<div>
+									<div className='lg:text-right'>
+										<h3 className='text-sm font-medium'>Filter by Month</h3>
+									</div>
+									<div className='flex items-center gap-2 mt-1 flex-wrap lg:space-x-2 lg:gap-0'>
+										{MonthEnum.arr.map((month) => {
+											const monthPretty = month;
+											return (
+												<button
+													key={month}
+													className={cn(
+														'text-xs font-light border border-gray-300 rounded-lg px-2 py-1',
+														months?.includes(month) ? 'bg-gray-200' : '',
+													)}
+													onClick={() => {
+														setMonths((prevMonths) => {
+															if (!prevMonths) return [month];
+															let next;
+															if (prevMonths.includes(month)) {
+																next = prevMonths.filter(
+																	(prevMonth) => prevMonth !== month,
+																);
+															} else {
+																next = [...prevMonths, month];
+															}
+															if (next.length === 0) return null;
+															return next;
+														});
+													}}
+												>
+													{monthPretty}
+												</button>
+											);
+										})}
+									</div>
+								</div>
 							</div>
 
-							<Separator />
+							<Separator className='mt-2' />
 
-							<section id='table' className='mb-6'>
+							<section id='table' className='mb-6 max-w-full overflow-x-auto'>
 								<div className='mt-1'>
-									{(investmentProductNetGainPage?.products ?? []).map(
-										(
-											{
-												id: productNetGainId,
-												investment_product: {
-													description: productDescription,
-													title: productTitle,
-													trades,
+									{(investmentProductNetGainPage?.products ?? [])
+										.filter(isProductInRange)
+										.map(
+											(
+												{
+													id: productNetGainId,
+													investment_product: {
+														description: productDescription,
+														title: productTitle,
+														trades,
+													},
+													results: {
+														entry_date: productEntryDate,
+														exit_date: productExitDate,
+														summary: productSummary,
+													},
 												},
-												results: {
-													entry_date: productEntryDate,
-													exit_date: productExitDate,
-													summary: productSummary,
-												},
-											},
-											productIdx,
-										) => {
-											// Define this array here or outside if you prefer
-											const tradeRowHeaders = [
-												'Result',
-												'Symbol',
-												'Amount',
-												'Net Gain',
-												'Net Gain Rate',
-											];
+												productIdx,
+											) => {
+												// Define this array here or outside if you prefer
+												const tradeRowHeaders = [
+													'Result',
+													'Symbol',
+													'Amount',
+													'Net Gain',
+													'Net Gain Rate',
+												];
 
-											return (
-												<div
-													key={productNetGainId}
-													className={cn(
-														productIdx === 0
-															? ''
-															: 'mt-6 border-t border-t-gray-300',
-														'p-4',
-														'flex flex-col',
-													)}
-												>
-													<div className='text-xs'>
-														{/* Product Info */}
-														<div className='text-sm'>
-															<dl>
-																<div className='flex items-baseline space-x-2 font-semibold text-base'>
-																	{productTitle}
-																</div>
-																<div className='flex items-baseline space-x-2 font-light text-xs'>
-																	{productDescription}
-																</div>
-																<div className='flex items-baseline space-x-2 text-xs mt-2'>
-																	<dt className='font-medium text-gray-700'>
-																		Position held:
-																	</dt>
-																	<dd>
-																		{productEntryDate} through {productExitDate}
-																	</dd>
-																</div>
-																<div className='flex items-baseline space-x-2 text-xs'>
-																	<dt className='font-medium text-gray-700'>
-																		Result:
-																	</dt>
-																	<dd
-																		className={cn(
-																			productSummary === 'win'
-																				? 'text-green-500'
-																				: 'text-red-500',
-																		)}
-																	>
-																		{productSummary == 'win' ? 'Gain' : 'Loss'}
-																	</dd>
-																</div>
-															</dl>
-														</div>
-
-														{/* Table Label */}
-														<h3 className='text-sm font-semibold mt-4'>
-															Trades
-														</h3>
-
-														{/* Table */}
-														<table className='mt-2 w-full border-collapse'>
-															{/* Table Head */}
-															<thead>
-																<tr>
-																	{tradeRowHeaders.map((header) => (
-																		<th
-																			key={header}
-																			className='border border-gray-300 px-2 py-1 text-left'
+												return (
+													<div
+														key={productNetGainId}
+														className={cn(
+															productIdx === 0
+																? ''
+																: 'mt-6 border-t border-t-gray-300',
+															'py-4',
+															'flex flex-col',
+														)}
+													>
+														<div className='text-xs'>
+															{/* Product Info */}
+															<div className='text-sm'>
+																<dl>
+																	<div className='flex items-baseline space-x-2 font-semibold text-base'>
+																		{productTitle}
+																	</div>
+																	<div className='flex items-baseline space-x-2 font-light text-xs'>
+																		{productDescription}
+																	</div>
+																	<div className='flex items-baseline space-x-2 text-xs mt-2'>
+																		<dt className='font-medium text-gray-700'>
+																			Position held:
+																		</dt>
+																		<dd>
+																			{productEntryDate} through{' '}
+																			{productExitDate}
+																		</dd>
+																	</div>
+																	<div className='flex items-baseline space-x-2 text-xs'>
+																		<dt className='font-medium text-gray-700'>
+																			Result:
+																		</dt>
+																		<dd
+																			className={cn(
+																				productSummary === 'win'
+																					? 'text-green-500'
+																					: 'text-red-500',
+																			)}
 																		>
-																			{header}
-																		</th>
-																	))}
-																</tr>
-															</thead>
+																			{productSummary == 'win'
+																				? 'Gain'
+																				: 'Loss'}
+																		</dd>
+																	</div>
+																</dl>
+															</div>
 
-															{/* Table Body */}
-															<tbody>
-																{trades.map(
-																	({
-																		trade,
-																		results: {
-																			net_gain: tradeNetGain,
-																			net_gain_rate: tradeNetGainRate,
-																			summary: tradeSummary,
-																		},
-																	}) => {
-																		const tradeNetGainRatePretty = `${(
-																			tradeNetGainRate * 100
-																		).toFixed(2)}%`;
-																		const tradeAmountStringInDollarsUnformatted =
-																			trade.amount;
-																		const tradeAmountInCents =
-																			parseFloat(
-																				tradeAmountStringInDollarsUnformatted,
-																			) * 100;
-																		const tradeAmountPretty =
-																			getCurrencyUsdStringFromCents(
-																				tradeAmountInCents,
-																			);
-																		const tradeNetGainPretty =
-																			getCurrencyUsdStringFromCents(
-																				tradeNetGain,
-																			);
+															{/* Table Label */}
+															<h3 className='text-sm font-semibold mt-4'>
+																Trades
+															</h3>
 
-																		return (
-																			<tr
-																				key={trade.id}
-																				className='hover:bg-gray-100'
+															{/* Table */}
+															<table className='mt-2 w-full border-collapse'>
+																{/* Table Head */}
+																<thead>
+																	<tr>
+																		{tradeRowHeaders.map((header) => (
+																			<th
+																				key={header}
+																				className='border border-gray-300 px-2 py-1 text-left'
 																			>
-																				<td className='border border-gray-300 px-2 py-1'>
-																					<GoArrowUpRight
-																						className={cn(
-																							'text-xl',
-																							tradeSummary === 'win'
-																								? 'text-green-500'
-																								: 'text-red-500 rotate-90',
-																						)}
-																					/>
-																				</td>
-																				<td className='border border-gray-300 px-2 py-1'>
-																					{trade.symbol}
-																				</td>
-																				<td className='border border-gray-300 px-2 py-1'>
-																					{tradeAmountPretty}
-																				</td>
-																				<td className='border border-gray-300 px-2 py-1'>
-																					{tradeNetGainPretty}
-																				</td>
-																				<td className='border border-gray-300 px-2 py-1'>
-																					{tradeNetGainRatePretty}
-																				</td>
-																			</tr>
-																		);
-																	},
-																)}
-															</tbody>
-														</table>
+																				{header}
+																			</th>
+																		))}
+																	</tr>
+																</thead>
+
+																{/* Table Body */}
+																<tbody>
+																	{trades.map(
+																		({
+																			trade,
+																			results: {
+																				net_gain: tradeNetGain,
+																				net_gain_rate: tradeNetGainRate,
+																				summary: tradeSummary,
+																			},
+																		}) => {
+																			const tradeNetGainRatePretty = `${(
+																				tradeNetGainRate * 100
+																			).toFixed(2)}%`;
+																			const tradeAmountStringInDollarsUnformatted =
+																				trade.amount;
+																			const tradeAmountInCents =
+																				parseFloat(
+																					tradeAmountStringInDollarsUnformatted,
+																				) * 100;
+																			const tradeAmountPretty =
+																				getCurrencyUsdStringFromCents(
+																					tradeAmountInCents,
+																				);
+																			const tradeNetGainPretty =
+																				getCurrencyUsdStringFromCents(
+																					tradeNetGain,
+																				);
+
+																			return (
+																				<tr
+																					key={trade.id}
+																					className='hover:bg-gray-100'
+																				>
+																					<td className='border border-gray-300 px-2 py-1'>
+																						<GoArrowUpRight
+																							className={cn(
+																								'text-xl',
+																								tradeSummary === 'win'
+																									? 'text-green-500'
+																									: 'text-red-500 rotate-90',
+																							)}
+																						/>
+																					</td>
+																					<td className='border border-gray-300 px-2 py-1'>
+																						{trade.symbol}
+																					</td>
+																					<td className='border border-gray-300 px-2 py-1'>
+																						{tradeAmountPretty}
+																					</td>
+																					<td className='border border-gray-300 px-2 py-1'>
+																						{tradeNetGainPretty}
+																					</td>
+																					<td className='border border-gray-300 px-2 py-1'>
+																						{tradeNetGainRatePretty}
+																					</td>
+																				</tr>
+																			);
+																		},
+																	)}
+																</tbody>
+															</table>
+														</div>
 													</div>
-												</div>
-											);
-										},
-									)}
+												);
+											},
+										)}
 								</div>
 							</section>
 						</div>
