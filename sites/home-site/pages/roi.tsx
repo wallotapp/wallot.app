@@ -18,6 +18,7 @@ import { queryClient } from 'ergonomic-react/src/lib/tanstackQuery';
 import { dehydrate } from '@tanstack/react-query';
 import { retrieveInvestmentProductNetGainPage } from '@wallot/react/src/features/assetOrders/api/retrieveInvestmentProductNetGainPage';
 import { AccountDashboardPageSuspense } from '@wallot/home-site/src/components/AccountDashboardPage';
+import { Keys } from 'ergonomic';
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== Hooks ==== //
@@ -64,7 +65,7 @@ const Page: NextPage<PageProps> = (props) => {
 					)}
 				>
 					<div className='container p-8 rounded-lg shadow'>
-						<header className='mb-6'>
+						<header className=''>
 							<h1 className='text-3xl font-bold'>
 								How well has Wallot AI performed historically?
 							</h1>
@@ -73,21 +74,102 @@ const Page: NextPage<PageProps> = (props) => {
 
 						<div
 							className={cn(
-								isInvestmentProductNetGainPageLoading ? 'block' : 'hidden',
+								isInvestmentProductNetGainPageLoading ? 'block mt-6' : 'hidden',
 							)}
 						>
 							<AccountDashboardPageSuspense length={4} />
 						</div>
 						<div
 							className={cn(
-								isInvestmentProductNetGainPageLoading ? 'hidden' : 'block',
+								isInvestmentProductNetGainPageLoading ? 'hidden' : 'block mt-6',
 							)}
 						>
-							<section id='introduction' className='mb-6'>
+							<section id='introduction' className=''>
 								<h2 className='text-2xl font-semibold'>Summary</h2>
 								<p className='mt-1 font-normal text-base'>
 									{investmentProductNetGainPage?.summary.description}
 								</p>
+							</section>
+							<section id='table' className='mb-6'>
+								<div className='mt-1'>
+									{(investmentProductNetGainPage?.products ?? []).map(
+										(
+											{
+												id: productNetGainId,
+												investment_product: {
+													entry_date: productEntryDate,
+													title: productTitle,
+													trades,
+												},
+												results: { summary: productSummary },
+											},
+											productIdx,
+										) => {
+											const tradeRowHeaders = [
+												'Symbol',
+												'Amount',
+												'Net Gain',
+												'Net Gain Rate',
+												'Summary',
+											];
+											return (
+												<div
+													className={cn(
+														productIdx === 0
+															? ''
+															: 'mt-6 border-t border-t-gray-400',
+														'p-4',
+														'flex flex-col',
+													)}
+													key={productNetGainId}
+												>
+													<div className='text-xs'>
+														<div>{productEntryDate}</div>
+														<div>{productTitle}</div>
+														<div>{productSummary}</div>
+														<div className='mt-1 flex flex-row space-x-2'>
+															{tradeRowHeaders.map((header) => {
+																return <div>{header}</div>;
+															})}
+														</div>
+														<div>
+															{trades.map(
+																({
+																	trade,
+																	results: {
+																		net_gain: tradeNetGain,
+																		net_gain_rate: tradeNetGainRate,
+																		summary: tradeSummary,
+																	},
+																}) => {
+																	const tradeNetGainRatePretty = `${(
+																		tradeNetGainRate * 100
+																	).toFixed(2)}%`;
+																	const tradeData = {
+																		Symbol: trade.symbol,
+																		Amount: trade.amount,
+																		'Net Gain': tradeNetGain,
+																		'Net Gain Rate': tradeNetGainRatePretty,
+																		Summary: tradeSummary,
+																	};
+																	return (
+																		<div className='flex' key={trade.id}>
+																			{Keys(tradeData).map((key) => {
+																				return (
+																					<div>{tradeData[key] ?? ''}</div>
+																				);
+																			})}
+																		</div>
+																	);
+																},
+															)}
+														</div>
+													</div>
+												</div>
+											);
+										},
+									)}
+								</div>
 							</section>
 						</div>
 
