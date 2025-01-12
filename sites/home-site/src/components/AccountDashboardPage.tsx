@@ -91,10 +91,10 @@ export const AccountDashboardPage: React.FC<AccountDashboardPageProps> = ({
 	);
 };
 
-function AccountDashboardPageSuspense() {
+export function AccountDashboardPageSuspense({ length = 5 }) {
 	return (
 		<div className='flex flex-col space-y-7'>
-			{Array.from({ length: 5 }).map((_, i) =>
+			{Array.from({ length }).map((_, i) =>
 				i % 3 === 0 ? (
 					<div key={i} className='flex space-x-4'>
 						<Skeleton

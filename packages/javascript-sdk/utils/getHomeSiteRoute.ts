@@ -35,8 +35,9 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 		'HOME_SITE__/ORDERS/[ORDER_ID]/CHECKOUT': '/checkout',
 		'HOME_SITE__/ORDERS/[ORDER_ID]/CONGRATULATIONS': '/congratulations',
 		'HOME_SITE__/ORDERS/[ORDER_ID]/TRACK': '/track',
-		'HOME_SITE__/TERMS': '/terms',
 		'HOME_SITE__/PRIVACY': '/privacy',
+		'HOME_SITE__/ROI': '/roi',
+		'HOME_SITE__/TERMS': '/terms',
 	}[routeStaticId];
 
 	if (routeStaticId === 'HOME_SITE__/OAUTH/ALPACA/CALLBACK') {
@@ -68,8 +69,9 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 		routeStaticId === 'HOME_SITE__/ACCOUNT/TRANSACTIONS' ||
 		routeStaticId === 'HOME_SITE__/INDEX' ||
 		routeStaticId === 'HOME_SITE__/GET_STARTED' ||
-		routeStaticId === 'HOME_SITE__/TERMS' ||
-		routeStaticId === 'HOME_SITE__/PRIVACY'
+		routeStaticId === 'HOME_SITE__/PRIVACY' ||
+		routeStaticId === 'HOME_SITE__/ROI' ||
+		routeStaticId === 'HOME_SITE__/TERMS'
 	) {
 		const query = queries.length ? `?${queries.join('&')}` : '';
 		const fullPath = `${path}${query}`;

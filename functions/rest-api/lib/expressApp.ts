@@ -36,6 +36,7 @@ import {
 	UpdateAlpacaAccountParams,
 	CreateAlpacaAccessTokenParams,
 	CreateAlpacaAccessTokenResponse,
+	InvestmentProductNetGainPage,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -285,6 +286,35 @@ app.get(
 			req,
 			res,
 			createRouterFunction(auth, secrets)(retrievePositions)(req, res, next),
+		);
+	},
+);
+
+// Products
+import { retrieveInvestmentProductNetGainPage } from './app/wallot/investmentProducts/retrieveInvestmentProductNetGainPage.js';
+app.options('*/v0/products/roi', corsPolicy);
+app.get(
+	'*/v0/products/roi',
+	(
+		req: express.Request<
+			Record<string, never>,
+			InvestmentProductNetGainPage,
+			Record<string, never>,
+			Record<string, never>
+		>,
+		res: express.Response<
+			InvestmentProductNetGainPage,
+			GeneralizedResLocals<InvestmentProductNetGainPage>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(
+				retrieveInvestmentProductNetGainPage,
+				{ requiresAuth: false },
+			)(req, res, next),
 		);
 	},
 );

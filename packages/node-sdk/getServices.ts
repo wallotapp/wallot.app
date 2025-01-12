@@ -28,8 +28,13 @@ import {
 	retrieveAlpacaPositions,
 	// OAuth API
 	createAlpacaAccessToken,
+	retrieveAlpacaAsset,
 } from './alpaca/index.js';
-import { getAlphaVantageClient } from './alphaVantage/index.js';
+import {
+	getAlphaVantageClient,
+	retrieveCompanyOverview,
+	retrieveTimeSeriesData,
+} from './alphaVantage/index.js';
 import { encryptString } from './crypto/encryptString.js';
 import { decryptString } from './crypto/decryptString.js';
 import { log } from './log.js';
@@ -65,6 +70,7 @@ export const getServices = (
 	const alpacaBrokerEstimationClient =
 		getAlpacaBrokerEstimationApiClient(secrets);
 	const alpacaOAuthClient = getAlpacaOAuthApiClient(secrets);
+	const alphaVantageClient = getAlphaVantageClient(secrets);
 	const decrypt = decryptString(
 		secrets.SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY,
 	);
@@ -87,6 +93,8 @@ export const getServices = (
 				),
 				retrieveAlpacaAchRelationship:
 					retrieveAlpacaAchRelationship(alpacaBrokerClient),
+				// Alpaca Assets
+				retrieveAlpacaAsset: retrieveAlpacaAsset(alpacaBrokerClient),
 				// Alpaca Documents
 				retrieveAlpacaDocuments: retrieveAlpacaDocuments(alpacaBrokerClient),
 				downloadAlpacaDocument: downloadAlpacaDocument(secrets),
@@ -111,7 +119,10 @@ export const getServices = (
 				),
 			},
 		},
-		alphaVantage: getAlphaVantageClient(secrets),
+		alphaVantage: {
+			retrieveCompanyOverview: retrieveCompanyOverview(alphaVantageClient),
+			retrieveTimeSeriesData: retrieveTimeSeriesData(alphaVantageClient),
+		},
 		auth: getFirebaseAuth(secrets),
 		bucket: getCloudStorageBucket(
 			secrets.SECRET_CRED_FIREBASE_PROJECT_STORAGE_BUCKET_NAME,

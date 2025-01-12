@@ -17,6 +17,8 @@ export * from './getSupportSiteRoute.js';
 // Shared modules
 export * from './ageRange.js';
 export * from './capitalLevel.js';
+export * from './getFutureDate.js';
+export * from './getNewYorkDate.js';
 export * from './investingGoal.js';
 export * from './riskPreference.js';
 export * from './userExperienceMachine.js';
