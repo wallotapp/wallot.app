@@ -5,6 +5,9 @@ import {
 } from '@wallot/js';
 import { db, log } from '../services.js';
 
+/**
+ * Retrieve an asset price from the database.
+ */
 export const retrieveAssetPrice = async ([symbol, timestamp]: Parameters<
 	typeof getAssetPriceDocumentName
 >): Promise<AssetPrice> => {
