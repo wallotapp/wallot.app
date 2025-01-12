@@ -14,8 +14,9 @@ import { NODE_ENV } from 'ergonomic-react/src/config/nodeEnv';
 import { stripePromise } from 'ergonomic-react/src/lib/stripe';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-	const dehydratedState: unknown =
-		(pageProps.dehydratedState as unknown) ?? null; // Extract server-side state if provided
+	const dehydratedState =
+		(pageProps as Record<'dehydratedState', Record<string, null>>)
+			.dehydratedState ?? null; // Extract server-side state if provided
 	return (
 		<AuthProvider>
 			<RouteStateProvider>
