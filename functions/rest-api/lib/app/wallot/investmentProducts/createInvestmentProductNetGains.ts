@@ -1,5 +1,5 @@
 import { InvestmentProduct } from '@wallot/js';
-import { deriveNetGainForInvestmentProduct } from '../../../utils/deriveNetGainForInvestmentProduct';
+import { deriveNetGainForInvestmentProduct } from '../../../utils/deriveNetGainForInvestmentProduct.js';
 
 export const createInvestmentProductNetGains = async (
 	investmentProducts: InvestmentProduct | InvestmentProduct[],
