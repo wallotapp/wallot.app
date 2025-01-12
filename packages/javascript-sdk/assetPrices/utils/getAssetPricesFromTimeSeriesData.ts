@@ -8,7 +8,7 @@ import { AlphaVantageDailyTimeSeriesResponse } from '../types/AlphaVantageTimeSe
 import { getAssetPriceDocumentName } from './getAssetPriceDocumentName.js';
 
 export const getAssetPricesFromTimeSeriesData = (
-	asset: Asset,
+	asset: Pick<Asset, '_id' | 'symbol'>,
 	timeSeriesData: AlphaVantageDailyTimeSeriesResponse,
 ): AssetPrice[] => {
 	const timeSeries = timeSeriesData['Time Series (Daily)'];
