@@ -58,15 +58,12 @@ export const deriveNetGainForTrade = async (
 		entry_date: entryDate,
 		days_held: daysAfterEntry,
 		exit_date: exitDate,
-		// USD in cents
 		entry_aggregate_price: entryAggregatePriceInDollars * 100,
 		entry_share_price: parseFloat(entrySharePriceStringInDollars) * 100,
 		exit_aggregate_price: exitAggregatePriceInDollars * 100,
 		exit_share_price: exitSharePriceInDollars * 100,
 		net_gain: netGain * 100,
-		// Decimal (e.g. 0.1 for 10%)
 		net_gain_rate: netGainRate,
-		// Flag for win or loss
 		summary: netGain > 0 ? 'win' : 'loss',
 	};
 	return { trade, results };

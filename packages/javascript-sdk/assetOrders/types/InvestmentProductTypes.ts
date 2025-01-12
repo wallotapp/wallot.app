@@ -45,7 +45,15 @@ export type InvestmentProduct = {
 export type InvestmentProductNetGainResults = Omit<
 	TradeNetGainResults,
 	'num_shares' | 'entry_share_price' | 'exit_share_price'
->;
+> & {
+	average_net_gain_for_winners: number; // USD in cents
+	average_net_gain_rate_for_winners: number; // Decimal (e.g. 0.1 for 10%)
+	average_net_loss_for_losers: number; // USD in cents
+	average_net_loss_rate_for_losers: number; // Decimal (e.g. 0.1 for 10%)
+	num_winners: number;
+	num_losers: number;
+	hit_rate: number; // Decimal (e.g. 0.1 for 10%)
+};
 export type InvestmentProductNetGain = {
 	investment_product: Omit<InvestmentProduct, 'trades'> & {
 		trades: TradeNetGain[];
