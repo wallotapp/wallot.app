@@ -28,6 +28,7 @@ import {
 	retrieveAlpacaPositions,
 	// OAuth API
 	createAlpacaAccessToken,
+	retrieveAlpacaAsset,
 } from './alpaca/index.js';
 import {
 	getAlphaVantageClient,
@@ -91,6 +92,8 @@ export const getServices = (
 				),
 				retrieveAlpacaAchRelationship:
 					retrieveAlpacaAchRelationship(alpacaBrokerClient),
+				// Alpaca Assets
+				retrieveAlpacaAsset: retrieveAlpacaAsset(alpacaBrokerClient),
 				// Alpaca Documents
 				retrieveAlpacaDocuments: retrieveAlpacaDocuments(alpacaBrokerClient),
 				downloadAlpacaDocument: downloadAlpacaDocument(secrets),
