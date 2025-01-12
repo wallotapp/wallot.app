@@ -1,6 +1,6 @@
 import { AssetOrder } from '@wallot/js';
 
-export const deriveNetGainForAssetOrder = async (
+export const deriveNetGainForTrade = async (
 	assetOrder: AssetOrder,
 	daysAfterEntry = 30,
 ): Promise<number> => {
