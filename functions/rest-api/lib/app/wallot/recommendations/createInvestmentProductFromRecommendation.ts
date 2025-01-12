@@ -12,8 +12,6 @@ import {
 	OpenAiModelFamily,
 	openAiModelFamiliesApi,
 	getNewYorkDate,
-	UpdateRecommendationParams,
-	recommendationsApi,
 } from '@wallot/js';
 import { db } from '../../../services.js';
 
@@ -22,14 +20,12 @@ const financialModelFamiliesCollectionId =
 	financialModelFamiliesApi.collectionId;
 const openAiModelsCollectionId = openAiModelsApi.collectionId;
 const openAiModelFamiliesCollectionId = openAiModelFamiliesApi.collectionId;
-const recommendationCollectionId = recommendationsApi.collectionId;
 
 export const createInvestmentProductFromRecommendation = async (
 	recommendation: Recommendation,
-): Promise<void> => {
+): Promise<InvestmentProduct> => {
 	const {
 		_date_created,
-		_id: recommendationId,
 		best_investments,
 		description,
 		name,
@@ -104,23 +100,5 @@ export const createInvestmentProductFromRecommendation = async (
 		),
 	};
 
-	const investmentProductPath = `investment_products/${investmentProductId}`;
-	const updateRecommendationParams: UpdateRecommendationParams = {
-		investment_product_path: investmentProductPath,
-	};
-
-	// Create a batch
-	const batch = db.batch();
-
-	// Update the recommendation
-	batch.update(
-		db.collection(recommendationCollectionId).doc(recommendationId),
-		updateRecommendationParams,
-	);
-
-	// Save the investment product
-	batch.set(db.doc(investmentProductPath), investmentProduct);
-
-	// Commit the batch
-	await batch.commit();
+	return investmentProduct;
 };
