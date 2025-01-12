@@ -16,12 +16,13 @@ export const deriveNetGainForTrade = async (
 	const exitDate = getFutureDate(entryDate, daysAfterEntry);
 	const entryAssetPriceParams: [string, string] = [trade.symbol, entryDate];
 	const exitAssetPriceParams: [string, string] = [trade.symbol, exitDate];
-	const [{ close: entryClose }, { close: exitClose }] = await Promise.all([
-		retrieveAssetPrice(entryAssetPriceParams),
-		retrieveAssetPrice(exitAssetPriceParams),
-	]);
+	const [{ close: entryClosePrice }, { close: exitClosePrice }] =
+		await Promise.all([
+			retrieveAssetPrice(entryAssetPriceParams),
+			retrieveAssetPrice(exitAssetPriceParams),
+		]);
 
-	if (entryClose == null || exitClose == null) {
+	if (entryClosePrice == null || exitClosePrice == null) {
 		const message = 'Fix the asset price data in the database.';
 		log(
 			{
@@ -37,17 +38,17 @@ export const deriveNetGainForTrade = async (
 		throw new Error(message);
 	}
 
-	const entryNumShares = getNumSharesForTrade(trade, entryClose);
-	const entryTotalPrice = entryNumShares * parseFloat(entryClose);
-	const exitTotalPrice = entryNumShares * parseFloat(exitClose);
+	const entryNumShares = getNumSharesForTrade(trade, entryClosePrice);
+	const entryTotalPrice = entryNumShares * parseFloat(entryClosePrice);
+	const exitTotalPrice = entryNumShares * parseFloat(exitClosePrice);
 	const netGain = exitTotalPrice - entryTotalPrice;
 	const netGainRate = netGain / entryTotalPrice;
 	return {
 		num_shares: entryNumShares,
 		entry_date: entryDate,
-		entry_price: parseFloat(entryClose),
+		entry_price: parseFloat(entryClosePrice),
 		exit_date: exitDate,
-		exit_price: parseFloat(exitClose),
+		exit_price: parseFloat(exitClosePrice),
 		net_gain: netGain,
 		net_gain_rate: netGainRate,
 	};
