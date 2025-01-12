@@ -6,6 +6,7 @@ import { OpenAiModelFamily } from '../../openAiModelFamilies/models/openAiModelF
 export type Trade = {
 	amount: string; // String number of dollars, e.g. '1000' for $1,000.00
 	date: string; // UTC date, e.g. '2024-12-21T01:11:14.887Z'
+	rationale: string; // Investment thesis
 	symbol: string;
 };
 
@@ -34,6 +35,7 @@ export type InvestmentProduct = {
 		llm_family: OpenAiModelFamily;
 	};
 	title: string;
+	description: string;
 	trades: Trade[];
 };
 
