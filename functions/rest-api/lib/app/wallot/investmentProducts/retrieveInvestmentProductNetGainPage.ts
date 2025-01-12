@@ -11,10 +11,8 @@ export const retrieveInvestmentProductNetGainPage = async (
 	_body: Record<string, never>,
 	_params: Record<string, never>,
 	_query: Record<string, never>,
-	firebaseUser: FirebaseUser | null,
+	_firebaseUser: FirebaseUser | null,
 ): Promise<FunctionResponse<InvestmentProductNetGainPage>> => {
-	if (!firebaseUser) throw new Error('Unauthorized');
-
 	// Query the database for the investment product net gains
 	const investmentProductNetGainsSnapshot = await db
 		.collection('investment_product_net_gains_after_one_month')
