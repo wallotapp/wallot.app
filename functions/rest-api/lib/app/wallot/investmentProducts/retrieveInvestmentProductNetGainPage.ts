@@ -72,7 +72,7 @@ export const retrieveInvestmentProductNetGainPage = async (
 		page_size: numProducts,
 		products: investmentProductNetGainsWithMostRecentFirst,
 		summary: {
-			description: `Wallot AI has generated ${numProducts} investment products historically. ${numWinners} of these products have posted positive returns, and ${numLosers} have posted negative returns, resulting in a hit rate of ${hitRatePercentageString}.`,
+			description: `Wallot AI has generated ${numProducts} investment products since our launch in September of 2024. ${numWinners} of these products have posted positive returns, and ${numLosers} have posted negative returns, resulting in a hit rate of ${hitRatePercentageString}.`,
 			num_wins: numWinners,
 			num_losses: numLosers,
 			num_total: numProducts,
