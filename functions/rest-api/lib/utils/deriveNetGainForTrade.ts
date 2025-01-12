@@ -66,6 +66,8 @@ export const deriveNetGainForTrade = async (
 		net_gain: netGain * 100,
 		// Decimal (e.g. 0.1 for 10%)
 		net_gain_rate: netGainRate,
+		// Flag for win or loss
+		win: netGain > 0,
 	};
 	return { trade, results };
 };

@@ -21,6 +21,7 @@ export type TradeNetGainResults = {
 	exit_share_price: number; // USD in cents
 	net_gain: number; // USD in cents
 	net_gain_rate: number; // Decimal (e.g. 0.1 for 10%)
+	win: boolean;
 };
 
 export type TradeNetGain = {
