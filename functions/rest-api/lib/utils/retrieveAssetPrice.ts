@@ -7,7 +7,7 @@ import { db, log } from '../services.js';
 
 /**
  * Retrieve an asset price from the database.
- * 
+ *
  * @param symbol - The symbol of the asset.
  * @param timestamp - The timestamp of the asset price in the format 'YYYY-MM-DD'.
  */
