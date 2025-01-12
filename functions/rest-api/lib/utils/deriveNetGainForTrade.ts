@@ -1,5 +1,6 @@
 import {
 	TradeNetGain,
+	TradeNetGainResults,
 	Trade,
 	getFutureDate,
 	getNewYorkDate,
@@ -16,13 +17,18 @@ export const deriveNetGainForTrade = async (
 	const exitDate = getFutureDate(entryDate, daysAfterEntry);
 	const entryAssetPriceParams: [string, string] = [trade.symbol, entryDate];
 	const exitAssetPriceParams: [string, string] = [trade.symbol, exitDate];
-	const [{ close: entryClosePrice }, { close: exitClosePrice }] =
-		await Promise.all([
-			retrieveAssetPrice(entryAssetPriceParams),
-			retrieveAssetPrice(exitAssetPriceParams),
-		]);
+	const [
+		{ close: entrySharePriceStringInDollars },
+		{ close: exitSharePriceStringInDollars },
+	] = await Promise.all([
+		retrieveAssetPrice(entryAssetPriceParams),
+		retrieveAssetPrice(exitAssetPriceParams),
+	]);
 
-	if (entryClosePrice == null || exitClosePrice == null) {
+	if (
+		entrySharePriceStringInDollars == null ||
+		exitSharePriceStringInDollars == null
+	) {
 		const message = 'Fix the asset price data in the database.';
 		log(
 			{
@@ -38,19 +44,27 @@ export const deriveNetGainForTrade = async (
 		throw new Error(message);
 	}
 
-	const entryNumShares = getNumSharesForTrade(trade, entryClosePrice);
-	const entryTotalPrice = entryNumShares * parseFloat(entryClosePrice);
-	const exitTotalPrice = entryNumShares * parseFloat(exitClosePrice);
-	const netGain = exitTotalPrice - entryTotalPrice;
-	const netGainRate = netGain / entryTotalPrice;
-	const results = {
+	const entryNumShares = getNumSharesForTrade(
+		trade,
+		entrySharePriceStringInDollars,
+	);
+	const entryAggregatePriceInDollars = parseFloat(trade.amount);
+	const exitSharePriceInDollars = parseFloat(exitSharePriceStringInDollars);
+	const exitAggregatePriceInDollars = entryNumShares * exitSharePriceInDollars;
+	const netGain = exitAggregatePriceInDollars - entryAggregatePriceInDollars;
+	const netGainRate = netGain / entryAggregatePriceInDollars;
+	const results: TradeNetGainResults = {
 		num_shares: entryNumShares,
 		entry_date: entryDate,
-		entry_price: parseFloat(entryClosePrice),
 		days_held: daysAfterEntry,
 		exit_date: exitDate,
-		exit_price: parseFloat(exitClosePrice),
-		net_gain: netGain,
+		// USD in cents
+		entry_aggregate_price: entryAggregatePriceInDollars * 100,
+		entry_share_price: parseFloat(entrySharePriceStringInDollars) * 100,
+		exit_aggregate_price: exitAggregatePriceInDollars * 100,
+		exit_share_price: exitSharePriceInDollars * 100,
+		net_gain: netGain * 100,
+		// Decimal (e.g. 0.1 for 10%)
 		net_gain_rate: netGainRate,
 	};
 	return { trade, results };

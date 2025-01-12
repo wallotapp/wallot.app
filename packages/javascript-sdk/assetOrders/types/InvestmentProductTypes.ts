@@ -13,12 +13,14 @@ export type Trade = {
 export type TradeNetGainResults = {
 	num_shares: number;
 	entry_date: string;
-	entry_price: number;
+	entry_aggregate_price: number; // USD in cents
+	entry_share_price: number; // USD in cents
 	days_held: number;
 	exit_date: string;
-	exit_price: number;
-	net_gain: number;
-	net_gain_rate: number;
+	exit_aggregate_price: number; // USD in cents
+	exit_share_price: number; // USD in cents
+	net_gain: number; // USD in cents
+	net_gain_rate: number; // Decimal (e.g. 0.1 for 10%)
 };
 
 export type TradeNetGain = {
@@ -41,7 +43,7 @@ export type InvestmentProduct = {
 
 export type InvestmentProductNetGainResults = Omit<
 	TradeNetGainResults,
-	'num_shares'
+	'num_shares' | 'entry_share_price' | 'exit_share_price'
 >;
 export type InvestmentProductNetGain = {
 	investment_product: Omit<InvestmentProduct, 'trades'> & {
