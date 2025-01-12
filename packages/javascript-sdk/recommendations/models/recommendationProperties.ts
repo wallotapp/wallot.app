@@ -52,10 +52,8 @@ const properties = {
 		.nullable()
 		.default(null),
 	model: apiYupHelpers.idRef(['model']).min(1).meta({ unique_key: false }),
-	news_reports: apiYupHelpers.idRefs(['news_report']).min(1),
-	open_ai_api_request_ids: YupHelpers.array(yup.string().defined())
-		.defined()
-		.min(1),
+	news_reports: apiYupHelpers.idRefs(['news_report']),
+	open_ai_api_request_ids: YupHelpers.array(yup.string().defined()).defined(),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: false }),
 } as const;
 type U = typeof properties;
