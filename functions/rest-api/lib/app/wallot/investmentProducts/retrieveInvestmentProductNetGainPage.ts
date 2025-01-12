@@ -42,22 +42,37 @@ export const retrieveInvestmentProductNetGainPage = async (
 	const numWinners = winners.length;
 	const numLosers = losers.length;
 	const hitRate = numWinners / numProducts;
-	const hitRatePercentage = hitRate * 100;
+	const hitRatePercentageRaw = hitRate * 100;
+	const hitRatePercentageString = hitRatePercentageRaw.toFixed(2) + '%';
 	const avgReturnRateForWins =
-		winners.reduce((acc, curr) => acc + curr.results.net_gain_rate, 0) /
-		numWinners;
-	const avgReturnRateForWinsPercentage = avgReturnRateForWins * 100;
+		numWinners === 0
+			? null
+			: winners.reduce((acc, curr) => acc + curr.results.net_gain_rate, 0) /
+			  numWinners;
+	const avgReturnRateForWinsPercentageRaw =
+		avgReturnRateForWins == null ? null : avgReturnRateForWins * 100;
+	const avgReturnRateForWinsPercentageString =
+		avgReturnRateForWinsPercentageRaw == null
+			? null
+			: avgReturnRateForWinsPercentageRaw.toFixed(2) + '%';
 	const avgLossRateForLosses =
-		losers.reduce((acc, curr) => acc + curr.results.net_gain_rate, 0) /
-		numLosers;
-	const avgLossRateForLossesPercentage = avgLossRateForLosses * 100;
+		numLosers === 0
+			? null
+			: losers.reduce((acc, curr) => acc + curr.results.net_gain_rate, 0) /
+			  numLosers;
+	const avgLossRateForLossesPercentageRaw =
+		avgLossRateForLosses == null ? null : avgLossRateForLosses * 100;
+	const avgLossRateForLossesPercentageString =
+		avgLossRateForLossesPercentageRaw == null
+			? null
+			: avgLossRateForLossesPercentageRaw.toFixed(2) + '%';
 	const investmentProductNetGainsPage: InvestmentProductNetGainPage = {
 		page: 1,
 		num_pages: 1,
 		page_size: numProducts,
 		products: investmentProductNetGainsWithMostRecentFirst,
 		summary: {
-			description: `Wallot AI has generated ${numProducts} investment products historically. ${numWinners} of these products have posted positive returns, and ${numLosers} have posted negative returns, resulting in a hit rate of ${hitRatePercentage}. The average return rate for products in the green is ${avgReturnRateForWinsPercentage}, and the average loss rate for products in the red is ${avgLossRateForLossesPercentage}.`,
+			description: `Wallot AI has generated ${numProducts} investment products historically. ${numWinners} of these products have posted positive returns, and ${numLosers} have posted negative returns, resulting in a hit rate of ${hitRatePercentageString}.`,
 			num_wins: numWinners,
 			num_losses: numLosers,
 			num_total: numProducts,
@@ -66,6 +81,12 @@ export const retrieveInvestmentProductNetGainPage = async (
 			avg_loss_rate_for_losses: avgLossRateForLosses, // Percentage
 		},
 	};
+	if (avgReturnRateForWinsPercentageString != null) {
+		investmentProductNetGainsPage.summary.description += ` The average return rate for winning products has been ${avgReturnRateForWinsPercentageString}.`;
+	}
+	if (avgLossRateForLossesPercentageString != null) {
+		investmentProductNetGainsPage.summary.description += ` The average loss rate for losing products has been ${avgLossRateForLossesPercentageString}.`;
+	}
 
 	return { json: investmentProductNetGainsPage };
 };

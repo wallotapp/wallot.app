@@ -74,7 +74,7 @@ export type InvestmentProductNetGainPage = {
 		num_losses: number;
 		num_total: number;
 		hit_rate: number; // Percentage
-		avg_return_rate_for_wins: number; // Percentage
-		avg_loss_rate_for_losses: number; // Percentage
+		avg_return_rate_for_wins: number | null; // Decimal (e.g. 0.1 for 10%) -- null if no winners
+		avg_loss_rate_for_losses: number | null; // Decimal (e.g. 0.1 for 10%) -- null if no losers
 	};
 };

@@ -12,16 +12,24 @@ import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import {
 	initialRetrieveInvestmentProductNetGainPageQueryKey,
 	initialRetrieveInvestmentProductNetGainPageSearchParams,
+	useRetrieveInvestmentProductNetGainPage,
 } from '@wallot/react/src/features/assetOrders/hooks/useRetrieveInvestmentProductNetGainPage';
 import { queryClient } from 'ergonomic-react/src/lib/tanstackQuery';
 import { dehydrate } from '@tanstack/react-query';
 import { retrieveInvestmentProductNetGainPage } from '@wallot/react/src/features/assetOrders/api/retrieveInvestmentProductNetGainPage';
+import { AccountDashboardPageSuspense } from '@wallot/home-site/src/components/AccountDashboardPage';
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== Hooks ==== //
 
 	// Router
 	const router = useRouter();
+
+	// Investment Product Net Gains
+	const {
+		data: investmentProductNetGainPage,
+		isLoading: isInvestmentProductNetGainPageLoading,
+	} = useRetrieveInvestmentProductNetGainPage({});
 
 	// ==== Constants ==== //
 
@@ -57,27 +65,31 @@ const Page: NextPage<PageProps> = (props) => {
 				>
 					<div className='container p-8 rounded-lg shadow'>
 						<header className='mb-6'>
-							<h1 className='text-3xl font-bold'>Return on Investment</h1>
-							<p className='text-gray-600'>
+							<h1 className='text-3xl font-bold'>
 								How well has Wallot AI performed historically?
-							</p>
+							</h1>
+							<p className='text-gray-600'>Let's take a look</p>
 						</header>
 
-						<section id='introduction' className='mb-6'>
-							<h2 className='text-2xl font-semibold'>Summary</h2>
-							<p className='mt-1 font-light text-sm'>
-								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
-								printing and typesetting industry. Lorem Ipsum has been the
-								industry's standard dummy text ever since the 1500s, when an
-								unknown printer took a galley of type and scrambled it to make a
-								type specimen book. It has survived not only five centuries, but
-								also the leap into electronic typesetting, remaining essentially
-								unchanged. It was popularised in the 1960s with the release of
-								Letraset sheets containing Lorem Ipsum passages, and more
-								recently with desktop publishing software like Aldus PageMaker
-								including versions of Lorem Ipsum
-							</p>
-						</section>
+						<div
+							className={cn(
+								isInvestmentProductNetGainPageLoading ? 'block' : 'hidden',
+							)}
+						>
+							<AccountDashboardPageSuspense length={4} />
+						</div>
+						<div
+							className={cn(
+								isInvestmentProductNetGainPageLoading ? 'hidden' : 'block',
+							)}
+						>
+							<section id='introduction' className='mb-6'>
+								<h2 className='text-2xl font-semibold'>Summary</h2>
+								<p className='mt-1 font-normal text-base'>
+									{investmentProductNetGainPage?.summary.description}
+								</p>
+							</section>
+						</div>
 
 						<Separator />
 
