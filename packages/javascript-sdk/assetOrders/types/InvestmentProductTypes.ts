@@ -44,6 +44,8 @@ export type InvestmentProductNetGainResults = Omit<
 	'num_shares'
 >;
 export type InvestmentProductNetGain = {
-	investment_product: InvestmentProduct;
+	investment_product: Omit<InvestmentProduct, 'trades'> & {
+		trades: TradeNetGain[];
+	};
 	results: InvestmentProductNetGainResults;
 };
