@@ -1,4 +1,3 @@
-import * as React from 'react';
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -10,6 +9,13 @@ import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { PageHeader } from '@wallot/react/src/components/PageHeader';
 import { HomeSiteRouteQueryParams } from '@wallot/js';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
+import {
+	initialRetrieveInvestmentProductNetGainPageQueryKey,
+	initialRetrieveInvestmentProductNetGainPageSearchParams,
+} from '@wallot/react/src/features/assetOrders/hooks/useRetrieveInvestmentProductNetGainPage';
+import { queryClient } from 'ergonomic-react/src/lib/tanstackQuery';
+import { dehydrate } from '@tanstack/react-query';
+import { retrieveInvestmentProductNetGainPage } from '@wallot/react/src/features/assetOrders/api/retrieveInvestmentProductNetGainPage';
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== Hooks ==== //
@@ -114,12 +120,21 @@ const ROUTE_STATIC_ID = 'HOME_SITE__/TERMS' as const;
 type RouteQueryParams = HomeSiteRouteQueryParams[typeof ROUTE_STATIC_ID];
 
 export const getStaticProps: GetStaticProps<PageStaticProps> = async () => {
+	// Prefetch the default query data
+	await queryClient.prefetchQuery(
+		initialRetrieveInvestmentProductNetGainPageQueryKey,
+		() =>
+			retrieveInvestmentProductNetGainPage(
+				initialRetrieveInvestmentProductNetGainPageSearchParams,
+			),
+	);
+
 	// Route Static Props
 	const ROUTE_STATIC_PROPS: PageStaticProps = {
 		routeStaticId: ROUTE_STATIC_ID,
 		title: 'Return on Investment',
 	};
 	return Promise.resolve({
-		props: ROUTE_STATIC_PROPS,
+		props: { ...ROUTE_STATIC_PROPS, dehydratedState: dehydrate(queryClient) },
 	});
 };

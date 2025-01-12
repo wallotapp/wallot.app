@@ -3,6 +3,20 @@ import { InvestmentProductNetGainPage } from '@wallot/js';
 import { retrieveInvestmentProductNetGainPage } from '@wallot/react/src/features/assetOrders/api/retrieveInvestmentProductNetGainPage';
 import { GeneralizedError } from 'ergonomic';
 
+export const initialRetrieveInvestmentProductNetGainPageSearchParams: Record<
+	string,
+	never
+> = {};
+export function getRetrieveInvestmentProductNetGainPageQueryKey(
+	searchParams: Record<string, never>,
+) {
+	return ['retrieveInvestmentProductNetGainPage' as const, searchParams];
+}
+export const initialRetrieveInvestmentProductNetGainPageQueryKey =
+	getRetrieveInvestmentProductNetGainPageQueryKey(
+		initialRetrieveInvestmentProductNetGainPageSearchParams,
+	);
+
 export function useRetrieveInvestmentProductNetGainPage(
 	searchParams: Record<string, never>,
 	options?: UseQueryOptions<
