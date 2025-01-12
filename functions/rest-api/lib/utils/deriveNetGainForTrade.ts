@@ -1,7 +1,20 @@
+import { getFutureDate, getNewYorkDate } from '@wallot/js';
+import { retrieveAssetPrice } from './retrieveAssetPrice.js';
+
 export const deriveNetGainForTrade = async (
 	trade: Trade,
 	daysAfterEntry = 30,
 ): Promise<number> => {
+	const entryDate = getNewYorkDate(trade.date);
+	const entryAssetPriceParams: [string, string] = [trade.symbol, entryDate];
+	const exitAssetPriceParams: [string, string] = [
+		trade.symbol,
+		getFutureDate(entryDate, daysAfterEntry),
+	];
+	const [entryAssetPrice, exitAssetPrice] = await Promise.all([
+		retrieveAssetPrice(entryAssetPriceParams),
+		retrieveAssetPrice(exitAssetPriceParams),
+	]);
 	throw new Error('Not implemented');
 };
 
