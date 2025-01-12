@@ -56,7 +56,8 @@
 		"ts-jest": "^29.1.0",
 		"typescript": "^5.4.5",
 		"@types/cors": "^2.8.13",
-		"@types/express": "^4.17.17"
+		"@types/express": "^4.17.17",
+		"nodemon": "^3.1.9"
 	},
 	"engines": {
 		"node": "16"
@@ -68,7 +69,7 @@
 		"build": "echo 'No build script configured'",
 		"clean": "rm -rf ./dist",
 		"deploy": "firebase deploy --project $npm_config_deployment_environment --debug --only functions --token \"$FIREBASE_TOKEN\"",
-		"dev": "cross-env NODE_ENV=development PACKAGE_VERSION=$(node -p \"require('./package.json').version\") node --experimental-specifier-resolution=node ./dist/serve.js",
+		"dev": "cross-env NODE_ENV=development PACKAGE_VERSION=$(node -p \"require('./package.json').version\") nodemon --watch .env --watch ./dist --watch ../../packages/javascript-sdk --watch ../../packages/node-sdk --exec \"node --experimental-specifier-resolution=node ./dist/serve.js\"",
 		"lint": "echo 'No lint script configured'",
 		"start": "cross-env NODE_ENV=production node --experimental-specifier-resolution=node ./dist/serve.js",
 		"test": "echo 'No test script configured'"

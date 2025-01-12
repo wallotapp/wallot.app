@@ -6,6 +6,7 @@ import {
 	getHomeSiteRoute,
 	ordersApi,
 	recommendationsApi,
+	UpdateRecommendationParams,
 	usersApi,
 } from '@wallot/js';
 import { FunctionResponse } from '@wallot/node';
@@ -14,6 +15,7 @@ import { siteOriginByTarget } from '../../../variables.js';
 import { locateCompatibleParameters } from '../parameters/locateCompatibleParameters.js';
 import { createAssetOrdersFromRecommendation } from '../assetOrders/createAssetOrdersFromRecommendation.js';
 import { createRecommendationForUser } from '../recommendations/createRecommendationForUser.js';
+import { createInvestmentProductFromRecommendation } from '../investmentProducts/createInvestmentProductFromRecommendation.js';
 import { cancelActivationReminderEmails } from './cancelActivationReminderEmails.js';
 import { placeUserInEmailCohorts } from './placeUserInEmailCohorts.js';
 import { scheduleOrderCompletionReminderEmail } from './scheduleOrderCompletionReminderEmail.js';
@@ -111,6 +113,30 @@ export const activateUser = async (
 
 	// Construct the post-response callback
 	const onFinished = async () => {
+		// Create an InvestmentProduct for this recommendation
+		const investmentProduct = await createInvestmentProductFromRecommendation(
+			recommendation,
+		);
+
+		// Create a batch
+		const batch = db.batch();
+
+		// Update the recommendation
+		const investmentProductPath = `investment_products/${investmentProduct.id}`;
+		const updateRecommendationParams: UpdateRecommendationParams = {
+			investment_product_path: investmentProductPath,
+		};
+		batch.update(
+			db.collection(recommendationsApi.collectionId).doc(recommendation._id),
+			updateRecommendationParams,
+		);
+
+		// Save the investment product
+		batch.set(db.doc(investmentProductPath), investmentProduct);
+
+		// Commit the batch
+		await batch.commit();
+
 		// Cancel activation reminder emails for USER (if any are remaining)
 		await cancelActivationReminderEmails({ userId: firebaseUser.uid });
 

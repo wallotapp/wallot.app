@@ -36,6 +36,7 @@ import {
 	UpdateAlpacaAccountParams,
 	CreateAlpacaAccessTokenParams,
 	CreateAlpacaAccessTokenResponse,
+	InvestmentProductNetGainPage,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -289,6 +290,35 @@ app.get(
 	},
 );
 
+// Products
+import { retrieveInvestmentProductNetGainPage } from './app/wallot/investmentProducts/retrieveInvestmentProductNetGainPage.js';
+app.options('*/v0/products/roi', corsPolicy);
+app.get(
+	'*/v0/products/roi',
+	(
+		req: express.Request<
+			Record<string, never>,
+			InvestmentProductNetGainPage,
+			Record<string, never>,
+			Record<string, never>
+		>,
+		res: express.Response<
+			InvestmentProductNetGainPage,
+			GeneralizedResLocals<InvestmentProductNetGainPage>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(
+				retrieveInvestmentProductNetGainPage,
+				{ requiresAuth: false },
+			)(req, res, next),
+		);
+	},
+);
+
 // Users
 import { registerUser } from './app/wallot/users/registerUser.js';
 app.options('*/v0/users', corsPolicy);
@@ -489,6 +519,13 @@ addHealthRoutesToExpressApp(app, {
 	gmailApiServiceAccountPath,
 	mockApiResource,
 });
+
+// Hot reload check
+if (secrets.SECRET_CRED_SERVER_PROTOCOL === 'http') {
+	app.get('/v0/hot', (_req, res) => {
+		res.status(200).send({ noop: variables.NOOP });
+	});
+}
 
 // ---- End of Invocation Middleware ---- //
 app.use(sendExpressResponse());

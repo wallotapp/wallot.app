@@ -18,6 +18,7 @@ export const HomeSiteRouteStaticIdEnum = getEnum([
 	'HOME_SITE__/ORDERS/[ORDER_ID]/CONGRATULATIONS',
 	'HOME_SITE__/ORDERS/[ORDER_ID]/TRACK',
 	'HOME_SITE__/PRIVACY',
+	'HOME_SITE__/ROI',
 	'HOME_SITE__/TERMS',
 ]);
 export type HomeSiteRouteStaticId = EnumMember<
@@ -76,6 +77,7 @@ export type HomeSiteRouteQueryParams = {
 		order_id: string | undefined;
 	};
 	'HOME_SITE__/PRIVACY': { client_token?: string | undefined };
+	'HOME_SITE__/ROI': { client_token?: string | undefined };
 	'HOME_SITE__/TERMS': { client_token?: string | undefined };
 };
 

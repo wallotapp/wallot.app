@@ -44,11 +44,16 @@ const properties = {
 		.defined()
 		.min(1),
 	category: RecommendationCategoryEnum.getDefinedSchema(),
+	/** Firestore DB collection path to the `InvestmentProduct`, formatted as 'investment_products/...' */
+	investment_product_path: yup.string().nullable().default(null),
+	/** Firestore DB collection path to the `InvestmentProductNetGains`, formatted as 'investment_product_net_gains_after_one_month/...' */
+	investment_product_net_gains_after_one_month_path: yup
+		.string()
+		.nullable()
+		.default(null),
 	model: apiYupHelpers.idRef(['model']).min(1).meta({ unique_key: false }),
-	news_reports: apiYupHelpers.idRefs(['news_report']).min(1),
-	open_ai_api_request_ids: YupHelpers.array(yup.string().defined())
-		.defined()
-		.min(1),
+	news_reports: apiYupHelpers.idRefs(['news_report']),
+	open_ai_api_request_ids: YupHelpers.array(yup.string().defined()).defined(),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: false }),
 } as const;
 type U = typeof properties;
