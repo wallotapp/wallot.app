@@ -47,6 +47,7 @@ export const deriveNetGainForTrade = async (
 		num_shares: entryNumShares,
 		entry_date: entryDate,
 		entry_price: parseFloat(entryClosePrice),
+		days_held: daysAfterEntry,
 		exit_date: exitDate,
 		exit_price: parseFloat(exitClosePrice),
 		net_gain: netGain,

@@ -8,6 +8,7 @@ export type NetGain = {
 	num_shares: number;
 	entry_date: string;
 	entry_price: number;
+	days_held: number;
 	exit_date: string;
 	exit_price: number;
 	net_gain: number;
