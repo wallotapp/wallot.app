@@ -1,4 +1,4 @@
-import { Trade } from '../types/TradeTypes.js';
+import { Trade } from '../types/InvestmentProductTypes.js';
 
 export const getNumSharesForTrade = (
 	{ amount: investmentAmount }: Pick<Trade, 'amount'>,

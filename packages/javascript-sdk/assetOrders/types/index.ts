@@ -1,1 +1,1 @@
-export * from './TradeTypes.js';
+export * from './InvestmentProductTypes.js';
