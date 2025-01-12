@@ -143,19 +143,13 @@ const Page: NextPage<PageProps> = (props) => {
 														{/* Product Info */}
 														<div className='text-sm'>
 															<dl>
-																<div className='flex items-baseline space-x-2'>
-																	<dt className='font-medium text-gray-700'>
-																		Title:
-																	</dt>
-																	<dd>{productTitle}</dd>
+																<div className='flex items-baseline space-x-2 font-semibold text-base'>
+																	{productTitle}
 																</div>
-																<div className='flex items-baseline space-x-2'>
-																	<dt className='font-medium text-gray-700'>
-																		Description:
-																	</dt>
-																	<dd>{productDescription}</dd>
+																<div className='flex items-baseline space-x-2 font-light text-xs'>
+																	{productDescription}
 																</div>
-																<div className='flex items-baseline space-x-2'>
+																<div className='flex items-baseline space-x-2 text-xs mt-2'>
 																	<dt className='font-medium text-gray-700'>
 																		Position held:
 																	</dt>
@@ -163,7 +157,7 @@ const Page: NextPage<PageProps> = (props) => {
 																		{productEntryDate} through {productExitDate}
 																	</dd>
 																</div>
-																<div className='flex items-baseline space-x-2'>
+																<div className='flex items-baseline space-x-2 text-xs'>
 																	<dt className='font-medium text-gray-700'>
 																		Result:
 																	</dt>
