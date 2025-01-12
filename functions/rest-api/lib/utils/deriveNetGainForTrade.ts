@@ -43,7 +43,7 @@ export const deriveNetGainForTrade = async (
 	const exitTotalPrice = entryNumShares * parseFloat(exitClosePrice);
 	const netGain = exitTotalPrice - entryTotalPrice;
 	const netGainRate = netGain / entryTotalPrice;
-	return {
+	const results = {
 		num_shares: entryNumShares,
 		entry_date: entryDate,
 		entry_price: parseFloat(entryClosePrice),
@@ -53,4 +53,5 @@ export const deriveNetGainForTrade = async (
 		net_gain: netGain,
 		net_gain_rate: netGainRate,
 	};
+	return { trade, results };
 };

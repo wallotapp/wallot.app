@@ -4,7 +4,7 @@ export type Trade = {
 	symbol: string;
 };
 
-export type NetGain = {
+export type NetGainResults = {
 	num_shares: number;
 	entry_date: string;
 	entry_price: number;
@@ -13,4 +13,9 @@ export type NetGain = {
 	exit_price: number;
 	net_gain: number;
 	net_gain_rate: number;
+};
+
+export type NetGain = {
+	trade: Trade;
+	results: NetGainResults;
 };
