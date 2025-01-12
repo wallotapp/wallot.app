@@ -113,7 +113,10 @@ export const createInvestmentProductFromRecommendation = async (
 	}
 
 	// Construct the investment product
-	const investmentProductId = v4();
+	const investmentProductId =
+		recommendation.investment_product_path == null
+			? v4()
+			: recommendation.investment_product_path.split('/').pop() ?? v4();
 	const investmentProduct: InvestmentProduct = {
 		entry_date: entryDate,
 		id: investmentProductId,
