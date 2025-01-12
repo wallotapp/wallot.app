@@ -1,5 +1,5 @@
 import {
-	NetGain,
+	TradeNetGain,
 	Trade,
 	getFutureDate,
 	getNewYorkDate,
@@ -11,7 +11,7 @@ import { log } from '../services.js';
 export const deriveNetGainForTrade = async (
 	trade: Trade,
 	daysAfterEntry = 30,
-): Promise<NetGain> => {
+): Promise<TradeNetGain> => {
 	const entryDate = getNewYorkDate(trade.date);
 	const exitDate = getFutureDate(entryDate, daysAfterEntry);
 	const entryAssetPriceParams: [string, string] = [trade.symbol, entryDate];
