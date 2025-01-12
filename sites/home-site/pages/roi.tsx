@@ -210,7 +210,7 @@ const Page: NextPage<PageProps> = (props) => {
 																	<div className='flex items-baseline space-x-2 font-semibold text-base'>
 																		{productTitle}
 																	</div>
-																	<div className='flex items-baseline space-x-2 font-light text-xs'>
+																	<div className='hidden'>
 																		{productDescription}
 																	</div>
 																	<div className='flex items-baseline space-x-2 text-xs mt-2'>
