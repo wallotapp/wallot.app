@@ -28,6 +28,9 @@ export const retrieveAssetPrice = async ([symbol, timestamp]: Parameters<
 			{
 				code: 'MISSING_ASSET_PRICE_ERROR',
 				message,
+				symbol,
+				timestamp,
+				name,
 			},
 			{ type: 'error' },
 		);
