@@ -58,7 +58,6 @@
 		"@tanstack/react-query": "^4.16.1",
 		"@tanstack/react-query-devtools": "^4.16.1",
 		"@uiw/react-md-editor": "^4.0.4",
-		"@videojs/themes": "^1.0.1",
 		"@xstate/react": "^3.2.2",
 		"class-variance-authority": "^0.6.0",
 		"clsx": "^1.2.1",
@@ -86,8 +85,7 @@
 		"react-select": "^5.8.1",
 		"tailwindcss": "^3.2.6",
 		"tailwindcss-animate": "^1.0.6",
-		"tailwind-merge": "^1.13.1",
-		"video.js": "^8.21.0"
+		"tailwind-merge": "^1.13.1"
 	},
 	"description": "Wallot Status Site",
 	"devDependencies": {
