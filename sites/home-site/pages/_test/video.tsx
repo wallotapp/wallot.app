@@ -27,15 +27,11 @@ const Page: NextPage = () => {
 				<div className='relative max-h-96 h-96 max-w-[42.67rem] w-[42.67rem]'>
 					{showVideo ? (
 						<Fragment>
-							<Skeleton
-								className='absolute top-0 left-0 w-full h-full !bg-gray-400 rounded-xl'
-								style={{ zIndex: 4 }}
-							/>
+							<Skeleton className='absolute top-0 left-0 w-full h-full !bg-gray-400 rounded-xl z-[4]' />
 							<iframe
 								allow='autoplay; fullscreen; picture-in-picture'
 								src={videoSrc}
-								className='absolute top-0 left-0 max-h-96 h-96 max-w-[42.67rem] w-[42.67rem] rounded-xl'
-								style={{ zIndex: 5 }}
+								className='absolute top-0 left-0 max-h-96 h-96 max-w-[42.67rem] w-[42.67rem] rounded-xl z-[5]'
 							/>
 						</Fragment>
 					) : (
@@ -50,17 +46,15 @@ const Page: NextPage = () => {
 							{/* Dark overlay */}
 							<div
 								onClick={() => setShowVideo(true)}
-								className='absolute top-0 left-0 w-full h-full bg-black opacity-20 rounded-xl cursor-pointer'
-								style={{ zIndex: 5 }}
+								className='absolute top-0 left-0 w-full h-full bg-black opacity-20 rounded-xl cursor-pointer z-[5]'
 							/>
 							{/* Play button/icon */}
 							<button
 								onClick={() => setShowVideo(true)}
-								className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white'
-								style={{ zIndex: 10, fontSize: '3rem' }} // Increase icon size as desired
+								className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white z-10'
 								aria-label='Play Video'
 							>
-								<BsPlayCircleFill />
+								<BsPlayCircleFill className='text-7xl' />
 							</button>
 						</Fragment>
 					)}
