@@ -28,7 +28,7 @@ const Page: NextPage<PostPageProps> = ({ frontMatter, mdx }) => {
 				<div>
 					<p>Here's some MDX</p>
 				</div>
-				<div>
+				<div className='mt-4 max-w-3xl mx-auto'>
 					<Prose>
 						<MDXRemote
 							{...mdx}
