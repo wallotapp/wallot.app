@@ -1,8 +1,5 @@
 import '@stripe/stripe-js';
 import '@wallot/home-site/styles/globals.css';
-import { default as _videojs } from 'video.js';
-import 'video.js/dist/video-js.css';
-import '@videojs/themes/dist/city/index.css';
 import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
 import { QueryClientProvider, Hydrate } from '@tanstack/react-query';

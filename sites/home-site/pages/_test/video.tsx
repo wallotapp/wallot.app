@@ -1,11 +1,18 @@
 import type { NextPage } from 'next';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
+import Image from 'next/image';
 import { useIsMounted } from 'ergonomic-react/src/hooks/useIsMounted';
+import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
+import { BsPlayCircleFill } from 'react-icons/bs';
+
+const thumbnailSrc =
+	'https://firebasestorage.googleapis.com/v0/b/app-wallot-production.appspot.com/o/_test%2Fthumbnail.png?alt=media&token=3b996e8a-421e-44d0-b6c7-e206fce01e57';
 const videoSrc =
-	'https://firebasestorage.googleapis.com/v0/b/app-wallot-production.appspot.com/o/_test%2FIMG_0297.mp4?alt=media&token=7ef0ecf4-c2e4-4336-852c-104c67b994d8';
+	'https://www.loom.com/embed/f07510d7faeb47f3917d9e3766589f4e' + '?autoplay=1';
 
 const Page: NextPage = () => {
 	const isMounted = useIsMounted();
+	const [showVideo, setShowVideo] = useState(false);
 
 	if (!isMounted) {
 		return null;
@@ -13,31 +20,53 @@ const Page: NextPage = () => {
 
 	return (
 		<Fragment>
-			<div className=''>
+			<div className='p-10'>
 				<div>
 					<p>Here's a nice video</p>
 				</div>
-				<div className=''>
-					<video
-						controls
-						tabIndex={-1}
-						className='!rounded-lg video-js max-h-96 h-96 max-w-[42.67rem] w-[42.67rem]'
-						data-ready='true'
-						data-setup='{}'
-					>
-						<source src={videoSrc} type='video/mp4' />
-						{/* adjust MIME type as needed */}
-						<p className='vjs-no-js'>
-							To view this video please enable JavaScript, and consider
-							upgrading to a web browser that
-							<a
-								href='https://videojs.com/html5-video-support/'
-								target='_blank'
+				<div className='relative max-h-96 h-96 max-w-[42.67rem] w-[42.67rem]'>
+					{showVideo ? (
+						<Fragment>
+							<Skeleton
+								className='absolute top-0 left-0 w-full h-full !bg-gray-400 rounded-xl'
+								style={{ zIndex: 4 }}
+							/>
+							<iframe
+								allow='autoplay; fullscreen; picture-in-picture'
+								src={videoSrc}
+								className='absolute top-0 left-0 max-h-96 h-96 max-w-[42.67rem] w-[42.67rem] rounded-xl'
+								style={{ zIndex: 5 }}
+							/>
+						</Fragment>
+					) : (
+						<Fragment>
+							<Image
+								src={thumbnailSrc}
+								alt='Video Poster'
+								layout='fill'
+								objectFit='cover'
+								className='absolute top-0 left-0 rounded-xl'
+							/>
+							{/* Dark overlay */}
+							<div
+								onClick={() => setShowVideo(true)}
+								className='absolute top-0 left-0 w-full h-full bg-black opacity-20 rounded-xl cursor-pointer'
+								style={{ zIndex: 5 }}
+							/>
+							{/* Play button/icon */}
+							<button
+								onClick={() => setShowVideo(true)}
+								className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white'
+								style={{ zIndex: 10, fontSize: '3rem' }} // Increase icon size as desired
+								aria-label='Play Video'
 							>
-								supports HTML5 video
-							</a>
-						</p>
-					</video>
+								<BsPlayCircleFill />
+							</button>
+						</Fragment>
+					)}
+				</div>
+				<div>
+					<figcaption>Let us know if you like it!</figcaption>
 				</div>
 			</div>
 		</Fragment>
