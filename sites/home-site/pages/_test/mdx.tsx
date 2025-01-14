@@ -78,6 +78,12 @@ with desktop publishing software like Aldus.
   priority
 />
 
+## Links
+
+<ExLink href="https://www.pcisecuritystandards.org/">PCI DSS</ExLink> (Payment Card
+Industry Data Security Standard) is a set of security standards designed to ensure
+that all companies that accept, process, store, or transmit [credit card](https://en.wikipedia.org/wiki/Credit_card)
+information maintain a secure environment.
 `,
 		frontMatter: {
 			date_published: '2025-01-13T00:00:00.000Z',
