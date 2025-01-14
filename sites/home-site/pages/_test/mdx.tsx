@@ -110,6 +110,17 @@ Here are the steps to bake a cake:
   code={exampleCodeSnippet}
   language="javascript"
 />
+
+## Charts with Mermaid
+
+Fuse cutouts and reclosers work together to protect the distribution system from faults, disconnecting the faulty section while allowing the rest of the system to remain operational.
+
+<Mermaid
+  chart={\`
+  graph TD;
+    A[Distribution Transformer] --> B[Feeder];
+    B --> C[Main and Laterals];\`}
+/>
   `,
 		frontMatter: {
 			date_published: '2025-01-13T00:00:00.000Z',

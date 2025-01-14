@@ -4,6 +4,7 @@ import { InlineMath, BlockMath } from 'react-katex';
 import { Heading } from '@wallot/react/src/components/Heading';
 import { ExLink } from '@wallot/react/src/components/ExternalLink';
 import { MonacoCodeSnippet } from '@wallot/react/src/components/MonacoCodeSnippet';
+import '@wallot/react/src/config/mermaidConfig';
 
 type GetMDXComponentProps = {
 	frontMatter: {

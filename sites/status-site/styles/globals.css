@@ -89,3 +89,8 @@ body,
 .prose span.katex-html {
 	@apply hidden;
 }
+
+.prose .mermaid .node rect {
+	rx: 7; /* Horizontal border radius */
+	ry: 7; /* Vertical border radius */
+}
