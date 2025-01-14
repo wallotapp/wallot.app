@@ -6,7 +6,7 @@ import { default as mdxMermaid } from 'mdx-mermaid';
 import { serialize } from 'next-mdx-remote/serialize';
 import { Prose } from '@wallot/react/src/components/Prose';
 import { getMDXComponents } from '@wallot/react/src/components/getMDXComponents';
-import { exampleCodeSnippet } from '@wallot/react/src/components/MonacoCodeSnippet';
+import { exampleCodeSnippet } from '@wallot/react/src/utils/exampleCodeSnippet';
 
 type PostPageProps = {
 	frontMatter: {

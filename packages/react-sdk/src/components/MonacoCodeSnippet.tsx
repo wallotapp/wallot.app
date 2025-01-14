@@ -6,6 +6,7 @@ import {
 import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import cn from 'ergonomic-react/src/lib/cn';
+import { loadNightOwl } from '@wallot/react/src/config/monacoConfig';
 
 export type MonacoCodeSnippetProps = BaseComponent & {
 	code: string;
@@ -22,22 +23,7 @@ export const MonacoCodeSnippet: React.FC<MonacoCodeSnippetProps> = ({
 
 	useEffect(() => {
 		if (isThemeLoaded) return;
-		return void (async () => {
-			const monaco = await MonacoEditorLoader.init();
-			type DefineThemeFn = typeof monaco.editor.defineTheme;
-			type ThemeArgument = Parameters<DefineThemeFn>[1];
-			const data = (await import(
-				'monaco-themes/themes/Night Owl.json'
-			)) as unknown as {
-				base: string;
-				inherit: boolean;
-				rules: Record<string, unknown>[];
-				encodedTokensColors?: string[];
-				colors: Record<string, unknown>;
-			};
-			monaco.editor.defineTheme('NightOwl', data as unknown as ThemeArgument);
-			setIsThemeLoaded(true);
-		})();
+		return void loadNightOwl(MonacoEditorLoader, setIsThemeLoaded);
 	}, [isThemeLoaded]);
 
 	return (
@@ -74,24 +60,3 @@ export const MonacoCodeSnippet: React.FC<MonacoCodeSnippetProps> = ({
 		</div>
 	);
 };
-
-export const exampleCodeSnippet = `import * as yup from 'yup';
-
-const schema = yup.object().shape({
-	name: yup.string().required(),
-	age: yup.number().required().positive().integer(),
-});
-
-const data = {
-	name: 'John Doe',
-	age: 30,
-};
-
-schema
-	.validate(data)
-	.then(() => {
-		console.log('Data is valid');
-	})
-	.catch((err) => {
-		console.log(err.errors);
-	});`;
