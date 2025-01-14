@@ -8,12 +8,15 @@ import { Prose } from '@wallot/react/src/components/Prose';
 import { getMDXComponents } from '@wallot/react/src/components/getMDXComponents';
 import { exampleCodeSnippet } from '@wallot/react/src/utils/exampleCodeSnippet';
 
+type FrontMatterData = {
+	date_published: string;
+	parent: string;
+	title: string;
+};
+type FrontMatter = FrontMatterData & { footnoteIds?: string[] };
+type MdxFile = { content: string; frontMatter: FrontMatter };
 type PostPageProps = {
-	frontMatter: {
-		date_published: string;
-		parent: string;
-		title: string;
-	};
+	frontMatter: FrontMatter;
 	mdx: Omit<MDXRemoteProps, 'components'>;
 	scope: Record<string, unknown>;
 };
@@ -48,7 +51,7 @@ const Page: NextPage<PostPageProps> = ({ frontMatter, mdx, scope }) => {
 export default Page;
 
 export const getStaticProps = async () => {
-	const mdxFile = {
+	const mdxFile: MdxFile = {
 		content: `---
 date_published: "2025-01-13T00:00:00.000Z"
 parent: ""
@@ -182,7 +185,14 @@ Fuse cutouts and reclosers work together to protect the distribution system from
 			title: 'Hello world, this is a blog!',
 		},
 	};
-	const mdxContent = await serialize(mdxFile.content.split('---').pop() ?? '', {
+	const mdxContent = mdxFile.content.split('---').pop() ?? '';
+	const regex = /<Footnote\s+id="\w+"\s+\/>/g;
+	const footnoteMatches = mdxContent.match(regex) || [];
+	const footnoteIds = footnoteMatches.map((match) =>
+		match.replace('<Footnote id="', '').replace('" />', ''),
+	);
+	mdxFile.frontMatter.footnoteIds = footnoteIds;
+	const mdx = await serialize(mdxContent, {
 		mdxOptions: {
 			remarkPlugins: [[mdxMermaid, { output: 'svg' }]],
 			rehypePlugins: [],
@@ -191,7 +201,7 @@ Fuse cutouts and reclosers work together to protect the distribution system from
 	});
 	const props: PostPageProps = {
 		frontMatter: mdxFile.frontMatter,
-		mdx: mdxContent,
+		mdx,
 		scope: { exampleCodeSnippet },
 	};
 	return {
