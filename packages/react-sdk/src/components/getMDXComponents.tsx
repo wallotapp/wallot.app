@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Mermaid } from 'mdx-mermaid/lib/Mermaid';
 import { InlineMath, BlockMath } from 'react-katex';
 import { Heading } from '@wallot/react/src/components/Heading';
+import { ExLink } from '@wallot/react/src/components/ExternalLink';
 
 type GetMDXComponentProps = {
 	frontMatter: {
@@ -13,6 +14,7 @@ type GetMDXComponentProps = {
 export function getMDXComponents(_: GetMDXComponentProps) {
 	const components: Record<string, T> = {
 		BlockMath: BlockMath as T,
+    ExLink: ExLink as T,
 		Image: Image as unknown as T,
 		InlineMath: InlineMath as T,
 		Mermaid: Mermaid as T,
