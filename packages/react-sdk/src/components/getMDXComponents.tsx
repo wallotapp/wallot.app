@@ -14,7 +14,7 @@ type GetMDXComponentProps = {
 export function getMDXComponents(_: GetMDXComponentProps) {
 	const components: Record<string, T> = {
 		BlockMath: BlockMath as T,
-    ExLink: ExLink as T,
+		ExLink: ExLink as T,
 		Image: Image as unknown as T,
 		InlineMath: InlineMath as T,
 		Mermaid: Mermaid as T,
