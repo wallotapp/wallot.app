@@ -3,6 +3,7 @@ import { Mermaid } from 'mdx-mermaid/lib/Mermaid';
 import { InlineMath, BlockMath } from 'react-katex';
 import { Heading } from '@wallot/react/src/components/Heading';
 import { ExLink } from '@wallot/react/src/components/ExternalLink';
+import { LoomVideo } from '@wallot/react/src/components/LoomVideo';
 import { MonacoCodeSnippet } from '@wallot/react/src/components/MonacoCodeSnippet';
 import '@wallot/react/src/config/mermaidConfig';
 import { getFootnoteComponents } from '@wallot/react/src/components/Footnote';
@@ -15,6 +16,7 @@ export function getMDXComponents(scope: MDXFileScope) {
 		ExLink,
 		Image,
 		InlineMath,
+		LoomVideo,
 		Mermaid,
 		MonacoCodeSnippet,
 		h1: (props: U) => <Heading level={1} {...props} />,

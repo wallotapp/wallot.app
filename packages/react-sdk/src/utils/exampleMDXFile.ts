@@ -34,6 +34,14 @@ with desktop publishing software like Aldus.
   priority
 />
 
+## Videos
+
+<LoomVideo
+  embedId="f07510d7faeb47f3917d9e3766589f4e"
+  thumbnail="https://firebasestorage.googleapis.com/v0/b/app-wallot-production.appspot.com/o/_test%2Fthumbnail.png?alt=media&token=3b996e8a-421e-44d0-b6c7-e206fce01e57"
+  title="A Sample Video"
+/>
+
 ## Links
 
 <ExLink href="https://www.pcisecuritystandards.org/">PCI DSS</ExLink> (Payment Card
