@@ -6,6 +6,7 @@ import { default as mdxMermaid } from 'mdx-mermaid';
 import { serialize } from 'next-mdx-remote/serialize';
 import { Prose } from '@wallot/react/src/components/Prose';
 import { getMDXComponents } from '@wallot/react/src/components/getMDXComponents';
+import { exampleCodeSnippet } from '@wallot/react/src/components/MonacoCodeSnippet';
 
 type PostPageProps = {
 	frontMatter: {
@@ -14,8 +15,9 @@ type PostPageProps = {
 		title: string;
 	};
 	mdx: Omit<MDXRemoteProps, 'components'>;
+	scope: Record<string, unknown>;
 };
-const Page: NextPage<PostPageProps> = ({ frontMatter, mdx }) => {
+const Page: NextPage<PostPageProps> = ({ frontMatter, mdx, scope }) => {
 	const isMounted = useIsMounted();
 
 	if (!isMounted) {
@@ -33,6 +35,7 @@ const Page: NextPage<PostPageProps> = ({ frontMatter, mdx }) => {
 						<MDXRemote
 							{...mdx}
 							components={getMDXComponents({ frontMatter })}
+							scope={scope}
 						/>
 					</Prose>
 				</div>
@@ -101,7 +104,13 @@ Here are the steps to bake a cake:
 3. Bake the cake
 4. Enjoy!
 
-`,
+## Code
+
+<MonacoCodeSnippet
+  code={exampleCodeSnippet}
+  language="javascript"
+/>
+  `,
 		frontMatter: {
 			date_published: '2025-01-13T00:00:00.000Z',
 			parent: '',
@@ -115,9 +124,10 @@ Here are the steps to bake a cake:
 		},
 		scope: mdxFile.frontMatter,
 	});
-	const props = {
+	const props: PostPageProps = {
 		frontMatter: mdxFile.frontMatter,
 		mdx: mdxContent,
+		scope: { exampleCodeSnippet },
 	};
 	return {
 		props,
