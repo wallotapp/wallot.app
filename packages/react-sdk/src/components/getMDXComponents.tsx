@@ -6,18 +6,10 @@ import { ExLink } from '@wallot/react/src/components/ExternalLink';
 import { MonacoCodeSnippet } from '@wallot/react/src/components/MonacoCodeSnippet';
 import '@wallot/react/src/config/mermaidConfig';
 import { getFootnoteComponents } from '@wallot/react/src/components/Footnote';
+import { MDXFileScope } from '@wallot/react/src/types/MDXTypes';
 
-type FrontMatterData = {
-	date_published: string;
-	parent: string;
-	title: string;
-};
-type FrontMatter = FrontMatterData & { footnoteIds?: string[] };
-type GetMDXComponentProps = {
-	frontMatter: FrontMatter;
-};
-export function getMDXComponents({ frontMatter }: GetMDXComponentProps) {
-	const { footnoteIds = [] } = frontMatter || {};
+export function getMDXComponents(scope: MDXFileScope) {
+	const { footnoteIds = [] } = scope || {};
 	const components = {
 		BlockMath,
 		ExLink,

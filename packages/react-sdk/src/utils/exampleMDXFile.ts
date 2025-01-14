@@ -1,17 +1,6 @@
 import { exampleCodeSnippet } from '@wallot/react/src/utils/exampleCodeSnippet';
+import { MDXFile } from '@wallot/react/src/types/MDXTypes';
 
-type FrontMatterData = {
-	date_published: string;
-	parent: string;
-	title: string;
-};
-type FrontMatter = FrontMatterData & { footnoteIds?: string[] };
-type MDXFile = {
-	content: string;
-	scope: FrontMatter & {
-		[key: string]: unknown;
-	};
-};
 export const exampleMDXFile: MDXFile = {
 	content: `---
 date_published: "2025-01-13T00:00:00.000Z"

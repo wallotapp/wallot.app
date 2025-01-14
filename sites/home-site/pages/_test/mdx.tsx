@@ -1,24 +1,15 @@
 import type { NextPage } from 'next';
 import { Fragment } from 'react';
 import { useIsMounted } from 'ergonomic-react/src/hooks/useIsMounted';
-import { MDXRemote, MDXRemoteProps } from 'next-mdx-remote';
+import { MDXRemote } from 'next-mdx-remote';
 import { default as mdxMermaid } from 'mdx-mermaid';
 import { serialize } from 'next-mdx-remote/serialize';
 import { Prose } from '@wallot/react/src/components/Prose';
 import { getMDXComponents } from '@wallot/react/src/components/getMDXComponents';
 import { exampleMDXFile } from '@wallot/react/src/utils/exampleMDXFile';
+import { MDXPageProps, MDXFileScope } from '@wallot/react/src/types/MDXTypes';
 
-type FrontMatterData = {
-	date_published: string;
-	parent: string;
-	title: string;
-};
-type FrontMatter = FrontMatterData & { footnoteIds?: string[] };
-type PostPageProps = {
-	mdx: Omit<MDXRemoteProps, 'components'>;
-	scope: FrontMatter;
-};
-const Page: NextPage<PostPageProps> = ({ mdx, scope }) => {
+const Page: NextPage<MDXPageProps> = ({ mdx }) => {
 	const isMounted = useIsMounted();
 
 	if (!isMounted) {
@@ -33,11 +24,7 @@ const Page: NextPage<PostPageProps> = ({ mdx, scope }) => {
 				</div>
 				<div className='mt-4 max-w-3xl mx-auto'>
 					<Prose>
-						<MDXRemote
-							{...mdx}
-							components={getMDXComponents({ frontMatter: scope })}
-							scope={scope}
-						/>
+						<MDXRemote {...mdx} components={getMDXComponents(mdx.scope)} />
 					</Prose>
 				</div>
 				<div>Let us know if you like it!</div>
@@ -57,16 +44,15 @@ export const getStaticProps = async () => {
 	);
 	exampleMDXFile.scope.footnoteIds = footnoteIds;
 	const { scope } = exampleMDXFile;
-	const mdx = await serialize(mdxContent, {
+	const mdx = await serialize<MDXFileScope>(mdxContent, {
 		mdxOptions: {
 			remarkPlugins: [[mdxMermaid, { output: 'svg' }]],
 			rehypePlugins: [],
 		},
 		scope,
 	});
-	const props: PostPageProps = {
+	const props: MDXPageProps = {
 		mdx,
-		scope,
 	};
 	return {
 		props,
