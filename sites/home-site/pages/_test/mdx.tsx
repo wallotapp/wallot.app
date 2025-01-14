@@ -135,6 +135,16 @@ Fuse cutouts and reclosers work together to protect the distribution system from
 6. **Glutamate**: As the main excitatory neurotransmitter, Glutamate assists in memory and learning.<Footnote id="glutamate" />
 7. **Endorphins**: Often referred to as natural painkillers, Endorphins interact with the opiate receptors in the brain to reduce the sensation of pain.<Footnote id="endorphins" />
 
+## Mathematical Representation
+
+Mathematically, the model for a purely nested design can be written as:
+
+<BlockMath math="y_{ij} = \\mu + \\alpha_i + \\beta_{j(i)} + \\epsilon_{ij}" />
+
+Let's take an urn analogy as an example. Suppose, we have <InlineMath math="n" /> urns and each urn <InlineMath math="i" /> has <InlineMath math="m_i" /> balls. Then the number of ways to choose a specific ball from a specific urn can be computed as:
+
+<BlockMath math="N = \sum_{i=1}^n m_i" />
+
 <Footnotes
   acetylcholine={(
 		<div>
