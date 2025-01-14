@@ -145,6 +145,12 @@ Let's take an urn analogy as an example. Suppose, we have <InlineMath math="n" /
 
 <BlockMath math="N = \sum_{i=1}^n m_i" />
 
+## Conclusion
+
+Thanks for reading.
+
+<hr />
+
 <Footnotes
   acetylcholine={(
 		<div>
