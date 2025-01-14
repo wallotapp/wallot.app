@@ -1,10 +1,17 @@
+import { exampleCodeSnippet } from '@wallot/react/src/utils/exampleCodeSnippet';
+
 type FrontMatterData = {
 	date_published: string;
 	parent: string;
 	title: string;
 };
 type FrontMatter = FrontMatterData & { footnoteIds?: string[] };
-type MDXFile = { content: string; frontMatter: FrontMatter };
+type MDXFile = {
+	content: string;
+	scope: FrontMatter & {
+		[key: string]: unknown;
+	};
+};
 export const exampleMDXFile: MDXFile = {
 	content: `---
 date_published: "2025-01-13T00:00:00.000Z"
@@ -149,9 +156,10 @@ Thanks for reading.
 	)}
 />
   `,
-	frontMatter: {
+	scope: {
 		date_published: '2025-01-13T00:00:00.000Z',
 		parent: '',
 		title: 'Hello world, this is a blog!',
+		exampleCodeSnippet,
 	},
 };

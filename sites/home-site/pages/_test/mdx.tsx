@@ -6,7 +6,6 @@ import { default as mdxMermaid } from 'mdx-mermaid';
 import { serialize } from 'next-mdx-remote/serialize';
 import { Prose } from '@wallot/react/src/components/Prose';
 import { getMDXComponents } from '@wallot/react/src/components/getMDXComponents';
-import { exampleCodeSnippet } from '@wallot/react/src/utils/exampleCodeSnippet';
 import { exampleMDXFile } from '@wallot/react/src/utils/exampleMDXFile';
 
 type FrontMatterData = {
@@ -16,11 +15,10 @@ type FrontMatterData = {
 };
 type FrontMatter = FrontMatterData & { footnoteIds?: string[] };
 type PostPageProps = {
-	frontMatter: FrontMatter;
 	mdx: Omit<MDXRemoteProps, 'components'>;
-	scope: Record<string, unknown>;
+	scope: FrontMatter;
 };
-const Page: NextPage<PostPageProps> = ({ frontMatter, mdx, scope }) => {
+const Page: NextPage<PostPageProps> = ({ mdx, scope }) => {
 	const isMounted = useIsMounted();
 
 	if (!isMounted) {
@@ -37,7 +35,7 @@ const Page: NextPage<PostPageProps> = ({ frontMatter, mdx, scope }) => {
 					<Prose>
 						<MDXRemote
 							{...mdx}
-							components={getMDXComponents({ frontMatter })}
+							components={getMDXComponents({ frontMatter: scope })}
 							scope={scope}
 						/>
 					</Prose>
@@ -57,18 +55,18 @@ export const getStaticProps = async () => {
 	const footnoteIds = footnoteMatches.map((match) =>
 		match.replace('<Footnote id="', '').replace('" />', ''),
 	);
-	exampleMDXFile.frontMatter.footnoteIds = footnoteIds;
+	exampleMDXFile.scope.footnoteIds = footnoteIds;
+	const { scope } = exampleMDXFile;
 	const mdx = await serialize(mdxContent, {
 		mdxOptions: {
 			remarkPlugins: [[mdxMermaid, { output: 'svg' }]],
 			rehypePlugins: [],
 		},
-		scope: exampleMDXFile.frontMatter,
+		scope,
 	});
 	const props: PostPageProps = {
-		frontMatter: exampleMDXFile.frontMatter,
 		mdx,
-		scope: { exampleCodeSnippet },
+		scope,
 	};
 	return {
 		props,
