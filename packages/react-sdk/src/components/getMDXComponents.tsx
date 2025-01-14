@@ -17,6 +17,7 @@ type GetMDXComponentProps = {
 	frontMatter: FrontMatter;
 };
 export function getMDXComponents({ frontMatter }: GetMDXComponentProps) {
+	const { footnoteIds = [] } = frontMatter || {};
 	const components = {
 		BlockMath,
 		ExLink,
@@ -30,13 +31,8 @@ export function getMDXComponents({ frontMatter }: GetMDXComponentProps) {
 		h4: (props: U) => <Heading level={4} {...props} />,
 		h5: (props: U) => <Heading level={5} {...props} />,
 		h6: (props: U) => <Heading level={6} {...props} />,
+		...getFootnoteComponents(footnoteIds),
 	} as unknown as Record<string, T>;
-	const { footnoteIds = [] } = frontMatter || {};
-	if (Array.isArray(footnoteIds) && footnoteIds.length > 0) {
-		const { Footnote, Footnotes } = getFootnoteComponents(footnoteIds);
-		components.Footnote = Footnote;
-		components.Footnotes = Footnotes;
-	}
 
 	return components;
 }

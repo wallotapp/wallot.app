@@ -130,54 +130,51 @@ Fuse cutouts and reclosers work together to protect the distribution system from
 4. **Serotonin**: This neurotransmitter helps regulate mood, appetite, and sleep.<Footnote id="serotonin" />
 5. **GABA**: GABA is the primary neurotransmitter responsible for inhibitory functions in the brain.<Footnote id="gaba" />
 6. **Glutamate**: As the main excitatory neurotransmitter, Glutamate assists in memory and learning.<Footnote id="glutamate" />
-7. **Endorphins**: Often referred to as natural painkillers, Endorphins interact with the opiate receptors in the brain to reduce the sensation of pain.<FootnoteLink id="endorphins" />
+7. **Endorphins**: Often referred to as natural painkillers, Endorphins interact with the opiate receptors in the brain to reduce the sensation of pain.<Footnote id="endorphins" />
 
 <Footnotes
-  footnotes={{
-    acetylcholine: (
-      <div>
-        Acetylcholine is the first neurotransmitter to be discovered, playing
-        crucial roles in both the peripheral and central nervous systems.
-      </div>
-    ),
-    dopamine: (
-      <div>
-        Dopamine is often linked with reward-driven behavior and motivation.
-      </div>
-    ),
-    norepinephrine: (
-      <div>
-        Norepinephrine arousal and alertness levels, particularly during
-        stressful situations.
-      </div>
-    ),
-    serotonin: (
-      <div>
-        Serotonin's role in mood regulation has linked it to several mental
-        health disorders, including depression and anxiety.
-      </div>
-    ),
-    gaba: (
-      <div>
-        GABA counters excitatory actions, helping to maintain a balance of
-        neural activity in the brain.
-      </div>
-    ),
-    glutamate: (
-      <div>
-        Glutamate is involved in a variety of cognitive functions, but an excess
-        can be neurotoxic.
-      </div>
-    ),
-    endorphins: (
-      <div>
-        Endorphins have a similar structure to opiates and can lead to feelings
-        of euphoria.
-      </div>
-    ),
-  }}
+  acetylcholine={(
+		<div>
+			Acetylcholine is the first neurotransmitter to be discovered, playing
+			crucial roles in both the peripheral and central nervous systems.
+		</div>
+	)}
+	dopamine={(
+		<div>
+			Dopamine is often linked with reward-driven behavior and motivation.
+		</div>
+	)}
+	norepinephrine={(
+		<div>
+			Norepinephrine arousal and alertness levels, particularly during
+			stressful situations.
+		</div>
+	)}
+	serotonin={(
+		<div>
+			Serotonin's role in mood regulation has linked it to several mental
+			health disorders, including depression and anxiety.
+		</div>
+	)}
+	gaba={(
+		<div>
+			GABA counters excitatory actions, helping to maintain a balance of
+			neural activity in the brain.
+		</div>
+	)}
+	glutamate={(
+		<div>
+			Glutamate is involved in a variety of cognitive functions, but an excess
+			can be neurotoxic.
+		</div>
+	)}
+	endorphins={(
+		<div>
+			Endorphins have a similar structure to opiates and can lead to feelings
+			of euphoria.
+		</div>
+	)}
 />
-
   `,
 		frontMatter: {
 			date_published: '2025-01-13T00:00:00.000Z',
