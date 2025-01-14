@@ -65,6 +65,19 @@ also the leap into **electronic typesetting**, remaining essentially
 unchanged. It was popularised in the 1960s with the release of
 Letraset sheets containing Lorem Ipsum passages, and more recently
 with desktop publishing software like Aldus.
+
+## Images
+
+<Image
+  className="rounded-md"
+  src="/img/brand/og-image-black-background.png"
+  layout="responsive"
+  width={1024}
+  height={538}
+  alt="Brand image"
+  priority
+/>
+
 `,
 		frontMatter: {
 			date_published: '2025-01-13T00:00:00.000Z',
