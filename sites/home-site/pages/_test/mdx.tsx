@@ -84,6 +84,23 @@ with desktop publishing software like Aldus.
 Industry Data Security Standard) is a set of security standards designed to ensure
 that all companies that accept, process, store, or transmit [credit card](https://en.wikipedia.org/wiki/Credit_card)
 information maintain a secure environment.
+
+## Lists
+
+Here are the best bands ever:
+
+- The Beatles
+- The Rolling Stones
+- Led Zeppelin
+- The Who
+
+Here are the steps to bake a cake:
+
+1. Preheat the oven
+2. Mix the ingredients
+3. Bake the cake
+4. Enjoy!
+
 `,
 		frontMatter: {
 			date_published: '2025-01-13T00:00:00.000Z',
