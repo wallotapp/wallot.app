@@ -5,15 +5,18 @@ import { Heading } from '@wallot/react/src/components/Heading';
 import { ExLink } from '@wallot/react/src/components/ExternalLink';
 import { MonacoCodeSnippet } from '@wallot/react/src/components/MonacoCodeSnippet';
 import '@wallot/react/src/config/mermaidConfig';
+import { getFootnoteComponents } from '@wallot/react/src/components/Footnote';
 
-type GetMDXComponentProps = {
-	frontMatter: {
-		date_published: string;
-		parent: string;
-		title: string;
-	};
+type FrontMatterData = {
+	date_published: string;
+	parent: string;
+	title: string;
 };
-export function getMDXComponents(_: GetMDXComponentProps) {
+type FrontMatter = FrontMatterData & { footnoteIds?: string[] };
+type GetMDXComponentProps = {
+	frontMatter: FrontMatter;
+};
+export function getMDXComponents({ frontMatter }: GetMDXComponentProps) {
 	const components = {
 		BlockMath,
 		ExLink,
@@ -28,6 +31,13 @@ export function getMDXComponents(_: GetMDXComponentProps) {
 		h5: (props: U) => <Heading level={5} {...props} />,
 		h6: (props: U) => <Heading level={6} {...props} />,
 	} as unknown as Record<string, T>;
+	const { footnoteIds = [] } = frontMatter || {};
+	if (Array.isArray(footnoteIds) && footnoteIds.length > 0) {
+		const { Footnote, Footnotes } = getFootnoteComponents(footnoteIds);
+		components.Footnote = Footnote;
+		components.Footnotes = Footnotes;
+	}
+
 	return components;
 }
 
