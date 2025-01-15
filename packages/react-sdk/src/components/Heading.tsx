@@ -2,7 +2,7 @@ export type HeadingProps = { level: number; children: string };
 export const Heading: React.FC<HeadingProps> = ({ level, children }) => {
 	const id = children.replace(/\s+/g, '-').toLowerCase();
 	const styles = {
-		1: 'text-6xl font-semibold pr-8',
+		1: 'text-5xl lg:text-6xl font-semibold pr-8',
 		2: '',
 		3: '',
 		4: '',
