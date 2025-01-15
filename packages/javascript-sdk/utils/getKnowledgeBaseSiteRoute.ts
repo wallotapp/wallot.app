@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import {
 	KnowledgeBaseSiteRouteStaticId,
 	KnowledgeBaseSiteRouteQueryParams,
@@ -18,30 +17,25 @@ export const getKnowledgeBaseSiteRoute = <
 >(
 	options: GetKnowledgeBaseSiteRouteOptions<T>,
 ) => {
-	const { includeOrigin = false, origin } = options;
-	if (options.routeStaticId === 'KNOWLEDGE_BASE_SITE__/INDEX') {
+	const { includeOrigin = false, origin, routeStaticId } = options;
+	if (includeOrigin && !origin) {
+		console.error('Origin is required');
+		return '/';
+	}
+
+	if (routeStaticId === 'KNOWLEDGE_BASE_SITE__/INDEX') {
 		const path = `/`;
-		if (includeOrigin) {
-			if (!origin) {
-				console.error('Origin is required');
-				return '/';
-			}
-			return `${origin}${path}`;
-		}
+		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
-	if (options.routeStaticId === 'KNOWLEDGE_BASE_SITE__/POSTS/[SLUG]/CONTENT') {
+
+	if (routeStaticId === 'KNOWLEDGE_BASE_SITE__/[TOPIC]/[SLUG]') {
 		const queryParams =
-			options.queryParams as KnowledgeBaseSiteRouteQueryParams['KNOWLEDGE_BASE_SITE__/POSTS/[SLUG]/CONTENT'];
+			options.queryParams as KnowledgeBaseSiteRouteQueryParams['KNOWLEDGE_BASE_SITE__/[TOPIC]/[SLUG]'];
+		const topic = queryParams.topic;
 		const slug = queryParams.slug;
-		const path = `/posts/${slug}/content`;
-		if (includeOrigin) {
-			if (!origin) {
-				console.error('Origin is required');
-				return '/';
-			}
-			return `${origin}${path}`;
-		}
+		const path = `/${topic}/${slug}`;
+		if (includeOrigin) return `${origin as string}${path}`;
 		return path;
 	}
 	throw new Error('Invalid routeStaticId');

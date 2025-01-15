@@ -129,7 +129,7 @@ export type BlogSiteRouteQueryParams = {
 // Knowledge Base Site
 export const KnowledgeBaseSiteRouteStaticIdEnum = getEnum([
 	'KNOWLEDGE_BASE_SITE__/INDEX',
-	'KNOWLEDGE_BASE_SITE__/POSTS/[SLUG]/CONTENT',
+	'KNOWLEDGE_BASE_SITE__/[TOPIC]/[SLUG]',
 ]);
 export type KnowledgeBaseSiteRouteStaticId = EnumMember<
 	typeof KnowledgeBaseSiteRouteStaticIdEnum
@@ -139,7 +139,8 @@ export type KnowledgeBaseSiteRouteQueryParams = {
 	'KNOWLEDGE_BASE_SITE__/INDEX': {
 		//
 	};
-	'KNOWLEDGE_BASE_SITE__/POSTS/[SLUG]/CONTENT': {
+	'KNOWLEDGE_BASE_SITE__/[TOPIC]/[SLUG]': {
+		topic: string | undefined;
 		slug: string | undefined;
 	};
 };
