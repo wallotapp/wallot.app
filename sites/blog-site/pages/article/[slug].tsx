@@ -1,4 +1,5 @@
-import type { NextPage } from 'next';
+import path from 'path';
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
 	Page as PageComponent,
@@ -6,6 +7,15 @@ import {
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { BlogSiteRouteQueryParams } from '@wallot/js';
+import { getMDXFileRelativePaths } from '@wallot/react/src/utils/getMDXFileRelativePaths';
+import { getMDXFiles } from '@wallot/react/src/utils/getMDXFiles';
+import {
+	MDXPageProps,
+	MDXPageContextProps,
+	MDXFileScope,
+} from '@wallot/react/src/types/MDXTypes';
+import { default as mdxMermaid } from 'mdx-mermaid';
+import { serialize } from 'next-mdx-remote/serialize';
 
 // ==== Static Page Props ==== //
 
@@ -53,6 +63,45 @@ const Page: NextPage = () => {
 			<p className='font-light text-sm'>The slug for this page is: {slug}</p>
 		</PageComponent>
 	);
+};
+
+const cwd = process.cwd();
+const rootDir = path.join(cwd, '../../../wallot-cms/mdx/blog-site/article');
+export const getStaticPaths: GetStaticPaths = async () => {
+	const relativeFilePaths = getMDXFileRelativePaths(rootDir);
+	return {
+		paths: relativeFilePaths.map((relativeFilePath) => ({
+			params: { slug: relativeFilePath.replace('.mdx', '') },
+		})),
+		fallback: false,
+	};
+};
+export const getStaticProps: GetStaticProps<
+	MDXPageProps,
+	MDXPageContextProps
+> = async (context) => {
+	const { slug } = context.params ?? {};
+	const files = getMDXFiles(rootDir);
+	const file = files.find(
+		({ scope: { relativeFilePath } }) =>
+			relativeFilePath.replace('.mdx', '') === slug,
+	);
+	if (file == null) return { notFound: true };
+
+	const { content, scope } = file;
+	const mdx = await serialize<MDXFileScope>(content, {
+		mdxOptions: {
+			remarkPlugins: [[mdxMermaid, { output: 'svg' }]],
+			rehypePlugins: [],
+		},
+		scope,
+	});
+	const props: MDXPageProps = {
+		mdx,
+	};
+	return {
+		props,
+	};
 };
 
 export default Page;

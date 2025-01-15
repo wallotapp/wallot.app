@@ -10,7 +10,7 @@ import { getFootnoteComponents } from '@wallot/react/src/components/Footnote';
 import { MDXFileScope } from '@wallot/react/src/types/MDXTypes';
 
 export function getMDXComponents(scope: MDXFileScope) {
-	const { footnoteIds = [] } = scope || {};
+	const { footnoteIDs = [] } = scope || {};
 	const components = {
 		BlockMath,
 		ExLink,
@@ -25,7 +25,7 @@ export function getMDXComponents(scope: MDXFileScope) {
 		h4: (props: U) => <Heading level={4} {...props} />,
 		h5: (props: U) => <Heading level={5} {...props} />,
 		h6: (props: U) => <Heading level={6} {...props} />,
-		...getFootnoteComponents(footnoteIds),
+		...getFootnoteComponents(footnoteIDs),
 	} as unknown as Record<string, T>;
 
 	return components;

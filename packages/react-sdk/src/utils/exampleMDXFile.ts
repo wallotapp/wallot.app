@@ -4,7 +4,6 @@ import { MDXFile } from '@wallot/react/src/types/MDXTypes';
 export const exampleMDXFile: MDXFile = {
 	content: `---
 date_published: "2025-01-13T00:00:00.000Z"
-parent: ""
 title: "Hello world, this is a blog!"
 ---
 
@@ -155,7 +154,9 @@ Thanks for reading.
   `,
 	scope: {
 		date_published: '2025-01-13T00:00:00.000Z',
-		parent: '',
+		footnoteIDs: [],
+		relativeFilePath: 'hello-world-this-is-a-blog.mdx',
+		thumbnail: '',
 		title: 'Hello world, this is a blog!',
 		exampleCodeSnippet,
 	},

@@ -1,28 +1,28 @@
 import { Fragment } from 'react';
 
-export function getFootnoteComponents(footnoteIds: string[]) {
-	if (!Array.isArray(footnoteIds) || footnoteIds.length === 0) {
+export function getFootnoteComponents(footnoteIDs: string[]) {
+	if (!Array.isArray(footnoteIDs) || footnoteIDs.length === 0) {
 		return { Footnote: () => <Fragment />, Footnotes: () => <Fragment /> };
 	}
 
 	return {
-		Footnote: getFootnoteComponent(footnoteIds) as T,
-		Footnotes: getFootnotesComponent(footnoteIds) as T,
+		Footnote: getFootnoteComponent(footnoteIDs) as T,
+		Footnotes: getFootnotesComponent(footnoteIDs) as T,
 	};
 }
 
 type T = () => JSX.Element;
 
 function getFootnotePos({
-	footnoteIds,
+	footnoteIDs,
 	id,
 }: {
-	footnoteIds: string[];
+	footnoteIDs: string[];
 	id: string;
 }) {
-	const i = footnoteIds.findIndex((k) => k === id);
+	const i = footnoteIDs.findIndex((k) => k === id);
 	if (i === -1) {
-		const log = { footnoteIds, id };
+		const log = { footnoteIDs, id };
 		console.error('footnote error:', log);
 		return -1;
 	}
@@ -32,7 +32,7 @@ function getFootnotePos({
 type FootnoteProps = {
 	id: string;
 };
-function getFootnoteComponent(footnoteIds: string[]) {
+function getFootnoteComponent(footnoteIDs: string[]) {
 	return function ({ id }: FootnoteProps): JSX.Element {
 		return (
 			<a
@@ -40,7 +40,7 @@ function getFootnoteComponent(footnoteIds: string[]) {
 				id={`footnote-${id}`}
 				style={{ textDecoration: 'none' }}
 			>
-				<sup>{getFootnotePos({ footnoteIds, id })}</sup>
+				<sup>{getFootnotePos({ footnoteIDs, id })}</sup>
 			</a>
 		);
 	};
@@ -49,10 +49,10 @@ function getFootnoteComponent(footnoteIds: string[]) {
 type FootnotesProps = {
 	[key: string]: string | React.ReactNode;
 };
-function getFootnotesComponent(footnoteIds: string[]) {
+function getFootnotesComponent(footnoteIDs: string[]) {
 	return function ({ ...footnotes }: FootnotesProps): JSX.Element {
 		const left_padding = <div>&nbsp;&nbsp;&nbsp;</div>;
-		if (Object.keys(footnotes || {}).find((k) => !footnoteIds.includes(k))) {
+		if (Object.keys(footnotes || {}).find((k) => !footnoteIDs.includes(k))) {
 			return <div></div>;
 		}
 		return (
@@ -66,10 +66,10 @@ function getFootnotesComponent(footnoteIds: string[]) {
 						width: '50%',
 					}}
 				>
-					{footnoteIds.map((id) => {
+					{footnoteIDs.map((id) => {
 						const note = footnotes[id];
 						if (!note) {
-							const log = { footnotes, footnoteIds, id };
+							const log = { footnotes, footnoteIDs, id };
 							throw new Error(
 								`footnote error: ${JSON.stringify(log, null, '\t')}`,
 							);
@@ -81,7 +81,7 @@ function getFootnotesComponent(footnoteIds: string[]) {
 										href={`#footnote-${id}`}
 										style={{ textDecoration: 'none' }}
 									>
-										^{getFootnotePos({ footnoteIds, id })}
+										^{getFootnotePos({ footnoteIDs, id })}
 									</a>
 									{left_padding}
 									{note}

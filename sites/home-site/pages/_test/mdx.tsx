@@ -39,10 +39,10 @@ export const getStaticProps = async () => {
 	const mdxContent = exampleMDXFile.content.split('---').pop() ?? '';
 	const regex = /<Footnote\s+id="\w+"\s+\/>/g;
 	const footnoteMatches = mdxContent.match(regex) || [];
-	const footnoteIds = footnoteMatches.map((match) =>
+	const footnoteIDs = footnoteMatches.map((match) =>
 		match.replace('<Footnote id="', '').replace('" />', ''),
 	);
-	exampleMDXFile.scope.footnoteIds = footnoteIds;
+	exampleMDXFile.scope.footnoteIDs = footnoteIDs;
 	const { scope } = exampleMDXFile;
 	const mdx = await serialize<MDXFileScope>(mdxContent, {
 		mdxOptions: {

@@ -1,12 +1,14 @@
+import { ParsedUrlQuery } from 'querystring';
 import { MDXRemoteProps } from 'next-mdx-remote';
 
-export type MDXFrontMatterData = {
+export type MDXFrontMatter = {
 	date_published: string;
-	parent: string;
+	thumbnail: string;
 	title: string;
 };
-export type MDXFrontMatter = MDXFrontMatterData & { footnoteIds?: string[] };
 export type MDXFileScope = MDXFrontMatter & {
+	footnoteIDs: string[];
+	relativeFilePath: string;
 	[key: string]: unknown;
 };
 export type MDXFile = {
@@ -15,4 +17,7 @@ export type MDXFile = {
 };
 export type MDXPageProps = {
 	mdx: Omit<MDXRemoteProps<MDXFile['scope']>, 'components'>;
+};
+export type MDXPageContextProps = ParsedUrlQuery & {
+	slug: string;
 };
