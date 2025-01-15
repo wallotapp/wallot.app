@@ -208,7 +208,7 @@ export type StatusSiteRouteQueryParams = {
 // Support Site
 export const SupportSiteRouteStaticIdEnum = getEnum([
 	'SUPPORT_SITE__/INDEX',
-	'SUPPORT_SITE__/POSTS/[SLUG]/CONTENT',
+	'SUPPORT_SITE__/HELP/[TOPIC]/[SLUG]',
 ]);
 export type SupportSiteRouteStaticId = EnumMember<
 	typeof SupportSiteRouteStaticIdEnum
@@ -218,8 +218,9 @@ export type SupportSiteRouteQueryParams = {
 	'SUPPORT_SITE__/INDEX': {
 		//
 	};
-	'SUPPORT_SITE__/POSTS/[SLUG]/CONTENT': {
+	'SUPPORT_SITE__/HELP/[TOPIC]/[SLUG]': {
 		slug: string | undefined;
+		topic: string | undefined;
 	};
 };
 
