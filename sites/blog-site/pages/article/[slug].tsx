@@ -14,6 +14,9 @@ import {
 } from '@wallot/react/src/types/MDXTypes';
 import { default as mdxMermaid } from 'mdx-mermaid';
 import { serialize } from 'next-mdx-remote/serialize';
+import { Prose } from '@wallot/react/src/components/Prose';
+import { getMDXComponents } from '@wallot/react/src/components/getMDXComponents';
+import { MDXRemote } from 'next-mdx-remote';
 
 // ==== Static Page Props ==== //
 
@@ -56,10 +59,11 @@ const Page: NextPage<MDXPageProps> = ({ mdx }) => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<p className='font-medium text-xl'>
-				Hello, and welcome to an article in Wallot's Blog Site! 🚀
-			</p>
-			<p className='font-light text-sm'>The slug for this page is: {slug}</p>
+			<div className='mt-4 max-w-3xl mx-auto'>
+				<Prose>
+					<MDXRemote {...mdx} components={getMDXComponents(mdx.scope)} />
+				</Prose>
+			</div>
 		</PageComponent>
 	);
 };
