@@ -39,7 +39,9 @@ const Page: NextPage<MDXPageProps> = ({ mdx }) => {
 		...ROUTE_STATIC_PROPS,
 		routeId: ROUTE_RUNTIME_ID,
 		title: mdx.scope.title,
-		...(mdx.scope.thumbnail
+		...(mdx.scope.thumbnail &&
+		(mdx.scope.thumbnail.startsWith('https') ||
+			mdx.scope.thumbnail.startsWith('/'))
 			? {
 					thumbnailData: {
 						thumbnail: mdx.scope.thumbnail,
