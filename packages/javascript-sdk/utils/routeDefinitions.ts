@@ -111,7 +111,7 @@ export type AdminSiteRouteQueryParams = {
 // Blog Site
 export const BlogSiteRouteStaticIdEnum = getEnum([
 	'BLOG_SITE__/INDEX',
-	'BLOG_SITE__/POSTS/[SLUG]/CONTENT',
+	'BLOG_SITE__/ARTICLE/[SLUG]',
 ]);
 export type BlogSiteRouteStaticId = EnumMember<
 	typeof BlogSiteRouteStaticIdEnum
@@ -121,7 +121,7 @@ export type BlogSiteRouteQueryParams = {
 	'BLOG_SITE__/INDEX': {
 		//
 	};
-	'BLOG_SITE__/POSTS/[SLUG]/CONTENT': {
+	'BLOG_SITE__/ARTICLE/[SLUG]': {
 		slug: string | undefined;
 	};
 };

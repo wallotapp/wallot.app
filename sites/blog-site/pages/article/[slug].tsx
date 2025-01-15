@@ -10,7 +10,7 @@ import { BlogSiteRouteQueryParams } from '@wallot/js';
 // ==== Static Page Props ==== //
 
 // Route Static ID
-const ROUTE_STATIC_ID = 'BLOG_SITE__/POSTS/[SLUG]/CONTENT' as const;
+const ROUTE_STATIC_ID = 'BLOG_SITE__/ARTICLE/[SLUG]' as const;
 
 // Route Static Props
 const ROUTE_STATIC_PROPS: PageStaticProps = {
