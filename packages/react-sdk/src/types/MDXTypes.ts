@@ -18,6 +18,10 @@ export type MDXFile = {
 export type MDXPageProps = {
 	mdx: Omit<MDXRemoteProps<MDXFile['scope']>, 'components'>;
 };
-export type MDXPageContextProps = ParsedUrlQuery & {
-	slug: string;
-};
+export type MDXPageContextProps<
+	T extends {
+		slug: string;
+	} = {
+		slug: string;
+	},
+> = ParsedUrlQuery & T;
