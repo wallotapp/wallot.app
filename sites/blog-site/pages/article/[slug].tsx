@@ -39,6 +39,7 @@ const Page: NextPage<MDXPageProps> = ({ mdx }) => {
 	const pageProps: PageProps = {
 		...ROUTE_STATIC_PROPS,
 		routeId: ROUTE_RUNTIME_ID,
+		title: mdx.scope.title,
 		...(mdx.scope.thumbnail
 			? {
 					thumbnailData: {
