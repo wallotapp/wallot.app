@@ -5,7 +5,7 @@ import {
 	PageStaticProps,
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { getMDXFileRelativePaths } from '@wallot/react/src/utils/getMDXFileRelativePaths';
+import { getMDXPageStaticPaths } from '@wallot/react/src/utils/getMDXPageStaticPaths';
 import { getMDXFiles } from '@wallot/react/src/utils/getMDXFiles';
 import {
 	MDXPageProps,
@@ -64,15 +64,10 @@ const Page: NextPage<MDXPageProps> = ({ mdx }) => {
 
 const cwd = process.cwd();
 const rootDir = path.join(cwd, '../../../wallot-cms/mdx/blog-site/article');
-export const getStaticPaths: GetStaticPaths = async () => {
-	const relativeFilePaths = getMDXFileRelativePaths(rootDir);
-	return {
-		paths: relativeFilePaths.map((relativeFilePath) => ({
-			params: { slug: relativeFilePath.replace('.mdx', '') },
-		})),
-		fallback: false,
-	};
-};
+export const getStaticPaths: GetStaticPaths = getMDXPageStaticPaths(
+	rootDir,
+	(relativeFilePath) => ({ slug: relativeFilePath.replace('.mdx', '') }),
+);
 export const getStaticProps: GetStaticProps<
 	MDXPageProps,
 	MDXPageContextProps
