@@ -1,12 +1,10 @@
 import path from 'path';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
-import { useRouter } from 'next/router';
 import {
 	Page as PageComponent,
 	PageStaticProps,
 	PageProps,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { BlogSiteRouteQueryParams } from '@wallot/js';
 import { getMDXFileRelativePaths } from '@wallot/react/src/utils/getMDXFileRelativePaths';
 import { getMDXFiles } from '@wallot/react/src/utils/getMDXFiles';
 import {
@@ -28,37 +26,37 @@ const ROUTE_STATIC_PROPS: PageStaticProps = {
 	title: 'Content',
 };
 
-// Route Query Params Type
-type RouteQueryParams = BlogSiteRouteQueryParams[typeof ROUTE_STATIC_ID];
-
-const Page: NextPage = () => {
-	// ==== Hooks ==== //
-
-	// Router
-	const router = useRouter();
-
+const Page: NextPage<MDXPageProps> = ({ mdx }) => {
 	// ==== Constants ==== //
 
-	// Router Query
-	const query = (router?.query as RouteQueryParams) ?? {};
-
-	// Router Query Param Values
-	const { slug } = query;
+	// Slug
+	const slug = mdx.scope.relativeFilePath.replace('.mdx', '');
 
 	// Runtime Route ID
-	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace('[SLUG]', slug || '');
+	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace('[SLUG]', slug);
 
 	// Runtime Page Props
 	const pageProps: PageProps = {
 		...ROUTE_STATIC_PROPS,
 		routeId: ROUTE_RUNTIME_ID,
+		...(mdx.scope.thumbnail
+			? {
+					thumbnailData: {
+						thumbnail: mdx.scope.thumbnail,
+						thumbnailAlt: mdx.scope.title,
+						thumbnailHeight: 1260,
+						thumbnailType: 'image/jpg',
+						thumbnailWidth: '2240',
+					},
+			  }
+			: {}),
 	};
 
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
 			<p className='font-medium text-xl'>
-				Hello, and welcome to a dynamic route in Wallot's Blog Site! 🚀
+				Hello, and welcome to an article in Wallot's Blog Site! 🚀
 			</p>
 			<p className='font-light text-sm'>The slug for this page is: {slug}</p>
 		</PageComponent>
