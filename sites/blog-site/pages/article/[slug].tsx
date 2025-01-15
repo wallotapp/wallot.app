@@ -63,7 +63,7 @@ const Page: NextPage<MDXPageProps> = ({ mdx }) => {
 	return (
 		<PageComponent {...pageProps}>
 			<div className={cn('flex flex-col min-h-screen min-w-screen relative')}>
-				<PageHeader showHomeLink={false} />
+				<PageHeader />
 				<div
 					className={cn(
 						'min-h-[95vh] w-full scroll-smooth',
