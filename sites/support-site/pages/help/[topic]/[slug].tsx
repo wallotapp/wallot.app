@@ -68,7 +68,12 @@ const Page: NextPage<MDXPageProps> = ({ mdx }) => {
 };
 
 const cwd = process.cwd();
-const rootDir = path.join(cwd, '../../../wallot-cms/mdx/support-site/help');
+const rootDir = path.join(
+	cwd,
+	process.env.GITHUB_ACTIONS === 'true'
+		? '../../wallot-cms/mdx/support-site/help'
+		: '../../../wallot-cms/mdx/support-site/help',
+);
 export const getStaticPaths: GetStaticPaths = getMDXPageStaticPaths(
 	rootDir,
 	(relativeFilePath) => {

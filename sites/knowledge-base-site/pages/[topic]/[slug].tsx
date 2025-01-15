@@ -68,7 +68,12 @@ const Page: NextPage<MDXPageProps> = ({ mdx }) => {
 };
 
 const cwd = process.cwd();
-const rootDir = path.join(cwd, '../../../Fintech-Knowledge-Base/mdx');
+const rootDir = path.join(
+	cwd,
+	process.env.GITHUB_ACTIONS === 'true'
+		? '../../Fintech-Knowledge-Base/mdx'
+		: '../../../Fintech-Knowledge-Base/mdx'
+);
 export const getStaticPaths: GetStaticPaths = getMDXPageStaticPaths(
 	rootDir,
 	(relativeFilePath) => {
