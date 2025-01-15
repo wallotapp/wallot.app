@@ -111,7 +111,7 @@ export type AdminSiteRouteQueryParams = {
 // Blog Site
 export const BlogSiteRouteStaticIdEnum = getEnum([
 	'BLOG_SITE__/INDEX',
-	'BLOG_SITE__/POSTS/[SLUG]/CONTENT',
+	'BLOG_SITE__/ARTICLE/[SLUG]',
 ]);
 export type BlogSiteRouteStaticId = EnumMember<
 	typeof BlogSiteRouteStaticIdEnum
@@ -121,7 +121,7 @@ export type BlogSiteRouteQueryParams = {
 	'BLOG_SITE__/INDEX': {
 		//
 	};
-	'BLOG_SITE__/POSTS/[SLUG]/CONTENT': {
+	'BLOG_SITE__/ARTICLE/[SLUG]': {
 		slug: string | undefined;
 	};
 };
@@ -129,7 +129,7 @@ export type BlogSiteRouteQueryParams = {
 // Knowledge Base Site
 export const KnowledgeBaseSiteRouteStaticIdEnum = getEnum([
 	'KNOWLEDGE_BASE_SITE__/INDEX',
-	'KNOWLEDGE_BASE_SITE__/POSTS/[SLUG]/CONTENT',
+	'KNOWLEDGE_BASE_SITE__/[TOPIC]/[SLUG]',
 ]);
 export type KnowledgeBaseSiteRouteStaticId = EnumMember<
 	typeof KnowledgeBaseSiteRouteStaticIdEnum
@@ -139,7 +139,8 @@ export type KnowledgeBaseSiteRouteQueryParams = {
 	'KNOWLEDGE_BASE_SITE__/INDEX': {
 		//
 	};
-	'KNOWLEDGE_BASE_SITE__/POSTS/[SLUG]/CONTENT': {
+	'KNOWLEDGE_BASE_SITE__/[TOPIC]/[SLUG]': {
+		topic: string | undefined;
 		slug: string | undefined;
 	};
 };
@@ -207,7 +208,7 @@ export type StatusSiteRouteQueryParams = {
 // Support Site
 export const SupportSiteRouteStaticIdEnum = getEnum([
 	'SUPPORT_SITE__/INDEX',
-	'SUPPORT_SITE__/POSTS/[SLUG]/CONTENT',
+	'SUPPORT_SITE__/HELP/[TOPIC]/[SLUG]',
 ]);
 export type SupportSiteRouteStaticId = EnumMember<
 	typeof SupportSiteRouteStaticIdEnum
@@ -217,8 +218,9 @@ export type SupportSiteRouteQueryParams = {
 	'SUPPORT_SITE__/INDEX': {
 		//
 	};
-	'SUPPORT_SITE__/POSTS/[SLUG]/CONTENT': {
+	'SUPPORT_SITE__/HELP/[TOPIC]/[SLUG]': {
 		slug: string | undefined;
+		topic: string | undefined;
 	};
 };
 

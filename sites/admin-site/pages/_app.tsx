@@ -1,5 +1,6 @@
 import '@stripe/stripe-js';
 import '@wallot/admin-site/styles/globals.css';
+import 'katex/dist/katex.min.css';
 import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
 import { QueryClientProvider } from '@tanstack/react-query';

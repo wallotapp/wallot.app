@@ -14,6 +14,10 @@
 		17101, 7101, 17102, 7102, 17150, 7150, 17159, 7159, 17157, 7157, 17152,
 		7152, 17153, 7153, 17154, 7154, 17158, 7158, 17151, 7151, 9005
 	],
+	"mounts": [
+		"source=${env:HOME}/GitHub/wallot-cms,target=/workspaces/wallot-cms,type=bind,consistency=cached",
+		"source=${env:HOME}/GitHub/Fintech-Knowledge-Base,target=/workspaces/Fintech-Knowledge-Base,type=bind,consistency=cached"
+	],
 	"name": "Wallot Dev Container",
 	"postStartCommand": "chmod +x ./scripts/on-start-container.sh && bash ./scripts/on-start-container.sh",
 	"remoteEnv": {
