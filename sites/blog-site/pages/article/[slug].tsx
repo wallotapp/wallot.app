@@ -20,7 +20,6 @@ import { MDXRemote } from 'next-mdx-remote';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { PageHeader } from '@wallot/react/src/components/PageHeader';
 import { Heading } from '@wallot/react/src/components/Heading';
-import { Fragment } from 'react';
 
 // ==== Static Page Props ==== //
 
