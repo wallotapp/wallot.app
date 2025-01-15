@@ -7,13 +7,11 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { getMDXPageStaticPaths } from '@wallot/react/src/utils/getMDXPageStaticPaths';
 import { getMDXFiles } from '@wallot/react/src/utils/getMDXFiles';
+import { getMDXPageProps } from '@wallot/react/src/utils/getMDXPageProps';
 import {
 	MDXPageProps,
 	MDXPageContextProps,
-	MDXFileScope,
 } from '@wallot/react/src/types/MDXTypes';
-import { default as mdxMermaid } from 'mdx-mermaid';
-import { serialize } from 'next-mdx-remote/serialize';
 import { MDXPage } from '@wallot/react/src/components/MDXPage';
 
 // ==== Static Page Props ==== //
@@ -80,19 +78,8 @@ export const getStaticProps: GetStaticProps<
 	);
 	if (file == null) return { notFound: true };
 
-	const { content, scope } = file;
-	const mdx = await serialize<MDXFileScope>(content, {
-		mdxOptions: {
-			remarkPlugins: [[mdxMermaid, { output: 'svg' }]],
-			rehypePlugins: [],
-		},
-		scope,
-	});
-	const props: MDXPageProps = {
-		mdx,
-	};
 	return {
-		props,
+		props: await getMDXPageProps(file),
 	};
 };
 
