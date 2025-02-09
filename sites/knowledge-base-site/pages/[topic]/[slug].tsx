@@ -72,7 +72,7 @@ const rootDir = path.join(
 	cwd,
 	process.env.GITHUB_ACTIONS === 'true'
 		? '../../Fintech-Knowledge-Base/mdx'
-		: '../../../Fintech-Knowledge-Base/mdx'
+		: '../../../Fintech-Knowledge-Base/mdx',
 );
 export const getStaticPaths: GetStaticPaths = getMDXPageStaticPaths(
 	rootDir,

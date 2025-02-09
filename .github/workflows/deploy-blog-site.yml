@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Checkout Project
         uses: actions/checkout@v3
-      
+
       - name: Checkout MDX Content Repository
         uses: actions/checkout@v3
         with:
