@@ -22,7 +22,15 @@ jobs:
       SHARED_HTTPS_NEXT_PUBLIC_VARIABLES: ${{ vars.SHARED_HTTPS_NEXT_PUBLIC_VARIABLES }}
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Project
+        uses: actions/checkout@v3
+
+      - name: Checkout MDX Content Repository
+        uses: actions/checkout@v3
+        with:
+          repository: wallotapp/Frontend-Knowledge-Base
+          ref: master
+          path: Frontend-Knowledge-Base
 
       - name: Install jq
         run: sudo apt-get install jq
