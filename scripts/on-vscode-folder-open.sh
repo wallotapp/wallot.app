@@ -1,5 +1,8 @@
 #!/bin/bash
 
+## Set VS Code as the default editor for Git
+git config --global core.editor "code --wait";
+
 ## Open environment variables, if they are missing or empty (REST API)
 ([ ! -s functions/rest-api/.env ] && code functions/rest-api/.env || true);
 ([ ! -s functions/rest-api/gmailApiServiceAccount.json ] && code functions/rest-api/gmailApiServiceAccount.json || true);
