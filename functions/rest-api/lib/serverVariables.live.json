@@ -2,6 +2,8 @@
 	"SERVER_VAR_EXPRESS_PORT": 17101,
 	"SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_EMAIL": "support@wallot.app",
 	"SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_NAME": "Wallot Support",
+	"SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_EMAIL_VISIONARY_SCHOLARSHIP": "scholarships@wallot.app",
+	"SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_NAME_VISIONARY_SCHOLARSHIP": "Wallot Scholarship Programs",
 	"SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID": "support@wallot.app",
 	"SERVER_VAR_ORIGIN_HTTP": "http://localhost:17101",
 	"SERVER_VAR_ORIGIN_HTTPS": "https://us-central1-app-wallot-production.cloudfunctions.net/rest_api",
