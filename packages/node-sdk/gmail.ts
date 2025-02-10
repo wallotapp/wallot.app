@@ -1,7 +1,7 @@
-import { GoogleAuth } from 'google-auth-library';
 import { google } from 'googleapis';
 import {
 	GeneralizedServerVariables,
+	getGoogleAuthJwtInstanceForGmailApi,
 	SendEmailNotificationParams,
 	SendEmailNotificationResponse,
 } from 'ergonomic-node';
@@ -12,12 +12,13 @@ export type SendEmailWithGmailAPIParams = SendEmailNotificationParams & {
 };
 export function sendEmailWithGmailAPI(
 	serviceAccountPath: string,
-	{
+	variables: GeneralizedServerVariables,
+) {
+	const {
 		SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_EMAIL: defaultSendFromEmail,
 		SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_NAME: defaultSendFromName,
 		SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID: userId,
-	}: GeneralizedServerVariables,
-) {
+	} = variables;
 	return async function ({
 		html_body: htmlBody,
 		recipient_email: recipientEmail,
@@ -25,9 +26,9 @@ export function sendEmailWithGmailAPI(
 		sender_name: senderName = defaultSendFromName,
 		subject,
 	}: SendEmailWithGmailAPIParams): Promise<SendEmailNotificationResponse> {
-		const auth = new GoogleAuth({
-			keyFile: serviceAccountPath,
-			scopes: 'https://www.googleapis.com/auth/cloud-platform',
+		const auth = getGoogleAuthJwtInstanceForGmailApi({
+			...variables,
+			serviceAccountPath,
 		});
 		const gmail = google.gmail({
 			version: 'v1',
