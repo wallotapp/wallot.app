@@ -22,3 +22,4 @@ export * from './getNewYorkDate.js';
 export * from './investingGoal.js';
 export * from './riskPreference.js';
 export * from './userExperienceMachine.js';
+export * from './visionaryScholarships/index.js';
