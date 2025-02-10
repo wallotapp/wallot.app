@@ -12,6 +12,7 @@ export const {
 	crypto,
 	db,
 	gcp,
+	gmail,
 	log,
 	openAI,
 	stripe,
