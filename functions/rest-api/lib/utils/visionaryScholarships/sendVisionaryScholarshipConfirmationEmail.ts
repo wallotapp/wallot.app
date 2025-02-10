@@ -5,7 +5,7 @@ import { directoryPath } from '../../directoryPath.js';
 
 const emailTemplateRelativePath =
 	'visionaryScholarships/visionaryScholarshipConfirmationEmail.html';
-const emailTemplateFullPath = `${directoryPath}/assets/emails/${emailTemplateRelativePath}`;
+const emailTemplateFullPath = `${directoryPath}/../assets/emails/${emailTemplateRelativePath}`;
 const emailTemplate = readFileSync(emailTemplateFullPath, 'utf8');
 
 export async function sendVisionaryScholarshipConfirmationEmail(
