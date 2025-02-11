@@ -23,10 +23,10 @@ export const getQueryScholarshipApplicationPageReactQueryOptions: UseQuerySchola
 		...(props.reactQueryOptions ?? {}),
 	});
 
-export const useQueryScholarshipApplicationPage = ({
+export function useQueryScholarshipApplicationPage({
 	firestoreQueryOptions,
 	reactQueryOptions = {},
-}: UseQueryScholarshipApplicationPageProps) => {
+}: UseQueryScholarshipApplicationPageProps) {
 	return ReactQuery.useQuery(
 		getQueryScholarshipApplicationPageReactQueryOptions({
 			firestoreQueryOptions,

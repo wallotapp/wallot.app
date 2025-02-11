@@ -7,9 +7,9 @@ import {
 	UseUpdateScholarshipApplicationMutationOptions,
 } from '@wallot/react/src/features/scholarshipApplications/types/ScholarshipApplicationReactTypes';
 
-export const useUpdateScholarshipApplicationMutation = (
+export function useUpdateScholarshipApplicationMutation(
 	options?: UseUpdateScholarshipApplicationMutationOptions,
-) => {
+) {
 	return useMutation<
 		UpdateScholarshipApplicationMutationData,
 		UpdateScholarshipApplicationMutationError,
