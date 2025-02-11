@@ -18,6 +18,7 @@ export const idPrefixByResourceName = {
 	parameter: 'param',
 	position: 'pos',
 	recommendation: 'rec',
+	scholarship_application: 'sch',
 	user: 'usr',
 } as const;
 export const apiYupHelpers = getApiResourceYupHelpers(
@@ -39,6 +40,7 @@ export const apiYupHelpers = getApiResourceYupHelpers(
 		'parameter',
 		'position',
 		'recommendation',
+		'scholarship_application',
 		'user',
 	],
 	idPrefixByResourceName,
