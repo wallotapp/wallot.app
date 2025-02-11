@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
-import { gmail, log } from '../../services.js';
-import { variables } from '../../variables.js';
-import { directoryPath } from '../../directoryPath.js';
+import { gmail, log } from '../../../services.js';
+import { variables } from '../../../variables.js';
+import { directoryPath } from '../../../directoryPath.js';
 
 const emailTemplateRelativePath =
 	'visionaryScholarships/visionaryScholarshipConfirmationEmail.html';

@@ -16,4 +16,5 @@ export * from './orders/index.js';
 export * from './parameters/index.js';
 export * from './positions/index.js';
 export * from './recommendations/index.js';
+export * from './scholarshipApplications/index.js';
 export * from './users/index.js';

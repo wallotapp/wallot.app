@@ -103,6 +103,12 @@
 			"visibility": "public"
 		},
 		{
+			"name_singular": "scholarship_application",
+			"name_plural": "scholarship_applications",
+			"id_prefix": "sch",
+			"visibility": "public"
+		},
+		{
 			"id_prefix": "usr",
 			"name_plural": "users",
 			"name_singular": "user",
