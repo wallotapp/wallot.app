@@ -10,6 +10,7 @@ describe('ScholarshipApplication', () => {
 			...apiResourceDefaultJson,
 			category: 'default',
 			name: 'My ScholarshipApplication',
+			user: '',
 		};
 		expect(exampleScholarshipApplication).toEqual<
 			typeof exampleScholarshipApplication
@@ -24,6 +25,8 @@ describe('ScholarshipApplication', () => {
 			_deleted: false,
 			description: '',
 			name: 'My ScholarshipApplication',
+			status: 'in_progress',
+			user: '',
 		});
 	});
 });

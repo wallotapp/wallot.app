@@ -17,8 +17,17 @@ export const ScholarshipApplicationCategoryEnum = getEnum(['default']);
 export type ScholarshipApplicationCategory =
 	keyof typeof ScholarshipApplicationCategoryEnum.obj;
 
+export const ScholarshipApplicationStatusEnum = getEnum([
+	'in_progress',
+	'submitted',
+	'reviewed',
+]);
+export type ScholarshipApplicationStatus =
+	keyof typeof ScholarshipApplicationStatusEnum.obj;
+
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
+	'user',
 ] as const);
 type T = keyof typeof createParamsRequiredFieldEnum.obj;
 
@@ -28,7 +37,8 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: ScholarshipApplicationCategoryEnum.getDefinedSchema(),
-	// Add more properties here
+	status: ScholarshipApplicationStatusEnum.getDefinedSchema().default('in_progress'),
+	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: true }),
 } as const;
 type U = typeof properties;
 

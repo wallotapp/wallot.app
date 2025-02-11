@@ -38,6 +38,7 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 		'HOME_SITE__/PRIVACY': '/privacy',
 		'HOME_SITE__/ROI': '/roi',
 		'HOME_SITE__/SCHOLARSHIPS': '/scholarships',
+		'HOME_SITE__/SCHOLARSHIPS/APPLICATION': '/scholarships/application',
 		'HOME_SITE__/TERMS': '/terms',
 	}[routeStaticId];
 
@@ -73,6 +74,7 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 		routeStaticId === 'HOME_SITE__/PRIVACY' ||
 		routeStaticId === 'HOME_SITE__/ROI' ||
 		routeStaticId === 'HOME_SITE__/SCHOLARSHIPS' ||
+		routeStaticId === 'HOME_SITE__/SCHOLARSHIPS/APPLICATION' ||
 		routeStaticId === 'HOME_SITE__/TERMS'
 	) {
 		const query = queries.length ? `?${queries.join('&')}` : '';

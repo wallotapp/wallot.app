@@ -20,6 +20,7 @@ export const HomeSiteRouteStaticIdEnum = getEnum([
 	'HOME_SITE__/PRIVACY',
 	'HOME_SITE__/ROI',
 	'HOME_SITE__/SCHOLARSHIPS',
+	'HOME_SITE__/SCHOLARSHIPS/APPLICATION',
 	'HOME_SITE__/TERMS',
 ]);
 export type HomeSiteRouteStaticId = EnumMember<
@@ -80,6 +81,7 @@ export type HomeSiteRouteQueryParams = {
 	'HOME_SITE__/PRIVACY': {};
 	'HOME_SITE__/ROI': {};
 	'HOME_SITE__/SCHOLARSHIPS': {};
+	'HOME_SITE__/SCHOLARSHIPS/APPLICATION': {};
 	'HOME_SITE__/TERMS': {};
 };
 
