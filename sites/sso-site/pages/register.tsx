@@ -206,7 +206,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			title: 'Creating your account...',
 			description: 'This may take a few moments.',
 		});
-		registerUser(data);
+		const redirectURI = dest ? decodeURIComponent(dest) : null;
+		registerUser({ ...data, redirect_uri: redirectURI });
 	};
 
 	// ==== Render ==== //
