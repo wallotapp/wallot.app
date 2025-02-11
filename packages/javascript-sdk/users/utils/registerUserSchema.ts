@@ -6,6 +6,7 @@ import { passwordSchema } from './password.js';
 export const registerUserProperties = {
 	email: YupHelpers.emailAddress().required(),
 	password: passwordSchema().required().default(''),
+	redirect_uri: YupHelpers.url().nullable().default(null),
 	username: usernameSchema().required().default(''),
 } as const;
 export const registerUserSchema = yup.object(registerUserProperties);

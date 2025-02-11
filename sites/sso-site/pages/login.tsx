@@ -77,18 +77,17 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== Constants ==== //
 
 	// Router Query
-	const _: RouteQueryParams = router?.query ?? {};
-	_;
+	const query: RouteQueryParams = router?.query ?? {};
 
 	// Router Query Param Values
-	// const { dest } = query;
+	const { dest } = query;
 
 	// Register Route
 	const registerRoute = getSsoSiteRoute({
 		routeStaticId: 'SSO_SITE__/REGISTER',
 		origin: null,
 		includeOrigin: false,
-		queryParams: { dest: undefined },
+		queryParams: { dest },
 	});
 
 	// Form
@@ -163,14 +162,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					includeOrigin: true,
 					queryParams: { client_token: clientToken },
 				});
-				// const decodedDest = decodeURIComponent(dest ?? '');
-				// const hasQueryParams = decodedDest.includes('?');
-				// const destination = dest
-				// 	? `${decodedDest}${
-				// 			hasQueryParams ? '&' : '?'
-				// 	  }client_token=${clientToken}`
-				// 	: defaultDestination;
-				const destination = defaultDestination;
+				const decodedDest = decodeURIComponent(dest ?? '');
+				const hasQueryParams = decodedDest.includes('?');
+				const destination = dest
+					? `${decodedDest}${
+							hasQueryParams ? '&' : '?'
+					  }client_token=${clientToken}`
+					: defaultDestination;
 
 				await router.push(destination);
 				return;

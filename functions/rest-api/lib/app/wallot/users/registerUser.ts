@@ -15,6 +15,7 @@ import { scheduleActivationReminderEmails } from './scheduleActivationReminderEm
 export const registerUser = async ({
 	email,
 	password,
+	redirect_uri,
 	username,
 }: RegisterUserParams): Promise<FunctionResponse<RegisterUserResponse>> => {
 	// Check that the username is unique and email is not already registered
@@ -82,12 +83,17 @@ export const registerUser = async ({
 	const customToken = await auth.createCustomToken(firebaseUser.uid);
 
 	// Construct the redirect URL using custom token
-	const redirectUri = getHomeSiteRoute({
+	const defaultRedirectURI = getHomeSiteRoute({
 		includeOrigin: true,
 		origin: siteOriginByTarget.HOME_SITE,
 		queryParams: { client_token: customToken },
 		routeStaticId: 'HOME_SITE__/GET_STARTED',
 	});
+	const redirectURI = redirect_uri
+		? redirect_uri.includes('?')
+			? `${redirect_uri}&client_token=${customToken}`
+			: `${redirect_uri}?client_token=${customToken}`
+		: defaultRedirectURI;
 
 	// Construct the post-response callback
 	const onFinished = async () => {
@@ -115,7 +121,7 @@ export const registerUser = async ({
 	};
 
 	return {
-		json: { custom_token: customToken, redirect_uri: redirectUri },
+		json: { custom_token: customToken, redirect_uri: redirectURI },
 		onFinished,
 	};
 };
