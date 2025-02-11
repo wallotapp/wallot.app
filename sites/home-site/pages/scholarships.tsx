@@ -7,14 +7,19 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import {
 	getHomeSiteRoute,
+	getSsoSiteRoute,
 	HomeSiteRouteQueryParams,
 	ScholarshipApplication,
 } from '@wallot/js';
 import { Fragment } from 'react';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import Link from 'next/link';
+import { AsyncLink } from 'ergonomic-react/src/components/custom-ui/async-link';
 import { LogoButton } from '@wallot/react/src/components/LogoButton';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
+import { useQueryScholarshipApplicationsForLoggedInUser } from '@wallot/react/src/features/scholarshipApplications/hooks/useQueryScholarshipApplicationsForLoggedInUser';
+import { AuthContext } from 'ergonomic-react/src/features/authentication/providers/AuthProvider';
+import { useContext } from 'react';
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== Hooks ==== //
@@ -25,6 +30,7 @@ const Page: NextPage<PageProps> = (props) => {
 	// Site Origin
 	const siteOriginByTarget = useSiteOriginByTarget();
 	const homeSiteOrigin = siteOriginByTarget['HOME_SITE'];
+	const ssoSiteOrigin = siteOriginByTarget['SSO_SITE'];
 
 	// ==== Constants ==== //
 
@@ -35,21 +41,43 @@ const Page: NextPage<PageProps> = (props) => {
 	const _ = query;
 	typeof _;
 
+	// Auth status
+	const { user } = useContext(AuthContext);
+	const isUserSignedIn = user?.uid != null;
+
 	// Application status
-	const applicationForLoggedInUser = null as ScholarshipApplication | null;
-	const isApplicationForLoggedInUserSubmitted = isApplicationSubmitted(
-		applicationForLoggedInUser,
-	);
+	const {
+		resourcesForLoggedInUser: scholarshipApplicationsForLoggedInUser,
+		isResourcePageLoading: isScholarshipApplicationPageLoading,
+	} = useQueryScholarshipApplicationsForLoggedInUser();
+	const scholarshipApplicationForLoggedInUser =
+		scholarshipApplicationsForLoggedInUser[0] ?? null;
+	const isScholarshipApplicationForLoggedInUserSubmitted =
+		isScholarshipApplicationSubmitted(scholarshipApplicationForLoggedInUser);
+
+	// ==== Constants ==== //
 
 	// Application URL
-	const applicationUrl = getHomeSiteRoute({
+	const loggedInApplicationUrl = getHomeSiteRoute({
 		includeOrigin: true,
 		origin: homeSiteOrigin,
 		queryParams: {},
-		routeStaticId: 'HOME_SITE__/SCHOLARSHIPS',
+		routeStaticId: 'HOME_SITE__/SCHOLARSHIPS/APPLICATION',
 	});
-
-	// ==== Constants ==== //
+	const guestApplicationUrl = getSsoSiteRoute({
+		includeOrigin: true,
+		origin: ssoSiteOrigin,
+		queryParams: {
+			dest: loggedInApplicationUrl,
+		},
+		routeStaticId: 'SSO_SITE__/REGISTER',
+	});
+	const applicationUrl = isUserSignedIn
+		? loggedInApplicationUrl
+		: guestApplicationUrl;
+	const isApplicationUrlReady = isUserSignedIn
+		? !isScholarshipApplicationPageLoading
+		: true;
 
 	// Runtime Route ID
 	const ROUTE_RUNTIME_ID = props.routeStaticId;
@@ -87,22 +115,40 @@ const Page: NextPage<PageProps> = (props) => {
 						$5,000 Merit Scholarships for Graduating Seniors from Florida
 					</p>
 					<div className='mt-5 text-center'>
-						<Link className='' href={applicationUrl} target='_blank'>
-							<div
-								className={cn(
-									'bg-gray-100 hover:bg-brand-dark',
-									'font-medium inline-block px-6 py-1.5 rounded text-black hover:text-white',
-									'transition-colors',
-								)}
-							>
-								{applicationForLoggedInUser == null
-									? 'Start'
-									: isApplicationForLoggedInUserSubmitted
-									? 'View'
-									: 'Continue'}{' '}
-								Application
-							</div>
-						</Link>
+						<AsyncLink
+							className=''
+							href={applicationUrl}
+							target='_blank'
+							isReady={isApplicationUrlReady}
+						>
+							{isApplicationUrlReady ? (
+								<div
+									className={cn(
+										'bg-gray-100 hover:bg-brand-dark',
+										'font-medium inline-block px-6 py-1.5 rounded text-black hover:text-white',
+										'transition-colors',
+									)}
+								>
+									{scholarshipApplicationForLoggedInUser == null
+										? 'Start'
+										: isScholarshipApplicationForLoggedInUserSubmitted
+										? 'View'
+										: 'Continue'}{' '}
+									Application
+								</div>
+							) : (
+								<>
+									<div className='flex items-center justify-center space-x-2 min-w-16'>
+										<div
+											className={cn(
+												'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
+												'border-t-brand border-r-brand border-b-brand',
+											)}
+										></div>
+									</div>
+								</>
+							)}
+						</AsyncLink>
 					</div>
 					<div className='h-36' />
 				</div>
@@ -322,11 +368,11 @@ export const getStaticProps: GetStaticProps<PageStaticProps> = () => {
 	});
 };
 
-function isApplicationSubmitted(
+function isScholarshipApplicationSubmitted(
 	applicationForLoggedInUser: ScholarshipApplication | null,
 ): applicationForLoggedInUser is ScholarshipApplication {
 	return (
 		applicationForLoggedInUser != null &&
-		applicationForLoggedInUser.description === 'submitted'
+		applicationForLoggedInUser.status != 'in_progress'
 	);
 }
