@@ -9,7 +9,9 @@ import { DateTime } from 'luxon';
  * @returns The delay in seconds (integer) for scheduling a Cloud Task.
  * @throws Error if the provided date is invalid or more than 30 days in the future.
  */
-export function getCloudTasksScheduleDelaySeconds(targetUtcIso: string): number {
+export function getCloudTasksScheduleDelaySeconds(
+	targetUtcIso: string,
+): number {
 	// Get the current time in UTC.
 	const now = DateTime.utc();
 

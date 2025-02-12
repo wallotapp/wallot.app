@@ -17,7 +17,7 @@ export const handleSendEmailWithGmailAPITask: CloudTaskHandler<
 			recipientEmail: data.recipient_email,
 			result,
 		});
-    return Promise.resolve();
+		return Promise.resolve();
 	} catch (err) {
 		log(
 			{
