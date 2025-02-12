@@ -12,7 +12,7 @@ export const ScholarshipApplicationFormSectionEnum = getEnum([
 	'Student Profile',
 	'Personal Essays',
 ]);
-export type ScholarshipApplicationFormSectionEnum = EnumMember<
+export type ScholarshipApplicationFormSection = EnumMember<
 	typeof ScholarshipApplicationFormSectionEnum.obj
 >;
 
@@ -22,7 +22,7 @@ export const CollegeTypeEnum = getEnum([
 	'Community College',
 	'Technical College',
 ]);
-export type CollegeTypeEnum = EnumMember<typeof CollegeTypeEnum.obj>;
+export type CollegeType = EnumMember<typeof CollegeTypeEnum.obj>;
 
 export const scholarshipApplicationFormProperties = {
 	'Contact Details': {
@@ -52,7 +52,7 @@ export const scholarshipApplicationFormProperties = {
 		college_type: CollegeTypeEnum.getDefinedSchema()
 			.required()
 			.label('Type of College')
-			.default('' as CollegeTypeEnum),
+			.default('' as CollegeType),
 	},
 	'Student Profile': {
 		academic_achievement: yup.string().required().meta({
