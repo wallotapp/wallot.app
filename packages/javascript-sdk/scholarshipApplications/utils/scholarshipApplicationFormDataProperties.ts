@@ -169,3 +169,4 @@ export const scholarshipApplicationFormDataSchemaFieldSpecByFieldKey =
 export type ScholarshipApplicationFormDataParams = yup.InferType<
 	typeof scholarshipApplicationFormDataSchema
 >;
+export type ScholarshipApplicationFormDataResponse = Record<string, never>;
