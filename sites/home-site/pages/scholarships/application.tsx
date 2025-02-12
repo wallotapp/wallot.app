@@ -7,7 +7,10 @@ import {
 	PageProps,
 	Page as PageComponent,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { HomeSiteRouteQueryParams } from '@wallot/js';
+import {
+	HomeSiteRouteQueryParams,
+	isSubmittedScholarshipApplication,
+} from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getSsoSiteRoute } from '@wallot/js';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
@@ -15,6 +18,7 @@ import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/auth
 import { AuthenticatedPageHeader } from '@wallot/react/src/components/AuthenticatedPageHeader';
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
+import { useQueryScholarshipApplicationsForLoggedInUser } from '@wallot/react/src/features/scholarshipApplications/hooks/useQueryScholarshipApplicationsForLoggedInUser';
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== State ==== //
@@ -86,7 +90,19 @@ const Page: NextPage<PageProps> = (props) => {
 	];
 	const currentStepData = steps[currentStep];
 	const isLastStep = currentStep === steps.length - 1;
-	const isLoggedInUserStatusLoading = Math.random() > 100;
+
+	// Application status
+	const {
+		resourcesForLoggedInUser: scholarshipApplicationsForLoggedInUser,
+		isResourcePageLoading: isScholarshipApplicationPageLoading,
+	} = useQueryScholarshipApplicationsForLoggedInUser();
+	const scholarshipApplicationForLoggedInUser =
+		scholarshipApplicationsForLoggedInUser[0] ?? null;
+	const isScholarshipApplicationForLoggedInUserSubmitted =
+		scholarshipApplicationForLoggedInUser != null &&
+		isSubmittedScholarshipApplication(scholarshipApplicationForLoggedInUser);
+	const disabled = isScholarshipApplicationForLoggedInUserSubmitted;
+	disabled;
 
 	if (!currentStepData) {
 		return null;
@@ -109,10 +125,18 @@ const Page: NextPage<PageProps> = (props) => {
 						<p className='font-medium text-xl'>Application</p>
 					</div>
 					<div className={cn('mt-7')}>
-						<div className={cn(isLoggedInUserStatusLoading ? '' : 'hidden')}>
+						<div
+							className={cn(
+								isScholarshipApplicationPageLoading ? '' : 'hidden',
+							)}
+						>
 							<ApplicationPageSuspense />
 						</div>
-						<div className={cn(!isLoggedInUserStatusLoading ? '' : 'hidden')}>
+						<div
+							className={cn(
+								!isScholarshipApplicationPageLoading ? '' : 'hidden',
+							)}
+						>
 							<div className=''>
 								<div className='flex flex-col md:flex-row'>
 									{/* Left sidebar (visible on Tablet and Desktop) */}
