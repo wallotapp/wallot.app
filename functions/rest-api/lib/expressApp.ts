@@ -37,6 +37,9 @@ import {
 	CreateAlpacaAccessTokenParams,
 	CreateAlpacaAccessTokenResponse,
 	InvestmentProductNetGainPage,
+	ScholarshipApplicationFormDataResponse,
+	ScholarshipApplicationFormDataParams,
+	ScholarshipApplicationFormDataRouteParams,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -315,6 +318,71 @@ app.get(
 				retrieveInvestmentProductNetGainPage,
 				{ requiresAuth: false },
 			)(req, res, next),
+		);
+	},
+);
+
+// Scholarship Applications
+import { saveScholarshipApplication } from './app/wallot/scholarshipApplications/saveScholarshipApplication.js';
+app.options(
+	'*/v0/scholarship-applications/:scholarshipApplicationId',
+	corsPolicy,
+);
+app.patch(
+	'*/v0/scholarship-applications/:scholarshipApplicationId',
+	(
+		req: express.Request<
+			ScholarshipApplicationFormDataRouteParams,
+			ScholarshipApplicationFormDataResponse,
+			ScholarshipApplicationFormDataParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			ScholarshipApplicationFormDataResponse,
+			GeneralizedResLocals<ScholarshipApplicationFormDataResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(saveScholarshipApplication)(
+				req,
+				res,
+				next,
+			),
+		);
+	},
+);
+
+import { submitScholarshipApplication } from './app/wallot/scholarshipApplications/submitScholarshipApplication.js';
+app.options(
+	'*/v0/scholarship-applications/:scholarshipApplicationId/submit',
+	corsPolicy,
+);
+app.post(
+	'*/v0/scholarship-applications/:scholarshipApplicationId/submit',
+	(
+		req: express.Request<
+			ScholarshipApplicationFormDataRouteParams,
+			ScholarshipApplicationFormDataResponse,
+			ScholarshipApplicationFormDataParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			ScholarshipApplicationFormDataResponse,
+			GeneralizedResLocals<ScholarshipApplicationFormDataResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(submitScholarshipApplication)(
+				req,
+				res,
+				next,
+			),
 		);
 	},
 );
