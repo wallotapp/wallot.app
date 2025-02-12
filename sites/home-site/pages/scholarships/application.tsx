@@ -29,7 +29,7 @@ import { AuthenticatedPageHeader } from '@wallot/react/src/components/Authentica
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { useQueryScholarshipApplicationsForLoggedInUser } from '@wallot/react/src/features/scholarshipApplications/hooks/useQueryScholarshipApplicationsForLoggedInUser';
-import { Keys } from 'ergonomic';
+import { GeneralizedError, Keys } from 'ergonomic';
 import { useForm } from 'react-hook-form';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
@@ -40,6 +40,8 @@ import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hook
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
 import { createScholarshipApplication } from '@wallot/react/src/features/scholarshipApplications/api/createScholarshipApplication';
+import { useSaveScholarshipApplicationMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useSaveScholarshipApplicationMutation';
+import { useSubmitScholarshipApplicationMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useSubmitScholarshipApplicationMutation';
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== State ==== //
@@ -132,7 +134,63 @@ const Page: NextPage<PageProps> = (props) => {
 	const liveData = watch();
 	liveData;
 
+	// Mutation error
+	const onMutationError = ({ error: { message } }: GeneralizedError) => {
+		// Show the error message
+		toast({
+			title: 'Error',
+			description: message,
+		});
+		setError('root', {
+			type: 'manual',
+			message: 'An error occurred. Please try again.',
+		});
+	};
+
+	// Mutation success
+	const onMutationSuccess = (operation: 'save' | 'submit') => {
+		return async () => {
+			// Refetch the queries
+			const refetchActions = [
+				refetchLoggedInUser,
+				refetchScholarshipApplicationsForLoggedInUser,
+			];
+			await Promise.all(refetchActions);
+
+			// Show success toast
+			toast({
+				title: 'Success',
+				description:
+					operation === 'save'
+						? 'Your application has been saved.'
+						: 'Your application has been submitted.',
+			});
+		};
+	};
+
 	// Save mutation
+	const {
+		mutate: saveScholarshipApplication,
+		isLoading: isSaveScholarshipApplicationRunning,
+	} = useSaveScholarshipApplicationMutation(
+		scholarshipApplicationForLoggedInUser?._id ?? null,
+		{
+			onError: onMutationError,
+			onSuccess: onMutationSuccess('save'),
+		},
+	);
+
+	// Submit mutation
+	const {
+		mutate: submitScholarshipApplication,
+		isLoading: isSubmitScholarshipApplicationRunning,
+	} = useSubmitScholarshipApplicationMutation(
+		scholarshipApplicationForLoggedInUser?._id ?? null,
+		{
+			onError: onMutationError,
+			onSuccess: onMutationSuccess('submit'),
+		},
+	);
 
 	// ==== Constants ==== //
 
@@ -180,10 +238,10 @@ const Page: NextPage<PageProps> = (props) => {
 	const isLastStep = currentStep === 'Personal Essays';
 
 	// Form
-	const isUpdateFormRunning = Math.random() === 100;
-	const isSubmitFormRunning = Math.random() === 100;
 	const formStatus =
-		formState.isSubmitting || isUpdateFormRunning || isSubmitFormRunning
+		formState.isSubmitting ||
+		isSaveScholarshipApplicationRunning ||
+		isSubmitScholarshipApplicationRunning
 			? 'running'
 			: 'idle';
 	const isFormSubmitting = formStatus === 'running';
@@ -218,6 +276,26 @@ const Page: NextPage<PageProps> = (props) => {
 	collegeInformationFields;
 	studentProfileFields;
 	personalEssaysFields;
+
+	// Form Submit Handler
+	const onSubmit = (data: ScholarshipApplicationFormDataParams) => {
+		if (loggedInUser == null) {
+			toast({
+				title: 'Error',
+				description: 'Try logging in again',
+			});
+			return;
+		}
+
+		console.log('Submitting Application with following data:', data);
+		toast({
+			title: 'Submitting Application',
+			description: 'This may take a few moments...',
+		});
+
+		submitScholarshipApplication(data);
+	};
+
 	// ==== Effects ==== //
 	const [isInitialized, setIsInitialized] = useState(false);
 	useEffect(() => {
@@ -439,13 +517,16 @@ const Page: NextPage<PageProps> = (props) => {
 												<h1 className='text-xl font-bold'>
 													{currentStepData.title}
 												</h1>
-												<button className='text-sm text-blue-500'>
+												<button
+													className='text-sm text-blue-500'
+													onClick={() => saveScholarshipApplication(liveData)}
+												>
 													Save Progress
 												</button>
 											</div>
 
 											{/* Form fields */}
-											<form>
+											<form onSubmit={handleSubmit(onSubmit) as () => void}>
 												<div className='space-y-4'>
 													{currentStepData.fields.map((field) => (
 														<div key={field.name}>
