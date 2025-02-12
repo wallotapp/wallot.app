@@ -130,8 +130,7 @@ const Page: NextPage<PageProps> = (props) => {
 		});
 	const liveData = watch();
 
-	// User mutation
-	// Scholarship mutation
+	// Save mutation
 
 	// ==== Constants ==== //
 
