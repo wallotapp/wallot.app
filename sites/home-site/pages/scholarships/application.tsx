@@ -34,14 +34,15 @@ import { useForm } from 'react-hook-form';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
-// import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
-// import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
+import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
+import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
 import { createScholarshipApplication } from '@wallot/react/src/features/scholarshipApplications/api/createScholarshipApplication';
 import { useSaveScholarshipApplicationMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useSaveScholarshipApplicationMutation';
 import { useSubmitScholarshipApplicationMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useSubmitScholarshipApplicationMutation';
+import { getGeneralizedServerDataFromFormData } from 'ergonomic-react/src/features/data/utils/getGeneralizedServerDataFromFormData';
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== State ==== //
@@ -76,12 +77,13 @@ const Page: NextPage<PageProps> = (props) => {
 	toast;
 
 	// Form Resolver
+	const formDataTransformationOptions = {
+		...defaultGeneralizedFormDataTransformationOptions,
+		phoneNumberFieldKeys: ['phone_number'],
+	};
 	const resolver = useYupValidationResolver(
 		scholarshipApplicationFormDataSchema,
-		{
-			...defaultGeneralizedFormDataTransformationOptions,
-			phoneNumberFieldKeys: ['phone_number'],
-		},
+		formDataTransformationOptions,
 	);
 
 	// Router
@@ -151,20 +153,16 @@ const Page: NextPage<PageProps> = (props) => {
 	const onMutationSuccess = (operation: 'save' | 'submit') => {
 		return async () => {
 			// Refetch the queries
-			const refetchActions = [
-				refetchLoggedInUser,
-				refetchScholarshipApplicationsForLoggedInUser,
-			];
-			await Promise.all(refetchActions);
-
-			// Show success toast
-			toast({
-				title: 'Success',
-				description:
-					operation === 'save'
-						? 'Your application has been saved.'
-						: 'Your application has been submitted.',
-			});
+			await refetchLoggedInUser(),
+				await refetchScholarshipApplicationsForLoggedInUser(),
+				// Show success toast
+				toast({
+					title: 'Success',
+					description:
+						operation === 'save'
+							? 'Your application has been saved.'
+							: 'Your application has been submitted.',
+				});
 		};
 	};
 
@@ -351,10 +349,7 @@ const Page: NextPage<PageProps> = (props) => {
 				// Set form values
 				const defaultFormValues = getGeneralizedFormDataFromServerData(
 					initialServerData,
-					{
-						...defaultGeneralizedFormDataTransformationOptions,
-						phoneNumberFieldKeys: ['phone_number'],
-					},
+					formDataTransformationOptions,
 				);
 				reset(defaultFormValues);
 
@@ -519,7 +514,14 @@ const Page: NextPage<PageProps> = (props) => {
 												</h1>
 												<button
 													className='text-sm text-blue-500'
-													onClick={() => saveScholarshipApplication(liveData)}
+													onClick={() => {
+														const serverData =
+															getGeneralizedServerDataFromFormData(
+																liveData,
+																formDataTransformationOptions,
+															);
+														saveScholarshipApplication(serverData);
+													}}
 												>
 													Save Progress
 												</button>
@@ -527,29 +529,70 @@ const Page: NextPage<PageProps> = (props) => {
 
 											{/* Form fields */}
 											<form onSubmit={handleSubmit(onSubmit) as () => void}>
-												<div className='space-y-4'>
-													{currentStepData.fields.map((field) => (
-														<div key={field.name}>
-															<label
-																htmlFor={field.name}
-																className='block mb-1 capitalize'
-															>
-																{field.name}
-															</label>
-															{field.type === 'textarea' ? (
-																<textarea
-																	id={field.name}
-																	className='w-full border p-2 rounded'
-																/>
-															) : (
-																<input
-																	id={field.name}
-																	type={field.type}
-																	className='w-full border p-2 rounded'
-																/>
-															)}
+												<div className=''>
+													<div
+														className={cn(
+															'px-1',
+															currentStep === 'Contact Details' ? '' : 'hidden',
+														)}
+													>
+														{contactDetailsFields.map((fieldProps) => (
+															<LiteFormFieldContainer
+																key={fieldProps.fieldKey}
+																{...fieldProps}
+															/>
+														))}
+													</div>
+													<div
+														className={cn(
+															'px-1',
+															currentStep === 'College Information'
+																? ''
+																: 'hidden',
+														)}
+													>
+														{collegeInformationFields.map((fieldProps) => (
+															<LiteFormFieldContainer
+																key={fieldProps.fieldKey}
+																{...fieldProps}
+															/>
+														))}
+													</div>
+													<div
+														className={cn(
+															'px-1',
+															currentStep === 'Student Profile' ? '' : 'hidden',
+														)}
+													>
+														{studentProfileFields.map((fieldProps) => (
+															<LiteFormFieldContainer
+																key={fieldProps.fieldKey}
+																{...fieldProps}
+															/>
+														))}
+													</div>
+													<div
+														className={cn(
+															'px-1',
+															currentStep === 'Personal Essays' ? '' : 'hidden',
+														)}
+													>
+														{personalEssaysFields.map((fieldProps) => (
+															<LiteFormFieldContainer
+																key={fieldProps.fieldKey}
+																{...fieldProps}
+															/>
+														))}
+													</div>
+													{Boolean(formState.errors['root']?.message) && (
+														<div className='mt-4'>
+															<LiteFormFieldError
+																fieldErrorMessage={
+																	formState.errors['root']?.message ?? ''
+																}
+															/>
 														</div>
-													))}
+													)}
 												</div>
 
 												{/* Navigation buttons */}
