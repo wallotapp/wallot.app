@@ -20,6 +20,7 @@ import {
 	ScholarshipApplicationFormDataFieldEnum,
 	ScholarshipApplicationFormDataFieldFromUserDataEnum,
 	scholarshipApplicationsApi,
+	ScholarshipApplicationFormDataSectionEnum,
 } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getSsoSiteRoute } from '@wallot/js';
@@ -43,6 +44,8 @@ import { createScholarshipApplication } from '@wallot/react/src/features/scholar
 import { useSaveScholarshipApplicationMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useSaveScholarshipApplicationMutation';
 import { useSubmitScholarshipApplicationMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useSubmitScholarshipApplicationMutation';
 import { getGeneralizedServerDataFromFormData } from 'ergonomic-react/src/features/data/utils/getGeneralizedServerDataFromFormData';
+
+const steps = ScholarshipApplicationFormDataSectionEnum.arr;
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== State ==== //
@@ -213,31 +216,6 @@ const Page: NextPage<PageProps> = (props) => {
 	};
 
 	// Define our steps and their fields.
-	const steps = [
-		{
-			title: 'Contact Details',
-			fields: [
-				{ name: 'name', type: 'text' },
-				{ name: 'age', type: 'number' },
-			],
-		},
-		{
-			title: 'College Information',
-			fields: [
-				{ name: 'weight', type: 'number' },
-				{ name: 'height', type: 'text' },
-			],
-		},
-		{
-			title: 'Student Profile',
-			fields: [{ name: 'notes', type: 'textarea' }],
-		},
-		{
-			title: 'Personal Essays',
-			fields: [{ name: 'notes', type: 'textarea' }],
-		},
-	];
-	const currentStepData = steps.find((step) => step.title === currentStep);
 	const isLastStep = currentStep === 'Personal Essays';
 
 	// Form
@@ -380,10 +358,6 @@ const Page: NextPage<PageProps> = (props) => {
 		scholarshipApplicationForLoggedInUser,
 	]);
 
-	if (!currentStepData) {
-		return null;
-	}
-
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
@@ -435,19 +409,18 @@ const Page: NextPage<PageProps> = (props) => {
 										<ul>
 											{steps.map((step) => (
 												<li
-													key={step.title}
+													key={step}
 													className={cn('cursor-pointer p-2', {
-														'font-bold text-blue-500':
-															step.title === currentStep,
-														'text-gray-700': step.title !== currentStep,
+														'font-bold text-blue-500': step === currentStep,
+														'text-gray-700': step !== currentStep,
 													})}
 													onClick={() =>
 														setCurrentStep(
-															step.title as ScholarshipApplicationFormDataSection,
+															step as ScholarshipApplicationFormDataSection,
 														)
 													}
 												>
-													{step.title}
+													{step}
 												</li>
 											))}
 										</ul>
@@ -461,9 +434,7 @@ const Page: NextPage<PageProps> = (props) => {
 												className='w-full flex justify-between items-center bg-white p-2 shadow rounded'
 												onClick={toggleMobileMenu}
 											>
-												<span className='font-bold'>
-													{currentStepData.title}
-												</span>
+												<span className='font-bold'>{currentStep}</span>
 												<svg
 													className={cn(
 														'w-4 h-4 transform transition-transform duration-200',
@@ -487,23 +458,23 @@ const Page: NextPage<PageProps> = (props) => {
 												<ul className='mt-2 bg-white shadow rounded'>
 													{steps.map((step) => (
 														<li
-															key={step.title}
+															key={step}
 															className={cn(
 																'cursor-pointer p-2 border-b last:border-b-0',
 																{
 																	'font-bold text-blue-500':
-																		step.title === currentStep,
-																	'text-gray-700': step.title !== currentStep,
+																		step === currentStep,
+																	'text-gray-700': step !== currentStep,
 																},
 															)}
 															onClick={() => {
 																setCurrentStep(
-																	step.title as ScholarshipApplicationFormDataSection,
+																	step as ScholarshipApplicationFormDataSection,
 																);
 																setMobileMenuOpen(false);
 															}}
 														>
-															{step.title}
+															{step}
 														</li>
 													))}
 												</ul>
@@ -514,9 +485,7 @@ const Page: NextPage<PageProps> = (props) => {
 										<div className='bg-white p-6 shadow rounded'>
 											{/* Form header */}
 											<div className='flex justify-between items-center mb-4'>
-												<h1 className='text-xl font-bold'>
-													{currentStepData.title}
-												</h1>
+												<h1 className='text-xl font-bold'>{currentStep}</h1>
 												<button
 													className='text-sm text-blue-500'
 													onClick={() => {
@@ -616,10 +585,9 @@ const Page: NextPage<PageProps> = (props) => {
 															setCurrentStep(
 																steps[
 																	steps.findIndex(
-																		(step) => step.title === currentStep,
+																		(step) => step === currentStep,
 																	) - 1
-																]
-																	?.title as ScholarshipApplicationFormDataSection,
+																] as ScholarshipApplicationFormDataSection,
 															)
 														}
 													>
@@ -636,10 +604,9 @@ const Page: NextPage<PageProps> = (props) => {
 															setCurrentStep(
 																steps[
 																	steps.findIndex(
-																		(step) => step.title === currentStep,
+																		(step) => step === currentStep,
 																	) + 1
-																]
-																	?.title as ScholarshipApplicationFormDataSection,
+																] as ScholarshipApplicationFormDataSection,
 															)
 														}
 													>
