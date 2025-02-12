@@ -90,6 +90,7 @@ export const scholarshipApplicationFormProperties = {
 		common_essay: yup
 			.string()
 			.required()
+			.default('')
 			.label('Common Essay Prompt for All Applicants')
 			.meta({
 				label_message_user_text:

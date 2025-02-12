@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import * as yup from 'yup';
 import {
 	GeneralizedApiResourceCreateParamsRequiredFieldEnum,
@@ -12,6 +13,7 @@ import {
 	apiYupHelpers,
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
+import { scholarshipApplicationFormProperties } from '../utils/scholarshipApplicationFormProperties.js';
 
 export const ScholarshipApplicationCategoryEnum = getEnum(['default']);
 export type ScholarshipApplicationCategory =
@@ -51,6 +53,13 @@ const properties = {
 	status:
 		ScholarshipApplicationStatusEnum.getDefinedSchema().default('in_progress'),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: true }),
+	...R.pick(
+		['high_school'],
+		scholarshipApplicationFormProperties['Contact Details'],
+	),
+	...scholarshipApplicationFormProperties['College Information'],
+	...scholarshipApplicationFormProperties['Student Profile'],
+	...scholarshipApplicationFormProperties['Personal Essays'],
 } as const;
 type U = typeof properties;
 

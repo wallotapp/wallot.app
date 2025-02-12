@@ -28,6 +28,19 @@ describe('ScholarshipApplication', () => {
 			decision: null,
 			status: 'in_progress',
 			user: '',
+			// Application Form
+			common_essay: '',
+			academic_achievement_award_essay: '',
+			outstanding_student_athlete_award_essay: '',
+			community_leadership_award_essay: '',
+			entrepreneurial_excellence_award_essay: '',
+			academic_achievement: '',
+			honors_and_awards: '',
+			extracurricular_activities: '',
+			future_goals: '',
+			college_name: '',
+			college_type: '2-Year College',
+			high_school: '',
 		});
 	});
 });
