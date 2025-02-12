@@ -5,6 +5,7 @@ export * from './crypto/index.js';
 export * from './FunctionResponse.js';
 export * from './handleRouterFunctionError.js';
 export * from './getServices.js';
+export * from './getCloudTasksScheduleDelaySeconds.js';
 export * from './log.js';
 export * from './SecretDataTypes.js';
 export * from './wallot/index.js';
