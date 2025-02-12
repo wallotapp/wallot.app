@@ -1,3 +1,4 @@
+import { getFunctions } from 'firebase-admin/functions';
 import ky from 'ky-universal';
 import { google } from 'googleapis';
 import {
@@ -6,6 +7,7 @@ import {
 	SendEmailNotificationParams,
 	SendEmailNotificationResponse,
 } from 'ergonomic-node';
+import { getCloudTasksScheduleDelaySeconds } from './getCloudTasksScheduleDelaySeconds.js';
 
 export type SendEmailWithGmailAPIParams = SendEmailNotificationParams & {
 	pdf?: {
@@ -139,5 +141,26 @@ export function sendEmailWithGmailAPI(
 			success: true,
 			threadId: result.data.threadId,
 		};
+	};
+}
+
+export function enqueueSendEmailWithGmailAPI(
+	getCloudFunctionUrl: (functionName: string) => Promise<string>,
+	log: (log: unknown, options?: { type: 'error' | 'normal' }) => void,
+) {
+	return async (targetUtcIso: string, params: SendEmailWithGmailAPIParams) => {
+		const queue = getFunctions().taskQueue<SendEmailWithGmailAPIParams>(
+			'sendEmailWithGmailAPI',
+		);
+		const targetUri = await getCloudFunctionUrl('sendEmailWithGmailAPI');
+		log({
+			message: 'Enqueuing sendEmailWithGmailAPI task',
+			targetUri,
+			params,
+		});
+		await queue.enqueue(params, {
+			scheduleDelaySeconds: getCloudTasksScheduleDelaySeconds(targetUtcIso),
+			uri: targetUri,
+		});
 	};
 }
