@@ -10,6 +10,7 @@ import {
 import {
 	HomeSiteRouteQueryParams,
 	isSubmittedScholarshipApplication,
+	isReviewedScholarshipApplication,
 } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getSsoSiteRoute } from '@wallot/js';
@@ -103,6 +104,19 @@ const Page: NextPage<PageProps> = (props) => {
 		isSubmittedScholarshipApplication(scholarshipApplicationForLoggedInUser);
 	const disabled = isScholarshipApplicationForLoggedInUserSubmitted;
 	disabled;
+	const isScholarshipApplicationForLoggedInUserReviewed =
+		scholarshipApplicationForLoggedInUser != null &&
+		isReviewedScholarshipApplication(scholarshipApplicationForLoggedInUser);
+	const { decision = null } = scholarshipApplicationForLoggedInUser ?? {};
+	const decisionText =
+		decision == null
+			? ''
+			: {
+					accepted: 'Congratulations! You have been accepted.',
+					rejected: 'We regret to inform you that you have been rejected.',
+					waitlisted:
+						'You have been waitlisted. We will notify you if a spot opens up.',
+			  }[decision];
 
 	if (!currentStepData) {
 		return null;
@@ -122,7 +136,22 @@ const Page: NextPage<PageProps> = (props) => {
 					)}
 				>
 					<div>
-						<p className='font-medium text-xl'>Application</p>
+						<div>
+							<p className='font-medium text-xl'>Application</p>
+						</div>
+						{isScholarshipApplicationForLoggedInUserSubmitted && (
+							<div>
+								{isScholarshipApplicationForLoggedInUserReviewed ? (
+									<p>{decisionText}</p>
+								) : (
+									<p>
+										Your application has been received and is under review. You
+										will be notified once our committee has reached a decision
+										regarding your application.
+									</p>
+								)}
+							</div>
+						)}
 					</div>
 					<div className={cn('mt-7')}>
 						<div
