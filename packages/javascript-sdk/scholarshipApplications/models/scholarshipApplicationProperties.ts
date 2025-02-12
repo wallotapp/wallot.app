@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import * as yup from 'yup';
 import {
 	GeneralizedApiResourceCreateParamsRequiredFieldEnum,
@@ -12,10 +13,19 @@ import {
 	apiYupHelpers,
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
+import { scholarshipApplicationFormDataPropertiesBySection } from '../utils/scholarshipApplicationFormDataProperties.js';
 
 export const ScholarshipApplicationCategoryEnum = getEnum(['default']);
 export type ScholarshipApplicationCategory =
 	keyof typeof ScholarshipApplicationCategoryEnum.obj;
+
+export const ScholarshipApplicationDecisionEnum = getEnum([
+	'accepted',
+	'rejected',
+	'waitlisted',
+]);
+export type ScholarshipApplicationDecision =
+	keyof typeof ScholarshipApplicationDecisionEnum.obj;
 
 export const ScholarshipApplicationStatusEnum = getEnum([
 	'in_progress',
@@ -37,8 +47,19 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: ScholarshipApplicationCategoryEnum.getDefinedSchema(),
-	status: ScholarshipApplicationStatusEnum.getDefinedSchema().default('in_progress'),
+	decision: ScholarshipApplicationDecisionEnum.getOptionalSchema()
+		.nullable()
+		.default(null),
+	status:
+		ScholarshipApplicationStatusEnum.getDefinedSchema().default('in_progress'),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: true }),
+	...R.pick(
+		['high_school'],
+		scholarshipApplicationFormDataPropertiesBySection['Contact Details'],
+	),
+	...scholarshipApplicationFormDataPropertiesBySection['College Information'],
+	...scholarshipApplicationFormDataPropertiesBySection['Student Profile'],
+	...scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
 } as const;
 type U = typeof properties;
 

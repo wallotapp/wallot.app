@@ -33,4 +33,4 @@ export function useQueryScholarshipApplicationPage({
 			reactQueryOptions,
 		}),
 	);
-};
+}
