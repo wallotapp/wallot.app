@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as R from 'ramda';
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -57,7 +57,7 @@ const Page: NextPage<PageProps> = (props) => {
 	});
 
 	// Auth
-	useAuthenticatedRouteRedirect({
+	const { authStateIsLoading } = useAuthenticatedRouteRedirect({
 		authSiteOrigin,
 		loginRoutePath: guestApplicationUrl,
 		shouldPauseFirebaseAuthRedirects: false,
@@ -78,8 +78,35 @@ const Page: NextPage<PageProps> = (props) => {
 	// Router
 	const router = useRouter();
 
+	// Application status
+	const {
+		resourcesForLoggedInUser: scholarshipApplicationsForLoggedInUser,
+		refetch: refetchScholarshipApplicationsForLoggedInUser,
+		isResourcePageLoading: isScholarshipApplicationPageLoading,
+	} = useQueryScholarshipApplicationsForLoggedInUser();
+	const scholarshipApplicationForLoggedInUser =
+		scholarshipApplicationsForLoggedInUser[0] ?? null;
+	const isScholarshipApplicationForLoggedInUserSubmitted =
+		scholarshipApplicationForLoggedInUser != null &&
+		isSubmittedScholarshipApplication(scholarshipApplicationForLoggedInUser);
+	const disabled = isScholarshipApplicationForLoggedInUserSubmitted;
+	disabled;
+	const isScholarshipApplicationForLoggedInUserReviewed =
+		scholarshipApplicationForLoggedInUser != null &&
+		isReviewedScholarshipApplication(scholarshipApplicationForLoggedInUser);
+	const { decision = null } = scholarshipApplicationForLoggedInUser ?? {};
+	const decisionText =
+		decision == null
+			? ''
+			: {
+					accepted: 'Congratulations! You have been accepted.',
+					rejected: 'We regret to inform you that you have been rejected.',
+					waitlisted:
+						'You have been waitlisted. We will notify you if a spot opens up.',
+			  }[decision];
+
 	// Form
-	const initialFormData =
+	const defaultFormData =
 		scholarshipApplicationFormDataSchema.getDefault() as ScholarshipApplicationFormDataParams;
 	const { control, formState, handleSubmit, reset, setError, watch } =
 		useForm<ScholarshipApplicationFormDataParams>({
@@ -87,6 +114,9 @@ const Page: NextPage<PageProps> = (props) => {
 			shouldUnregister: false,
 		});
 	const liveData = watch();
+
+	// User mutation
+	// Scholarship mutation
 
 	// ==== Constants ==== //
 
@@ -133,32 +163,6 @@ const Page: NextPage<PageProps> = (props) => {
 	const currentStepData = steps.find((step) => step.title === currentStep);
 	const isLastStep = currentStep === 'Personal Essays';
 
-	// Application status
-	const {
-		resourcesForLoggedInUser: scholarshipApplicationsForLoggedInUser,
-		isResourcePageLoading: isScholarshipApplicationPageLoading,
-	} = useQueryScholarshipApplicationsForLoggedInUser();
-	const scholarshipApplicationForLoggedInUser =
-		scholarshipApplicationsForLoggedInUser[0] ?? null;
-	const isScholarshipApplicationForLoggedInUserSubmitted =
-		scholarshipApplicationForLoggedInUser != null &&
-		isSubmittedScholarshipApplication(scholarshipApplicationForLoggedInUser);
-	const disabled = isScholarshipApplicationForLoggedInUserSubmitted;
-	disabled;
-	const isScholarshipApplicationForLoggedInUserReviewed =
-		scholarshipApplicationForLoggedInUser != null &&
-		isReviewedScholarshipApplication(scholarshipApplicationForLoggedInUser);
-	const { decision = null } = scholarshipApplicationForLoggedInUser ?? {};
-	const decisionText =
-		decision == null
-			? ''
-			: {
-					accepted: 'Congratulations! You have been accepted.',
-					rejected: 'We regret to inform you that you have been rejected.',
-					waitlisted:
-						'You have been waitlisted. We will notify you if a spot opens up.',
-			  }[decision];
-
 	// Form
 	const isUpdateFormRunning = Math.random() === 100;
 	const isSubmitFormRunning = Math.random() === 100;
@@ -176,7 +180,7 @@ const Page: NextPage<PageProps> = (props) => {
 		fieldSpec:
 			scholarshipApplicationFormDataSchemaFieldSpecByFieldKey[fieldKey],
 		hideRequiredIndicator: true,
-		initialFormData,
+		initialFormData: defaultFormData,
 		isSubmitting: isFormSubmitting,
 		operation: 'update',
 		renderTooltipContent: undefined,
@@ -194,6 +198,30 @@ const Page: NextPage<PageProps> = (props) => {
 	const personalEssaysFields = Keys(
 		scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
 	).map(getLiteFormFieldProps);
+
+	// ==== Effects ==== //
+	const [isInitialized, setIsInitialized] = useState(false);
+	useEffect(() => {
+		if (isInitialized) return;
+		if (authStateIsLoading) return;
+		if (isScholarshipApplicationPageLoading) return;
+		return void (async function () {
+			try {
+				let initialFormData: ScholarshipApplicationFormDataParams = defaultFormData;
+				if (scholarshipApplicationForLoggedInUser != null) {
+					// If existing app found, set default form value
+
+				} else {
+					// Otherwise, initialize new app, save to DB and set default form value
+
+				}
+			} catch (error) {
+				console.error('Error initializing scholarship application:', error);
+			} finally {
+				setIsInitialized(true);
+			}
+		})();
+	}, [authStateIsLoading, isScholarshipApplicationPageLoading, isInitialized, scholarshipApplicationForLoggedInUser]);
 
 	if (!currentStepData) {
 		return null;
