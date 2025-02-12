@@ -367,7 +367,7 @@ export const getStaticProps: GetStaticProps<PageStaticProps> = () => {
 	});
 };
 
-function ApplicationPageSuspense() {
+function ApplicationPageSuspense({ length = 5 }) {
 	return (
 		<div className='flex flex-col space-y-7'>
 			{Array.from({ length }).map((_, i) =>
