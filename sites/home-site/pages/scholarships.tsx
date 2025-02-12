@@ -9,7 +9,7 @@ import {
 	getHomeSiteRoute,
 	getSsoSiteRoute,
 	HomeSiteRouteQueryParams,
-	ScholarshipApplication,
+	isSubmittedScholarshipApplication,
 } from '@wallot/js';
 import { Fragment } from 'react';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
@@ -53,7 +53,8 @@ const Page: NextPage<PageProps> = (props) => {
 	const scholarshipApplicationForLoggedInUser =
 		scholarshipApplicationsForLoggedInUser[0] ?? null;
 	const isScholarshipApplicationForLoggedInUserSubmitted =
-		isScholarshipApplicationSubmitted(scholarshipApplicationForLoggedInUser);
+		scholarshipApplicationForLoggedInUser != null &&
+		isSubmittedScholarshipApplication(scholarshipApplicationForLoggedInUser);
 
 	// ==== Constants ==== //
 
@@ -367,12 +368,3 @@ export const getStaticProps: GetStaticProps<PageStaticProps> = () => {
 		props: ROUTE_STATIC_PROPS,
 	});
 };
-
-function isScholarshipApplicationSubmitted(
-	applicationForLoggedInUser: ScholarshipApplication | null,
-): applicationForLoggedInUser is ScholarshipApplication {
-	return (
-		applicationForLoggedInUser != null &&
-		applicationForLoggedInUser.status != 'in_progress'
-	);
-}
