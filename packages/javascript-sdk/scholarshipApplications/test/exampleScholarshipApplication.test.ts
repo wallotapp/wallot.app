@@ -25,6 +25,7 @@ describe('ScholarshipApplication', () => {
 			_deleted: false,
 			description: '',
 			name: 'My ScholarshipApplication',
+			decision: null,
 			status: 'in_progress',
 			user: '',
 		});
