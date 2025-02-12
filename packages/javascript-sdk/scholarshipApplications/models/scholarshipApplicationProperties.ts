@@ -37,7 +37,8 @@ const properties = {
 	_id: apiYupHelpers.id(_object),
 	_object: YupHelpers.constant(_object),
 	category: ScholarshipApplicationCategoryEnum.getDefinedSchema(),
-	status: ScholarshipApplicationStatusEnum.getDefinedSchema().default('in_progress'),
+	status:
+		ScholarshipApplicationStatusEnum.getDefinedSchema().default('in_progress'),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: true }),
 } as const;
 type U = typeof properties;
