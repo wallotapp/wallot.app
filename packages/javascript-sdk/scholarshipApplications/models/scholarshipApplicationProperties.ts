@@ -13,7 +13,7 @@ import {
 	apiYupHelpers,
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
-import { scholarshipApplicationFormProperties } from '../utils/scholarshipApplicationFormProperties.js';
+import { scholarshipApplicationFormDataPropertiesBySection } from '../utils/scholarshipApplicationFormDataProperties.js';
 
 export const ScholarshipApplicationCategoryEnum = getEnum(['default']);
 export type ScholarshipApplicationCategory =
@@ -55,11 +55,11 @@ const properties = {
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: true }),
 	...R.pick(
 		['high_school'],
-		scholarshipApplicationFormProperties['Contact Details'],
+		scholarshipApplicationFormDataPropertiesBySection['Contact Details'],
 	),
-	...scholarshipApplicationFormProperties['College Information'],
-	...scholarshipApplicationFormProperties['Student Profile'],
-	...scholarshipApplicationFormProperties['Personal Essays'],
+	...scholarshipApplicationFormDataPropertiesBySection['College Information'],
+	...scholarshipApplicationFormDataPropertiesBySection['Student Profile'],
+	...scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
 } as const;
 type U = typeof properties;
 

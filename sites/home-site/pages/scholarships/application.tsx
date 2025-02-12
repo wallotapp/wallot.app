@@ -11,7 +11,12 @@ import {
 	HomeSiteRouteQueryParams,
 	isSubmittedScholarshipApplication,
 	isReviewedScholarshipApplication,
-	ScholarshipApplicationFormSection,
+	ScholarshipApplicationFormDataSection,
+	ScholarshipApplicationFormDataParams,
+	scholarshipApplicationFormDataPropertiesBySection,
+	scholarshipApplicationFormDataSchema,
+	scholarshipApplicationFormDataSchemaFieldSpecByFieldKey,
+	ScholarshipApplicationFormDataField,
 } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getSsoSiteRoute } from '@wallot/js';
@@ -21,11 +26,19 @@ import { AuthenticatedPageHeader } from '@wallot/react/src/components/Authentica
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { useQueryScholarshipApplicationsForLoggedInUser } from '@wallot/react/src/features/scholarshipApplications/hooks/useQueryScholarshipApplicationsForLoggedInUser';
+import { Keys } from 'ergonomic';
+import { useForm } from 'react-hook-form';
+import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
+import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
+import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
+import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
+import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
+import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== State ==== //
 	const [currentStep, setCurrentStep] =
-		useState<ScholarshipApplicationFormSection>('Contact Details');
+		useState<ScholarshipApplicationFormDataSection>('Contact Details');
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const toggleMobileMenu = () => setMobileMenuOpen(R.not);
 
@@ -50,8 +63,30 @@ const Page: NextPage<PageProps> = (props) => {
 		shouldPauseFirebaseAuthRedirects: false,
 	});
 
+	// Toaster
+	const { toast } = useToast();
+
+	// Form Resolver
+	const resolver = useYupValidationResolver(
+		scholarshipApplicationFormDataSchema,
+		{
+			...defaultGeneralizedFormDataTransformationOptions,
+			phoneNumberFieldKeys: ['phone_number'],
+		},
+	);
+
 	// Router
 	const router = useRouter();
+
+	// Form
+	const initialFormData =
+		scholarshipApplicationFormDataSchema.getDefault() as ScholarshipApplicationFormDataParams;
+	const { control, formState, handleSubmit, reset, setError, watch } =
+		useForm<ScholarshipApplicationFormDataParams>({
+			resolver,
+			shouldUnregister: false,
+		});
+	const liveData = watch();
 
 	// ==== Constants ==== //
 
@@ -124,6 +159,42 @@ const Page: NextPage<PageProps> = (props) => {
 						'You have been waitlisted. We will notify you if a spot opens up.',
 			  }[decision];
 
+	// Form
+	const isUpdateFormRunning = Math.random() === 100;
+	const isSubmitFormRunning = Math.random() === 100;
+	const formStatus =
+		formState.isSubmitting || isUpdateFormRunning || isSubmitFormRunning
+			? 'running'
+			: 'idle';
+	const isFormSubmitting = formStatus === 'running';
+	const getLiteFormFieldProps = (
+		fieldKey: ScholarshipApplicationFormDataField,
+	): LiteFormFieldProps<ScholarshipApplicationFormDataParams> => ({
+		control,
+		fieldErrors: formState.errors,
+		fieldKey,
+		fieldSpec:
+			scholarshipApplicationFormDataSchemaFieldSpecByFieldKey[fieldKey],
+		hideRequiredIndicator: true,
+		initialFormData,
+		isSubmitting: isFormSubmitting,
+		operation: 'update',
+		renderTooltipContent: undefined,
+		setError: (message) => setError(fieldKey, { message }),
+	});
+	const contactDetailsFields = Keys(
+		scholarshipApplicationFormDataPropertiesBySection['Contact Details'],
+	).map(getLiteFormFieldProps);
+	const collegeInformationFields = Keys(
+		scholarshipApplicationFormDataPropertiesBySection['College Information'],
+	).map(getLiteFormFieldProps);
+	const studentProfileFields = Keys(
+		scholarshipApplicationFormDataPropertiesBySection['Student Profile'],
+	).map(getLiteFormFieldProps);
+	const personalEssaysFields = Keys(
+		scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
+	).map(getLiteFormFieldProps);
+
 	if (!currentStepData) {
 		return null;
 	}
@@ -187,7 +258,7 @@ const Page: NextPage<PageProps> = (props) => {
 													})}
 													onClick={() =>
 														setCurrentStep(
-															step.title as ScholarshipApplicationFormSection,
+															step.title as ScholarshipApplicationFormDataSection,
 														)
 													}
 												>
@@ -242,7 +313,7 @@ const Page: NextPage<PageProps> = (props) => {
 															)}
 															onClick={() => {
 																setCurrentStep(
-																	step.title as ScholarshipApplicationFormSection,
+																	step.title as ScholarshipApplicationFormDataSection,
 																);
 																setMobileMenuOpen(false);
 															}}
@@ -311,7 +382,8 @@ const Page: NextPage<PageProps> = (props) => {
 																	steps.findIndex(
 																		(step) => step.title === currentStep,
 																	) - 1
-																]?.title as ScholarshipApplicationFormSection,
+																]
+																	?.title as ScholarshipApplicationFormDataSection,
 															)
 														}
 													>
@@ -330,7 +402,8 @@ const Page: NextPage<PageProps> = (props) => {
 																	steps.findIndex(
 																		(step) => step.title === currentStep,
 																	) + 1
-																]?.title as ScholarshipApplicationFormSection,
+																]
+																	?.title as ScholarshipApplicationFormDataSection,
 															)
 														}
 													>

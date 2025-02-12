@@ -1,3 +1,3 @@
 export * from './reviewScholarshipApplicationSchema.js';
-export * from './scholarshipApplicationFormProperties.js';
+export * from './scholarshipApplicationFormDataProperties.js';
 export * from './submitScholarshipApplicationSchema.js';

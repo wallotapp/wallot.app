@@ -3,17 +3,19 @@ import {
 	EnumMember,
 	GeneralizedFieldTypeEnum,
 	getEnum,
+	getFieldSpecByFieldKey,
+	Keys,
 	YupHelpers,
 } from 'ergonomic';
 
-export const ScholarshipApplicationFormSectionEnum = getEnum([
+export const ScholarshipApplicationFormDataSectionEnum = getEnum([
 	'Contact Details',
 	'College Information',
 	'Student Profile',
 	'Personal Essays',
 ]);
-export type ScholarshipApplicationFormSection = EnumMember<
-	typeof ScholarshipApplicationFormSectionEnum
+export type ScholarshipApplicationFormDataSection = EnumMember<
+	typeof ScholarshipApplicationFormDataSectionEnum
 >;
 
 export const CollegeTypeEnum = getEnum([
@@ -24,7 +26,7 @@ export const CollegeTypeEnum = getEnum([
 ]);
 export type CollegeType = EnumMember<typeof CollegeTypeEnum>;
 
-export const scholarshipApplicationFormProperties = {
+export const scholarshipApplicationFormDataPropertiesBySection = {
 	'Contact Details': {
 		given_name: yup.string().default('').required().label('First Name').meta({
 			type: GeneralizedFieldTypeEnum.obj.short_text,
@@ -137,3 +139,22 @@ export const scholarshipApplicationFormProperties = {
 			}), // scholarship_application
 	},
 };
+export const scholarshipApplicationFormDataProperties = {
+	...scholarshipApplicationFormDataPropertiesBySection['Contact Details'],
+	...scholarshipApplicationFormDataPropertiesBySection['College Information'],
+	...scholarshipApplicationFormDataPropertiesBySection['Student Profile'],
+	...scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
+};
+export type ScholarshipApplicationFormDataField =
+	keyof typeof scholarshipApplicationFormDataProperties;
+export const scholarshipApplicationFormDataSchema = yup.object(
+	scholarshipApplicationFormDataProperties,
+);
+export const scholarshipApplicationFormDataSchemaFieldSpecByFieldKey =
+	getFieldSpecByFieldKey(
+		scholarshipApplicationFormDataSchema,
+		Keys(scholarshipApplicationFormDataProperties),
+	);
+export type ScholarshipApplicationFormDataParams = yup.InferType<
+	typeof scholarshipApplicationFormDataSchema
+>;
