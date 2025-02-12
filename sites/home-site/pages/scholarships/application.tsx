@@ -153,16 +153,21 @@ const Page: NextPage<PageProps> = (props) => {
 	const onMutationSuccess = (operation: 'save' | 'submit') => {
 		return async () => {
 			// Refetch the queries
-			await refetchLoggedInUser(),
-				await refetchScholarshipApplicationsForLoggedInUser(),
-				// Show success toast
-				toast({
-					title: 'Success',
-					description:
-						operation === 'save'
-							? 'Your application has been saved.'
-							: 'Your application has been submitted.',
-				});
+			await Promise.all(
+				[
+					refetchLoggedInUser,
+					refetchScholarshipApplicationsForLoggedInUser,
+				].map((refetch) => refetch()),
+			);
+
+			// Show success toast
+			toast({
+				title: 'Success',
+				description:
+					operation === 'save'
+						? 'Your application has been saved.'
+						: 'Your application has been submitted.',
+			});
 		};
 	};
 
