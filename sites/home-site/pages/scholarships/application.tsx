@@ -9,6 +9,9 @@ import {
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
 import { HomeSiteRouteQueryParams } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
+import { getSsoSiteRoute } from '@wallot/js';
+import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
+import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== State ==== //
@@ -17,6 +20,25 @@ const Page: NextPage<PageProps> = (props) => {
 	const toggleMobileMenu = () => setMobileMenuOpen(R.not);
 
 	// ==== Hooks ==== //
+
+	// Site origins
+	const siteOriginByTarget = useSiteOriginByTarget();
+	const authSiteOrigin = siteOriginByTarget['SSO_SITE'];
+
+	// Application URL
+	const guestApplicationUrl = getSsoSiteRoute({
+		includeOrigin: false,
+		origin: null,
+		queryParams: {},
+		routeStaticId: 'SSO_SITE__/LOGIN',
+	});
+
+	// Auth
+	useAuthenticatedRouteRedirect({
+		authSiteOrigin,
+		loginRoutePath: guestApplicationUrl,
+		shouldPauseFirebaseAuthRedirects: false,
+	});
 
 	// Router
 	const router = useRouter();
