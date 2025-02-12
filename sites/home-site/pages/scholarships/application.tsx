@@ -17,8 +17,6 @@ import {
 	scholarshipApplicationFormDataSchema,
 	scholarshipApplicationFormDataSchemaFieldSpecByFieldKey,
 	ScholarshipApplicationFormDataField,
-	KycUser,
-	UserActivatedByAlpaca,
 	ScholarshipApplicationFormDataFieldEnum,
 	ScholarshipApplicationFormDataFieldFromUserDataEnum,
 	scholarshipApplicationsApi,
@@ -36,8 +34,8 @@ import { useForm } from 'react-hook-form';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
-import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
-import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
+// import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
+// import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
@@ -73,6 +71,7 @@ const Page: NextPage<PageProps> = (props) => {
 
 	// Toaster
 	const { toast } = useToast();
+	toast;
 
 	// Form Resolver
 	const resolver = useYupValidationResolver(
@@ -92,6 +91,7 @@ const Page: NextPage<PageProps> = (props) => {
 		isLoggedInUserLoading,
 		refetch: refetchLoggedInUser,
 	} = useQueryLoggedInUser();
+	refetchLoggedInUser;
 
 	// Application status
 	const {
@@ -128,7 +128,9 @@ const Page: NextPage<PageProps> = (props) => {
 			resolver,
 			shouldUnregister: false,
 		});
+	handleSubmit;
 	const liveData = watch();
+	liveData;
 
 	// Save mutation
 
@@ -212,7 +214,10 @@ const Page: NextPage<PageProps> = (props) => {
 	const personalEssaysFields = Keys(
 		scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
 	).map(getLiteFormFieldProps);
-
+	contactDetailsFields;
+	collegeInformationFields;
+	studentProfileFields;
+	personalEssaysFields;
 	// ==== Effects ==== //
 	const [isInitialized, setIsInitialized] = useState(false);
 	useEffect(() => {
@@ -226,19 +231,15 @@ const Page: NextPage<PageProps> = (props) => {
 					defaultFormData;
 
 				// Properties from user data
-				const {
-					alpaca_account_contact,
-					alpaca_account_identity,
-					firebase_auth_email,
-				} = loggedInUser;
+				const { alpaca_account_contact, alpaca_account_identity } =
+					loggedInUser;
 				const { phone_number = '' } = alpaca_account_contact ?? {};
 				const { date_of_birth, family_name, given_name } =
 					alpaca_account_identity ?? {};
-				initialServerData.email_address = firebase_auth_email;
 				initialServerData.phone_number = phone_number ?? '';
 				initialServerData.date_of_birth = date_of_birth ?? '';
 				initialServerData.given_name = given_name ?? '';
-				initialServerData.last_name = family_name ?? '';
+				initialServerData.family_name = family_name ?? '';
 
 				// Properties from scholarship application data
 				const noScholarshipApplicationFound =

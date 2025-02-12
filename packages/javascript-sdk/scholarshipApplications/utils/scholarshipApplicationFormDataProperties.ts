@@ -31,12 +31,8 @@ export const scholarshipApplicationFormDataPropertiesBySection = {
 		given_name: yup.string().default('').required().label('First Name').meta({
 			type: GeneralizedFieldTypeEnum.obj.short_text,
 		}), // user
-		last_name: yup.string().default('').required().meta({
+		family_name: yup.string().default('').required().label('Last Name').meta({
 			type: GeneralizedFieldTypeEnum.obj.short_text,
-		}), // user
-		email_address: YupHelpers.emailAddress().required().meta({
-			label_message_user_text:
-				'Provide the email address you check most frequently',
 		}), // user
 		phone_number: YupHelpers.unitedStatesPhoneNumber().required(), // user
 		date_of_birth: YupHelpers.date().label('Date of Birth').required(), // user
@@ -153,8 +149,7 @@ export type ScholarshipApplicationFormDataField = EnumMember<
 >;
 export const ScholarshipApplicationFormDataFieldFromUserDataEnum = getEnum([
 	'given_name',
-	'last_name',
-	'email_address',
+	'family_name',
 	'phone_number',
 	'date_of_birth',
 ]);
@@ -169,4 +164,7 @@ export const scholarshipApplicationFormDataSchemaFieldSpecByFieldKey =
 export type ScholarshipApplicationFormDataParams = yup.InferType<
 	typeof scholarshipApplicationFormDataSchema
 >;
+export type ScholarshipApplicationFormDataRouteParams = {
+	scholarshipApplicationId: string;
+};
 export type ScholarshipApplicationFormDataResponse = Record<string, never>;

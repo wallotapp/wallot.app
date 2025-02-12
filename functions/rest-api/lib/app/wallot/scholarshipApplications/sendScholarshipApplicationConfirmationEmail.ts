@@ -8,7 +8,7 @@ const emailTemplateRelativePath =
 const emailTemplateFullPath = `${directoryPath}/../assets/emails/${emailTemplateRelativePath}`;
 const emailTemplate = readFileSync(emailTemplateFullPath, 'utf8');
 
-export async function sendVisionaryScholarshipConfirmationEmail(
+export async function sendScholarshipApplicationConfirmationEmail(
 	recipientEmail: string,
 ) {
 	const result = await gmail.send({
