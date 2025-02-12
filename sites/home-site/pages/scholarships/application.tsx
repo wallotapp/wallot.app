@@ -347,7 +347,7 @@ const Page: NextPage<PageProps> = (props) => {
 						const value = scholarshipApplicationServerData[field];
 						(initialServerData[
 							field
-						] as ScholarshipApplicationFormDataParams[typeof field]) =
+						] as unknown as ScholarshipApplicationFormDataParams[typeof field]) =
 							value ?? '';
 					});
 
@@ -363,7 +363,7 @@ const Page: NextPage<PageProps> = (props) => {
 					await createScholarshipApplication([
 						newScholarshipApplicationForLoggedInUser,
 					]);
-					refetchScholarshipApplicationsForLoggedInUser();
+					await refetchScholarshipApplicationsForLoggedInUser();
 				}
 			} catch (error) {
 				console.error('Error initializing scholarship application:', error);
