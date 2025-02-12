@@ -17,6 +17,11 @@ import {
 	scholarshipApplicationFormDataSchema,
 	scholarshipApplicationFormDataSchemaFieldSpecByFieldKey,
 	ScholarshipApplicationFormDataField,
+	KycUser,
+	UserActivatedByAlpaca,
+	ScholarshipApplicationFormDataFieldEnum,
+	ScholarshipApplicationFormDataFieldFromUserDataEnum,
+	scholarshipApplicationsApi,
 } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getSsoSiteRoute } from '@wallot/js';
@@ -34,6 +39,9 @@ import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/Lite
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
+import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
+import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
+import { createScholarshipApplication } from '@wallot/react/src/features/scholarshipApplications/api/createScholarshipApplication';
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== State ==== //
@@ -77,6 +85,13 @@ const Page: NextPage<PageProps> = (props) => {
 
 	// Router
 	const router = useRouter();
+
+	// User
+	const {
+		loggedInUser,
+		isLoggedInUserLoading,
+		refetch: refetchLoggedInUser,
+	} = useQueryLoggedInUser();
 
 	// Application status
 	const {
@@ -204,16 +219,73 @@ const Page: NextPage<PageProps> = (props) => {
 	useEffect(() => {
 		if (isInitialized) return;
 		if (authStateIsLoading) return;
+		if (isLoggedInUserLoading || loggedInUser == null) return;
 		if (isScholarshipApplicationPageLoading) return;
 		return void (async function () {
 			try {
-				let initialFormData: ScholarshipApplicationFormDataParams = defaultFormData;
-				if (scholarshipApplicationForLoggedInUser != null) {
-					// If existing app found, set default form value
+				const initialServerData: ScholarshipApplicationFormDataParams =
+					defaultFormData;
 
-				} else {
-					// Otherwise, initialize new app, save to DB and set default form value
+				// Properties from user data
+				const {
+					alpaca_account_contact,
+					alpaca_account_identity,
+					firebase_auth_email,
+				} = loggedInUser;
+				const { phone_number = '' } = alpaca_account_contact ?? {};
+				const { date_of_birth, family_name, given_name } =
+					alpaca_account_identity ?? {};
+				initialServerData.email_address = firebase_auth_email;
+				initialServerData.phone_number = phone_number ?? '';
+				initialServerData.date_of_birth = date_of_birth ?? '';
+				initialServerData.given_name = given_name ?? '';
+				initialServerData.last_name = family_name ?? '';
 
+				// Properties from scholarship application data
+				const noScholarshipApplicationFound =
+					scholarshipApplicationForLoggedInUser == null;
+				const newScholarshipApplicationForLoggedInUser =
+					scholarshipApplicationsApi.mergeCreateParams({
+						createParams: {
+							category: 'default',
+							name: '',
+							user: loggedInUser._id,
+						},
+					});
+				const scholarshipApplicationServerData = noScholarshipApplicationFound
+					? newScholarshipApplicationForLoggedInUser
+					: scholarshipApplicationForLoggedInUser;
+				ScholarshipApplicationFormDataFieldEnum.arr
+					.filter(
+						(field) =>
+							!ScholarshipApplicationFormDataFieldFromUserDataEnum.isMember(
+								field,
+							),
+					)
+					.forEach((field) => {
+						const value = scholarshipApplicationServerData[field];
+						(initialServerData[
+							field
+						] as ScholarshipApplicationFormDataParams[typeof field]) =
+							value ?? '';
+					});
+
+				// Set form values
+				const defaultFormValues = getGeneralizedFormDataFromServerData(
+					initialServerData,
+					{
+						...defaultGeneralizedFormDataTransformationOptions,
+						phoneNumberFieldKeys: ['phone_number'],
+					},
+				);
+				reset(defaultFormValues);
+
+				// Save initial scholarship application to db
+				if (noScholarshipApplicationFound) {
+					await createScholarshipApplication([
+						newScholarshipApplicationForLoggedInUser,
+					]);
+					refetchScholarshipApplicationsForLoggedInUser();
 				}
 			} catch (error) {
 				console.error('Error initializing scholarship application:', error);
@@ -221,7 +293,14 @@ const Page: NextPage<PageProps> = (props) => {
 				setIsInitialized(true);
 			}
 		})();
-	}, [authStateIsLoading, isScholarshipApplicationPageLoading, isInitialized, scholarshipApplicationForLoggedInUser]);
+	}, [
+		isInitialized,
+		authStateIsLoading,
+		isLoggedInUserLoading,
+		isScholarshipApplicationPageLoading,
+		loggedInUser,
+		scholarshipApplicationForLoggedInUser,
+	]);
 
 	if (!currentStepData) {
 		return null;

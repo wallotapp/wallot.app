@@ -145,8 +145,19 @@ export const scholarshipApplicationFormDataProperties = {
 	...scholarshipApplicationFormDataPropertiesBySection['Student Profile'],
 	...scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
 };
-export type ScholarshipApplicationFormDataField =
-	keyof typeof scholarshipApplicationFormDataProperties;
+export const ScholarshipApplicationFormDataFieldEnum = getEnum(
+	Keys(scholarshipApplicationFormDataProperties),
+);
+export type ScholarshipApplicationFormDataField = EnumMember<
+	typeof ScholarshipApplicationFormDataFieldEnum
+>;
+export const ScholarshipApplicationFormDataFieldFromUserDataEnum = getEnum([
+	'given_name',
+	'last_name',
+	'email_address',
+	'phone_number',
+	'date_of_birth',
+]);
 export const scholarshipApplicationFormDataSchema = yup.object(
 	scholarshipApplicationFormDataProperties,
 );
