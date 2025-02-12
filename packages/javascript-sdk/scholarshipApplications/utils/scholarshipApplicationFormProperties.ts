@@ -13,7 +13,7 @@ export const ScholarshipApplicationFormSectionEnum = getEnum([
 	'Personal Essays',
 ]);
 export type ScholarshipApplicationFormSection = EnumMember<
-	typeof ScholarshipApplicationFormSectionEnum.obj
+	typeof ScholarshipApplicationFormSectionEnum
 >;
 
 export const CollegeTypeEnum = getEnum([
@@ -22,7 +22,7 @@ export const CollegeTypeEnum = getEnum([
 	'Community College',
 	'Technical College',
 ]);
-export type CollegeType = EnumMember<typeof CollegeTypeEnum.obj>;
+export type CollegeType = EnumMember<typeof CollegeTypeEnum>;
 
 export const scholarshipApplicationFormProperties = {
 	'Contact Details': {

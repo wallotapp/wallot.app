@@ -11,6 +11,7 @@ import {
 	HomeSiteRouteQueryParams,
 	isSubmittedScholarshipApplication,
 	isReviewedScholarshipApplication,
+	ScholarshipApplicationFormSection,
 } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getSsoSiteRoute } from '@wallot/js';
@@ -23,7 +24,8 @@ import { useQueryScholarshipApplicationsForLoggedInUser } from '@wallot/react/sr
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== State ==== //
-	const [currentStep, setCurrentStep] = useState(0);
+	const [currentStep, setCurrentStep] =
+		useState<ScholarshipApplicationFormSection>('Contact Details');
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const toggleMobileMenu = () => setMobileMenuOpen(R.not);
 
@@ -71,26 +73,30 @@ const Page: NextPage<PageProps> = (props) => {
 	// Define our steps and their fields.
 	const steps = [
 		{
-			title: 'Step 1',
+			title: 'Contact Details',
 			fields: [
 				{ name: 'name', type: 'text' },
 				{ name: 'age', type: 'number' },
 			],
 		},
 		{
-			title: 'Step 2',
+			title: 'College Information',
 			fields: [
 				{ name: 'weight', type: 'number' },
 				{ name: 'height', type: 'text' },
 			],
 		},
 		{
-			title: 'Step 3',
+			title: 'Student Profile',
+			fields: [{ name: 'notes', type: 'textarea' }],
+		},
+		{
+			title: 'Personal Essays',
 			fields: [{ name: 'notes', type: 'textarea' }],
 		},
 	];
-	const currentStepData = steps[currentStep];
-	const isLastStep = currentStep === steps.length - 1;
+	const currentStepData = steps.find((step) => step.title === currentStep);
+	const isLastStep = currentStep === 'Personal Essays';
 
 	// Application status
 	const {
@@ -171,14 +177,19 @@ const Page: NextPage<PageProps> = (props) => {
 									{/* Left sidebar (visible on Tablet and Desktop) */}
 									<aside className='hidden md:block md:w-1/4 lg:w-1/5 bg-white p-4 shadow'>
 										<ul>
-											{steps.map((step, index) => (
+											{steps.map((step) => (
 												<li
 													key={step.title}
 													className={cn('cursor-pointer p-2', {
-														'font-bold text-blue-500': index === currentStep,
-														'text-gray-700': index !== currentStep,
+														'font-bold text-blue-500':
+															step.title === currentStep,
+														'text-gray-700': step.title !== currentStep,
 													})}
-													onClick={() => setCurrentStep(index)}
+													onClick={() =>
+														setCurrentStep(
+															step.title as ScholarshipApplicationFormSection,
+														)
+													}
 												>
 													{step.title}
 												</li>
@@ -218,19 +229,21 @@ const Page: NextPage<PageProps> = (props) => {
 											</button>
 											{isMobileMenuOpen && (
 												<ul className='mt-2 bg-white shadow rounded'>
-													{steps.map((step, index) => (
+													{steps.map((step) => (
 														<li
 															key={step.title}
 															className={cn(
 																'cursor-pointer p-2 border-b last:border-b-0',
 																{
 																	'font-bold text-blue-500':
-																		index === currentStep,
-																	'text-gray-700': index !== currentStep,
+																		step.title === currentStep,
+																	'text-gray-700': step.title !== currentStep,
 																},
 															)}
 															onClick={() => {
-																setCurrentStep(index);
+																setCurrentStep(
+																	step.title as ScholarshipApplicationFormSection,
+																);
 																setMobileMenuOpen(false);
 															}}
 														>
@@ -284,14 +297,22 @@ const Page: NextPage<PageProps> = (props) => {
 												<div className='mt-6 flex justify-between'>
 													<button
 														type='button'
-														disabled={currentStep === 0}
+														disabled={currentStep === 'Contact Details'}
 														className={cn('px-4 py-2 rounded', {
 															'bg-gray-200 text-gray-500 cursor-not-allowed':
-																currentStep === 0,
-															'bg-blue-500 text-white': currentStep > 0,
+																currentStep === 'Contact Details',
+															'bg-blue-500 text-white':
+																currentStep !== 'Contact Details',
 														})}
 														onClick={() =>
-															currentStep > 0 && setCurrentStep(currentStep - 1)
+															currentStep !== 'Contact Details' &&
+															setCurrentStep(
+																steps[
+																	steps.findIndex(
+																		(step) => step.title === currentStep,
+																	) - 1
+																]?.title as ScholarshipApplicationFormSection,
+															)
 														}
 													>
 														Back
@@ -303,7 +324,15 @@ const Page: NextPage<PageProps> = (props) => {
 															'bg-blue-500 text-white px-4 py-2 rounded',
 															isLastStep ? 'hidden' : '',
 														)}
-														onClick={() => setCurrentStep(currentStep + 1)}
+														onClick={() =>
+															setCurrentStep(
+																steps[
+																	steps.findIndex(
+																		(step) => step.title === currentStep,
+																	) + 1
+																]?.title as ScholarshipApplicationFormSection,
+															)
+														}
 													>
 														Next
 													</button>
