@@ -19,6 +19,7 @@ import { useCreateOrderMutation } from '@wallot/react/src/features/orders';
 import { useCreateParameterMutation } from '@wallot/react/src/features/parameters';
 import { useCreatePositionMutation } from '@wallot/react/src/features/positions';
 import { useCreateRecommendationMutation } from '@wallot/react/src/features/recommendations';
+import { useCreateScholarshipApplicationMutation } from '@wallot/react/src/features/scholarshipApplications';
 import { useCreateUserMutation } from '@wallot/react/src/features/users';
 
 type MutationHook = (
@@ -44,6 +45,7 @@ const createOperationMutationMap = {
 	parameter: useCreateParameterMutation,
 	position: useCreatePositionMutation,
 	recommendation: useCreateRecommendationMutation,
+	scholarship_application: useCreateScholarshipApplicationMutation,
 	user: useCreateUserMutation,
 } as unknown as Record<WallotResourceName, MutationHook>;
 

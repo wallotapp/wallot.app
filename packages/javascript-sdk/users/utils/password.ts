@@ -1,25 +1,25 @@
 import * as yup from 'yup';
 import { GeneralizedFieldTypeEnum } from 'ergonomic';
 
-export const passwordRegex =
-	/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*\-+?_=])[A-Za-z\d!@#$%^&*\-+?_=]{8,}$/;
-export const isPassword = (password: unknown): password is string =>
-	typeof password === 'string' &&
-	password.match(passwordRegex) !== null &&
-	password.length <= 40;
+const specialCharacters = '!@#$%^&*-+?_=';
+export const isPassword = (password: unknown): password is string => {
+	return (
+		typeof password === 'string' &&
+		password.length >= 7 &&
+		password.length <= 40 &&
+		password.split('').some((char) => specialCharacters.includes(char))
+	);
+};
 export const passwordRules = [
-	'at least 8 characters long',
+	'at least 7 characters long',
 	'at most 40 characters long',
-	'contain at least one uppercase letter',
-	'contain at least one lowercase letter',
-	'contain at least one number',
-	'contain at least one special character (!@#$%^&*-+?_=)',
+	`contain at least one special character (${specialCharacters})`,
 ];
 
 export const passwordSchema = () =>
 	yup
 		.string()
-		.min(8)
+		.min(7)
 		.max(40)
 		.test({
 			message: '${path} is not a valid password',

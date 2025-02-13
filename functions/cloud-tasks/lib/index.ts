@@ -8,6 +8,7 @@ import {
 	RefreshAlpacaAchTransferStatusTaskParams,
 	PlaceAlpacaOrdersTaskParams,
 	RefreshAlpacaOrderStatusTaskParams,
+	SendEmailWithGmailAPIParams,
 } from '@wallot/node';
 
 // ---- Application Routes: Alpaca Accounts  ---- //
@@ -104,4 +105,17 @@ export const refreshAlpacaOrderStatus =
 	firebaseFunctions.tasks.onTaskDispatched<RefreshAlpacaOrderStatusTaskParams>(
 		handleRefreshAlpacaOrderStatusTaskOptions,
 		handleRefreshAlpacaOrderStatusTask,
+	);
+
+// ---- Notifications: Email ---- //
+
+// sendEmailWithGmailAPI
+import {
+	handleSendEmailWithGmailAPITask,
+	handleSendEmailWithGmailAPITaskOptions,
+} from './notifications/email/sendEmailWithGmailAPI.js';
+export const sendEmailWithGmailAPI =
+	firebaseFunctions.tasks.onTaskDispatched<SendEmailWithGmailAPIParams>(
+		handleSendEmailWithGmailAPITaskOptions,
+		handleSendEmailWithGmailAPITask,
 	);

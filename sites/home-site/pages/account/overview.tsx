@@ -14,7 +14,7 @@ import { useQueryLoggedInUserStatus } from '@wallot/react/src/hooks/useQueryLogg
 import { GoArrowRight, GoCheckCircle, GoPerson } from 'react-icons/go';
 import { useQueryAssetOrdersForLoggedInUser } from '@wallot/react/src/features/assetOrders/hooks/useQueryAssetOrdersForLoggedInUser';
 import { getCurrencyUsdStringFromCents } from 'ergonomic';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { BsBank } from 'react-icons/bs';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 
@@ -40,6 +40,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		isUserActivatedByAlpaca,
 		isKycUser,
 		isUserWithAlpacaEquity,
+		isActivatedUser,
+		isLoggedInUserStatusLoading,
 	} = useQueryLoggedInUserStatus();
 	const { assetOrdersForLoggedInUser } = useQueryAssetOrdersForLoggedInUser();
 
@@ -59,6 +61,23 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		...props,
 		routeId: ROUTE_RUNTIME_ID,
 	};
+
+	// ==== Effects ==== //
+
+	// Redirect to onboarding if user is not activated
+	useEffect(() => {
+		if (isLoggedInUserStatusLoading) return;
+		if (!isActivatedUser) {
+			void router.push(
+				getHomeSiteRoute({
+					includeOrigin: false,
+					origin: null,
+					queryParams: {},
+					routeStaticId: 'HOME_SITE__/GET_STARTED',
+				}),
+			);
+		}
+	}, [isLoggedInUserStatusLoading, isActivatedUser]);
 
 	// ==== Render ==== //
 	return (

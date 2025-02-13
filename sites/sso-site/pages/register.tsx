@@ -197,6 +197,22 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		routeId: ROUTE_RUNTIME_ID,
 	};
 
+	// Copy edit
+	const onboardingFlow =
+		dest == null
+			? 'normal'
+			: dest.includes('scholarship')
+			? 'scholarship'
+			: 'normal';
+	const subtitle = {
+		normal: 'Enter a username, email and password to create a free account',
+		scholarship: 'Enter a username, email and password to continue',
+	}[onboardingFlow];
+	const title = {
+		normal: 'Welcome to the community',
+		scholarship: "Let's begin your scholarship application",
+	}[onboardingFlow];
+
 	// ==== Functions ==== //
 
 	// Form Submit Handler
@@ -206,18 +222,15 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			title: 'Creating your account...',
 			description: 'This may take a few moments.',
 		});
-		registerUser(data);
+		const redirectURI = dest ? decodeURIComponent(dest) : null;
+		registerUser({ ...data, redirect_uri: redirectURI });
 	};
 
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
 			<div className={cn('min-h-screen relative', 'px-8 pt-24')}>
-				<OnboardingCard
-					step={0}
-					subtitle='Enter a username, email and password to create a free account'
-					title='Welcome to the community'
-				>
+				<OnboardingCard step={0} subtitle={subtitle} title={title}>
 					<form onSubmit={handleSubmit(onSubmit) as () => void}>
 						<div>
 							{fields.map((fieldProps) => (

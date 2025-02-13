@@ -5,6 +5,7 @@ import {
 	getFirebaseAuth,
 	getFirestoreDB,
 	getStripeInstance,
+	GeneralizedServerVariables,
 } from 'ergonomic-node';
 import { SecretData } from './SecretDataTypes.js';
 import {
@@ -54,10 +55,15 @@ import {
 	enqueueCreateAlpacaAccount,
 	enqueueRefreshAlpacaAccountStatus,
 } from './wallot/users/createAlpacaAccount.js';
+import {
+	sendEmailWithGmailAPI,
+	enqueueSendEmailWithGmailAPI,
+} from './gmail.js';
 
 export const getServices = (
 	secrets: SecretData,
 	serviceAccountPath: string,
+	variables: GeneralizedServerVariables,
 ) => {
 	const logService = log(secrets.SECRET_CRED_SERVER_PROTOCOL);
 	const getCloudFunctionUrlService = (functionName: string) =>
@@ -174,8 +180,14 @@ export const getServices = (
 					getCloudFunctionUrlService,
 					logService,
 				),
+				// Email notifications
+				enqueueSendEmailWithGmailAPI: enqueueSendEmailWithGmailAPI(
+					getCloudFunctionUrlService,
+					logService,
+				),
 			},
 		},
+		gmail: { send: sendEmailWithGmailAPI(serviceAccountPath, variables) },
 		log: logService,
 		openAI: new OpenAI({
 			apiKey: secrets.SECRET_CRED_OPENAI_API_KEY,

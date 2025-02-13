@@ -17,6 +17,7 @@ import { ordersApi } from '../orders/index.js';
 import { parametersApi } from '../parameters/index.js';
 import { positionsApi } from '../positions/index.js';
 import { recommendationsApi } from '../recommendations/index.js';
+import { scholarshipApplicationsApi } from '../scholarshipApplications/index.js';
 import { usersApi } from '../users/index.js';
 
 export const getApiResourceSpec = (
@@ -57,6 +58,8 @@ export const getApiResourceSpec = (
 			return positionsApi as unknown as GeneralizedApiResourceSpec;
 		case 'recommendation':
 			return recommendationsApi as unknown as GeneralizedApiResourceSpec;
+		case 'scholarship_application':
+			return scholarshipApplicationsApi as unknown as GeneralizedApiResourceSpec;
 		case 'user':
 			return usersApi as unknown as GeneralizedApiResourceSpec;
 		default:

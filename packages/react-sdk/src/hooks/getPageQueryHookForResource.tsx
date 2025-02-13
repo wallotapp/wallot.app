@@ -21,6 +21,7 @@ import { useQueryOrderPage } from '@wallot/react/src/features/orders';
 import { useQueryParameterPage } from '@wallot/react/src/features/parameters';
 import { useQueryPositionPage } from '@wallot/react/src/features/positions';
 import { useQueryRecommendationPage } from '@wallot/react/src/features/recommendations';
+import { useQueryScholarshipApplicationPage } from '@wallot/react/src/features/scholarshipApplications';
 import { useQueryUserPage } from '@wallot/react/src/features/users';
 
 type PageQueryHook = (
@@ -46,6 +47,7 @@ const queryHookMap = {
 	parameter: useQueryParameterPage,
 	position: useQueryPositionPage,
 	recommendation: useQueryRecommendationPage,
+	scholarship_application: useQueryScholarshipApplicationPage,
 	user: useQueryUserPage,
 } as Record<WallotResourceName, PageQueryHook>;
 
