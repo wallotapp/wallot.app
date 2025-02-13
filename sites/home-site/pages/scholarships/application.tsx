@@ -1,3 +1,4 @@
+import * as changeCase from 'change-case';
 import { useEffect, useState } from 'react';
 import * as R from 'ramda';
 import type { GetStaticProps, NextPage } from 'next';
@@ -119,10 +120,12 @@ const Page: NextPage<PageProps> = (props) => {
 		decision == null
 			? ''
 			: {
-					accepted: 'Congratulations! You have been accepted.',
-					rejected: 'We regret to inform you that you have been rejected.',
+					accepted:
+						'Congratulations! Your application has been accepted. We had a large amount of qualified applicants this year, and your application stood out as one of the best. Please check your email for more information.',
+					rejected:
+						'We regret to inform you that your application was not accepted for a scholarship award. Thank you for your interest in the program, and we wish you the best in your future endeavors.',
 					waitlisted:
-						'You have been waitlisted. We will notify you if a spot opens up.',
+						'You have been waitlisted. We will notify you if a spot opens up. Please monitor your email address and phone number for updates.',
 			  }[decision];
 
 	// Form
@@ -388,16 +391,26 @@ const Page: NextPage<PageProps> = (props) => {
 							</div>
 						</div>
 						{isScholarshipApplicationForLoggedInUserSubmitted && (
-							<div>
-								{isScholarshipApplicationForLoggedInUserReviewed ? (
-									<p>{decisionText}</p>
-								) : (
-									<p>
-										Your application has been received and is under review. You
-										will be notified once our committee has reached a decision
-										regarding your application.
+							<div className='mt-4 mb-10 bg-gray-100 border border-gray-200 rounded-md shadow-md p-6 font-light text-sm max-w-md'>
+								<div>
+									<p className='font-semibold text-sm'>
+										Application Status –{' '}
+										{changeCase.capitalCase(
+											scholarshipApplicationForLoggedInUser?.status ?? '',
+										)}
 									</p>
-								)}
+								</div>
+								<div className='mt-1 text-gray-700 font-light text-xs'>
+									{isScholarshipApplicationForLoggedInUserReviewed ? (
+										<p>{decisionText}</p>
+									) : (
+										<p>
+											Your application has been received and is under review.
+											You will be notified once our committee has reached a
+											decision regarding your application.
+										</p>
+									)}
+								</div>
 							</div>
 						)}
 					</div>
@@ -684,7 +697,7 @@ const Page: NextPage<PageProps> = (props) => {
 														'w-fit text-center px-4 py-1.5 rounded-md border border-slate-300',
 														isLastStep ? '' : 'hidden',
 														isFormDisabled
-															? ' bg-brand-light text-gray-400 cursor-not-allowed'
+															? ' bg-brand-extralight text-gray-400 cursor-not-allowed'
 															: 'bg-brand-dark',
 													)}
 												>
