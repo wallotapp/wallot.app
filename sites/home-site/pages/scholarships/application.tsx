@@ -528,7 +528,20 @@ const Page: NextPage<PageProps> = (props) => {
 														saveScholarshipApplication(serverData);
 													}}
 												>
-													<p className='font-medium text-xs'>Save Progress</p>
+													{isSaveScholarshipApplicationRunning ? (
+														<div>
+															<div className='flex items-center justify-center min-w-8'>
+																<div
+																	className={cn(
+																		'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
+																		'border-t-brand border-r-brand border-b-brand',
+																	)}
+																></div>
+															</div>
+														</div>
+													) : (
+														<p className='font-medium text-xs'>Save Progress</p>
+													)}
 												</button>
 											</div>
 										</div>
