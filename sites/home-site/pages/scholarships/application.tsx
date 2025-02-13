@@ -372,13 +372,34 @@ const Page: NextPage<PageProps> = (props) => {
 					)}
 				>
 					<div>
-						<div>
-							<p className='font-semibold text-lg'>
-								Florida Visionary Scholarship Application
-							</p>
-						</div>
-						<div className='-mt-0.5'>
-							<p className='font-extralight text-sm'>Class of 2025 Cohort</p>
+						<div className='flex justify-between items-center'>
+							<div className=''>
+								<div>
+									<p className='font-semibold text-lg'>
+										Florida Visionary Scholarship Application
+									</p>
+								</div>
+								<div className='-mt-0.5'>
+									<p className='font-extralight text-sm'>
+										Class of 2025 Cohort
+									</p>
+								</div>
+							</div>
+							<div>
+								<button
+									className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300'
+									disabled={isFormDisabled}
+									onClick={() => {
+										const serverData = getGeneralizedServerDataFromFormData(
+											liveData,
+											formDataTransformationOptions,
+										);
+										saveScholarshipApplication(serverData);
+									}}
+								>
+									<p className='font-normal text-xs'>Save Progress</p>
+								</button>
+							</div>
 						</div>
 						{isScholarshipApplicationForLoggedInUserSubmitted && (
 							<div>
@@ -508,20 +529,6 @@ const Page: NextPage<PageProps> = (props) => {
 										{/* Form header */}
 										<div className='flex justify-between items-center mb-4'>
 											<h1 className='text-xl font-bold'>{currentStep}</h1>
-											<button
-												className='text-sm text-blue-500'
-												disabled={isFormDisabled}
-												onClick={() => {
-													const serverData =
-														getGeneralizedServerDataFromFormData(
-															liveData,
-															formDataTransformationOptions,
-														);
-													saveScholarshipApplication(serverData);
-												}}
-											>
-												Save Progress
-											</button>
 										</div>
 
 										{/* Form fields */}
