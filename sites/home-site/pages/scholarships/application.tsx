@@ -525,6 +525,10 @@ const Page: NextPage<PageProps> = (props) => {
 																liveData,
 																formDataTransformationOptions,
 															);
+														toast({
+															title: 'Saving Application',
+															description: 'This may take a few moments...',
+														});
 														saveScholarshipApplication(serverData);
 													}}
 												>
