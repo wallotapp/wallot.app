@@ -13,8 +13,8 @@ import {
 	SsoSiteRouteQueryParams,
 	getSsoSiteRoute,
 	passwordRules,
-	registerUserSchema,
-	registerUserSchemaFieldSpecByFieldKey,
+	registerUserFormDataSchema,
+	registerUserFormDataSchemaFieldSpecByFieldKey,
 	usernameRules,
 } from '@wallot/js';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
@@ -59,12 +59,12 @@ const Page: NextPage<PageStaticProps> = (props) => {
 
 	// Form Resolver
 	const resolver = useYupValidationResolver(
-		registerUserSchema,
+		registerUserFormDataSchema,
 		defaultGeneralizedFormDataTransformationOptions,
 	);
 
 	// Form
-	const initialFormData = registerUserSchema.getDefault();
+	const initialFormData = registerUserFormDataSchema.getDefault();
 	const { control, formState, handleSubmit, reset, setError } =
 		useForm<RegisterUserParams>({
 			defaultValues: initialFormData,
@@ -177,7 +177,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 		control,
 		fieldErrors: formState.errors,
 		fieldKey,
-		fieldSpec: registerUserSchemaFieldSpecByFieldKey[fieldKey],
+		fieldSpec: registerUserFormDataSchemaFieldSpecByFieldKey[fieldKey],
 		hideRequiredIndicator: true,
 		initialFormData,
 		isSubmitting: isFormSubmitting,
