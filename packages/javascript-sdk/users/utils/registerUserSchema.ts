@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import * as yup from 'yup';
 import { Keys, YupHelpers, getFieldSpecByFieldKey } from 'ergonomic';
 import { usernameSchema } from './username.js';
@@ -10,10 +11,18 @@ export const registerUserProperties = {
 	username: usernameSchema().required().default('').lowercase(),
 } as const;
 export const registerUserSchema = yup.object(registerUserProperties);
-export const registerUserSchemaFieldSpecByFieldKey = getFieldSpecByFieldKey(
-	registerUserSchema,
-	Keys(registerUserProperties),
+export const registerUserFormDataProperties = R.omit(
+	['redirect_uri'],
+	registerUserProperties,
 );
+export const registerUserFormDataSchema = yup.object(
+	registerUserFormDataProperties,
+);
+export const registerUserFormDataSchemaFieldSpecByFieldKey =
+	getFieldSpecByFieldKey(
+		registerUserFormDataSchema,
+		Keys(registerUserFormDataProperties),
+	);
 
 export type RegisterUserParams = yup.InferType<typeof registerUserSchema>;
 export type RegisterUserResponse = {
