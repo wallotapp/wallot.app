@@ -77,7 +77,6 @@ const Page: NextPage<PageProps> = (props) => {
 
 	// Toaster
 	const { toast } = useToast();
-	toast;
 
 	// Form Resolver
 	const formDataTransformationOptions = {
@@ -98,7 +97,6 @@ const Page: NextPage<PageProps> = (props) => {
 		isLoggedInUserLoading,
 		refetch: refetchLoggedInUser,
 	} = useQueryLoggedInUser();
-	refetchLoggedInUser;
 
 	// Application status
 	const {
@@ -111,8 +109,6 @@ const Page: NextPage<PageProps> = (props) => {
 	const isScholarshipApplicationForLoggedInUserSubmitted =
 		scholarshipApplicationForLoggedInUser != null &&
 		isSubmittedScholarshipApplication(scholarshipApplicationForLoggedInUser);
-	const disabled = isScholarshipApplicationForLoggedInUserSubmitted;
-	disabled;
 	const isScholarshipApplicationForLoggedInUserReviewed =
 		scholarshipApplicationForLoggedInUser != null &&
 		isReviewedScholarshipApplication(scholarshipApplicationForLoggedInUser);
@@ -135,9 +131,7 @@ const Page: NextPage<PageProps> = (props) => {
 			resolver,
 			shouldUnregister: false,
 		});
-	handleSubmit;
 	const liveData = watch();
-	liveData;
 
 	// Mutation error
 	const onMutationError = ({ error: { message } }: GeneralizedError) => {
@@ -260,10 +254,8 @@ const Page: NextPage<PageProps> = (props) => {
 	const personalEssaysFields = Keys(
 		scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
 	).map(getLiteFormFieldProps);
-	contactDetailsFields;
-	collegeInformationFields;
-	studentProfileFields;
-	personalEssaysFields;
+	const isFormDisabled =
+		isFormSubmitting || isScholarshipApplicationForLoggedInUserSubmitted;
 
 	// Form Submit Handler
 	const onSubmit = (data: ScholarshipApplicationFormDataParams) => {
@@ -495,6 +487,7 @@ const Page: NextPage<PageProps> = (props) => {
 												<h1 className='text-xl font-bold'>{currentStep}</h1>
 												<button
 													className='text-sm text-blue-500'
+													disabled={isFormDisabled}
 													onClick={() => {
 														const serverData =
 															getGeneralizedServerDataFromFormData(
@@ -580,7 +573,10 @@ const Page: NextPage<PageProps> = (props) => {
 												<div className='mt-6 flex justify-between'>
 													<button
 														type='button'
-														disabled={currentStep === 'Contact Details'}
+														disabled={
+															isFormDisabled ||
+															currentStep === 'Contact Details'
+														}
 														className={cn('px-4 py-2 rounded', {
 															'bg-gray-200 text-gray-500 cursor-not-allowed':
 																currentStep === 'Contact Details',
@@ -602,6 +598,7 @@ const Page: NextPage<PageProps> = (props) => {
 													</button>
 
 													<button
+														disabled={isFormDisabled}
 														type='button'
 														className={cn(
 															'bg-blue-500 text-white px-4 py-2 rounded',
@@ -620,6 +617,7 @@ const Page: NextPage<PageProps> = (props) => {
 														Next
 													</button>
 													<button
+														disabled={isFormDisabled}
 														type='submit'
 														className={cn(
 															'bg-green-500 text-white px-4 py-2 rounded',
