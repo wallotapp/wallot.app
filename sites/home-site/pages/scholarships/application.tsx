@@ -236,7 +236,6 @@ const Page: NextPage<PageProps> = (props) => {
 		fieldKey,
 		fieldSpec:
 			scholarshipApplicationFormDataSchemaFieldSpecByFieldKey[fieldKey],
-		hideRequiredIndicator: true,
 		initialFormData: defaultFormData,
 		isSubmitting: isFormSubmitting,
 		operation: 'update',
@@ -385,21 +384,6 @@ const Page: NextPage<PageProps> = (props) => {
 									</p>
 								</div>
 							</div>
-							<div>
-								<button
-									className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300'
-									disabled={isFormDisabled}
-									onClick={() => {
-										const serverData = getGeneralizedServerDataFromFormData(
-											liveData,
-											formDataTransformationOptions,
-										);
-										saveScholarshipApplication(serverData);
-									}}
-								>
-									<p className='font-normal text-xs'>Save Progress</p>
-								</button>
-							</div>
 						</div>
 						{isScholarshipApplicationForLoggedInUserSubmitted && (
 							<div>
@@ -471,7 +455,7 @@ const Page: NextPage<PageProps> = (props) => {
 								</aside>
 
 								{/* Main content area */}
-								<main className='flex-1'>
+								<main className='flex-1 lg:pr-10'>
 									{/* Mobile collapsible steps menu (visible on Mobile) */}
 									<div className='md:hidden mb-4'>
 										<button
@@ -527,9 +511,29 @@ const Page: NextPage<PageProps> = (props) => {
 									{/* Form container */}
 									<div className=''>
 										{/* Form header */}
-										<div className='flex justify-between items-center mb-4'>
-											<h1 className='text-xl font-bold'>{currentStep}</h1>
+										<div className='flex justify-between'>
+											<div>
+												<p className='text-lg font-medium'>{currentStep}</p>
+											</div>
+											<div>
+												<button
+													className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300'
+													disabled={isFormDisabled}
+													onClick={() => {
+														const serverData =
+															getGeneralizedServerDataFromFormData(
+																liveData,
+																formDataTransformationOptions,
+															);
+														saveScholarshipApplication(serverData);
+													}}
+												>
+													<p className='font-medium text-xs'>Save Progress</p>
+												</button>
+											</div>
 										</div>
+
+										<Separator className='mt-1.5' />
 
 										{/* Form fields */}
 										<form onSubmit={handleSubmit(onSubmit) as () => void}>
@@ -600,18 +604,18 @@ const Page: NextPage<PageProps> = (props) => {
 											</div>
 
 											{/* Navigation buttons */}
-											<div className='mt-6 flex justify-between'>
+											<div className='mt-6 flex justify-end space-x-3'>
 												<button
 													type='button'
 													disabled={
 														isFormDisabled || currentStep === 'Contact Details'
 													}
-													className={cn('px-4 py-2 rounded', {
-														'bg-gray-200 text-gray-500 cursor-not-allowed':
-															currentStep === 'Contact Details',
-														'bg-blue-500 text-white':
-															currentStep !== 'Contact Details',
-													})}
+													className={cn(
+														'w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300',
+														currentStep === 'Contact Details'
+															? ' text-gray-400 cursor-not-allowed'
+															: '',
+													)}
 													onClick={() =>
 														currentStep !== 'Contact Details' &&
 														setCurrentStep(
@@ -623,14 +627,14 @@ const Page: NextPage<PageProps> = (props) => {
 														)
 													}
 												>
-													Back
+													<p className='font-medium text-xs'>Back</p>
 												</button>
 
 												<button
 													disabled={isFormDisabled}
 													type='button'
 													className={cn(
-														'bg-blue-500 text-white px-4 py-2 rounded',
+														'w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300',
 														isLastStep ? 'hidden' : '',
 													)}
 													onClick={() =>
@@ -643,17 +647,19 @@ const Page: NextPage<PageProps> = (props) => {
 														)
 													}
 												>
-													Next
+													<p className='font-medium text-xs'>Continue</p>
 												</button>
 												<button
 													disabled={isFormDisabled}
 													type='submit'
 													className={cn(
-														'bg-green-500 text-white px-4 py-2 rounded',
+														'w-fit text-center bg-brand-dark px-4 py-1.5 rounded-md border border-slate-300',
 														isLastStep ? '' : 'hidden',
 													)}
 												>
-													Submit
+													<p className='font-medium text-xs text-white'>
+														Submit Application
+													</p>
 												</button>
 											</div>
 										</form>
@@ -662,16 +668,14 @@ const Page: NextPage<PageProps> = (props) => {
 
 								{/* Right callout cards (visible on Desktop) */}
 								<aside className='hidden lg:block'>
-									<div className='mb-4'>
-										<h2 className='font-bold mb-2'>Callout 1</h2>
-										<p className='text-gray-700 text-sm'>
+									<div
+										className={cn(
+											'bg-white border border-gray-200 rounded-md shadow-md p-6',
+										)}
+									>
+										<p className='font-semibold text-sm'>Questions?</p>
+										<p className='text-gray-700 text-xs'>
 											Some helpful information or tips.
-										</p>
-									</div>
-									<div>
-										<h2 className='font-bold mb-2'>Callout 2</h2>
-										<p className='text-gray-700 text-sm'>
-											Additional callout details go here.
 										</p>
 									</div>
 								</aside>
