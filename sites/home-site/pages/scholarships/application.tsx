@@ -45,6 +45,7 @@ import { useSaveScholarshipApplicationMutation } from '@wallot/react/src/feature
 import { useSubmitScholarshipApplicationMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useSubmitScholarshipApplicationMutation';
 import { getGeneralizedServerDataFromFormData } from 'ergonomic-react/src/features/data/utils/getGeneralizedServerDataFromFormData';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
+import Link from 'next/link';
 
 const steps = ScholarshipApplicationFormDataSectionEnum.arr;
 
@@ -684,16 +685,35 @@ const Page: NextPage<PageProps> = (props) => {
 								</main>
 
 								{/* Right callout cards (visible on Desktop) */}
-								<aside className='hidden lg:block'>
+								<aside className='hidden lg:block lg:max-w-56 lg:ml-10'>
 									<div
 										className={cn(
 											'bg-white border border-gray-200 rounded-md shadow-md p-6',
 										)}
 									>
-										<p className='font-semibold text-sm'>Questions?</p>
-										<p className='text-gray-700 text-xs'>
-											Some helpful information or tips.
-										</p>
+										<div>
+											<p className='font-semibold text-sm'>Questions?</p>
+										</div>
+										<div className='mt-1'>
+											<p className='text-gray-700 font-light text-xs'>
+												We're here to help. Visit our Florida Visionary
+												Scholarship{' '}
+												<Link href='/scholarships' target='_blank'>
+													<span className='text-brand-dark'>FAQ page</span>
+												</Link>{' '}
+												or contact our program coordinator Kamar Mack by sending
+												an email to{' '}
+												<Link
+													href='mailto:scholarships@wallot.app'
+													target='_blank'
+												>
+													<span className='text-brand-dark'>
+														scholarships@wallot.app
+													</span>
+												</Link>
+												.
+											</p>
+										</div>
 									</div>
 								</aside>
 							</div>
