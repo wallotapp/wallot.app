@@ -44,6 +44,7 @@ import { createScholarshipApplication } from '@wallot/react/src/features/scholar
 import { useSaveScholarshipApplicationMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useSaveScholarshipApplicationMutation';
 import { useSubmitScholarshipApplicationMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useSubmitScholarshipApplicationMutation';
 import { getGeneralizedServerDataFromFormData } from 'ergonomic-react/src/features/data/utils/getGeneralizedServerDataFromFormData';
+import { Separator } from 'ergonomic-react/src/components/ui/separator';
 
 const steps = ScholarshipApplicationFormDataSectionEnum.arr;
 
@@ -372,7 +373,12 @@ const Page: NextPage<PageProps> = (props) => {
 				>
 					<div>
 						<div>
-							<p className='font-medium text-xl'>Application</p>
+							<p className='font-semibold text-lg'>
+								Florida Visionary Scholarship Application
+							</p>
+						</div>
+						<div className='-mt-0.5'>
+							<p className='font-extralight text-sm'>Class of 2025 Cohort</p>
 						</div>
 						{isScholarshipApplicationForLoggedInUserSubmitted && (
 							<div>
@@ -388,7 +394,7 @@ const Page: NextPage<PageProps> = (props) => {
 							</div>
 						)}
 					</div>
-					<div className={cn('mt-7')}>
+					<div className={cn('mt-5')}>
 						<div
 							className={cn(
 								isScholarshipApplicationPageLoading ? '' : 'hidden',
@@ -401,252 +407,267 @@ const Page: NextPage<PageProps> = (props) => {
 								!isScholarshipApplicationPageLoading ? '' : 'hidden',
 							)}
 						>
-							<div className=''>
-								<div className='flex flex-col md:flex-row'>
-									{/* Left sidebar (visible on Tablet and Desktop) */}
-									<aside className='hidden md:block md:w-1/4 lg:w-1/5 bg-white p-4 shadow'>
-										<ul>
-											{steps.map((step) => (
-												<li
+							<div className='flex flex-col md:flex-row'>
+								{/* Left sidebar (visible on Tablet and Desktop) */}
+								<aside className='hidden md:block space-y-0.5'>
+									{steps.map((step) => {
+										const isActive = step === currentStep;
+										return (
+											<div className='flex items-center space-x-1'>
+												<div className='py-1'>
+													<Separator
+														orientation='vertical'
+														className={cn(
+															'!h-5 !w-1 !rounded-lg',
+															isActive ? 'bg-brand-dark' : 'bg-transparent',
+														)}
+													/>
+												</div>
+												<button
 													key={step}
-													className={cn('cursor-pointer p-2', {
-														'font-bold text-blue-500': step === currentStep,
-														'text-gray-700': step !== currentStep,
-													})}
+													className={cn(
+														'block w-full text-left pl-2 pr-10 py-1 rounded',
+														isActive ? 'bg-gray-200' : '',
+													)}
 													onClick={() =>
 														setCurrentStep(
 															step as ScholarshipApplicationFormDataSection,
 														)
 													}
 												>
-													{step}
-												</li>
-											))}
-										</ul>
-									</aside>
-
-									{/* Main content area */}
-									<main className='flex-1 p-4'>
-										{/* Mobile collapsible steps menu (visible on Mobile) */}
-										<div className='md:hidden mb-4'>
-											<button
-												className='w-full flex justify-between items-center bg-white p-2 shadow rounded'
-												onClick={toggleMobileMenu}
-											>
-												<span className='font-bold'>{currentStep}</span>
-												<svg
-													className={cn(
-														'w-4 h-4 transform transition-transform duration-200',
-														{
-															'rotate-180': isMobileMenuOpen,
-														},
-													)}
-													fill='none'
-													stroke='currentColor'
-													viewBox='0 0 24 24'
-												>
-													<path
-														strokeLinecap='round'
-														strokeLinejoin='round'
-														strokeWidth='2'
-														d='M19 9l-7 7-7-7'
-													/>
-												</svg>
-											</button>
-											{isMobileMenuOpen && (
-												<ul className='mt-2 bg-white shadow rounded'>
-													{steps.map((step) => (
-														<li
-															key={step}
-															className={cn(
-																'cursor-pointer p-2 border-b last:border-b-0',
-																{
-																	'font-bold text-blue-500':
-																		step === currentStep,
-																	'text-gray-700': step !== currentStep,
-																},
-															)}
-															onClick={() => {
-																setCurrentStep(
-																	step as ScholarshipApplicationFormDataSection,
-																);
-																setMobileMenuOpen(false);
-															}}
-														>
-															{step}
-														</li>
-													))}
-												</ul>
-											)}
-										</div>
-
-										{/* Form container */}
-										<div className='bg-white p-6 shadow rounded'>
-											{/* Form header */}
-											<div className='flex justify-between items-center mb-4'>
-												<h1 className='text-xl font-bold'>{currentStep}</h1>
-												<button
-													className='text-sm text-blue-500'
-													disabled={isFormDisabled}
-													onClick={() => {
-														const serverData =
-															getGeneralizedServerDataFromFormData(
-																liveData,
-																formDataTransformationOptions,
-															);
-														saveScholarshipApplication(serverData);
-													}}
-												>
-													Save Progress
+													<p
+														className={cn(
+															'text-xs',
+															isActive ? 'font-semibold' : 'font-light',
+														)}
+													>
+														{step}
+													</p>
 												</button>
 											</div>
+										);
+									})}
+								</aside>
 
-											{/* Form fields */}
-											<form onSubmit={handleSubmit(onSubmit) as () => void}>
-												<div className=''>
-													<div
+								{/* Main content area */}
+								<main className='flex-1'>
+									{/* Mobile collapsible steps menu (visible on Mobile) */}
+									<div className='md:hidden mb-4'>
+										<button
+											className='w-full flex justify-between items-center p-2 shadow rounded'
+											onClick={toggleMobileMenu}
+										>
+											<span className='font-bold'>{currentStep}</span>
+											<svg
+												className={cn(
+													'w-4 h-4 transform transition-transform duration-200',
+													{
+														'rotate-180': isMobileMenuOpen,
+													},
+												)}
+												fill='none'
+												stroke='currentColor'
+												viewBox='0 0 24 24'
+											>
+												<path
+													strokeLinecap='round'
+													strokeLinejoin='round'
+													strokeWidth='2'
+													d='M19 9l-7 7-7-7'
+												/>
+											</svg>
+										</button>
+										{isMobileMenuOpen && (
+											<ul className='mt-2 shadow rounded'>
+												{steps.map((step) => (
+													<li
+														key={step}
 														className={cn(
-															'px-1',
-															currentStep === 'Contact Details' ? '' : 'hidden',
+															'cursor-pointer p-2 border-b last:border-b-0',
+															{
+																'font-bold text-blue-500': step === currentStep,
+																'text-gray-700': step !== currentStep,
+															},
 														)}
+														onClick={() => {
+															setCurrentStep(
+																step as ScholarshipApplicationFormDataSection,
+															);
+															setMobileMenuOpen(false);
+														}}
 													>
-														{contactDetailsFields.map((fieldProps) => (
-															<LiteFormFieldContainer
-																key={fieldProps.fieldKey}
-																{...fieldProps}
-															/>
-														))}
-													</div>
-													<div
-														className={cn(
-															'px-1',
-															currentStep === 'College Information'
-																? ''
-																: 'hidden',
-														)}
-													>
-														{collegeInformationFields.map((fieldProps) => (
-															<LiteFormFieldContainer
-																key={fieldProps.fieldKey}
-																{...fieldProps}
-															/>
-														))}
-													</div>
-													<div
-														className={cn(
-															'px-1',
-															currentStep === 'Student Profile' ? '' : 'hidden',
-														)}
-													>
-														{studentProfileFields.map((fieldProps) => (
-															<LiteFormFieldContainer
-																key={fieldProps.fieldKey}
-																{...fieldProps}
-															/>
-														))}
-													</div>
-													<div
-														className={cn(
-															'px-1',
-															currentStep === 'Personal Essays' ? '' : 'hidden',
-														)}
-													>
-														{personalEssaysFields.map((fieldProps) => (
-															<LiteFormFieldContainer
-																key={fieldProps.fieldKey}
-																{...fieldProps}
-															/>
-														))}
-													</div>
-													{Boolean(formState.errors['root']?.message) && (
-														<div className='mt-4'>
-															<LiteFormFieldError
-																fieldErrorMessage={
-																	formState.errors['root']?.message ?? ''
-																}
-															/>
-														</div>
+														{step}
+													</li>
+												))}
+											</ul>
+										)}
+									</div>
+
+									{/* Form container */}
+									<div className=''>
+										{/* Form header */}
+										<div className='flex justify-between items-center mb-4'>
+											<h1 className='text-xl font-bold'>{currentStep}</h1>
+											<button
+												className='text-sm text-blue-500'
+												disabled={isFormDisabled}
+												onClick={() => {
+													const serverData =
+														getGeneralizedServerDataFromFormData(
+															liveData,
+															formDataTransformationOptions,
+														);
+													saveScholarshipApplication(serverData);
+												}}
+											>
+												Save Progress
+											</button>
+										</div>
+
+										{/* Form fields */}
+										<form onSubmit={handleSubmit(onSubmit) as () => void}>
+											<div className=''>
+												<div
+													className={cn(
+														'px-1',
+														currentStep === 'Contact Details' ? '' : 'hidden',
 													)}
+												>
+													{contactDetailsFields.map((fieldProps) => (
+														<LiteFormFieldContainer
+															key={fieldProps.fieldKey}
+															{...fieldProps}
+														/>
+													))}
 												</div>
-
-												{/* Navigation buttons */}
-												<div className='mt-6 flex justify-between'>
-													<button
-														type='button'
-														disabled={
-															isFormDisabled ||
-															currentStep === 'Contact Details'
-														}
-														className={cn('px-4 py-2 rounded', {
-															'bg-gray-200 text-gray-500 cursor-not-allowed':
-																currentStep === 'Contact Details',
-															'bg-blue-500 text-white':
-																currentStep !== 'Contact Details',
-														})}
-														onClick={() =>
-															currentStep !== 'Contact Details' &&
-															setCurrentStep(
-																steps[
-																	steps.findIndex(
-																		(step) => step === currentStep,
-																	) - 1
-																] as ScholarshipApplicationFormDataSection,
-															)
-														}
-													>
-														Back
-													</button>
-
-													<button
-														disabled={isFormDisabled}
-														type='button'
-														className={cn(
-															'bg-blue-500 text-white px-4 py-2 rounded',
-															isLastStep ? 'hidden' : '',
-														)}
-														onClick={() =>
-															setCurrentStep(
-																steps[
-																	steps.findIndex(
-																		(step) => step === currentStep,
-																	) + 1
-																] as ScholarshipApplicationFormDataSection,
-															)
-														}
-													>
-														Next
-													</button>
-													<button
-														disabled={isFormDisabled}
-														type='submit'
-														className={cn(
-															'bg-green-500 text-white px-4 py-2 rounded',
-															isLastStep ? '' : 'hidden',
-														)}
-													>
-														Submit
-													</button>
+												<div
+													className={cn(
+														'px-1',
+														currentStep === 'College Information'
+															? ''
+															: 'hidden',
+													)}
+												>
+													{collegeInformationFields.map((fieldProps) => (
+														<LiteFormFieldContainer
+															key={fieldProps.fieldKey}
+															{...fieldProps}
+														/>
+													))}
 												</div>
-											</form>
-										</div>
-									</main>
+												<div
+													className={cn(
+														'px-1',
+														currentStep === 'Student Profile' ? '' : 'hidden',
+													)}
+												>
+													{studentProfileFields.map((fieldProps) => (
+														<LiteFormFieldContainer
+															key={fieldProps.fieldKey}
+															{...fieldProps}
+														/>
+													))}
+												</div>
+												<div
+													className={cn(
+														'px-1',
+														currentStep === 'Personal Essays' ? '' : 'hidden',
+													)}
+												>
+													{personalEssaysFields.map((fieldProps) => (
+														<LiteFormFieldContainer
+															key={fieldProps.fieldKey}
+															{...fieldProps}
+														/>
+													))}
+												</div>
+												{Boolean(formState.errors['root']?.message) && (
+													<div className='mt-4'>
+														<LiteFormFieldError
+															fieldErrorMessage={
+																formState.errors['root']?.message ?? ''
+															}
+														/>
+													</div>
+												)}
+											</div>
 
-									{/* Right callout cards (visible on Desktop) */}
-									<aside className='hidden lg:block lg:w-1/4 bg-white p-4 shadow'>
-										<div className='mb-4'>
-											<h2 className='font-bold mb-2'>Callout 1</h2>
-											<p className='text-gray-700 text-sm'>
-												Some helpful information or tips.
-											</p>
-										</div>
-										<div>
-											<h2 className='font-bold mb-2'>Callout 2</h2>
-											<p className='text-gray-700 text-sm'>
-												Additional callout details go here.
-											</p>
-										</div>
-									</aside>
-								</div>
+											{/* Navigation buttons */}
+											<div className='mt-6 flex justify-between'>
+												<button
+													type='button'
+													disabled={
+														isFormDisabled || currentStep === 'Contact Details'
+													}
+													className={cn('px-4 py-2 rounded', {
+														'bg-gray-200 text-gray-500 cursor-not-allowed':
+															currentStep === 'Contact Details',
+														'bg-blue-500 text-white':
+															currentStep !== 'Contact Details',
+													})}
+													onClick={() =>
+														currentStep !== 'Contact Details' &&
+														setCurrentStep(
+															steps[
+																steps.findIndex(
+																	(step) => step === currentStep,
+																) - 1
+															] as ScholarshipApplicationFormDataSection,
+														)
+													}
+												>
+													Back
+												</button>
+
+												<button
+													disabled={isFormDisabled}
+													type='button'
+													className={cn(
+														'bg-blue-500 text-white px-4 py-2 rounded',
+														isLastStep ? 'hidden' : '',
+													)}
+													onClick={() =>
+														setCurrentStep(
+															steps[
+																steps.findIndex(
+																	(step) => step === currentStep,
+																) + 1
+															] as ScholarshipApplicationFormDataSection,
+														)
+													}
+												>
+													Next
+												</button>
+												<button
+													disabled={isFormDisabled}
+													type='submit'
+													className={cn(
+														'bg-green-500 text-white px-4 py-2 rounded',
+														isLastStep ? '' : 'hidden',
+													)}
+												>
+													Submit
+												</button>
+											</div>
+										</form>
+									</div>
+								</main>
+
+								{/* Right callout cards (visible on Desktop) */}
+								<aside className='hidden lg:block lg:w-1/4'>
+									<div className='mb-4'>
+										<h2 className='font-bold mb-2'>Callout 1</h2>
+										<p className='text-gray-700 text-sm'>
+											Some helpful information or tips.
+										</p>
+									</div>
+									<div>
+										<h2 className='font-bold mb-2'>Callout 2</h2>
+										<p className='text-gray-700 text-sm'>
+											Additional callout details go here.
+										</p>
+									</div>
+								</aside>
 							</div>
 						</div>
 					</div>
