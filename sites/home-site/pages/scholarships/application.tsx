@@ -238,7 +238,8 @@ const Page: NextPage<PageProps> = (props) => {
 		fieldSpec:
 			scholarshipApplicationFormDataSchemaFieldSpecByFieldKey[fieldKey],
 		initialFormData: defaultFormData,
-		isSubmitting: isFormSubmitting,
+		isSubmitting:
+			isFormSubmitting || isScholarshipApplicationForLoggedInUserSubmitted,
 		operation: 'update',
 		renderTooltipContent: undefined,
 		setError: (message) => setError(fieldKey, { message }),
@@ -518,7 +519,12 @@ const Page: NextPage<PageProps> = (props) => {
 											</div>
 											<div>
 												<button
-													className='w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300'
+													className={cn(
+														'w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300',
+														isFormDisabled
+															? ' text-gray-400 cursor-not-allowed'
+															: '',
+													)}
 													disabled={isFormDisabled}
 													onClick={() => {
 														const serverData =
@@ -626,7 +632,8 @@ const Page: NextPage<PageProps> = (props) => {
 												<button
 													type='button'
 													disabled={
-														isFormDisabled || currentStep === 'Contact Details'
+														isFormSubmitting ||
+														currentStep === 'Contact Details'
 													}
 													className={cn(
 														'w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300',
@@ -649,11 +656,14 @@ const Page: NextPage<PageProps> = (props) => {
 												</button>
 
 												<button
-													disabled={isFormDisabled}
+													disabled={isFormSubmitting}
 													type='button'
 													className={cn(
 														'w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300',
 														isLastStep ? 'hidden' : '',
+														isFormSubmitting
+															? ' text-gray-400 cursor-not-allowed'
+															: '',
 													)}
 													onClick={() =>
 														setCurrentStep(
@@ -671,8 +681,11 @@ const Page: NextPage<PageProps> = (props) => {
 													disabled={isFormDisabled}
 													type='submit'
 													className={cn(
-														'w-fit text-center bg-brand-dark px-4 py-1.5 rounded-md border border-slate-300',
+														'w-fit text-center px-4 py-1.5 rounded-md border border-slate-300',
 														isLastStep ? '' : 'hidden',
+														isFormDisabled
+															? ' bg-brand-light text-gray-400 cursor-not-allowed'
+															: 'bg-brand-dark',
 													)}
 												>
 													<p className='font-medium text-xs text-white'>
