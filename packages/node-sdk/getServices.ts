@@ -55,7 +55,10 @@ import {
 	enqueueCreateAlpacaAccount,
 	enqueueRefreshAlpacaAccountStatus,
 } from './wallot/users/createAlpacaAccount.js';
-import { sendEmailWithGmailAPI } from './gmail.js';
+import {
+	sendEmailWithGmailAPI,
+	enqueueSendEmailWithGmailAPI,
+} from './gmail.js';
 
 export const getServices = (
 	secrets: SecretData,
@@ -174,6 +177,11 @@ export const getServices = (
 					logService,
 				),
 				enqueueRefreshAlpacaOrderStatus: enqueueRefreshAlpacaOrderStatus(
+					getCloudFunctionUrlService,
+					logService,
+				),
+				// Email notifications
+				enqueueSendEmailWithGmailAPI: enqueueSendEmailWithGmailAPI(
 					getCloudFunctionUrlService,
 					logService,
 				),
