@@ -407,7 +407,7 @@ const Page: NextPage<PageProps> = (props) => {
 								!isScholarshipApplicationPageLoading ? '' : 'hidden',
 							)}
 						>
-							<div className='flex flex-col md:flex-row'>
+							<div className='flex flex-col md:flex-row md:space-x-5'>
 								{/* Left sidebar (visible on Tablet and Desktop) */}
 								<aside className='hidden md:block space-y-0.5'>
 									{steps.map((step) => {
@@ -654,7 +654,7 @@ const Page: NextPage<PageProps> = (props) => {
 								</main>
 
 								{/* Right callout cards (visible on Desktop) */}
-								<aside className='hidden lg:block lg:w-1/4'>
+								<aside className='hidden lg:block'>
 									<div className='mb-4'>
 										<h2 className='font-bold mb-2'>Callout 1</h2>
 										<p className='text-gray-700 text-sm'>
