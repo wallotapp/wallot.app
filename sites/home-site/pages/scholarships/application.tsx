@@ -22,6 +22,7 @@ import {
 	ScholarshipApplicationFormDataFieldFromUserDataEnum,
 	scholarshipApplicationsApi,
 	ScholarshipApplicationFormDataSectionEnum,
+	getHomeSiteRoute,
 } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getSsoSiteRoute } from '@wallot/js';
@@ -724,7 +725,15 @@ const Page: NextPage<PageProps> = (props) => {
 											<p className='text-gray-700 font-light text-xs'>
 												We're here to help. Visit our Florida Visionary
 												Scholarship{' '}
-												<Link href='/scholarships' target='_blank'>
+												<Link
+													href={getHomeSiteRoute({
+														includeOrigin: false,
+														origin: null,
+														queryParams: {},
+														routeStaticId: 'HOME_SITE__/SCHOLARSHIPS',
+													})}
+													target='_blank'
+												>
 													<span className='text-brand-dark'>FAQ page</span>
 												</Link>{' '}
 												or contact our program coordinator Kamar Mack by sending
