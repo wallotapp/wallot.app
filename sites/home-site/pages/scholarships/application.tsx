@@ -213,6 +213,13 @@ const Page: NextPage<PageProps> = (props) => {
 	const pageProps: PageProps = {
 		...props,
 		routeId: ROUTE_RUNTIME_ID,
+		thumbnailData: {
+			thumbnail: '/img/brand/og-image-scholarship.png',
+			thumbnailAlt: 'Wallot Scholarship',
+			thumbnailHeight: 538,
+			thumbnailType: 'image/png',
+			thumbnailWidth: '1024',
+		},
 	};
 
 	// Define our steps and their fields.
