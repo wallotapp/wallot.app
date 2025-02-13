@@ -164,3 +164,32 @@ export function enqueueSendEmailWithGmailAPI(
 		});
 	};
 }
+
+/**
+ * Replaces placeholders in a template string with values from a params object.
+ * Placeholders in the template should be in the format `{{key}}` where `key` is a property of the params object.
+ *
+ * @param template - The template string containing placeholders.
+ * @param params - An object containing key-value pairs to replace in the template.
+ * @returns The template string with placeholders replaced by corresponding values from params.
+ *
+ * @example
+ * ```ts
+ * const template = 'Hello, {{name}}!';
+ * const params = { name: 'Alice' };
+ * const emailBody = getEmailBody(template, params);
+ * console.log(emailBody); // 'Hello, Alice!'
+ * ```
+ */
+export function getEmailBody(
+	template: string,
+	params: { [key: string]: string },
+): string {
+	return Object.keys(params).reduce((currentTemplate, key) => {
+		const placeholder = `{{${key}}}`;
+		return currentTemplate.replace(
+			new RegExp(placeholder, 'g'),
+			params[key] as string,
+		);
+	}, template);
+}
