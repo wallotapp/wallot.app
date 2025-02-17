@@ -28,6 +28,7 @@ export async function sendScholarshipApplicationConfirmationEmail(
 			variables.SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_EMAIL_VISIONARY_SCHOLARSHIP,
 		sender_name:
 			variables.SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_NAME_VISIONARY_SCHOLARSHIP,
+		sender_user_id: variables.SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID,
 		subject: 'Florida Visionary Scholarship Application Confirmation',
 	});
 	log({
