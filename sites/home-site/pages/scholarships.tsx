@@ -289,7 +289,7 @@ const Page: NextPage<PageProps> = (props) => {
 									answersPrefix:
 										'The following are the most important dates for the scholarship:',
 									answers: [
-										'The priority application window is open until 11:59pm EST on February 20th.',
+										'The priority application window is open until 11:59pm EST on February 28th.',
 										'Late applications will be accepted until our interview process ends March 23rd.',
 									],
 								},
