@@ -38,6 +38,7 @@ export function sendEmailWithGmailAPI(
 	}: SendEmailWithGmailAPIParams): Promise<SendEmailNotificationResponse> {
 		const auth = getGoogleAuthJwtInstanceForGmailApi({
 			...variables,
+			SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID: userId,
 			serviceAccountPath,
 		});
 		const gmail = google.gmail({
