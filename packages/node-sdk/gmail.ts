@@ -16,6 +16,7 @@ export type SendEmailWithGmailAPIParams = SendEmailNotificationParams & {
 	};
 	sender_email: string;
 	sender_name: string;
+	sender_user_id: string;
 };
 export function sendEmailWithGmailAPI(
 	serviceAccountPath: string,
@@ -24,7 +25,7 @@ export function sendEmailWithGmailAPI(
 	const {
 		SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_EMAIL: defaultSendFromEmail,
 		SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_NAME: defaultSendFromName,
-		SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID: userId,
+		SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID: defaultUserId,
 	} = variables;
 	return async function ({
 		html_body: htmlBody,
@@ -32,6 +33,7 @@ export function sendEmailWithGmailAPI(
 		recipient_email: recipientEmail,
 		sender_email: senderEmail = defaultSendFromEmail,
 		sender_name: senderName = defaultSendFromName,
+		sender_user_id: userId = defaultUserId,
 		subject,
 	}: SendEmailWithGmailAPIParams): Promise<SendEmailNotificationResponse> {
 		const auth = getGoogleAuthJwtInstanceForGmailApi({
