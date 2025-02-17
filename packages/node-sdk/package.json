@@ -83,5 +83,5 @@
 	},
 	"type": "module",
 	"types": "./index.ts",
-	"version": "0.1.19-rc.0"
+	"version": "0.1.20-rc.0"
 }
