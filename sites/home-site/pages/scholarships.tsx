@@ -169,7 +169,7 @@ const Page: NextPage<PageProps> = (props) => {
 					>
 						{[
 							{
-								subtitle: 'February 20, 2025',
+								subtitle: 'February 28, 2025',
 								title: 'Priority Deadline',
 							},
 							{
