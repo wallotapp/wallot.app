@@ -5,10 +5,10 @@ import { usernameSchema } from './username.js';
 import { passwordSchema } from './password.js';
 
 export const registerUserProperties = {
-	email: YupHelpers.emailAddress().required(),
+	email: YupHelpers.emailAddress().required().trim().lowercase(),
 	password: passwordSchema().required().default(''),
 	redirect_uri: YupHelpers.url().nullable().default(null),
-	username: usernameSchema().required().default('').lowercase(),
+	username: usernameSchema().required().default('').trim().lowercase(),
 } as const;
 export const registerUserSchema = yup.object(registerUserProperties);
 export const registerUserFormDataProperties = R.omit(
