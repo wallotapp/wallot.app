@@ -159,7 +159,8 @@ export function enqueueSendEmailWithGmailAPI(
 		log({
 			message: 'Enqueuing sendEmailWithGmailAPI task',
 			targetUri,
-			params,
+			targetUtcIso,
+			params: { ...params, html_body: params.html_body.slice(0, 100) },
 		});
 		await queue.enqueue(params, {
 			scheduleDelaySeconds: getCloudTasksScheduleDelaySeconds(targetUtcIso),
