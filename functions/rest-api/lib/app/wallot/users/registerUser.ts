@@ -13,11 +13,14 @@ import { sendWelcomeEmail } from './sendWelcomeEmail.js';
 import { scheduleActivationReminderEmails } from './scheduleActivationReminderEmails.js';
 
 export const registerUser = async ({
-	email,
+	email: emailFromClient,
 	password,
 	redirect_uri,
-	username,
+	username: usernameFromClient,
 }: RegisterUserParams): Promise<FunctionResponse<RegisterUserResponse>> => {
+	const email = emailFromClient.trim().toLowerCase();
+	const username = usernameFromClient.trim().toLowerCase();
+
 	// Check that the username is unique and email is not already registered
 	const [usernameDoc, emailDoc] = await Promise.all([
 		db
