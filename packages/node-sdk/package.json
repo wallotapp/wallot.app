@@ -3,7 +3,7 @@
 	"bugs": "https://github.com/wallotapp/wallot.app/issues",
 	"dependencies": {
 		"@google-cloud/storage": "^7.4.0",
-		"@wallot/js": "0.1.18-rc.0",
+		"@wallot/js": "0.1.22-rc.0",
 		"change-case": "^4.1.2",
 		"ergonomic": "^0.5.8",
 		"google-libphonenumber": "^3.2.31",
@@ -83,5 +83,5 @@
 	},
 	"type": "module",
 	"types": "./index.ts",
-	"version": "0.1.21-rc.0"
+	"version": "0.1.22-rc.0"
 }
