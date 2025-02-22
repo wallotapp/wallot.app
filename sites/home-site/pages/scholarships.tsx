@@ -284,6 +284,17 @@ const Page: NextPage<PageProps> = (props) => {
 										'Yes, we recommend that you apply to any of the scholarships that you believe you are a good fit for. However, students can only be awarded at most one scholarship.',
 								},
 								{
+									question:
+										"The college that I'm attending is not in Florida. Can I still apply?",
+									answer:
+										'Yes, all graduating Seniors from Florida high schools are eligible to apply for the scholarship, regardless of the location of the college you plan to attend.',
+								},
+								{
+									question: 'Which expenses may the scholarship be used for?',
+									answer:
+										'The scholarship may be used for any expenses related to college cost of attendance, including tuition, room and board, books, and other fees.',
+								},
+								{
 									question: 'When is the deadline to apply?',
 									answer: '',
 									answersPrefix:
