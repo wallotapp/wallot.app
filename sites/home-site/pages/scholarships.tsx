@@ -23,122 +23,135 @@ import { useContext } from 'react';
 import { PiSparkleLight } from 'react-icons/pi';
 import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
-import { PlatformIcon } from 'ergonomic-react/src/components/brand/PlatformIcon';
-import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
 import {
-	DialogHeader,
-	DialogFooter,
-	Dialog,
-	DialogTrigger,
-	DialogContent,
-	DialogTitle,
-	DialogDescription,
-} from 'ergonomic-react/src/components/ui/dialog';
-import Image from 'next/image';
+	GoCalendar,
+	GoHome,
+	GoLocation,
+	GoOrganization,
+	GoRows,
+} from 'react-icons/go';
 
+const headers = [
+	{ Icon: GoOrganization, title: 'Location' },
+	{ Icon: GoLocation, title: 'Address' },
+	{ Icon: GoCalendar, title: 'Time' },
+	{ Icon: GoHome, title: 'Metro Area' },
+	{ Icon: GoRows, title: 'Type' },
+];
 const events = [
 	{
-		time: 'Mar 5, 2025',
-		title: 'Gainesville',
-		location: 'Gainesville',
-		tags: ['Virtual'],
+		address_title: 'Online Webinar',
+		address: 'Google Meets',
+		time: 'Wed, Mar 5 · 6:30 PM EST',
+		metro_area: 'Gainesville',
+		type: 'Virtual',
 	},
 	{
-		time: 'Mar 6, 2025',
-		title: 'Tampa',
-		location: 'Tampa',
-		tags: ['In-person'],
+		address_title: 'Carribbean Breeze Event Space near USF',
+		address: '14501 Caribbean Breeze Dr, Tampa, FL 33613',
+		time: 'Thurs, Mar 6 · 6:30 PM EST',
+		metro_area: 'Tampa',
+		type: 'In-person',
 	},
 	{
-		time: 'Mar 7, 2025',
-		title: 'Panama City',
-		location: 'Panama City',
-		tags: ['Virtual'],
+		address_title: 'Online Webinar',
+		address: 'Google Meets',
+		time: 'Fri, Mar 7 · 6:30 PM EST',
+		metro_area: 'Panama City',
+		type: 'Virtual',
 	},
 	{
-		time: 'Mar 8, 2025',
-		title: 'Orlando',
-		location: 'Orlando',
-		tags: ['In-person'],
+		address_title: 'Student Union at UCF',
+		address: '12715 Pegasus Dr, Orlando, FL 32816',
+		time: 'Sat, Mar 8 · 6:30 PM EST',
+		metro_area: 'Orlando',
+		type: 'In-person',
 	},
 	{
-		time: 'Mar 12, 2025',
-		title: 'West Palm Beach',
-		location: 'West Palm Beach',
-		tags: ['Virtual'],
+		address_title: 'Online Webinar',
+		address: 'Google Meets',
+		time: 'Wed, Mar 12 · 6:30 PM EST',
+		metro_area: 'West Palm Beach',
+		type: 'Virtual',
 	},
 	{
-		time: 'Mar 13, 2025',
-		title: 'Jacksonville',
-		location: 'Jacksonville',
-		tags: ['Virtual'],
+		address_title: 'Online Webinar',
+		address: 'Google Meets',
+		time: 'Thurs, Mar 13 · 6:30 PM EST',
+		metro_area: 'Jacksonville',
+		type: 'Virtual',
 	},
 	{
-		time: 'Mar 14, 2025',
-		title: 'Tampa',
-		location: 'Tampa',
-		tags: ['In-person'],
+		address_title: 'Carribbean Breeze Event Space near USF',
+		address: '14501 Caribbean Breeze Dr, Tampa, FL 33613',
+		time: 'Fri, Mar 14 · 6:30 PM EST',
+		metro_area: 'Tampa',
+		type: 'In-person',
 	},
 	{
-		time: 'Mar 15, 2025',
-		title: 'Sarasota',
-		location: 'Sarasota',
-		tags: ['In-person'],
+		address_title: 'Jane Bancroft Cook Library at New College of Florida',
+		address: '5800 Bay Shore Rd, Sarasota, FL 34243',
+		time: 'Sat, Mar 15 · 6:30 PM EST',
+		metro_area: 'Sarasota',
+		type: 'In-person',
 	},
 	{
-		time: 'Mar 19, 2025',
-		title: 'Fort Lauderdale',
-		location: 'Fort Lauderdale',
-		tags: ['Virtual'],
+		address_title: 'Online Webinar',
+		address: 'Google Meets',
+		time: 'Wed, Mar 19 · 6:30 PM EST',
+		metro_area: 'Fort Lauderdale',
+		type: 'Virtual',
 	},
 	{
-		time: 'Mar 20, 2025',
-		title: 'Tallahassee',
-		location: 'Tallahassee',
-		tags: ['Virtual'],
+		address_title: 'Online Webinar',
+		address: 'Google Meets',
+		time: 'Thurs, Mar 20 · 6:30 PM EST',
+		metro_area: 'Tallahassee',
+		type: 'Virtual',
 	},
 	{
-		time: 'Mar 21, 2025',
-		title: 'Cape Coral',
-		location: 'Cape Coral',
-		tags: ['In-person'],
+		address_title: 'Harvey and Janet Cohen Student Union at FGCU',
+		address: '11090 FGCU Blvd N, Fort Myers, FL 33965',
+		time: 'Fri, Mar 21 · 6:30 PM EST',
+		metro_area: 'Cape Coral',
+		type: 'In-person',
 	},
 	{
-		time: 'Mar 22, 2025',
-		title: 'Lakeland',
-		location: 'Lakeland',
-		tags: ['In-person'],
+		address_title: 'Roux Library at Florida Southern College',
+		address: '841-899 Frank Lloyd Wright Way, Lakeland, FL 33803',
+		time: 'Sat, Mar 22 · 6:30 PM EST',
+		metro_area: 'Lakeland',
+		type: 'In-person',
 	},
 	{
-		time: 'Mar 26, 2025',
-		title: 'Miami',
-		location: 'Miami',
-		tags: ['Virtual'],
+		address_title: 'Online Webinar',
+		address: 'Google Meets',
+		time: 'Thurs, Mar 26 · 6:30 PM EST',
+		metro_area: 'Miami',
+		type: 'Virtual',
 	},
 	{
-		time: 'Mar 27, 2025',
-		title: 'Pensacola',
-		location: 'Pensacola',
-		tags: ['Virtual'],
+		address_title: 'Online Webinar',
+		address: 'Google Meets',
+		time: 'Sat, Mar 27 · 6:30 PM EST',
+		metro_area: 'Pensacola',
+		type: 'Virtual',
 	},
 	{
-		time: 'Mar 28, 2025',
-		title: 'Orlando',
-		location: 'Orlando',
-		tags: ['In-person'],
+		address_title: 'Olin Library at Rollins College',
+		address: '1000 Holt Ave, Winter Park, FL 32789',
+		time: 'Fri, Mar 28 · 6:30 PM EST',
+		metro_area: 'Orlando',
+		type: 'In-person',
 	},
 	{
-		time: 'Mar 29, 2025',
-		title: 'Tampa',
-		location: 'Tampa',
-		tags: ['In-person'],
+		address_title: 'Carribbean Breeze Event Space near USF',
+		address: '14501 Caribbean Breeze Dr, Tampa, FL 33613',
+		time: 'Sat, Mar 29 · 6:30 PM EST',
+		metro_area: 'Tampa',
+		type: 'In-person',
 	},
-].map((event, eventIdx) => ({
-	...event,
-	imageSrc: `/img/banners/${(eventIdx + 1) % 4}.jpg`,
-}));
-const firstEvent = events[0]!;
-const { time, title, location, tags, imageSrc } = firstEvent;
+];
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== Hooks ==== //
@@ -291,20 +304,20 @@ const Page: NextPage<PageProps> = (props) => {
 					</div>
 					<div className='h-24 lg:h-36' />
 				</div>
-				<div className='grid grid-cols-4 gap-8 pb-6 pt-10 px-6'>
+				<div className='grid grid-cols-4 gap-8 pb-12 pt-10 px-6'>
 					<div
 						className={cn(
-							'flex flex-col space-y-5 col-span-3',
+							'flex flex-col space-y-5 col-span-4',
 							'lg:col-span-1',
 						)}
 					>
 						{[
 							{
-								subtitle: 'February 28, 2025',
+								subtitle: 'February 28',
 								title: 'Priority Deadline',
 							},
 							{
-								subtitle: 'March 23, 2025',
+								subtitle: 'March 23',
 								title: 'Final Deadline',
 							},
 							{
@@ -331,8 +344,8 @@ const Page: NextPage<PageProps> = (props) => {
 							);
 						})}
 					</div>
-					<div className='col-span-3'>
-						<div className='mb-6 font-extralight flex flex-col space-y-3'>
+					<div className='col-span-4 pr-12 lg:pr-0 lg:col-span-3'>
+						<div className='font-extralight flex flex-col space-y-3'>
 							<p className={cn('text-2xl text-gray-800 font-semibold')}>
 								A Commitment to Florida's Future
 							</p>
@@ -406,7 +419,97 @@ const Page: NextPage<PageProps> = (props) => {
 							</p>
 							<p>The future of your higher education journey starts here.</p>
 						</div>
-						<div className='mb-6 lg:w-1/2'>
+						<div className='mt-6'>
+							<p className={cn('text-2xl text-gray-800 font-semibold')}>
+								Attend an Open House
+							</p>
+							<p className='mt-3'>
+								<span className='font-extralight'>
+									The Florida Visionary Scholarship program committee is hosting
+									informal open house events both in-person and virtually to
+									help applicants learn more about the scholarship and get to
+									know our team. Spaces at each event are limited, so RSVP asap!
+								</span>
+							</p>
+							<div className='overflow-hidden rounded-md border-[0.5px] border-gray-300 mt-3 w-full overflow-x-auto border-collapse bg-white shadow-sm'>
+								<table className='min-w-full'>
+									{/* Table Head */}
+									<thead>
+										<tr className='bg-slate-50 border-b border-b-gray-400'>
+											{headers.map(({ Icon, title }) => (
+												<th
+													key={title}
+													className='border-[0.5px] border-gray-300 px-3 py-2 text-left !min-w-36'
+												>
+													<div className='flex items-center space-x-1'>
+														<div>
+															<Icon className='text-gray-800 text-sm' />
+														</div>
+														<div>
+															<p className='!font-normal !text-sm'>{title}</p>
+														</div>
+													</div>
+												</th>
+											))}
+										</tr>
+									</thead>
+
+									{/* Table Body */}
+									<tbody>
+										{events.map((event) => {
+											return (
+												<tr key={event.time} className='hover:bg-slate-50'>
+													<td className='border-[0.5px] border-gray-300 px-3 py-2'>
+														<div className=''>
+															<p className='font-light text-xs'>
+																{event.address_title}
+															</p>
+														</div>
+													</td>
+													<td className='border-[0.5px] border-gray-300 px-3 py-2'>
+														<div className=''>
+															<p className='font-light text-xs'>
+																{event.address}
+															</p>
+														</div>
+													</td>
+													<td className='border-[0.5px] border-gray-300 px-3 py-2'>
+														<div className=''>
+															<p className='font-light text-xs'>{event.time}</p>
+														</div>
+													</td>
+													<td className='border-[0.5px] border-gray-300 px-3 py-2'>
+														<div className='bg-slate-200 px-1.5 py-0.5 rounded-lg w-fit'>
+															<p className='font-extralight text-xs'>
+																{event.metro_area}
+															</p>
+														</div>
+													</td>
+													<td className='border-[0.5px] border-gray-300 px-3 py-2'>
+														<div
+															className={cn('px-1.5 py-0.5 rounded-lg w-fit', {
+																'bg-purple-200': event.type === 'In-person',
+																'bg-blue-200': event.type === 'Virtual',
+															})}
+														>
+															<p
+																className={cn('font-extralight text-xs', {
+																	'text-purple-900': event.type === 'In-person',
+																	'text-blue-900': event.type === 'Virtual',
+																})}
+															>
+																{event.type}
+															</p>
+														</div>
+													</td>
+												</tr>
+											);
+										})}
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div className='mt-6 lg:w-1/2'>
 							<p className={cn('text-2xl text-gray-800 font-semibold')}>FAQ</p>
 							{[
 								{
@@ -470,7 +573,7 @@ const Page: NextPage<PageProps> = (props) => {
 								},
 							)}
 						</div>
-						<div className='mb-6 font-extralight'>
+						<div className='mt-6 font-extralight'>
 							<p className={cn('text-2xl text-gray-800 font-semibold')}>
 								Apply
 							</p>
@@ -514,125 +617,19 @@ const Page: NextPage<PageProps> = (props) => {
 
 function AttendOpenHouseButton({ className = '' }: BaseComponent) {
 	return (
-		<Dialog>
-			<DialogTrigger asChild>
-				<div className={className}>
-					<div className='p-[1.5px] bg-gradient-to-r from-brand-dark via-pink-600 to-red-800 animate-gradient-rotate bg-[length:200%_200%] rounded w-fit cursor-pointer'>
-						<div className='bg-black rounded flex items-center space-x-1 py-2 px-4 w-fit'>
-							<div>
-								<PiSparkleLight className='text-white text-sm' />
-							</div>
-							<div>
-								<p className={cn('font-extralight text-white text-sm')}>
-									Attend our Next Open House
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</DialogTrigger>
-			<DialogContent className=''>
-				<div className={cn('flex items-center justify-center space-x-3')}>
+		<div className={className}>
+			<div className='p-[1.5px] bg-gradient-to-r from-brand-dark via-pink-600 to-red-800 animate-gradient-rotate bg-[length:200%_200%] rounded w-fit cursor-pointer'>
+				<div className='bg-black rounded flex items-center space-x-1 py-2 px-4 w-fit'>
 					<div>
-						<Icon size='lg' />
+						<PiSparkleLight className='text-white text-sm' />
 					</div>
-				</div>
-				<DialogHeader className='mt-2'>
-					<DialogTitle className='!text-center'>
-						We hope to see you at our next Open House!
-					</DialogTitle>
-					<DialogDescription className='!text-center'>
-						The Florida Visionary Scholarship program committee is hosting
-						informal open house events both in-person and virtually to help
-						applicants learn more about the scholarship and get to know our
-						team. Spaces at each event are limited, so RSVP asap!
-					</DialogDescription>
-				</DialogHeader>
-				<div className={cn('flex space-x-3 overflow-x-auto')}>
-					<div
-						className={cn(
-							'relative rounded-lg shadow-md bg-white border border-gray-200 mb-5 w-full',
-						)}
-					>
-						<div className='h-20 w-full relative'>
-							<Image
-								alt={`Event Banner`}
-								className='rounded-t-lg'
-								priority
-								layout='fill' // makes the image fill the parent container
-								objectFit='cover' // crops the image to fill the container without stretching
-								src={imageSrc}
-							/>
-						</div>
-						<div className='p-5'>
-							<div className=''>
-								<p className='text-gray-400 text-sm'>{time}</p>
-							</div>
-							<div className='mt-2'>
-								<p className='font-semibold text-gray-900 text-2xl'>{title}</p>
-							</div>
-							<div className='mt-2'>
-								<p className='text-gray-500 text-sm'>{location}</p>
-							</div>
-							<div className='mt-2'>
-								{tags.map((tag) => {
-									return (
-										<span
-											className='bg-gray-100 border border-gray-200 font-light inline-block m-1 px-2 py-1 rounded text-gray-500 text-sm'
-											key={tag}
-										>
-											{tag}
-										</span>
-									);
-								})}
-							</div>
-						</div>
-					</div>
-				</div>
-				<Separator className='my-4' />
-				<DialogFooter className=''>
-					<div className={cn('mt-1', 'lg:max-w-2xl')}>
-						<p className='font-semibold text-xs'>Scheduling Conflicts</p>
-						<p className='font-light text-[0.55rem]'>
-							While we have several open houses scheduled, we understand that
-							some students may have scheduling conflicts on account of prior
-							obligations. If you are unable to attend any of the scheduled open
-							houses, please email us at scholarships@wallot.app with your
-							availability and a member of our team will do our best schedule a
-							time to meet with you.
+					<div>
+						<p className={cn('font-extralight text-white text-sm')}>
+							Attend our Next Open House
 						</p>
 					</div>
-				</DialogFooter>
-			</DialogContent>
-		</Dialog>
-	);
-}
-
-function Icon({ size }: { size: 'md' | 'sm' | 'lg' | 'xl' | '2xl' | '3xl' }) {
-	return (
-		<div className='flex items-center justify-center'>
-			{OPEN_GRAPH_CONFIG.siteBrandIconDarkMode &&
-				OPEN_GRAPH_CONFIG.siteBrandIconLightMode && (
-					<PlatformIcon
-						height={380}
-						size={size}
-						srcMap={{
-							dark: OPEN_GRAPH_CONFIG.siteBrandIconDarkMode,
-							light: OPEN_GRAPH_CONFIG.siteBrandIconLightMode,
-						}}
-						width={2048}
-					/>
-				)}
-			{!(
-				OPEN_GRAPH_CONFIG.siteBrandIconDarkMode &&
-				OPEN_GRAPH_CONFIG.siteBrandIconLightMode
-			) && (
-				<div>
-					<p className={cn('text-2xl font-bold', 'lg:text-3xl')}>
-						{OPEN_GRAPH_CONFIG.siteName}
-					</p>
 				</div>
-			)}
+			</div>
 		</div>
 	);
 }
