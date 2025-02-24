@@ -351,7 +351,10 @@ const Page: NextPage<PageProps> = (props) => {
 		fieldSpec:
 			scholarshipOpenHouseRsvpFormDataSchemaFieldSpecByFieldKey[fieldKey],
 		initialFormData: defaultFormData,
-		isSubmitting: isFormSubmitting,
+		isSubmitting:
+			fieldKey === 'email'
+				? isFormSubmitting || loggedInUser != null
+				: isFormSubmitting,
 		operation: 'update',
 		renderTooltipContent: undefined,
 		setError: (message) => setError(fieldKey, { message }),
@@ -780,9 +783,9 @@ const Page: NextPage<PageProps> = (props) => {
 																	<Separator className='!mt-6 !mb-2' />
 																</DialogHeader>
 																<DialogDescription className=''>
-																	Fill in our RSVP form below to join the the guest
-																	list. We'll email you a calendar invite once
-																	your RSVP is confirmed.
+																	Fill in our RSVP form below to join the the
+																	guest list. We'll email you a calendar invite
+																	once your RSVP is confirmed.
 																</DialogDescription>
 																<form
 																	onSubmit={
