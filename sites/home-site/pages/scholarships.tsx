@@ -675,7 +675,7 @@ const Page: NextPage<PageProps> = (props) => {
 																	</div>
 																</div>
 															</DialogTrigger>
-															<DialogContent className=''>
+															<DialogContent className='!max-h-[85vh] !overflow-y-auto'>
 																<div
 																	className={cn(
 																		'flex items-center justify-center space-x-3',
