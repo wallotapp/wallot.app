@@ -1,4 +1,14 @@
 import type { GetStaticProps, NextPage } from 'next';
+import { FiMenu } from 'react-icons/fi';
+import {
+	Sheet,
+	SheetContent,
+	SheetTrigger,
+} from 'ergonomic-react/src/components/ui/sheet';
+import { BlogLink } from '@wallot/react/src/components/BlogLink';
+import { HomeLinkForScholarship } from '@wallot/react/src/components/HomeLink';
+import { KnowledgeBaseLink } from '@wallot/react/src/components/KnowledgeBaseLink';
+import { SupportLink } from '@wallot/react/src/components/SupportLink';
 import { useRouter } from 'next/router';
 import {
 	PageStaticProps,
@@ -58,6 +68,14 @@ const Page: NextPage<PageProps> = (props) => {
 
 	// ==== Constants ==== //
 
+	// Home URL (current page)
+	const homeUrl = getHomeSiteRoute({
+		includeOrigin: false,
+		origin: null,
+		queryParams: {},
+		routeStaticId: 'HOME_SITE__/SCHOLARSHIPS',
+	});
+
 	// Application URL
 	const loggedInApplicationUrl = getHomeSiteRoute({
 		includeOrigin: true,
@@ -96,6 +114,14 @@ const Page: NextPage<PageProps> = (props) => {
 		},
 	};
 
+	// ==== Components ==== //
+	const navbarComponents = [
+		{ Component: HomeLinkForScholarship, key: 'Home' },
+		{ Component: KnowledgeBaseLink, key: 'Learn' },
+		{ Component: SupportLink, key: 'Support' },
+		{ Component: BlogLink, key: 'Blog' },
+	].filter((x): x is Exclude<typeof x, null> => x != null);
+
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
@@ -103,7 +129,7 @@ const Page: NextPage<PageProps> = (props) => {
 				<div className='pt-6 px-6 bg-black'>
 					<div className='flex items-center justify-between'>
 						<div className='flex items-center space-x-2'>
-							<LogoButton theme='dark' />
+							<LogoButton homeHref={homeUrl} theme='dark' />
 						</div>
 						<Link
 							className='hidden lg:block'
@@ -114,6 +140,33 @@ const Page: NextPage<PageProps> = (props) => {
 								Contact Us
 							</div>
 						</Link>
+						<Sheet>
+							<SheetTrigger asChild>
+								<div className='lg:hidden'>
+									<FiMenu className='text-2xl text-white cursor-pointer' />
+								</div>
+							</SheetTrigger>
+							<SheetContent>
+								<div className='flex flex-col gap-4'>
+									<LogoButton homeHref={homeUrl} className='mb-4' />
+									{navbarComponents.map(({ Component, key }) => {
+										return (
+											<Fragment key={key}>
+												<Component />
+												<hr />
+											</Fragment>
+										);
+									})}
+									<Link
+										className=''
+										href='mailto:scholarships@wallot.app'
+										target='_blank'
+									>
+										<div className={cn('font-light text-sm')}>Contact Us</div>
+									</Link>
+								</div>
+							</SheetContent>
+						</Sheet>
 					</div>
 					<div className='h-36' />
 					<p className='text-5xl font-normal text-gray-100 text-center'>
