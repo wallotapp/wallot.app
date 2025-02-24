@@ -30,6 +30,7 @@ import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import {
 	GoCalendar,
+	GoCheckCircleFill,
 	GoHome,
 	GoLocation,
 	GoOrganization,
@@ -380,6 +381,7 @@ const Page: NextPage<PageProps> = (props) => {
 
 	// ==== Effects ==== //
 	const [isInitialized, setIsInitialized] = useState(false);
+	const [rsvps, setRsvps] = useState<string[]>([]);
 	useEffect(() => {
 		if (isInitialized) return;
 		if (isLoggedInUserLoading) return;
@@ -414,6 +416,20 @@ const Page: NextPage<PageProps> = (props) => {
 					formDataTransformationOptions,
 				);
 				reset(defaultFormValues);
+
+				if (scholarshipApplicationForLoggedInUser) {
+					const { open_house_rsvps = [] } =
+						scholarshipApplicationForLoggedInUser;
+					setRsvps(() => open_house_rsvps);
+				} else {
+					// Get RSVP lookup keys from local storage
+					const localStorageRsvps = localStorage.getItem(
+						'OPEN_HOUSE_RSVP_LOOKUP_KEYS',
+					);
+					if (localStorageRsvps) {
+						setRsvps(() => localStorageRsvps.split(','));
+					}
+				}
 			} catch (error) {
 				console.error('Error initializing scholarship application:', error);
 			} finally {
@@ -425,6 +441,7 @@ const Page: NextPage<PageProps> = (props) => {
 		isLoggedInUserLoading,
 		isScholarshipApplicationPageLoading,
 		loggedInUser,
+		scholarshipApplicationForLoggedInUser,
 		scholarshipApplicationForLoggedInUser,
 	]);
 
@@ -649,25 +666,59 @@ const Page: NextPage<PageProps> = (props) => {
 									{/* Table Body */}
 									<tbody>
 										{events.map((event) => {
+											const isRsvpd = rsvps.includes(event.lookup_key);
 											return (
 												<tr key={event.time} className='hover:bg-slate-50'>
-													<td className='border-[0.5px] border-gray-300 px-3 py-2'>
+													<td className='border-[0.5px] border-gray-300'>
 														<Dialog>
-															<DialogTrigger asChild>
-																<div className='cursor-pointer'>
-																	<div className='font-light text-xs w-fit h-fit'>
-																		<button className='!text-left'>
-																			<p className='inline'>
-																				{event.address_title} ·{' '}
-																			</p>
-																			<p className='inline hover:underline'>
-																				<span className='text-brand-dark'>
-																					RSVP
+															<DialogTrigger asChild disabled={isRsvpd}>
+																<button
+																	disabled={isRsvpd}
+																	className={cn(
+																		'font-light text-xs flex items-start text-left w-full h-full px-3 py-2',
+																		isRsvpd
+																			? 'cursor-default'
+																			: 'cursor-pointer',
+																		{
+																			'flex-col': isRsvpd,
+																			'space-x-1': !isRsvpd,
+																			'space-y-1': isRsvpd,
+																		},
+
+																		// Remove rings
+																		'focus:outline-none focus-visible:ring-none',
+																	)}
+																>
+																	<div className='!text-left'>
+																		<p className=''>
+																			{event.address_title}
+																			{isRsvpd ? '' : ' ·'}
+																		</p>
+																	</div>
+																	<div className='flex items-center space-x-1'>
+																		{isRsvpd && (
+																			<div>
+																				<GoCheckCircleFill className='text-brand-dark text-sm' />
+																			</div>
+																		)}
+																		<div>
+																			<p
+																				className={cn('', {
+																					'hover:underline': !isRsvpd,
+																				})}
+																			>
+																				<span
+																					className={cn('text-left', {
+																						'text-brand-dark': !isRsvpd,
+																						'font-semibold': isRsvpd,
+																					})}
+																				>
+																					{isRsvpd ? 'Attending' : 'RSVP'}
 																				</span>
 																			</p>
-																		</button>
+																		</div>
 																	</div>
-																</div>
+																</button>
 															</DialogTrigger>
 															<DialogContent className='!max-h-[85vh] !overflow-y-auto'>
 																<div
