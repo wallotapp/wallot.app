@@ -73,6 +73,9 @@ const headers = [
 const Page: NextPage<PageProps> = (props) => {
 	// ==== State ==== //
 	const [rsvpsGuest, setRsvpsGuest] = useState<string[]>([]);
+	const [isDialogOpenForLookupKey, setIsDialogOpenForLookupKey] = useState<
+		string | null
+	>(null);
 
 	// ==== Hooks ==== //
 
@@ -198,6 +201,15 @@ const Page: NextPage<PageProps> = (props) => {
 	const onMutationSuccess = async ({
 		open_house_lookup_key,
 	}: ScholarshipOpenHouseRsvpFormDataResponse) => {
+		// Close dialog
+		setIsDialogOpenForLookupKey(null);
+
+		// Show success toast
+		toast({
+			title: 'Success',
+			description: 'Your RSVP has been confirmed.',
+		});
+
 		if (scholarshipApplicationForLoggedInUser == null) {
 			// Append lookup key to RSVP list
 			setRsvpsGuest((prev) => [...prev, open_house_lookup_key]);
@@ -225,12 +237,6 @@ const Page: NextPage<PageProps> = (props) => {
 			// Refetch scholarship applications
 			await refetchScholarshipApplicationsForLoggedInUser();
 		}
-
-		// Show success toast
-		toast({
-			title: 'Success',
-			description: 'Your RSVP has been confirmed.',
-		});
 	};
 
 	// Submit mutation
@@ -289,11 +295,24 @@ const Page: NextPage<PageProps> = (props) => {
 		};
 
 	// ==== Effects ==== //
+	const [isReadyToInitialize, setIsReadyToInitialize] = useState(false);
+	useEffect(
+		() =>
+			void (async () => {
+				// Wait 1 second
+				await new Promise((resolve) => setTimeout(resolve, 1000));
+				setIsReadyToInitialize(true);
+			})(),
+		[],
+	);
 	const [isInitialized, setIsInitialized] = useState(false);
 	useEffect(() => {
+		if (!isReadyToInitialize) return;
 		if (isInitialized) return;
-		if (isLoggedInUserLoading) return;
-		if (isScholarshipApplicationPageLoading) return;
+		if (isUserSignedIn) {
+			if (isLoggedInUserLoading) return;
+			if (isScholarshipApplicationPageLoading) return;
+		}
 		return void (async function () {
 			try {
 				const initialServerData: ScholarshipOpenHouseRsvpFormDataParams =
@@ -341,6 +360,7 @@ const Page: NextPage<PageProps> = (props) => {
 			}
 		})();
 	}, [
+		isReadyToInitialize,
 		isInitialized,
 		isLoggedInUserLoading,
 		isScholarshipApplicationPageLoading,
@@ -578,10 +598,19 @@ const Page: NextPage<PageProps> = (props) => {
 									<tbody>
 										{events.map((event) => {
 											const isRsvpd = rsvps.includes(event.lookup_key);
+											const isOpen =
+												isDialogOpenForLookupKey === event.lookup_key;
 											return (
 												<tr key={event.time} className='hover:bg-slate-50'>
 													<td className='border-[0.5px] border-gray-300'>
-														<Dialog>
+														<Dialog
+															open={isOpen}
+															onOpenChange={(open) => {
+																setIsDialogOpenForLookupKey(
+																	open ? event.lookup_key : null,
+																);
+															}}
+														>
 															<DialogTrigger asChild disabled={isRsvpd}>
 																<button
 																	disabled={isRsvpd}
