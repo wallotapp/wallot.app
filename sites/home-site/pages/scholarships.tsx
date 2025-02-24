@@ -446,7 +446,7 @@ const Page: NextPage<PageProps> = (props) => {
 															<Icon className='text-gray-800 text-sm' />
 														</div>
 														<div>
-															<p className='!font-normal !text-sm'>{title}</p>
+															<p className='!font-light !text-sm'>{title}</p>
 														</div>
 													</div>
 												</th>
@@ -460,11 +460,16 @@ const Page: NextPage<PageProps> = (props) => {
 											return (
 												<tr key={event.time} className='hover:bg-slate-50'>
 													<td className='border-[0.5px] border-gray-300 px-3 py-2'>
-														<div className=''>
-															<p className='font-light text-xs'>
-																{event.address_title}
-															</p>
-														</div>
+														<Link className='cursor-default' href='/'>
+															<div className='font-light text-xs w-fit h-fit'>
+																<p className='inline'>
+																	{event.address_title} ·{' '}
+																</p>
+																<p className='cursor-pointer inline hover:underline'>
+																	<span className='text-brand-dark'>RSVP</span>
+																</p>
+															</div>
+														</Link>
 													</td>
 													<td className='border-[0.5px] border-gray-300 px-3 py-2'>
 														<div className=''>
