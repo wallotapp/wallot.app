@@ -12,7 +12,7 @@ export type CreateEventWithGoogleCalendarAPIParams = {
 	location?: string;
 	start_time_nyc: string;
 	title: string;
-	sender_user_id: string;
+	sender_user_id?: string;
 };
 export function createEventWithGoogleCalendarAPI(
 	serviceAccountPath: string,
