@@ -1,3 +1,4 @@
+import Select from 'react-select/creatable';
 import * as changeCase from 'change-case';
 import { useEffect, useState } from 'react';
 import * as R from 'ramda';
@@ -55,6 +56,7 @@ import {
 	useRetrieveScholarshipApplicationSchools,
 } from '@wallot/react/src/features/scholarshipApplications/hooks/useRetrieveScholarshipApplicationSchools';
 import { retrieveScholarshipApplicationSchools } from '@wallot/react/src/features/scholarshipApplications/api/retrieveScholarshipApplicationSchools';
+import { Label } from 'ergonomic-react/src/components/ui/label';
 
 const steps = ScholarshipApplicationFormDataSectionEnum.arr;
 
@@ -145,7 +147,7 @@ const Page: NextPage<PageProps> = (props) => {
 	// Form
 	const defaultFormData =
 		scholarshipApplicationFormDataSchema.getDefault() as ScholarshipApplicationFormDataParams;
-	const { control, formState, handleSubmit, reset, setError, watch } =
+	const { control, formState, handleSubmit, reset, setError, setValue, watch } =
 		useForm<ScholarshipApplicationFormDataParams>({
 			resolver,
 			shouldUnregister: false,
@@ -263,7 +265,9 @@ const Page: NextPage<PageProps> = (props) => {
 	});
 	const contactDetailsFields = Keys(
 		scholarshipApplicationFormDataPropertiesBySection['Contact Details'],
-	).map(getLiteFormFieldProps);
+	)
+		.filter((fieldKey) => fieldKey !== 'high_school')
+		.map(getLiteFormFieldProps);
 	const collegeInformationFields = Keys(
 		scholarshipApplicationFormDataPropertiesBySection['College Information'],
 	).map(getLiteFormFieldProps);
@@ -297,6 +301,10 @@ const Page: NextPage<PageProps> = (props) => {
 
 	// ==== Effects ==== //
 	const [isInitialized, setIsInitialized] = useState(false);
+	const [initialHighSchoolValue, setInitialHighSchoolValue] = useState<{
+		label: string;
+		value: string;
+	} | null>(null);
 	useEffect(() => {
 		if (isInitialized) return;
 		if (authStateIsLoading) return;
@@ -354,6 +362,22 @@ const Page: NextPage<PageProps> = (props) => {
 					formDataTransformationOptions,
 				);
 				reset(defaultFormValues);
+
+				// Set initial high school value
+				const schoolName = defaultFormValues.high_school;
+				if (schoolName) {
+					const school = schools.find(({ name }) => name === schoolName);
+					const schoolAddress = school?.address ?? '';
+					setInitialHighSchoolValue(() => ({
+						label: `${schoolName}${schoolAddress ? ' - ' + schoolAddress : ''}`,
+						value: schoolName,
+					}));
+				} else {
+					setInitialHighSchoolValue(() => ({
+						label: 'Select one',
+						value: '',
+					}));
+				}
 
 				// Save initial scholarship application to db
 				if (noScholarshipApplicationFound) {
@@ -603,6 +627,70 @@ const Page: NextPage<PageProps> = (props) => {
 															{...fieldProps}
 														/>
 													))}
+
+													<div className='mt-3'>
+														<Label className='flex items-center space-x-1'>
+															<div>
+																<div>
+																	<p>
+																		High School
+																		<span className='text-red-700 font-semibold'>
+																			*
+																		</span>
+																	</p>
+																</div>
+																<div className='text-gray-500 font-light text-sm'>
+																	<p>
+																		Enter the name of your current high school
+																	</p>
+																</div>
+															</div>
+														</Label>
+														<div className='mt-1'>
+															{initialHighSchoolValue == null ? (
+																<div>
+																	<Skeleton className='bg-slate-300 h-10' />
+																</div>
+															) : (
+																<Select
+																	className='font-light text-sm'
+																	defaultValue={initialHighSchoolValue}
+																	isDisabled={
+																		isFormSubmitting ||
+																		isScholarshipApplicationForLoggedInUserSubmitted
+																	}
+																	isMulti={false}
+																	name={'high_school'}
+																	onChange={(changedValues) => {
+																		const schoolName =
+																			changedValues?.value ?? '';
+																		setValue('high_school', schoolName);
+																	}}
+																	options={[
+																		{
+																			label: 'Select one',
+																			value: '',
+																		},
+																	].concat(
+																		schools.map(
+																			({
+																				address: schoolAddress,
+																				name: schoolName,
+																			}) => ({
+																				label: `${schoolName}${
+																					schoolAddress
+																						? ' - ' + schoolAddress
+																						: ''
+																				}`,
+																				value: schoolName,
+																			}),
+																		),
+																	)}
+																	required={true}
+																/>
+															)}
+														</div>
+													</div>
 												</div>
 												<div
 													className={cn(
