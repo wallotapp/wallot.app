@@ -56,6 +56,7 @@ import { GeneralizedError } from 'ergonomic';
 import { useForm } from 'react-hook-form';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
+import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 
 const headers = [
 	{ Icon: GoOrganization, title: 'Location' },
@@ -69,6 +70,7 @@ const events = [
 		address_title: 'Online Webinar',
 		address: 'Google Meets',
 		time: 'Wed, Mar 5 · 6:30 PM EST',
+		lookup_key: 'gainesville-2025-03-05',
 		metro_area: 'Gainesville',
 		type: 'Virtual',
 	},
@@ -76,6 +78,7 @@ const events = [
 		address_title: 'Carribbean Breeze Event Space near USF',
 		address: '14501 Caribbean Breeze Dr, Tampa, FL 33613',
 		time: 'Thurs, Mar 6 · 6:30 PM EST',
+		lookup_key: 'tampa-2025-03-06',
 		metro_area: 'Tampa',
 		type: 'In-person',
 	},
@@ -83,6 +86,7 @@ const events = [
 		address_title: 'Online Webinar',
 		address: 'Google Meets',
 		time: 'Fri, Mar 7 · 6:30 PM EST',
+		lookup_key: 'panama-city-2025-03-07',
 		metro_area: 'Panama City',
 		type: 'Virtual',
 	},
@@ -90,6 +94,7 @@ const events = [
 		address_title: 'Student Union at UCF',
 		address: '12715 Pegasus Dr, Orlando, FL 32816',
 		time: 'Sat, Mar 8 · 6:30 PM EST',
+		lookup_key: 'orlando-2025-03-08',
 		metro_area: 'Orlando',
 		type: 'In-person',
 	},
@@ -97,6 +102,7 @@ const events = [
 		address_title: 'Online Webinar',
 		address: 'Google Meets',
 		time: 'Wed, Mar 12 · 6:30 PM EST',
+		lookup_key: 'west-palm-beach-2025-03-12',
 		metro_area: 'West Palm Beach',
 		type: 'Virtual',
 	},
@@ -104,6 +110,7 @@ const events = [
 		address_title: 'Online Webinar',
 		address: 'Google Meets',
 		time: 'Thurs, Mar 13 · 6:30 PM EST',
+		lookup_key: 'jacksonville-2025-03-13',
 		metro_area: 'Jacksonville',
 		type: 'Virtual',
 	},
@@ -111,6 +118,7 @@ const events = [
 		address_title: 'Carribbean Breeze Event Space near USF',
 		address: '14501 Caribbean Breeze Dr, Tampa, FL 33613',
 		time: 'Fri, Mar 14 · 6:30 PM EST',
+		lookup_key: 'tampa-2025-03-14',
 		metro_area: 'Tampa',
 		type: 'In-person',
 	},
@@ -118,6 +126,7 @@ const events = [
 		address_title: 'Jane Bancroft Cook Library at New College of Florida',
 		address: '5800 Bay Shore Rd, Sarasota, FL 34243',
 		time: 'Sat, Mar 15 · 6:30 PM EST',
+		lookup_key: 'sarasota-2025-03-15',
 		metro_area: 'Sarasota',
 		type: 'In-person',
 	},
@@ -125,6 +134,7 @@ const events = [
 		address_title: 'Online Webinar',
 		address: 'Google Meets',
 		time: 'Wed, Mar 19 · 6:30 PM EST',
+		lookup_key: 'fort-lauderdale-2025-03-19',
 		metro_area: 'Fort Lauderdale',
 		type: 'Virtual',
 	},
@@ -132,6 +142,7 @@ const events = [
 		address_title: 'Online Webinar',
 		address: 'Google Meets',
 		time: 'Thurs, Mar 20 · 6:30 PM EST',
+		lookup_key: 'tallahassee-2025-03-20',
 		metro_area: 'Tallahassee',
 		type: 'Virtual',
 	},
@@ -139,6 +150,7 @@ const events = [
 		address_title: 'Harvey and Janet Cohen Student Union at FGCU',
 		address: '11090 FGCU Blvd N, Fort Myers, FL 33965',
 		time: 'Fri, Mar 21 · 6:30 PM EST',
+		lookup_key: 'cape-coral-2025-03-21',
 		metro_area: 'Cape Coral',
 		type: 'In-person',
 	},
@@ -146,6 +158,7 @@ const events = [
 		address_title: 'Roux Library at Florida Southern College',
 		address: '841-899 Frank Lloyd Wright Way, Lakeland, FL 33803',
 		time: 'Sat, Mar 22 · 6:30 PM EST',
+		lookup_key: 'lakeland-2025-03-22',
 		metro_area: 'Lakeland',
 		type: 'In-person',
 	},
@@ -153,6 +166,7 @@ const events = [
 		address_title: 'Online Webinar',
 		address: 'Google Meets',
 		time: 'Wed, Mar 26 · 6:30 PM EST',
+		lookup_key: 'miami-2025-03-26',
 		metro_area: 'Miami',
 		type: 'Virtual',
 	},
@@ -160,6 +174,7 @@ const events = [
 		address_title: 'Online Webinar',
 		address: 'Google Meets',
 		time: 'Thurs, Mar 27 · 6:30 PM EST',
+		lookup_key: 'pensacola-2025-03-27',
 		metro_area: 'Pensacola',
 		type: 'Virtual',
 	},
@@ -167,6 +182,7 @@ const events = [
 		address_title: 'Olin Library at Rollins College',
 		address: '1000 Holt Ave, Winter Park, FL 32789',
 		time: 'Fri, Mar 28 · 6:30 PM EST',
+		lookup_key: 'orlando-2025-03-28',
 		metro_area: 'Orlando',
 		type: 'In-person',
 	},
@@ -174,6 +190,7 @@ const events = [
 		address_title: 'Carribbean Breeze Event Space near USF',
 		address: '14501 Caribbean Breeze Dr, Tampa, FL 33613',
 		time: 'Sat, Mar 29 · 6:30 PM EST',
+		lookup_key: 'tampa-2025-03-29',
 		metro_area: 'Tampa',
 		type: 'In-person',
 	},
@@ -348,6 +365,21 @@ const Page: NextPage<PageProps> = (props) => {
 		ScholarshipOpenHouseRsvpFormDataFieldFromUserDataEnum.arr.map(
 			getLiteFormFieldProps,
 		);
+
+	// Form Submit Handler
+	const onSubmit =
+		(lookupKey: string) => (data: ScholarshipOpenHouseRsvpFormDataParams) => {
+			console.log('Submitting RSVP with following data:', data);
+			toast({
+				title: 'Adding you to the guest list',
+				description: 'This may take a few moments...',
+			});
+
+			submitScholarshipOpenHouseRsvp({
+				...data,
+				open_house_lookup_key: lookupKey,
+			});
+		};
 
 	// ==== Render ==== //
 	return (
@@ -622,21 +654,39 @@ const Page: NextPage<PageProps> = (props) => {
 																		your RSVP is confirmed.
 																	</DialogDescription>
 																</DialogHeader>
-																<div>
-																	{rsvpFormFields.map((fieldProps) => (
-																		<div
-																			className={cn('pb-3', {
-																				hidden:
-																					fieldProps.fieldKey ===
-																						'parent_emails' &&
-																					!liveData.is_attending_with_parent,
-																			})}
-																			key={fieldProps.fieldKey}
-																		>
-																			<LiteFormFieldContainer {...fieldProps} />
-																		</div>
-																	))}
-																</div>
+																<form
+																	onSubmit={
+																		handleSubmit(
+																			onSubmit(event.lookup_key),
+																		) as () => void
+																	}
+																>
+																	<div>
+																		{rsvpFormFields.map((fieldProps) => (
+																			<div
+																				className={cn('pb-3', {
+																					hidden:
+																						fieldProps.fieldKey ===
+																							'parent_emails' &&
+																						!liveData.is_attending_with_parent,
+																				})}
+																				key={fieldProps.fieldKey}
+																			>
+																				<LiteFormFieldContainer
+																					{...fieldProps}
+																				/>
+																			</div>
+																		))}
+																	</div>
+																	<div className='mt-2'>
+																		<SubmitButton
+																			textClassName='!font-light !text-sm'
+																			isDisabled={isFormSubmitting}
+																			isSubmitting={isFormSubmitting}
+																			text='Confirm RSVP'
+																		/>
+																	</div>
+																</form>
 																<Separator className='my-4' />
 																<DialogFooter className=''>
 																	<div className={cn('mt-1', 'lg:max-w-2xl')}>
