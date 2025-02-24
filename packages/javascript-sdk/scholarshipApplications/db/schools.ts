@@ -25,4 +25,3 @@ export type School = {
 	 */
 	metro_areas: SchoolMetroArea[];
 };
-export const schools: School[] = [];
