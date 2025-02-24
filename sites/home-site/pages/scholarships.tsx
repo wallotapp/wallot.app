@@ -30,6 +30,7 @@ import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTa
 import { useQueryScholarshipApplicationsForLoggedInUser } from '@wallot/react/src/features/scholarshipApplications/hooks/useQueryScholarshipApplicationsForLoggedInUser';
 import { AuthContext } from 'ergonomic-react/src/features/authentication/providers/AuthProvider';
 import { useContext } from 'react';
+import { PiSparkleLight } from 'react-icons/pi';
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== Hooks ==== //
@@ -131,15 +132,31 @@ const Page: NextPage<PageProps> = (props) => {
 						<div className='flex items-center space-x-2'>
 							<LogoButton homeHref={homeUrl} theme='dark' />
 						</div>
-						<Link
-							className='hidden lg:block'
-							href='mailto:scholarships@wallot.app'
-							target='_blank'
-						>
-							<div className={cn('font-extralight p-2 text-white')}>
-								Contact Us
+						<div className='hidden lg:flex lg:items-center lg:space-x-2'>
+							<div className='p-[1.5px] bg-gradient-to-r from-brand-dark via-pink-600 to-orange-600 animate-gradient-rotate bg-[length:200%_200%] rounded'>
+								<div className='bg-black rounded flex items-center space-x-1 p-2'>
+									<div>
+										<PiSparkleLight className='text-white text-sm' />
+									</div>
+									<div>
+										<p className={cn('font-extralight text-white text-sm')}>
+											Attend an Open House
+										</p>
+									</div>
+								</div>
 							</div>
-						</Link>
+							<div>
+								<Link
+									className=''
+									href='mailto:scholarships@wallot.app'
+									target='_blank'
+								>
+									<div className={cn('font-extralight p-2 text-white text-sm')}>
+										Contact Us
+									</div>
+								</Link>
+							</div>
+						</div>
 						<Sheet>
 							<SheetTrigger asChild>
 								<div className='lg:hidden'>
