@@ -50,6 +50,7 @@ const properties = {
 	decision: ScholarshipApplicationDecisionEnum.getOptionalSchema()
 		.nullable()
 		.default(null),
+	open_house_rsvps: YupHelpers.array(yup.string().defined()).defined(),
 	status:
 		ScholarshipApplicationStatusEnum.getDefinedSchema().default('in_progress'),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: true }),

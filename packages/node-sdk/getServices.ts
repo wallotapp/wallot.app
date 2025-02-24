@@ -59,6 +59,7 @@ import {
 	sendEmailWithGmailAPI,
 	enqueueSendEmailWithGmailAPI,
 } from './gmail.js';
+import { createEventWithGoogleCalendarAPI } from './gcal.js';
 
 export const getServices = (
 	secrets: SecretData,
@@ -140,6 +141,12 @@ export const getServices = (
 			decrypt,
 		},
 		db: getFirestoreDB(secrets),
+		gcal: {
+			createEvent: createEventWithGoogleCalendarAPI(
+				serviceAccountPath,
+				variables,
+			),
+		},
 		gcp: {
 			tasks: {
 				// Alpaca Accounts
