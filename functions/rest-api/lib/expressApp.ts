@@ -390,10 +390,7 @@ app.post(
 );
 
 import { submitScholarshipOpenHouseRsvp } from './app/wallot/scholarshipApplications/submitScholarshipOpenHouseRsvp.js';
-app.options(
-	'*/v0/scholarship-applications/open-houses/rsvp',
-	corsPolicy,
-);
+app.options('*/v0/scholarship-applications/open-houses/rsvp', corsPolicy);
 app.post(
 	'*/v0/scholarship-applications/open-houses/rsvp',
 	(
@@ -412,11 +409,9 @@ app.post(
 		corsPolicy(
 			req,
 			res,
-			createRouterFunction(auth, secrets)(submitScholarshipOpenHouseRsvp, { requiresAuth: false })(
-				req,
-				res,
-				next,
-			),
+			createRouterFunction(auth, secrets)(submitScholarshipOpenHouseRsvp, {
+				requiresAuth: false,
+			})(req, res, next),
 		);
 	},
 );

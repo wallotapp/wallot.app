@@ -50,4 +50,6 @@ export const scholarshipOpenHouseRsvpFormDataSchemaFieldSpecByFieldKey =
 export type ScholarshipOpenHouseRsvpFormDataParams = yup.InferType<
 	typeof scholarshipOpenHouseRsvpFormDataSchema
 >;
-export type ScholarshipOpenHouseRsvpFormDataResponse = {open_house_lookup_key: string};
+export type ScholarshipOpenHouseRsvpFormDataResponse = {
+	open_house_lookup_key: string;
+};
