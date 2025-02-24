@@ -31,6 +31,8 @@ import { useQueryScholarshipApplicationsForLoggedInUser } from '@wallot/react/sr
 import { AuthContext } from 'ergonomic-react/src/features/authentication/providers/AuthProvider';
 import { useContext } from 'react';
 import { PiSparkleLight } from 'react-icons/pi';
+import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
+import { Separator } from 'ergonomic-react/src/components/ui/separator';
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== Hooks ==== //
@@ -130,60 +132,13 @@ const Page: NextPage<PageProps> = (props) => {
 				<div className='pt-6 px-6 bg-black'>
 					<div className='flex items-center justify-between'>
 						<div className='flex items-center space-x-2'>
-							<LogoButton homeHref={homeUrl} theme='dark' />
-						</div>
-						<div className='hidden lg:flex lg:items-center lg:space-x-2'>
-							<div className='p-[1.5px] bg-gradient-to-r from-brand-dark via-pink-600 to-orange-600 animate-gradient-rotate bg-[length:200%_200%] rounded'>
-								<div className='bg-black rounded flex items-center space-x-1 p-2'>
-									<div>
-										<PiSparkleLight className='text-white text-sm' />
-									</div>
-									<div>
-										<p className={cn('font-extralight text-white text-sm')}>
-											Attend an Open House
-										</p>
-									</div>
-								</div>
-							</div>
 							<div>
-								<Link
-									className=''
-									href='mailto:scholarships@wallot.app'
-									target='_blank'
-								>
-									<div className={cn('font-extralight p-2 text-white text-sm')}>
-										Contact Us
-									</div>
-								</Link>
+								<LogoButton homeHref={homeUrl} theme='dark' />
 							</div>
 						</div>
-						<Sheet>
-							<SheetTrigger asChild>
-								<div className='lg:hidden'>
-									<FiMenu className='text-2xl text-white cursor-pointer' />
-								</div>
-							</SheetTrigger>
-							<SheetContent>
-								<div className='flex flex-col gap-4'>
-									<LogoButton homeHref={homeUrl} className='mb-4' />
-									{navbarComponents.map(({ Component, key }) => {
-										return (
-											<Fragment key={key}>
-												<Component />
-												<hr />
-											</Fragment>
-										);
-									})}
-									<Link
-										className=''
-										href='mailto:scholarships@wallot.app'
-										target='_blank'
-									>
-										<div className={cn('font-light text-sm')}>Contact Us</div>
-									</Link>
-								</div>
-							</SheetContent>
-						</Sheet>
+						<div className={cn('hidden lg:block')}>
+							<AttendOpenHouseButton />
+						</div>
 					</div>
 					<div className='h-36' />
 					<p className='text-5xl font-normal text-gray-100 text-center'>
@@ -192,7 +147,7 @@ const Page: NextPage<PageProps> = (props) => {
 					<p className='text-xl text-gray-400 font-extralight text-center mt-1.5'>
 						$5,000 Merit Scholarships for Graduating Seniors from Florida
 					</p>
-					<div className='mt-5 text-center'>
+					<div className='mt-10 lg:mt-5 text-center'>
 						<AsyncLink
 							className=''
 							href={applicationUrl}
@@ -228,7 +183,15 @@ const Page: NextPage<PageProps> = (props) => {
 							)}
 						</AsyncLink>
 					</div>
-					<div className='h-36' />
+					<div className={cn('block lg:hidden')}>
+						<div className='my-8 flex flex-col items-center'>
+							<Separator className='!bg-gray-400 !w-16' />
+						</div>
+						<div className='flex flex-col items-center'>
+							<AttendOpenHouseButton className='mx-auto' />
+						</div>
+					</div>
+					<div className='h-24 lg:h-36' />
 				</div>
 				<div className='grid grid-cols-4 gap-8 pb-6 pt-10 px-6'>
 					<div
@@ -428,13 +391,47 @@ const Page: NextPage<PageProps> = (props) => {
 						</div>
 					</div>
 				</div>
-				<div className='p-6'>
-					<p>© 2025 Wallot</p>
+				<div className='p-6 bg-black text-gray-400 flex items-center justify-between'>
+					<div>
+						<p className={cn('font-extralight p-2 text-white text-sm')}>
+							© 2025 Wallot
+						</p>
+					</div>
+					<div>
+						<Link
+							className=''
+							href='mailto:scholarships@wallot.app'
+							target='_blank'
+						>
+							<div className={cn('font-extralight p-2 text-white text-sm')}>
+								Contact Us
+							</div>
+						</Link>
+					</div>
 				</div>
 			</Fragment>
 		</PageComponent>
 	);
 };
+
+function AttendOpenHouseButton({ className = '' }: BaseComponent) {
+	return (
+		<div className={className}>
+			<div className='p-[1.5px] bg-gradient-to-r from-brand-dark via-pink-600 to-red-800 animate-gradient-rotate bg-[length:200%_200%] rounded w-fit'>
+				<div className='bg-black rounded flex items-center space-x-1 py-2 px-4 w-fit'>
+					<div>
+						<PiSparkleLight className='text-white text-sm' />
+					</div>
+					<div>
+						<p className={cn('font-extralight text-white text-sm')}>
+							Attend our Next Open House
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}
 
 export default Page;
 

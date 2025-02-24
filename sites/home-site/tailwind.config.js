@@ -65,7 +65,7 @@ module.exports = {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'gradient-rotate': 'gradient-rotate 4s linear infinite',
+				'gradient-rotate': 'gradient-rotate 3.5s linear infinite',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
