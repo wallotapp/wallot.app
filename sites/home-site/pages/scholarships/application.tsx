@@ -50,7 +50,10 @@ import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import Link from 'next/link';
 import { queryClient } from 'ergonomic-react/src/lib/tanstackQuery';
 import { dehydrate } from '@tanstack/react-query';
-import { retrieveScholarshipApplicationSchoolsQueryKey } from '@wallot/react/src/features/scholarshipApplications/hooks/useRetrieveScholarshipApplicationSchools';
+import {
+	retrieveScholarshipApplicationSchoolsQueryKey,
+	useRetrieveScholarshipApplicationSchools,
+} from '@wallot/react/src/features/scholarshipApplications/hooks/useRetrieveScholarshipApplicationSchools';
 import { retrieveScholarshipApplicationSchools } from '@wallot/react/src/features/scholarshipApplications/api/retrieveScholarshipApplicationSchools';
 
 const steps = ScholarshipApplicationFormDataSectionEnum.arr;
@@ -63,6 +66,12 @@ const Page: NextPage<PageProps> = (props) => {
 	const toggleMobileMenu = () => setMobileMenuOpen(R.not);
 
 	// ==== Hooks ==== //
+
+	// Schools
+	const { isLoading: isSchoolsLoading, data: schoolsData } =
+		useRetrieveScholarshipApplicationSchools();
+	const schools = Array.isArray(schoolsData) ? schoolsData : [];
+	schools;
 
 	// Site origins
 	const siteOriginByTarget = useSiteOriginByTarget();
@@ -291,6 +300,7 @@ const Page: NextPage<PageProps> = (props) => {
 	useEffect(() => {
 		if (isInitialized) return;
 		if (authStateIsLoading) return;
+		if (isSchoolsLoading) return;
 		if (isLoggedInUserLoading || loggedInUser == null) return;
 		if (isScholarshipApplicationPageLoading) return;
 		return void (async function () {
@@ -361,6 +371,7 @@ const Page: NextPage<PageProps> = (props) => {
 	}, [
 		isInitialized,
 		authStateIsLoading,
+		isSchoolsLoading,
 		isLoggedInUserLoading,
 		isScholarshipApplicationPageLoading,
 		loggedInUser,
