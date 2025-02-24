@@ -701,22 +701,35 @@ const Page: NextPage<PageProps> = (props) => {
 																				subtitle: event.time,
 																				title: 'Time',
 																			},
-																		].map(({ subtitle, title }) => {
-																			return (
-																				<div className='mt-1 flex items-center space-x-1'>
-																					<div className='min-w-20'>
-																						<p className='!font-medium text-sm'>
-																							{title}
-																						</p>
+																			event.type === 'In-person'
+																				? {
+																						subtitle: 'Casual',
+																						title: 'Attire',
+																				  }
+																				: null,
+																		]
+																			.filter(
+																				(
+																					row,
+																				): row is Exclude<typeof row, null> =>
+																					row !== null,
+																			)
+																			.map(({ subtitle, title }) => {
+																				return (
+																					<div className='mt-1 flex items-center space-x-1'>
+																						<div className='min-w-20'>
+																							<p className='!font-medium text-sm'>
+																								{title}
+																							</p>
+																						</div>
+																						<div>
+																							<p className='!font-extralight !text-xs'>
+																								{subtitle}
+																							</p>
+																						</div>
 																					</div>
-																					<div>
-																						<p className='!font-extralight !text-xs'>
-																							{subtitle}
-																						</p>
-																					</div>
-																				</div>
-																			);
-																		})}
+																				);
+																			})}
 																	</div>
 																	<Separator className='!mt-6 !mb-2' />
 																</DialogHeader>

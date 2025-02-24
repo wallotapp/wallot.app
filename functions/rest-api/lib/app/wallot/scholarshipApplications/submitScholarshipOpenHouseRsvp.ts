@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import {
 	FunctionResponse,
 	CreateEventWithGoogleCalendarAPIParams,
@@ -61,7 +62,9 @@ export const submitScholarshipOpenHouseRsvp = async ({
 		// Create Google Calendar event
 		const createEventWithGoogleCalendarAPIParams: CreateEventWithGoogleCalendarAPIParams =
 			{
-				attendees: [email, ...parent_emails],
+				attendees: R.uniq(
+					[email, ...parent_emails].map((email) => email.trim().toLowerCase()),
+				),
 				calendar_id: variables.SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID,
 				description: `The Florida Visionary Scholarship program committee is hosting informal open house events both in-person and virtually to help applicants learn more about the scholarship and get to know our team.
 
@@ -72,7 +75,14 @@ ${match.type === 'Virtual' ? '' : match.address_title + '\n'}${
 						: match.address
 				}
 
-Attendee${is_attending_with_parent ? 's' : ''}:
+${
+	match.type === 'Virtual'
+		? ''
+		: `Attire:
+Casual
+
+`
+}Attendee${is_attending_with_parent ? 's' : ''}:
 ${email}
 
 Additional Guests:
