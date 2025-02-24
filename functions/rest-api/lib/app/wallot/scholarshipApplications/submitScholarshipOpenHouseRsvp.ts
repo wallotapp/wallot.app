@@ -73,14 +73,7 @@ ${match.type === 'Virtual' ? '' : match.address_title + '\n'}${
 				}
 
 Attendee${is_attending_with_parent ? 's' : ''}:
-${email}${
-					is_attending_with_parent
-						? ' and ' +
-						  Math.max(1, parent_emails.length) +
-						  ' parent or guardian guest' +
-						  (parent_emails.length > 1 ? 's' : '')
-						: ''
-				}
+${email}
 
 Additional Guests:
 ${parent_emails.length ? parent_emails.join('\n') : 'None'}
