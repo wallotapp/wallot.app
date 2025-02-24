@@ -1,1 +1,1 @@
-export * from './schools.js'
+export * from './schools.js';
