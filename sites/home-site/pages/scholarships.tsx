@@ -15,7 +15,8 @@ import {
 	ScholarshipOpenHouseRsvpFormDataParams,
 	scholarshipOpenHouseRsvpFormDataSchema,
 	scholarshipOpenHouseRsvpFormDataSchemaFieldSpecByFieldKey,
-	scholarshipOpenHouseEvents as events
+	scholarshipOpenHouseEvents as events,
+	ScholarshipOpenHouseRsvpFormDataResponse,
 } from '@wallot/js';
 import { Fragment, useEffect, useState } from 'react';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
@@ -70,6 +71,9 @@ const headers = [
 ];
 
 const Page: NextPage<PageProps> = (props) => {
+	// ==== State ==== //
+	const [rsvpsGuest, setRsvpsGuest] = useState<string[]>([]);
+
 	// ==== Hooks ==== //
 
 	// Router
@@ -191,10 +195,37 @@ const Page: NextPage<PageProps> = (props) => {
 	};
 
 	// Mutation success
-	const onMutationSuccess = async () => {
-		// Refetch scholarship applications
-		await refetchScholarshipApplicationsForLoggedInUser();
-		
+	const onMutationSuccess = async ({
+		open_house_lookup_key,
+	}: ScholarshipOpenHouseRsvpFormDataResponse) => {
+		if (scholarshipApplicationForLoggedInUser == null) {
+			// Append lookup key to RSVP list
+			setRsvpsGuest((prev) => [...prev, open_house_lookup_key]);
+
+			// Add or set OPEN_HOUSE_RSVP_LOOKUP_KEYS
+			const localStorageRsvps = localStorage.getItem(
+				'OPEN_HOUSE_RSVP_LOOKUP_KEYS',
+			);
+			if (localStorageRsvps) {
+				const rsvpsCached = localStorageRsvps.split(',');
+				if (!rsvpsCached.includes(open_house_lookup_key)) {
+					rsvpsCached.push(open_house_lookup_key);
+					localStorage.setItem(
+						'OPEN_HOUSE_RSVP_LOOKUP_KEYS',
+						rsvpsCached.join(','),
+					);
+				}
+			} else {
+				localStorage.setItem(
+					'OPEN_HOUSE_RSVP_LOOKUP_KEYS',
+					open_house_lookup_key,
+				);
+			}
+		} else {
+			// Refetch scholarship applications
+			await refetchScholarshipApplicationsForLoggedInUser();
+		}
+
 		// Show success toast
 		toast({
 			title: 'Success',
@@ -259,7 +290,6 @@ const Page: NextPage<PageProps> = (props) => {
 
 	// ==== Effects ==== //
 	const [isInitialized, setIsInitialized] = useState(false);
-	const [rsvps, setRsvps] = useState<string[]>([]);
 	useEffect(() => {
 		if (isInitialized) return;
 		if (isLoggedInUserLoading) return;
@@ -295,17 +325,13 @@ const Page: NextPage<PageProps> = (props) => {
 				);
 				reset(defaultFormValues);
 
-				if (scholarshipApplicationForLoggedInUser) {
-					const { open_house_rsvps = [] } =
-						scholarshipApplicationForLoggedInUser;
-					setRsvps(() => open_house_rsvps);
-				} else {
+				if (scholarshipApplicationForLoggedInUser == null) {
 					// Get RSVP lookup keys from local storage
 					const localStorageRsvps = localStorage.getItem(
 						'OPEN_HOUSE_RSVP_LOOKUP_KEYS',
 					);
 					if (localStorageRsvps) {
-						setRsvps(() => localStorageRsvps.split(','));
+						setRsvpsGuest(() => localStorageRsvps.split(','));
 					}
 				}
 			} catch (error) {
@@ -322,6 +348,13 @@ const Page: NextPage<PageProps> = (props) => {
 		scholarshipApplicationForLoggedInUser,
 		scholarshipApplicationForLoggedInUser,
 	]);
+
+	const rsvps =
+		scholarshipApplicationForLoggedInUser == null
+			? rsvpsGuest
+			: Array.isArray(scholarshipApplicationForLoggedInUser)
+			? scholarshipApplicationForLoggedInUser.open_house_rsvps
+			: [];
 
 	// ==== Render ==== //
 	return (

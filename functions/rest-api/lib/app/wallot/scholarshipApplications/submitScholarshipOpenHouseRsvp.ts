@@ -118,5 +118,5 @@ ${accessibility_requests || 'None'}
 		return Promise.resolve();
 	};
 
-	return { json: {}, onFinished };
+	return { json: { open_house_lookup_key }, onFinished };
 };
