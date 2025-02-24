@@ -1,14 +1,4 @@
 import type { GetStaticProps, NextPage } from 'next';
-import { FiMenu } from 'react-icons/fi';
-import {
-	Sheet,
-	SheetContent,
-	SheetTrigger,
-} from 'ergonomic-react/src/components/ui/sheet';
-import { BlogLink } from '@wallot/react/src/components/BlogLink';
-import { HomeLinkForScholarship } from '@wallot/react/src/components/HomeLink';
-import { KnowledgeBaseLink } from '@wallot/react/src/components/KnowledgeBaseLink';
-import { SupportLink } from '@wallot/react/src/components/SupportLink';
 import { useRouter } from 'next/router';
 import {
 	PageStaticProps,
@@ -33,6 +23,17 @@ import { useContext } from 'react';
 import { PiSparkleLight } from 'react-icons/pi';
 import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
+import { PlatformIcon } from 'ergonomic-react/src/components/brand/PlatformIcon';
+import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
+import {
+	DialogHeader,
+	DialogFooter,
+	Dialog,
+	DialogTrigger,
+	DialogContent,
+	DialogTitle,
+	DialogDescription,
+} from 'ergonomic-react/src/components/ui/dialog';
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== Hooks ==== //
@@ -116,14 +117,6 @@ const Page: NextPage<PageProps> = (props) => {
 			thumbnailWidth: '1024',
 		},
 	};
-
-	// ==== Components ==== //
-	const navbarComponents = [
-		{ Component: HomeLinkForScholarship, key: 'Home' },
-		{ Component: KnowledgeBaseLink, key: 'Learn' },
-		{ Component: SupportLink, key: 'Support' },
-		{ Component: BlogLink, key: 'Blog' },
-	].filter((x): x is Exclude<typeof x, null> => x != null);
 
 	// ==== Render ==== //
 	return (
@@ -416,19 +409,90 @@ const Page: NextPage<PageProps> = (props) => {
 
 function AttendOpenHouseButton({ className = '' }: BaseComponent) {
 	return (
-		<div className={className}>
-			<div className='p-[1.5px] bg-gradient-to-r from-brand-dark via-pink-600 to-red-800 animate-gradient-rotate bg-[length:200%_200%] rounded w-fit'>
-				<div className='bg-black rounded flex items-center space-x-1 py-2 px-4 w-fit'>
-					<div>
-						<PiSparkleLight className='text-white text-sm' />
-					</div>
-					<div>
-						<p className={cn('font-extralight text-white text-sm')}>
-							Attend our Next Open House
-						</p>
+		<Dialog>
+			<DialogTrigger asChild>
+				<div className={className}>
+					<div className='p-[1.5px] bg-gradient-to-r from-brand-dark via-pink-600 to-red-800 animate-gradient-rotate bg-[length:200%_200%] rounded w-fit cursor-pointer'>
+						<div className='bg-black rounded flex items-center space-x-1 py-2 px-4 w-fit'>
+							<div>
+								<PiSparkleLight className='text-white text-sm' />
+							</div>
+							<div>
+								<p className={cn('font-extralight text-white text-sm')}>
+									Attend our Next Open House
+								</p>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
+			</DialogTrigger>
+			<DialogContent className=''>
+				<div className={cn('flex items-center justify-center space-x-3')}>
+					<div>
+						<Icon size='lg' />
+					</div>
+				</div>
+				<DialogHeader className='mt-2'>
+					<DialogTitle className='!text-center'>
+						We hope to see you at our next Open House!
+					</DialogTitle>
+					<DialogDescription className='!text-center'>
+						The Florida Visionary Scholarship program committee is hosting
+						informal open house events both in-person and virtually to help
+						applicants learn more about the scholarship and get to know our
+						team.
+					</DialogDescription>
+				</DialogHeader>
+				<div>
+					<p></p>
+				</div>
+				<DialogDescription className=''>
+					If you are interested in attending, we highly recommend that you RSVP
+					soon, as spaces at each event are limited!
+				</DialogDescription>
+				<DialogFooter className=''>
+					<div className={cn('mt-1', 'lg:max-w-2xl')}>
+						<p className='font-semibold text-xs'>Scheduling Conflicts</p>
+						<p className='font-light text-[0.55rem]'>
+							While we have several open houses scheduled, we understand that
+							some students may have scheduling conflicts on account of prior
+							obligations. If you are unable to attend any of the scheduled open
+							houses, please email us at scholarships@wallot.app with your
+							availability and a member of our team will do our best schedule a
+							time to meet with you.
+						</p>
+					</div>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
+	);
+}
+
+function Icon({ size }: { size: 'md' | 'sm' | 'lg' | 'xl' | '2xl' | '3xl' }) {
+	return (
+		<div className='flex items-center justify-center'>
+			{OPEN_GRAPH_CONFIG.siteBrandIconDarkMode &&
+				OPEN_GRAPH_CONFIG.siteBrandIconLightMode && (
+					<PlatformIcon
+						height={380}
+						size={size}
+						srcMap={{
+							dark: OPEN_GRAPH_CONFIG.siteBrandIconDarkMode,
+							light: OPEN_GRAPH_CONFIG.siteBrandIconLightMode,
+						}}
+						width={2048}
+					/>
+				)}
+			{!(
+				OPEN_GRAPH_CONFIG.siteBrandIconDarkMode &&
+				OPEN_GRAPH_CONFIG.siteBrandIconLightMode
+			) && (
+				<div>
+					<p className={cn('text-2xl font-bold', 'lg:text-3xl')}>
+						{OPEN_GRAPH_CONFIG.siteName}
+					</p>
+				</div>
+			)}
 		</div>
 	);
 }
