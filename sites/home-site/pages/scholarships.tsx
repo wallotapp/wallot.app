@@ -15,6 +15,7 @@ import {
 	ScholarshipOpenHouseRsvpFormDataParams,
 	scholarshipOpenHouseRsvpFormDataSchema,
 	scholarshipOpenHouseRsvpFormDataSchemaFieldSpecByFieldKey,
+	scholarshipOpenHouseEvents as events
 } from '@wallot/js';
 import { Fragment, useEffect, useState } from 'react';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
@@ -67,136 +68,6 @@ const headers = [
 	{ Icon: GoHome, title: 'Metro Area' },
 	{ Icon: GoRows, title: 'Type' },
 ];
-const events = [
-	{
-		address_title: 'Online Webinar',
-		address: 'Google Meets',
-		time: 'Wed, Mar 5 · 6:30 PM EST',
-		lookup_key: 'gainesville-2025-03-05',
-		metro_area: 'Gainesville',
-		type: 'Virtual',
-	},
-	{
-		address_title: 'Carribbean Breeze Event Space near USF',
-		address: '14501 Caribbean Breeze Dr, Tampa, FL 33613',
-		time: 'Thurs, Mar 6 · 6:30 PM EST',
-		lookup_key: 'tampa-2025-03-06',
-		metro_area: 'Tampa',
-		type: 'In-person',
-	},
-	{
-		address_title: 'Online Webinar',
-		address: 'Google Meets',
-		time: 'Fri, Mar 7 · 6:30 PM EST',
-		lookup_key: 'panama-city-2025-03-07',
-		metro_area: 'Panama City',
-		type: 'Virtual',
-	},
-	{
-		address_title: 'Student Union at UCF',
-		address: '12715 Pegasus Dr, Orlando, FL 32816',
-		time: 'Sat, Mar 8 · 6:30 PM EST',
-		lookup_key: 'orlando-2025-03-08',
-		metro_area: 'Orlando',
-		type: 'In-person',
-	},
-	{
-		address_title: 'Online Webinar',
-		address: 'Google Meets',
-		time: 'Wed, Mar 12 · 6:30 PM EST',
-		lookup_key: 'west-palm-beach-2025-03-12',
-		metro_area: 'West Palm Beach',
-		type: 'Virtual',
-	},
-	{
-		address_title: 'Online Webinar',
-		address: 'Google Meets',
-		time: 'Thurs, Mar 13 · 6:30 PM EST',
-		lookup_key: 'jacksonville-2025-03-13',
-		metro_area: 'Jacksonville',
-		type: 'Virtual',
-	},
-	{
-		address_title: 'Carribbean Breeze Event Space near USF',
-		address: '14501 Caribbean Breeze Dr, Tampa, FL 33613',
-		time: 'Fri, Mar 14 · 6:30 PM EST',
-		lookup_key: 'tampa-2025-03-14',
-		metro_area: 'Tampa',
-		type: 'In-person',
-	},
-	{
-		address_title: 'Jane Bancroft Cook Library at New College of Florida',
-		address: '5800 Bay Shore Rd, Sarasota, FL 34243',
-		time: 'Sat, Mar 15 · 6:30 PM EST',
-		lookup_key: 'sarasota-2025-03-15',
-		metro_area: 'Sarasota',
-		type: 'In-person',
-	},
-	{
-		address_title: 'Online Webinar',
-		address: 'Google Meets',
-		time: 'Wed, Mar 19 · 6:30 PM EST',
-		lookup_key: 'fort-lauderdale-2025-03-19',
-		metro_area: 'Fort Lauderdale',
-		type: 'Virtual',
-	},
-	{
-		address_title: 'Online Webinar',
-		address: 'Google Meets',
-		time: 'Thurs, Mar 20 · 6:30 PM EST',
-		lookup_key: 'tallahassee-2025-03-20',
-		metro_area: 'Tallahassee',
-		type: 'Virtual',
-	},
-	{
-		address_title: 'Harvey and Janet Cohen Student Union at FGCU',
-		address: '11090 FGCU Blvd N, Fort Myers, FL 33965',
-		time: 'Fri, Mar 21 · 6:30 PM EST',
-		lookup_key: 'cape-coral-2025-03-21',
-		metro_area: 'Cape Coral',
-		type: 'In-person',
-	},
-	{
-		address_title: 'Roux Library at Florida Southern College',
-		address: '841-899 Frank Lloyd Wright Way, Lakeland, FL 33803',
-		time: 'Sat, Mar 22 · 6:30 PM EST',
-		lookup_key: 'lakeland-2025-03-22',
-		metro_area: 'Lakeland',
-		type: 'In-person',
-	},
-	{
-		address_title: 'Online Webinar',
-		address: 'Google Meets',
-		time: 'Wed, Mar 26 · 6:30 PM EST',
-		lookup_key: 'miami-2025-03-26',
-		metro_area: 'Miami',
-		type: 'Virtual',
-	},
-	{
-		address_title: 'Online Webinar',
-		address: 'Google Meets',
-		time: 'Thurs, Mar 27 · 6:30 PM EST',
-		lookup_key: 'pensacola-2025-03-27',
-		metro_area: 'Pensacola',
-		type: 'Virtual',
-	},
-	{
-		address_title: 'Olin Library at Rollins College',
-		address: '1000 Holt Ave, Winter Park, FL 32789',
-		time: 'Fri, Mar 28 · 6:30 PM EST',
-		lookup_key: 'orlando-2025-03-28',
-		metro_area: 'Orlando',
-		type: 'In-person',
-	},
-	{
-		address_title: 'Carribbean Breeze Event Space near USF',
-		address: '14501 Caribbean Breeze Dr, Tampa, FL 33613',
-		time: 'Sat, Mar 29 · 6:30 PM EST',
-		lookup_key: 'tampa-2025-03-29',
-		metro_area: 'Tampa',
-		type: 'In-person',
-	},
-];
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== Hooks ==== //
@@ -229,6 +100,7 @@ const Page: NextPage<PageProps> = (props) => {
 	const {
 		resourcesForLoggedInUser: scholarshipApplicationsForLoggedInUser,
 		isResourcePageLoading: isScholarshipApplicationPageLoading,
+		refetch: refetchScholarshipApplicationsForLoggedInUser,
 	} = useQueryScholarshipApplicationsForLoggedInUser();
 	const scholarshipApplicationForLoggedInUser =
 		scholarshipApplicationsForLoggedInUser[0] ?? null;
@@ -319,7 +191,10 @@ const Page: NextPage<PageProps> = (props) => {
 	};
 
 	// Mutation success
-	const onMutationSuccess = () => {
+	const onMutationSuccess = async () => {
+		// Refetch scholarship applications
+		await refetchScholarshipApplicationsForLoggedInUser();
+		
 		// Show success toast
 		toast({
 			title: 'Success',
