@@ -58,7 +58,6 @@ import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
-LiteFormFieldError; //usethis
 
 const headers = [
 	{ Icon: GoOrganization, title: 'Location' },
@@ -298,16 +297,12 @@ const Page: NextPage<PageProps> = (props) => {
 	// Form
 	const defaultFormData =
 		scholarshipOpenHouseRsvpFormDataSchema.getDefault() as ScholarshipOpenHouseRsvpFormDataParams;
-	const { control, formState, handleSubmit, reset, setError, setValue, watch } =
+	const { control, formState, handleSubmit, reset, setError, watch } =
 		useForm<ScholarshipOpenHouseRsvpFormDataParams>({
 			resolver,
 			shouldUnregister: false,
 		});
 	const liveData = watch();
-	handleSubmit; //usethis
-	reset; //usethis
-	setValue; //usethis
-	liveData; //usethis
 
 	// Mutation error
 	const onMutationError = ({ error: { message } }: GeneralizedError) => {
@@ -339,7 +334,6 @@ const Page: NextPage<PageProps> = (props) => {
 		onError: onMutationError,
 		onSuccess: onMutationSuccess,
 	});
-	submitScholarshipOpenHouseRsvp; //usethis
 
 	// Form
 	const formStatus =
@@ -731,6 +725,18 @@ const Page: NextPage<PageProps> = (props) => {
 																			</div>
 																		))}
 																	</div>
+																	{Boolean(
+																		formState.errors['root']?.message,
+																	) && (
+																		<div className='mt-4'>
+																			<LiteFormFieldError
+																				fieldErrorMessage={
+																					formState.errors['root']?.message ??
+																					''
+																				}
+																			/>
+																		</div>
+																	)}
 																	<div className='mt-2'>
 																		<SubmitButton
 																			textClassName='!font-light !text-sm'
