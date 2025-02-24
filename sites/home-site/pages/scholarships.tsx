@@ -16,7 +16,7 @@ import {
 	scholarshipOpenHouseRsvpFormDataSchema,
 	scholarshipOpenHouseRsvpFormDataSchemaFieldSpecByFieldKey,
 } from '@wallot/js';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import Link from 'next/link';
 import { AsyncLink } from 'ergonomic-react/src/components/custom-ui/async-link';
@@ -49,7 +49,6 @@ import { PlatformIcon } from 'ergonomic-react/src/components/brand/PlatformIcon'
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
-LiteFormFieldError; //usethis
 import { useSubmitScholarshipOpenHouseRsvpMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useSubmitScholarshipOpenHouseRsvpMutation';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 import { GeneralizedError } from 'ergonomic';
@@ -57,6 +56,9 @@ import { useForm } from 'react-hook-form';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
+import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
+import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
+LiteFormFieldError; //usethis
 
 const headers = [
 	{ Icon: GoOrganization, title: 'Location' },
@@ -220,6 +222,9 @@ const Page: NextPage<PageProps> = (props) => {
 	const { user } = useContext(AuthContext);
 	const isUserSignedIn = user?.uid != null;
 
+	// User
+	const { loggedInUser, isLoggedInUserLoading } = useQueryLoggedInUser();
+
 	// Application status
 	const {
 		resourcesForLoggedInUser: scholarshipApplicationsForLoggedInUser,
@@ -318,17 +323,12 @@ const Page: NextPage<PageProps> = (props) => {
 	};
 
 	// Mutation success
-	const onMutationSuccess = (operation: 'save' | 'submit') => {
-		return async () => {
-			// Show success toast
-			toast({
-				title: 'Success',
-				description:
-					operation === 'save'
-						? 'Your application has been saved.'
-						: 'Your application has been submitted.',
-			});
-		};
+	const onMutationSuccess = () => {
+		// Show success toast
+		toast({
+			title: 'Success',
+			description: 'Your RSVP has been confirmed.',
+		});
 	};
 
 	// Submit mutation
@@ -337,7 +337,7 @@ const Page: NextPage<PageProps> = (props) => {
 		isLoading: isSubmitScholarshipOpenHouseRsvpRunning,
 	} = useSubmitScholarshipOpenHouseRsvpMutation({
 		onError: onMutationError,
-		onSuccess: onMutationSuccess('submit'),
+		onSuccess: onMutationSuccess,
 	});
 	submitScholarshipOpenHouseRsvp; //usethis
 
@@ -375,11 +375,64 @@ const Page: NextPage<PageProps> = (props) => {
 				description: 'This may take a few moments...',
 			});
 
+			// Save data to local storage
+			localStorage.setItem('OPEN_HOUSE_RSVP_DATA', JSON.stringify(data));
+
 			submitScholarshipOpenHouseRsvp({
 				...data,
 				open_house_lookup_key: lookupKey,
 			});
 		};
+
+	// ==== Effects ==== //
+	const [isInitialized, setIsInitialized] = useState(false);
+	useEffect(() => {
+		if (isInitialized) return;
+		if (isLoggedInUserLoading) return;
+		if (isScholarshipApplicationPageLoading) return;
+		return void (async function () {
+			try {
+				const initialServerData: ScholarshipOpenHouseRsvpFormDataParams =
+					defaultFormData;
+
+				// Properties from local storage
+				const localStorageData = localStorage.getItem('OPEN_HOUSE_RSVP_DATA');
+
+				if (!localStorageData) {
+					// Properties from user data
+					initialServerData.email = loggedInUser?.firebase_auth_email ?? '';
+				} else {
+					const parsedLocalStorageData = JSON.parse(
+						localStorageData,
+					) as ScholarshipOpenHouseRsvpFormDataParams;
+					initialServerData.email = parsedLocalStorageData.email;
+					initialServerData.accessibility_requests =
+						parsedLocalStorageData.accessibility_requests;
+					initialServerData.parent_emails =
+						parsedLocalStorageData.parent_emails;
+					initialServerData.is_attending_with_parent =
+						parsedLocalStorageData.is_attending_with_parent;
+				}
+
+				// Set form values
+				const defaultFormValues = getGeneralizedFormDataFromServerData(
+					initialServerData,
+					formDataTransformationOptions,
+				);
+				reset(defaultFormValues);
+			} catch (error) {
+				console.error('Error initializing scholarship application:', error);
+			} finally {
+				setIsInitialized(true);
+			}
+		})();
+	}, [
+		isInitialized,
+		isLoggedInUserLoading,
+		isScholarshipApplicationPageLoading,
+		loggedInUser,
+		scholarshipApplicationForLoggedInUser,
+	]);
 
 	// ==== Render ==== //
 	return (
