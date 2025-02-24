@@ -34,6 +34,111 @@ import {
 	DialogTitle,
 	DialogDescription,
 } from 'ergonomic-react/src/components/ui/dialog';
+import Image from 'next/image';
+
+const events = [
+	{
+		time: 'Mar 5, 2025',
+		title: 'Gainesville',
+		location: 'Gainesville',
+		tags: ['Virtual'],
+	},
+	{
+		time: 'Mar 6, 2025',
+		title: 'Tampa',
+		location: 'Tampa',
+		tags: ['In-person'],
+	},
+	{
+		time: 'Mar 7, 2025',
+		title: 'Panama City',
+		location: 'Panama City',
+		tags: ['Virtual'],
+	},
+	{
+		time: 'Mar 8, 2025',
+		title: 'Orlando',
+		location: 'Orlando',
+		tags: ['In-person'],
+	},
+	{
+		time: 'Mar 12, 2025',
+		title: 'West Palm Beach',
+		location: 'West Palm Beach',
+		tags: ['Virtual'],
+	},
+	{
+		time: 'Mar 13, 2025',
+		title: 'Jacksonville',
+		location: 'Jacksonville',
+		tags: ['Virtual'],
+	},
+	{
+		time: 'Mar 14, 2025',
+		title: 'Tampa',
+		location: 'Tampa',
+		tags: ['In-person'],
+	},
+	{
+		time: 'Mar 15, 2025',
+		title: 'Sarasota',
+		location: 'Sarasota',
+		tags: ['In-person'],
+	},
+	{
+		time: 'Mar 19, 2025',
+		title: 'Fort Lauderdale',
+		location: 'Fort Lauderdale',
+		tags: ['Virtual'],
+	},
+	{
+		time: 'Mar 20, 2025',
+		title: 'Tallahassee',
+		location: 'Tallahassee',
+		tags: ['Virtual'],
+	},
+	{
+		time: 'Mar 21, 2025',
+		title: 'Cape Coral',
+		location: 'Cape Coral',
+		tags: ['In-person'],
+	},
+	{
+		time: 'Mar 22, 2025',
+		title: 'Lakeland',
+		location: 'Lakeland',
+		tags: ['In-person'],
+	},
+	{
+		time: 'Mar 26, 2025',
+		title: 'Miami',
+		location: 'Miami',
+		tags: ['Virtual'],
+	},
+	{
+		time: 'Mar 27, 2025',
+		title: 'Pensacola',
+		location: 'Pensacola',
+		tags: ['Virtual'],
+	},
+	{
+		time: 'Mar 28, 2025',
+		title: 'Orlando',
+		location: 'Orlando',
+		tags: ['In-person'],
+	},
+	{
+		time: 'Mar 29, 2025',
+		title: 'Tampa',
+		location: 'Tampa',
+		tags: ['In-person'],
+	},
+].map((event, eventIdx) => ({
+	...event,
+	imageSrc: `/img/banners/${(eventIdx + 1) % 4}.jpg`,
+}));
+const firstEvent = events[0]!;
+const { time, title, location, tags, imageSrc } = firstEvent;
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== Hooks ==== //
@@ -440,16 +545,51 @@ function AttendOpenHouseButton({ className = '' }: BaseComponent) {
 						The Florida Visionary Scholarship program committee is hosting
 						informal open house events both in-person and virtually to help
 						applicants learn more about the scholarship and get to know our
-						team.
+						team. Spaces at each event are limited, so RSVP asap!
 					</DialogDescription>
 				</DialogHeader>
-				<div>
-					<p></p>
+				<div className={cn('flex space-x-3 overflow-x-auto')}>
+					<div
+						className={cn(
+							'relative rounded-lg shadow-md bg-white border border-gray-200 mb-5 w-full',
+						)}
+					>
+						<div className='h-20 w-full relative'>
+							<Image
+								alt={`Event Banner`}
+								className='rounded-t-lg'
+								priority
+								layout='fill' // makes the image fill the parent container
+								objectFit='cover' // crops the image to fill the container without stretching
+								src={imageSrc}
+							/>
+						</div>
+						<div className='p-5'>
+							<div className=''>
+								<p className='text-gray-400 text-sm'>{time}</p>
+							</div>
+							<div className='mt-2'>
+								<p className='font-semibold text-gray-900 text-2xl'>{title}</p>
+							</div>
+							<div className='mt-2'>
+								<p className='text-gray-500 text-sm'>{location}</p>
+							</div>
+							<div className='mt-2'>
+								{tags.map((tag) => {
+									return (
+										<span
+											className='bg-gray-100 border border-gray-200 font-light inline-block m-1 px-2 py-1 rounded text-gray-500 text-sm'
+											key={tag}
+										>
+											{tag}
+										</span>
+									);
+								})}
+							</div>
+						</div>
+					</div>
 				</div>
-				<DialogDescription className=''>
-					If you are interested in attending, we highly recommend that you RSVP
-					soon, as spaces at each event are limited!
-				</DialogDescription>
+				<Separator className='my-4' />
 				<DialogFooter className=''>
 					<div className={cn('mt-1', 'lg:max-w-2xl')}>
 						<p className='font-semibold text-xs'>Scheduling Conflicts</p>
