@@ -746,12 +746,44 @@ const Page: NextPage<PageProps> = (props) => {
 																	<DialogTitle className=''>
 																		RSVP for our {event.metro_area} Open House
 																	</DialogTitle>
-																	<DialogDescription className=''>
-																		Fill in the form below to join the the guest
-																		list. We'll email you a calendar invite once
-																		your RSVP is confirmed.
-																	</DialogDescription>
+																	<div className=''>
+																		{[
+																			{
+																				subtitle: event.address_title,
+																				title: 'Location',
+																			},
+																			{
+																				subtitle: event.address,
+																				title: 'Address',
+																			},
+																			{
+																				subtitle: event.time,
+																				title: 'Time',
+																			},
+																		].map(({ subtitle, title }) => {
+																			return (
+																				<div className='mt-1 flex items-center space-x-1'>
+																					<div className='min-w-20'>
+																						<p className='!font-medium text-sm'>
+																							{title}
+																						</p>
+																					</div>
+																					<div>
+																						<p className='!font-extralight !text-xs'>
+																							{subtitle}
+																						</p>
+																					</div>
+																				</div>
+																			);
+																		})}
+																	</div>
+																	<Separator className='!mt-6 !mb-2' />
 																</DialogHeader>
+																<DialogDescription className=''>
+																	Fill in our RSVP form below to join the the guest
+																	list. We'll email you a calendar invite once
+																	your RSVP is confirmed.
+																</DialogDescription>
 																<form
 																	onSubmit={
 																		handleSubmit(
@@ -759,7 +791,7 @@ const Page: NextPage<PageProps> = (props) => {
 																		) as () => void
 																	}
 																>
-																	<div>
+																	<div className='-mt-2'>
 																		{rsvpFormFields.map((fieldProps) => (
 																			<div
 																				className={cn('pb-3', {
@@ -797,7 +829,7 @@ const Page: NextPage<PageProps> = (props) => {
 																		/>
 																	</div>
 																</form>
-																<Separator className='my-4' />
+																<Separator className='!my-3' />
 																<DialogFooter className=''>
 																	<div className={cn('mt-1', 'lg:max-w-2xl')}>
 																		<p className='font-semibold text-xs'>
