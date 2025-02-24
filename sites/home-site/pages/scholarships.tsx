@@ -10,6 +10,11 @@ import {
 	getSsoSiteRoute,
 	HomeSiteRouteQueryParams,
 	isSubmittedScholarshipApplication,
+	ScholarshipOpenHouseRsvpFormDataField,
+	ScholarshipOpenHouseRsvpFormDataFieldFromUserDataEnum,
+	ScholarshipOpenHouseRsvpFormDataParams,
+	scholarshipOpenHouseRsvpFormDataSchema,
+	scholarshipOpenHouseRsvpFormDataSchemaFieldSpecByFieldKey,
 } from '@wallot/js';
 import { Fragment } from 'react';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
@@ -30,6 +35,27 @@ import {
 	GoOrganization,
 	GoRows,
 } from 'react-icons/go';
+import {
+	DialogHeader,
+	DialogFooter,
+	Dialog,
+	DialogTrigger,
+	DialogContent,
+	DialogTitle,
+	DialogDescription,
+} from 'ergonomic-react/src/components/ui/dialog';
+import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
+import { PlatformIcon } from 'ergonomic-react/src/components/brand/PlatformIcon';
+import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
+import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
+import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
+LiteFormFieldError; //usethis
+import { useSubmitScholarshipOpenHouseRsvpMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useSubmitScholarshipOpenHouseRsvpMutation';
+import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
+import { GeneralizedError } from 'ergonomic';
+import { useForm } from 'react-hook-form';
+import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
+import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 
 const headers = [
 	{ Icon: GoOrganization, title: 'Location' },
@@ -235,6 +261,93 @@ const Page: NextPage<PageProps> = (props) => {
 			thumbnailWidth: '1024',
 		},
 	};
+
+	// Toaster
+	const { toast } = useToast();
+
+	// Form Resolver
+	const formDataTransformationOptions =
+		defaultGeneralizedFormDataTransformationOptions;
+	const resolver = useYupValidationResolver(
+		scholarshipOpenHouseRsvpFormDataSchema,
+		formDataTransformationOptions,
+	);
+
+	// Form
+	const defaultFormData =
+		scholarshipOpenHouseRsvpFormDataSchema.getDefault() as ScholarshipOpenHouseRsvpFormDataParams;
+	const { control, formState, handleSubmit, reset, setError, setValue, watch } =
+		useForm<ScholarshipOpenHouseRsvpFormDataParams>({
+			resolver,
+			shouldUnregister: false,
+		});
+	const liveData = watch();
+	handleSubmit; //usethis
+	reset; //usethis
+	setValue; //usethis
+	liveData; //usethis
+
+	// Mutation error
+	const onMutationError = ({ error: { message } }: GeneralizedError) => {
+		// Show the error message
+		toast({
+			title: 'Error',
+			description: message,
+		});
+		setError('root', {
+			type: 'manual',
+			message: 'An error occurred. Please try again.',
+		});
+	};
+
+	// Mutation success
+	const onMutationSuccess = (operation: 'save' | 'submit') => {
+		return async () => {
+			// Show success toast
+			toast({
+				title: 'Success',
+				description:
+					operation === 'save'
+						? 'Your application has been saved.'
+						: 'Your application has been submitted.',
+			});
+		};
+	};
+
+	// Submit mutation
+	const {
+		mutate: submitScholarshipOpenHouseRsvp,
+		isLoading: isSubmitScholarshipOpenHouseRsvpRunning,
+	} = useSubmitScholarshipOpenHouseRsvpMutation({
+		onError: onMutationError,
+		onSuccess: onMutationSuccess('submit'),
+	});
+	submitScholarshipOpenHouseRsvp; //usethis
+
+	// Form
+	const formStatus =
+		formState.isSubmitting || isSubmitScholarshipOpenHouseRsvpRunning
+			? 'running'
+			: 'idle';
+	const isFormSubmitting = formStatus === 'running';
+	const getLiteFormFieldProps = (
+		fieldKey: ScholarshipOpenHouseRsvpFormDataField,
+	): LiteFormFieldProps<ScholarshipOpenHouseRsvpFormDataParams> => ({
+		control,
+		fieldErrors: formState.errors,
+		fieldKey,
+		fieldSpec:
+			scholarshipOpenHouseRsvpFormDataSchemaFieldSpecByFieldKey[fieldKey],
+		initialFormData: defaultFormData,
+		isSubmitting: isFormSubmitting,
+		operation: 'update',
+		renderTooltipContent: undefined,
+		setError: (message) => setError(fieldKey, { message }),
+	});
+	const rsvpFormFields =
+		ScholarshipOpenHouseRsvpFormDataFieldFromUserDataEnum.arr.map(
+			getLiteFormFieldProps,
+		);
 
 	// ==== Render ==== //
 	return (
@@ -460,16 +573,92 @@ const Page: NextPage<PageProps> = (props) => {
 											return (
 												<tr key={event.time} className='hover:bg-slate-50'>
 													<td className='border-[0.5px] border-gray-300 px-3 py-2'>
-														<Link className='cursor-default' href='/'>
-															<div className='font-light text-xs w-fit h-fit'>
-																<p className='inline'>
-																	{event.address_title} ·{' '}
-																</p>
-																<p className='cursor-pointer inline hover:underline'>
-																	<span className='text-brand-dark'>RSVP</span>
-																</p>
-															</div>
-														</Link>
+														<Dialog>
+															<DialogTrigger asChild>
+																<div className='cursor-pointer'>
+																	<div className='font-light text-xs w-fit h-fit'>
+																		<button className='!text-left'>
+																			<p className='inline'>
+																				{event.address_title} ·{' '}
+																			</p>
+																			<p className='inline hover:underline'>
+																				<span className='text-brand-dark'>
+																					RSVP
+																				</span>
+																			</p>
+																		</button>
+																	</div>
+																</div>
+															</DialogTrigger>
+															<DialogContent className=''>
+																<div
+																	className={cn(
+																		'flex items-center justify-center space-x-3',
+																	)}
+																>
+																	<div>
+																		<PlatformIcon
+																			height={380}
+																			size='lg'
+																			srcMap={{
+																				dark:
+																					OPEN_GRAPH_CONFIG.siteBrandIconDarkMode ??
+																					'',
+																				light:
+																					OPEN_GRAPH_CONFIG.siteBrandIconLightMode ??
+																					'',
+																			}}
+																			width={2048}
+																		/>
+																	</div>
+																</div>
+																<DialogHeader className='mt-2'>
+																	<DialogTitle className=''>
+																		RSVP for our {event.metro_area} Open House
+																	</DialogTitle>
+																	<DialogDescription className=''>
+																		Fill in the form below to join the the guest
+																		list. We'll email you a calendar invite once
+																		your RSVP is confirmed.
+																	</DialogDescription>
+																</DialogHeader>
+																<div>
+																	{rsvpFormFields.map((fieldProps) => (
+																		<div
+																			className={cn('pb-3', {
+																				hidden:
+																					fieldProps.fieldKey ===
+																						'parent_emails' &&
+																					!liveData.is_attending_with_parent,
+																			})}
+																			key={fieldProps.fieldKey}
+																		>
+																			<LiteFormFieldContainer {...fieldProps} />
+																		</div>
+																	))}
+																</div>
+																<Separator className='my-4' />
+																<DialogFooter className=''>
+																	<div className={cn('mt-1', 'lg:max-w-2xl')}>
+																		<p className='font-semibold text-xs'>
+																			Scheduling Conflicts
+																		</p>
+																		<p className='font-light text-[0.55rem]'>
+																			While we have several open houses
+																			scheduled, we understand that some
+																			students may have scheduling conflicts on
+																			account of prior obligations. If you are
+																			unable to attend any of the scheduled open
+																			houses, please email us at
+																			scholarships@wallot.app with your
+																			availability and a member of our team will
+																			do our best schedule a time to meet with
+																			you.
+																		</p>
+																	</div>
+																</DialogFooter>
+															</DialogContent>
+														</Dialog>
 													</td>
 													<td className='border-[0.5px] border-gray-300 px-3 py-2'>
 														<div className=''>
