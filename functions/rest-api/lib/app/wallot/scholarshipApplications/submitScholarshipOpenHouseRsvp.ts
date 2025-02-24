@@ -62,7 +62,9 @@ export const submitScholarshipOpenHouseRsvp = async ({
 		// Create Google Calendar event
 		const createEventWithGoogleCalendarAPIParams: CreateEventWithGoogleCalendarAPIParams =
 			{
-				attendees: R.uniq([email, ...parent_emails]),
+				attendees: R.uniq(
+					[email, ...parent_emails].map((email) => email.trim().toLowerCase()),
+				),
 				calendar_id: variables.SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID,
 				description: `The Florida Visionary Scholarship program committee is hosting informal open house events both in-person and virtually to help applicants learn more about the scholarship and get to know our team.
 
