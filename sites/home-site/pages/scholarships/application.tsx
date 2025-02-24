@@ -48,6 +48,10 @@ import { useSubmitScholarshipApplicationMutation } from '@wallot/react/src/featu
 import { getGeneralizedServerDataFromFormData } from 'ergonomic-react/src/features/data/utils/getGeneralizedServerDataFromFormData';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import Link from 'next/link';
+import { queryClient } from 'ergonomic-react/src/lib/tanstackQuery';
+import { dehydrate } from '@tanstack/react-query';
+import { retrieveScholarshipApplicationSchoolsQueryKey } from '@wallot/react/src/features/scholarshipApplications/hooks/useRetrieveScholarshipApplicationSchools';
+import { retrieveScholarshipApplicationSchools } from '@wallot/react/src/features/scholarshipApplications/api/retrieveScholarshipApplicationSchools';
 
 const steps = ScholarshipApplicationFormDataSectionEnum.arr;
 
@@ -770,14 +774,20 @@ const ROUTE_STATIC_ID = 'HOME_SITE__/SCHOLARSHIPS/APPLICATION' as const;
 // Route Query Params Type
 type RouteQueryParams = HomeSiteRouteQueryParams[typeof ROUTE_STATIC_ID];
 
-export const getStaticProps: GetStaticProps<PageStaticProps> = () => {
+export const getStaticProps: GetStaticProps<PageStaticProps> = async () => {
+	// Prefetch the list of Schools from Cloud Storage
+	await queryClient.prefetchQuery(
+		retrieveScholarshipApplicationSchoolsQueryKey,
+		retrieveScholarshipApplicationSchools,
+	);
+
 	// Route Static Props
 	const ROUTE_STATIC_PROPS: PageStaticProps = {
 		routeStaticId: ROUTE_STATIC_ID,
 		title: 'Florida Visionary Scholarship Application',
 	};
 	return Promise.resolve({
-		props: ROUTE_STATIC_PROPS,
+		props: { ...ROUTE_STATIC_PROPS, dehydratedState: dehydrate(queryClient) },
 	});
 };
 
