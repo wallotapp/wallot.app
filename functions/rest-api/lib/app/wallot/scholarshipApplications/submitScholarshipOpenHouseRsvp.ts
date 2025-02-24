@@ -72,7 +72,14 @@ ${match.type === 'Virtual' ? '' : match.address_title + '\n'}${
 						: match.address
 				}
 
-Attendee${is_attending_with_parent ? 's' : ''}:
+${
+	match.type === 'Virtual'
+		? ''
+		: `Attire:
+Casual
+
+`
+}Attendee${is_attending_with_parent ? 's' : ''}:
 ${email}
 
 Additional Guests:
