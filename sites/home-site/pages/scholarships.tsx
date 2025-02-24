@@ -126,14 +126,14 @@ const events = [
 	{
 		address_title: 'Online Webinar',
 		address: 'Google Meets',
-		time: 'Thurs, Mar 26 · 6:30 PM EST',
+		time: 'Wed, Mar 26 · 6:30 PM EST',
 		metro_area: 'Miami',
 		type: 'Virtual',
 	},
 	{
 		address_title: 'Online Webinar',
 		address: 'Google Meets',
-		time: 'Sat, Mar 27 · 6:30 PM EST',
+		time: 'Thurs, Mar 27 · 6:30 PM EST',
 		metro_area: 'Pensacola',
 		type: 'Virtual',
 	},
