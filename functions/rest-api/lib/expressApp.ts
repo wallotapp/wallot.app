@@ -40,6 +40,8 @@ import {
 	ScholarshipApplicationFormDataResponse,
 	ScholarshipApplicationFormDataParams,
 	ScholarshipApplicationFormDataRouteParams,
+	ScholarshipOpenHouseRsvpFormDataResponse,
+	ScholarshipOpenHouseRsvpFormDataParams,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -383,6 +385,33 @@ app.post(
 				res,
 				next,
 			),
+		);
+	},
+);
+
+import { submitScholarshipOpenHouseRsvp } from './app/wallot/scholarshipApplications/submitScholarshipOpenHouseRsvp.js';
+app.options('*/v0/scholarship-applications/open-houses/rsvp', corsPolicy);
+app.post(
+	'*/v0/scholarship-applications/open-houses/rsvp',
+	(
+		req: express.Request<
+			Record<string, never>,
+			ScholarshipOpenHouseRsvpFormDataResponse,
+			ScholarshipOpenHouseRsvpFormDataParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			ScholarshipOpenHouseRsvpFormDataResponse,
+			GeneralizedResLocals<ScholarshipOpenHouseRsvpFormDataResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(submitScholarshipOpenHouseRsvp, {
+				requiresAuth: false,
+			})(req, res, next),
 		);
 	},
 );

@@ -6,6 +6,7 @@ export * from './FunctionResponse.js';
 export * from './handleRouterFunctionError.js';
 export * from './getServices.js';
 export * from './getCloudTasksScheduleDelaySeconds.js';
+export * from './gcal.js';
 export * from './gmail.js';
 export * from './log.js';
 export * from './SecretDataTypes.js';

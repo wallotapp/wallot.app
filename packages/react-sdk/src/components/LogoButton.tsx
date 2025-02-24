@@ -9,16 +9,18 @@ import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
 export function LogoButton({
 	className = '',
 	getCustomLogoButton,
+	homeHref = '/',
 	theme,
 }: BaseComponent & {
 	getCustomLogoButton?: (props: BaseComponent) => JSX.Element;
+	homeHref?: string;
 	theme?: BaseComponentTheme;
 }) {
 	const darkModeSrc = OPEN_GRAPH_CONFIG.siteBrandLogoDarkMode as string;
 	const lightModeSrc = OPEN_GRAPH_CONFIG.siteBrandLogoLightMode as string;
 	if (getCustomLogoButton == null)
 		return (
-			<Link className={className} href='/'>
+			<Link className={className} href={homeHref}>
 				<PlatformLogo
 					height={380}
 					size='md'

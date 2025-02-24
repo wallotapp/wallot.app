@@ -11,6 +11,7 @@ export const {
 	bucket,
 	crypto,
 	db,
+	gcal,
 	gcp,
 	gmail,
 	log,

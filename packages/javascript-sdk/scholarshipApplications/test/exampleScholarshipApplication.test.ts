@@ -11,6 +11,7 @@ describe('ScholarshipApplication', () => {
 			category: 'default',
 			name: 'My ScholarshipApplication',
 			user: '',
+			open_house_rsvps: [],
 		};
 		expect(exampleScholarshipApplication).toEqual<
 			typeof exampleScholarshipApplication
@@ -26,6 +27,7 @@ describe('ScholarshipApplication', () => {
 			description: '',
 			name: 'My ScholarshipApplication',
 			decision: null,
+			open_house_rsvps: [],
 			status: 'in_progress',
 			user: '',
 			// Application Form
