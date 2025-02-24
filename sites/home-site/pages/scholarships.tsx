@@ -61,6 +61,7 @@ import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { useQueryLoggedInUser } from '@wallot/react/src/features/users/hooks/useQueryLoggedInUser';
 import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/features/data/utils/getGeneralizedFormDataFromServerData';
+import { isDomAvailable } from 'ergonomic-react/src/utils/isDomAvailable';
 
 const headers = [
 	{ Icon: GoOrganization, title: 'Location' },
@@ -559,7 +560,7 @@ const Page: NextPage<PageProps> = (props) => {
 							</p>
 							<p>The future of your higher education journey starts here.</p>
 						</div>
-						<div className='mt-6'>
+						<div id='open-house-events' className='mt-6'>
 							<p className={cn('text-2xl text-gray-800 font-semibold')}>
 								Attend an Open House
 							</p>
@@ -943,7 +944,17 @@ const Page: NextPage<PageProps> = (props) => {
 
 function AttendOpenHouseButton({ className = '' }: BaseComponent) {
 	return (
-		<div className={className}>
+		<button
+			className={className}
+			onClick={() => {
+				if (!isDomAvailable()) return;
+
+				// scroll smoothly to the component with ID open-house-events
+				document
+					?.getElementById('open-house-events')
+					?.scrollIntoView({ behavior: 'smooth' });
+			}}
+		>
 			<div className='p-[1.5px] bg-gradient-to-r from-brand-dark via-pink-600 to-red-800 animate-gradient-rotate bg-[length:200%_200%] rounded w-fit cursor-pointer'>
 				<div className='bg-black rounded flex items-center space-x-1 py-2 px-4 w-fit'>
 					<div>
@@ -956,7 +967,7 @@ function AttendOpenHouseButton({ className = '' }: BaseComponent) {
 					</div>
 				</div>
 			</div>
-		</div>
+		</button>
 	);
 }
 
