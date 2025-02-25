@@ -1029,6 +1029,12 @@ const Page: NextPage<PageProps> = (props) => {
 									submitConfirmationStep < 1 ? 'bg-gray-200' : 'bg-brand',
 								)}
 							></div>
+							<div
+								className={cn(
+									'w-16 h-2 rounded-md',
+									submitConfirmationStep < 2 ? 'bg-gray-200' : 'bg-brand',
+								)}
+							></div>
 						</div>
 						{submitConfirmationStep === 0 && (
 							<Fragment>
@@ -1134,25 +1140,9 @@ const Page: NextPage<PageProps> = (props) => {
 									</button>
 									<button
 										className='w-full text-center bg-brand-dark px-4 py-1.5 rounded-md border border-transparent'
-										onClick={onSubmit}
-										disabled={isFormDisabled}
+										onClick={() => setSubmitConfirmationStep(1)}
 									>
-										{isSubmitScholarshipApplicationRunning ? (
-											<div>
-												<div className='flex items-center justify-center min-w-8'>
-													<div
-														className={cn(
-															'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
-															'border-t-white border-r-white border-b-white',
-														)}
-													></div>
-												</div>
-											</div>
-										) : (
-											<p className='font-medium text-xs text-white'>
-												Submit Application
-											</p>
-										)}
+										<p className='font-medium text-xs text-white'>Continue</p>
 									</button>
 								</div>
 							</Fragment>
@@ -1179,7 +1169,7 @@ const Page: NextPage<PageProps> = (props) => {
 											{eventToShow.time.replace('·', 'at')}
 										</p>
 										<button
-											className='text-brand-dark font-light text-xs mt-3 flex items-center space-x-2'
+											className='text-brand-dark font-light text-xs mt-3 flex items-center space-x-2 focus:outline-none focus-visible:ring-none'
 											onClick={() => setShowFullScheduleOfEvents(true)}
 										>
 											<div>
@@ -1192,17 +1182,18 @@ const Page: NextPage<PageProps> = (props) => {
 									</Fragment>
 								</div>
 								<div className={cn({ hidden: !showFullScheduleOfEvents })}>
-									<p className='font-semibold text-xs'>Our next events</p>
-									{scholarshipOpenHouseEvents.map((event) => {
+									<p className='font-semibold text-xs'>
+										Select the event that you wish to attend
+									</p>
+									{scholarshipOpenHouseEvents.map((event, eventIdx, arr) => {
 										const isSelected =
 											selectedEventLookupKey === event.lookup_key;
+										const isLast = eventIdx === arr.length - 1;
 										return (
-											<div
-												className='flex items-center space-x-2'
-												key={event.lookup_key}
-											>
+											<Fragment key={event.lookup_key}>
 												<button
-													className='text-brand-dark'
+													key={event.lookup_key}
+													className='flex items-center space-x-2 mt-1 text-left w-full hover:bg-gray-100 focus:outline-none focus-visible:ring-none p-2'
 													onClick={() => {
 														if (isSelected) {
 															setSelectedEventLookupKey(null);
@@ -1211,19 +1202,45 @@ const Page: NextPage<PageProps> = (props) => {
 														}
 													}}
 												>
-													{isSelected ? (
-														<GoCheckCircleFill className='text-brand-dark' />
-													) : (
-														<GoCircle className='text-gray-400' />
-													)}
+													<div className='w-8'>
+														{isSelected ? (
+															<GoCheckCircleFill className='text-brand-dark' />
+														) : (
+															<GoCircle className='text-gray-400' />
+														)}
+													</div>
+													<div className='w-3/4'>
+														<div>
+															<p className='font-extralight text-sm'>
+																{event.metro_area} Open House
+															</p>
+														</div>
+														<div className=''>
+															<p className='font-normal text-xs'>
+																{event.time.replace('·', 'at')}
+															</p>
+														</div>
+													</div>
+													<div className='w-1/4 flex justify-end'>
+														<div
+															className={cn('px-1.5 py-0.5 rounded-lg', {
+																'bg-purple-200': event.type === 'In-person',
+																'bg-blue-200': event.type === 'Virtual',
+															})}
+														>
+															<p
+																className={cn('font-extralight text-xs', {
+																	'text-purple-900': event.type === 'In-person',
+																	'text-blue-900': event.type === 'Virtual',
+																})}
+															>
+																{event.type}
+															</p>
+														</div>
+													</div>
 												</button>
-												<div>
-													<p className='font-extralight text-base'>
-														{event.metro_area} Open House on{' '}
-														{event.time.replace('·', 'at')}
-													</p>
-												</div>
-											</div>
+												{!isLast && <Separator className='my-2' />}
+											</Fragment>
 										);
 									})}
 								</div>
@@ -1232,6 +1249,14 @@ const Page: NextPage<PageProps> = (props) => {
 										className='bg-brand-dark rounded-md px-4 py-2 text-center w-full mt-1'
 										onClick={() => {
 											if (selectedEventLookupKey == null) {
+												if (showFullScheduleOfEvents) {
+													toast({
+														title: 'Error',
+														description:
+															'Please select one of the events above',
+													});
+													return;
+												}
 												setSelectedEventLookupKey(eventToShow.lookup_key);
 											}
 											setSubmitConfirmationStep(2);
