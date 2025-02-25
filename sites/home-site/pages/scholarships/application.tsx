@@ -72,7 +72,7 @@ import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
 import { PlatformIcon } from 'ergonomic-react/src/components/brand/PlatformIcon';
 import { DateTime } from 'luxon';
 import { AsyncLink } from 'ergonomic-react/src/components/custom-ui/async-link';
-import { GoCheckCircleFill } from 'react-icons/go';
+import { GoCalendar, GoCheckCircleFill } from 'react-icons/go';
 
 const steps = ScholarshipApplicationFormDataSectionEnum.arr;
 
@@ -86,8 +86,15 @@ const Page: NextPage<PageProps> = (props) => {
 	// 	useState(false);
 	const [submitConfirmationStep, setSubmitConfirmationStep] = useState<
 		number | null
-	>(null);
+	>(1);
 	const isSubmitConfirmationDialogOpen = submitConfirmationStep !== null;
+	const [showFullScheduleOfEvents, setShowFullScheduleOfEvents] =
+		useState(false);
+	const [shouldGoToRSVPAfterSubmit, setShouldGoToRSVPAfterSubmit] =
+		useState(true);
+	const [selectedEventLookupKey, setSelectedEventLookupKey] = useState<
+		string | null
+	>(null);
 
 	// ==== Hooks ==== //
 
@@ -209,6 +216,10 @@ const Page: NextPage<PageProps> = (props) => {
 						? 'Your application has been saved.'
 						: 'Your application has been submitted.',
 			});
+
+			if (operation === 'submit') {
+				setSubmitConfirmationStep(2);
+			}
 		};
 	};
 
@@ -1007,12 +1018,6 @@ const Page: NextPage<PageProps> = (props) => {
 									submitConfirmationStep < 1 ? 'bg-gray-200' : 'bg-brand',
 								)}
 							></div>
-							<div
-								className={cn(
-									'w-16 h-2 rounded-md',
-									submitConfirmationStep < 2 ? 'bg-gray-200' : 'bg-brand',
-								)}
-							></div>
 						</div>
 						{submitConfirmationStep === 0 && (
 							<Fragment>
@@ -1118,51 +1123,103 @@ const Page: NextPage<PageProps> = (props) => {
 									</button>
 									<button
 										className='w-full text-center bg-brand-dark px-4 py-1.5 rounded-md border border-transparent'
-										onClick={() => setSubmitConfirmationStep(1)}
+										onClick={onSubmit}
+										disabled={isFormDisabled}
 									>
-										<p className='font-medium text-xs text-white'>Continue</p>
+										{isSubmitScholarshipApplicationRunning ? (
+											<div>
+												<div className='flex items-center justify-center min-w-8'>
+													<div
+														className={cn(
+															'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
+															'border-t-white border-r-white border-b-white',
+														)}
+													></div>
+												</div>
+											</div>
+										) : (
+											<p className='font-medium text-xs text-white'>
+												Submit Application
+											</p>
+										)}
 									</button>
 								</div>
 							</Fragment>
 						)}
-						{submitConfirmationStep === 2 && (
+						{submitConfirmationStep === 1 && (
 							<Fragment>
 								<DialogHeader className='mt-4'>
-									<DialogTitle className=''>
-										You're invited to our next Open House!
-									</DialogTitle>
+									<DialogTitle className=''>RSVP to an Open House</DialogTitle>
 									<DialogDescription className=''>
-										Thank you for submitting an application for our scholarship.
-										If your application progresses to our interview round, we
-										will reach out to schedule a time to meet. In the meantime,
-										we invite you to join us for one of our in-person or virtual
-										Open House events.
+										The Florida Visionary Scholarship program committee is
+										hosting informal open house events both in-person and
+										virtually to help applicants learn more about the
+										scholarship and get to know our team. Spaces at each event
+										are limited, so RSVP asap!
 									</DialogDescription>
 								</DialogHeader>
-								<div className=''>
-									<p className='font-semibold text-xs'>
-										Our next event near you
-									</p>
-									<p className='font-extralight text-base'>
-										{eventToShow.metro_area} Open House on{' '}
-										{eventToShow.time.replace('·', 'at')}
-									</p>
+								<div className={cn({ hidden: showFullScheduleOfEvents })}>
+									<Fragment>
+										<p className='font-semibold text-xs'>
+											Our next event near you
+										</p>
+										<p className='font-extralight text-base'>
+											{eventToShow.metro_area} Open House on{' '}
+											{eventToShow.time.replace('·', 'at')}
+										</p>
+										<button
+											className='text-brand-dark font-light text-xs mt-3 flex items-center space-x-2'
+											onClick={() => setShowFullScheduleOfEvents(true)}
+										>
+											<div>
+												<GoCalendar className='' />
+											</div>
+											<div>
+												<p>Show full schedule of events</p>
+											</div>
+										</button>
+									</Fragment>
 								</div>
-								<Link
-									href={`${getHomeSiteRoute({
-										includeOrigin: false,
-										origin: null,
-										queryParams: {},
-										routeStaticId: 'HOME_SITE__/SCHOLARSHIPS',
-									})}#open-house-events`}
-								>
+								<div className={cn({ hidden: !showFullScheduleOfEvents })}>
+									<p className='font-semibold text-xs'>Our next events</p>
+									{scholarshipOpenHouseEvents.map((event) => {
+										return (
+											<p
+												className='font-extralight text-base'
+												key={event.lookup_key}
+											>
+												{event.metro_area} Open House on{' '}
+												{event.time.replace('·', 'at')}
+											</p>
+										);
+									})}
+								</div>
+								<div className='flex flex-col space-y-4 mt-4'>
 									<button
 										className='bg-brand-dark rounded-md px-4 py-2 text-center w-full mt-1'
-										onClick={() => setSubmitConfirmationStep(null)}
+										onClick={() => {
+											if (selectedEventLookupKey == null) {
+												setSelectedEventLookupKey(eventToShow.lookup_key);
+											}
+											setSubmitConfirmationStep(2);
+										}}
 									>
-										<p className='text-white'>RSVP for the Guest List</p>
+										<p className='text-white'>Yes, I can attend</p>
 									</button>
-								</Link>
+									<button
+										className='bg-transparent px-4 py-2 text-center w-full mt-1'
+										onClick={() => {
+											setShowFullScheduleOfEvents(false);
+											setShouldGoToRSVPAfterSubmit(false);
+											setSubmitConfirmationStep(2);
+										}}
+									>
+										<p className='text-gray-600 font-light'>
+											No, I have a scheduling conflict with all{' '}
+											{scholarshipOpenHouseEvents.length} events
+										</p>
+									</button>
+								</div>
 								<Separator className='!my-3' />
 								<DialogFooter className=''>
 									<div className={cn('mt-1', 'lg:max-w-2xl')}>
