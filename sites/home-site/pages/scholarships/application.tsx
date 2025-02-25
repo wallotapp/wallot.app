@@ -139,7 +139,9 @@ const Page: NextPage<PageProps> = (props) => {
 		resourcesForLoggedInUser: scholarshipApplicationsForLoggedInUser,
 		refetch: refetchScholarshipApplicationsForLoggedInUser,
 		isResourcePageLoading: isScholarshipApplicationPageLoading,
-	} = useQueryScholarshipApplicationsForLoggedInUser({refetchOnWindowFocus: 'always'});
+	} = useQueryScholarshipApplicationsForLoggedInUser({
+		refetchOnWindowFocus: 'always',
+	});
 	const scholarshipApplicationForLoggedInUser =
 		scholarshipApplicationsForLoggedInUser[0] ?? null;
 	const isScholarshipApplicationForLoggedInUserSubmitted =
