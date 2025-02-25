@@ -72,7 +72,7 @@ import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
 import { PlatformIcon } from 'ergonomic-react/src/components/brand/PlatformIcon';
 import { DateTime } from 'luxon';
 import { AsyncLink } from 'ergonomic-react/src/components/custom-ui/async-link';
-import { GoCalendar, GoCheckCircleFill } from 'react-icons/go';
+import { GoCalendar, GoCheckCircleFill, GoCircle } from 'react-icons/go';
 
 const steps = ScholarshipApplicationFormDataSectionEnum.arr;
 
@@ -1194,14 +1194,36 @@ const Page: NextPage<PageProps> = (props) => {
 								<div className={cn({ hidden: !showFullScheduleOfEvents })}>
 									<p className='font-semibold text-xs'>Our next events</p>
 									{scholarshipOpenHouseEvents.map((event) => {
+										const isSelected =
+											selectedEventLookupKey === event.lookup_key;
 										return (
-											<p
-												className='font-extralight text-base'
+											<div
+												className='flex items-center space-x-2'
 												key={event.lookup_key}
 											>
-												{event.metro_area} Open House on{' '}
-												{event.time.replace('·', 'at')}
-											</p>
+												<button
+													className='text-brand-dark'
+													onClick={() => {
+														if (isSelected) {
+															setSelectedEventLookupKey(null);
+														} else {
+															setSelectedEventLookupKey(event.lookup_key);
+														}
+													}}
+												>
+													{isSelected ? (
+														<GoCheckCircleFill className='text-brand-dark' />
+													) : (
+														<GoCircle className='text-gray-400' />
+													)}
+												</button>
+												<div>
+													<p className='font-extralight text-base'>
+														{event.metro_area} Open House on{' '}
+														{event.time.replace('·', 'at')}
+													</p>
+												</div>
+											</div>
 										);
 									})}
 								</div>
