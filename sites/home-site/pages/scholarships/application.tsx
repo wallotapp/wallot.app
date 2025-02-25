@@ -90,11 +90,10 @@ const Page: NextPage<PageProps> = (props) => {
 	const isSubmitConfirmationDialogOpen = submitConfirmationStep !== null;
 	const [showFullScheduleOfEvents, setShowFullScheduleOfEvents] =
 		useState(false);
-	const [shouldGoToRSVPAfterSubmit, setShouldGoToRSVPAfterSubmit] =
-		useState(true);
 	const [selectedEventLookupKey, setSelectedEventLookupKey] = useState<
 		string | null
 	>(null);
+	const shouldGoToRSVPAfterSubmit = selectedEventLookupKey != null;
 
 	// ==== Hooks ==== //
 
@@ -218,7 +217,19 @@ const Page: NextPage<PageProps> = (props) => {
 			});
 
 			if (operation === 'submit') {
-				setSubmitConfirmationStep(2);
+				setSubmitConfirmationStep(null);
+				if (shouldGoToRSVPAfterSubmit) {
+					void router.push(
+						getHomeSiteRoute({
+							includeOrigin: false,
+							origin: null,
+							queryParams: {
+								rsvp: selectedEventLookupKey,
+							},
+							routeStaticId: 'HOME_SITE__/SCHOLARSHIPS',
+						}),
+					);
+				}
 			}
 		};
 	};
@@ -1210,7 +1221,6 @@ const Page: NextPage<PageProps> = (props) => {
 										className='bg-transparent px-4 py-2 text-center w-full mt-1'
 										onClick={() => {
 											setShowFullScheduleOfEvents(false);
-											setShouldGoToRSVPAfterSubmit(false);
 											setSubmitConfirmationStep(2);
 										}}
 									>

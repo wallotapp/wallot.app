@@ -42,6 +42,17 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 		'HOME_SITE__/TERMS': '/terms',
 	}[routeStaticId];
 
+	if (routeStaticId === 'HOME_SITE__/SCHOLARSHIPS') {
+		const queryParams =
+			options.queryParams as HomeSiteRouteQueryParams['HOME_SITE__/SCHOLARSHIPS'];
+		const rsvp = queryParams.rsvp;
+		const rsvpQuery = rsvp ? `rsvp=${rsvp}` : '';
+		const queries = [rsvpQuery].filter(Boolean);
+		const query = queries.length ? `?${queries.join('&')}` : '';
+		const fullPath = `${path}${query}`;
+		if (includeOrigin) return `${origin as string}${fullPath}`;
+		return fullPath;
+	}
 	if (routeStaticId === 'HOME_SITE__/OAUTH/ALPACA/CALLBACK') {
 		const queryParams =
 			options.queryParams as HomeSiteRouteQueryParams['HOME_SITE__/OAUTH/ALPACA/CALLBACK'];
@@ -56,7 +67,8 @@ export const getHomeSiteRoute = <T extends HomeSiteRouteStaticId>(
 
 	const queryParams = options.queryParams as Exclude<
 		HomeSiteRouteQueryParams[T],
-		HomeSiteRouteQueryParams['HOME_SITE__/OAUTH/ALPACA/CALLBACK']
+		HomeSiteRouteQueryParams['HOME_SITE__/OAUTH/ALPACA/CALLBACK'] &
+			HomeSiteRouteQueryParams['HOME_SITE__/SCHOLARSHIPS']
 	>;
 	const clientToken = queryParams.client_token;
 	const clientTokenQuery = clientToken ? `client_token=${clientToken}` : '';
