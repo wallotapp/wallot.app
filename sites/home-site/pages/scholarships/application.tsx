@@ -26,6 +26,7 @@ import {
 	getHomeSiteRoute,
 	School,
 	scholarshipOpenHouseEvents as allScholarshipOpenHouseEvents,
+	lastScholarshipOpenHouseEvent,
 } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getSsoSiteRoute } from '@wallot/js';
@@ -481,20 +482,21 @@ const Page: NextPage<PageProps> = (props) => {
 		},
 	);
 	const fallbackEventNextInCalendar = scholarshipOpenHouseEvents[0];
-	const eventToShow = nextEventInNearestMetroArea ??
+	const eventToShow =
+		nextEventInNearestMetroArea ??
 		nextEventInNextNearestMetroArea ??
 		nextEventInThirdNearestMetroArea ??
-		fallbackEventNextInCalendar ?? {
-			lookup_key: 'tampa-2025-03-29',
-			metro_area: 'Tampa',
-			time: 'Sat, Mar 29 · 3:00 PM EST',
-		};
+		fallbackEventNextInCalendar ??
+		lastScholarshipOpenHouseEvent;
 	const isRsvpdToNextEvent =
 		scholarshipApplicationForLoggedInUser?.open_house_rsvps?.some(
 			(lookupKey) => {
 				return lookupKey === eventToShow.lookup_key;
 			},
 		) ?? false;
+	const selectedEvent = scholarshipOpenHouseEvents.find(({ lookup_key }) => {
+		return lookup_key === selectedEventLookupKey;
+	});
 
 	// ==== Render ==== //
 	return (
@@ -1198,6 +1200,9 @@ const Page: NextPage<PageProps> = (props) => {
 											{eventToShow.metro_area} Open House on{' '}
 											{eventToShow.time.replace('·', 'at')}
 										</p>
+										<p className='font-extralight text-sm'>
+											– {eventToShow.address_title}
+										</p>
 										<button
 											className='text-brand-dark font-light text-xs mt-3 flex items-center space-x-2 focus:outline-none focus-visible:ring-none'
 											onClick={() => setShowFullScheduleOfEvents(true)}
@@ -1329,83 +1334,32 @@ const Page: NextPage<PageProps> = (props) => {
 						{submitConfirmationStep === 2 && (
 							<Fragment>
 								<DialogHeader className='mt-4'>
-									<DialogTitle className=''>Review your responses</DialogTitle>
+									<DialogTitle className=''>
+										Submit your application
+									</DialogTitle>
 									<DialogDescription className=''>
-										Please review your responses before submitting your
-										application. If you need to make any changes, click the
-										"Back" button. Once everything looks good, continue to the
-										next step.
+										Thank you for completing your Florida Visionary Scholarship
+										Application. We're excited to learn more about your
+										academic, athletic, and extracurricular achievements.
 									</DialogDescription>
 								</DialogHeader>
 								<div className={'!max-h-[30vh] !overflow-y-auto'}>
 									{[
 										{
-											question: 'Name',
-											response: `${liveData.given_name} ${liveData.family_name}`,
+											question: 'Applicant',
+											response: `${liveData.given_name} ${liveData.family_name} from ${liveData.high_school}`,
 										},
 										{
-											question: 'Phone Number',
-											response: liveData.phone_number,
-										},
-										{
-											question: 'High School',
-											response: liveData.high_school,
-										},
-										{
-											question: 'Date of Birth',
-											response: liveData.date_of_birth,
-										},
-										{
-											question: 'Anticipated College',
-											response: liveData.college_name,
-										},
-										{
-											question: 'Type of College',
-											response: liveData.college_type,
-										},
-										{
-											question: 'Academic Achievement',
-											response: liveData.academic_achievement,
-										},
-										{
-											question: 'Honors & Awards',
-											response: liveData.honors_and_awards,
-										},
-										{
-											question: 'Extracurricular Activities',
-											response: liveData.extracurricular_activities,
-										},
-										{
-											question: 'Future Goals',
-											response: liveData.future_goals,
-										},
-										{
-											question: 'Common Essay',
-											response: liveData.common_essay,
-										},
-										{
-											question: 'Academic Achievement Award Essay',
+											question: 'Open House RSVP',
 											response:
-												liveData.academic_achievement_award_essay ||
-												'Not applicable',
-										},
-										{
-											question: 'Outstanding Student-Athlete Award Essay',
-											response:
-												liveData.outstanding_student_athlete_award_essay ||
-												'Not applicable',
-										},
-										{
-											question: 'Community Leadership Award Essay',
-											response:
-												liveData.community_leadership_award_essay ||
-												'Not applicable',
-										},
-										{
-											question: 'Entrepreneurial Excellence Award Essay',
-											response:
-												liveData.entrepreneurial_excellence_award_essay ||
-												'Not applicable',
+												selectedEvent == null
+													? 'Can not attend due to scheduling conflict'
+													: `Attending ${
+															selectedEvent.metro_area
+													  } Open House on ${selectedEvent.time.replace(
+															'·',
+															'at',
+													  )}`,
 										},
 									].map(({ question, response }, responseIdx) => {
 										return (
@@ -1424,15 +1378,29 @@ const Page: NextPage<PageProps> = (props) => {
 								<div className='flex items-center space-x-4 mt-4'>
 									<button
 										className='w-full text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300'
-										onClick={() => setSubmitConfirmationStep(null)}
+										onClick={() => setSubmitConfirmationStep(1)}
 									>
 										<p className='font-medium text-xs'>Back</p>
 									</button>
 									<button
 										className='w-full text-center bg-brand-dark px-4 py-1.5 rounded-md border border-transparent'
-										onClick={() => setSubmitConfirmationStep(1)}
+										onClick={onSubmit}
+										disabled={isSubmitScholarshipApplicationRunning}
 									>
-										<p className='font-medium text-xs text-white'>Continue</p>
+										{isSubmitScholarshipApplicationRunning ? (
+											<div>
+												<div className='flex items-center justify-center min-w-8'>
+													<div
+														className={cn(
+															'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
+															'border-t-white border-r-white border-b-white',
+														)}
+													></div>
+												</div>
+											</div>
+										) : (
+											<p className='font-medium text-xs text-white'>Submit</p>
+										)}
 									</button>
 								</div>
 							</Fragment>
