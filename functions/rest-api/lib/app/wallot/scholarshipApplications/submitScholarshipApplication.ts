@@ -9,6 +9,7 @@ import {
 } from '@wallot/js';
 import { sendScholarshipApplicationConfirmationEmail } from './sendScholarshipApplicationConfirmationEmail.js';
 import { db } from '../../../services.js';
+import { secrets } from '../../../secrets.js';
 import { getUpdateUserParamsFromScholarshipApplicationFormDataParams } from './getUpdateUserParamsFromScholarshipApplicationFormDataParams.js';
 import { getUpdateScholarshipApplicationParamsFromScholarshipApplicationFormDataParams } from './getUpdateScholarshipApplicationParamsFromScholarshipApplicationFormDataParams.js';
 
@@ -53,8 +54,14 @@ export const submitScholarshipApplication = async (
 	await batch.commit();
 
 	const onFinished = async () => {
-		// Send confirmation email
-		await sendScholarshipApplicationConfirmationEmail(email);
+		if (secrets.SECRET_CRED_SERVER_PROTOCOL === 'https') {
+			// Send confirmation email
+			await sendScholarshipApplicationConfirmationEmail(email);
+		} else {
+			console.log(
+				`Skipping sending confirmation email to ${email} in local environment`,
+			);
+		}
 		return Promise.resolve();
 	};
 

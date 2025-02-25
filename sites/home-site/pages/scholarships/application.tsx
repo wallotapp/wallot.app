@@ -24,6 +24,8 @@ import {
 	scholarshipApplicationsApi,
 	ScholarshipApplicationFormDataSectionEnum,
 	getHomeSiteRoute,
+	School,
+	scholarshipOpenHouseEvents as allScholarshipOpenHouseEvents,
 } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getSsoSiteRoute } from '@wallot/js';
@@ -57,6 +59,20 @@ import {
 } from '@wallot/react/src/features/scholarshipApplications/hooks/useRetrieveScholarshipApplicationSchools';
 import { retrieveScholarshipApplicationSchools } from '@wallot/react/src/features/scholarshipApplications/api/retrieveScholarshipApplicationSchools';
 import { Label } from 'ergonomic-react/src/components/ui/label';
+import {
+	DialogHeader,
+	DialogFooter,
+	Dialog,
+	DialogTrigger,
+	DialogContent,
+	DialogTitle,
+	DialogDescription,
+} from 'ergonomic-react/src/components/ui/dialog';
+import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
+import { PlatformIcon } from 'ergonomic-react/src/components/brand/PlatformIcon';
+import { DateTime } from 'luxon';
+import { AsyncLink } from 'ergonomic-react/src/components/custom-ui/async-link';
+import { GoCheckCircleFill } from 'react-icons/go';
 
 const steps = ScholarshipApplicationFormDataSectionEnum.arr;
 
@@ -66,6 +82,8 @@ const Page: NextPage<PageProps> = (props) => {
 		useState<ScholarshipApplicationFormDataSection>('Contact Details');
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const toggleMobileMenu = () => setMobileMenuOpen(R.not);
+	const [isSubmitConfirmationDialogOpen, setIsSubmitConfirmationDialogOpen] =
+		useState(false);
 
 	// ==== Hooks ==== //
 
@@ -73,7 +91,6 @@ const Page: NextPage<PageProps> = (props) => {
 	const { isLoading: isSchoolsLoading, data: schoolsData } =
 		useRetrieveScholarshipApplicationSchools();
 	const schools = Array.isArray(schoolsData) ? schoolsData : [];
-	schools;
 
 	// Site origins
 	const siteOriginByTarget = useSiteOriginByTarget();
@@ -122,7 +139,9 @@ const Page: NextPage<PageProps> = (props) => {
 		resourcesForLoggedInUser: scholarshipApplicationsForLoggedInUser,
 		refetch: refetchScholarshipApplicationsForLoggedInUser,
 		isResourcePageLoading: isScholarshipApplicationPageLoading,
-	} = useQueryScholarshipApplicationsForLoggedInUser();
+	} = useQueryScholarshipApplicationsForLoggedInUser({
+		refetchOnWindowFocus: 'always',
+	});
 	const scholarshipApplicationForLoggedInUser =
 		scholarshipApplicationsForLoggedInUser[0] ?? null;
 	const isScholarshipApplicationForLoggedInUserSubmitted =
@@ -186,6 +205,11 @@ const Page: NextPage<PageProps> = (props) => {
 						? 'Your application has been saved.'
 						: 'Your application has been submitted.',
 			});
+
+			// Open the confirmation dialog
+			if (operation === 'submit') {
+				setIsSubmitConfirmationDialogOpen(true);
+			}
 		};
 	};
 
@@ -401,6 +425,50 @@ const Page: NextPage<PageProps> = (props) => {
 		loggedInUser,
 		scholarshipApplicationForLoggedInUser,
 	]);
+
+	// School logic
+	const schoolName = liveData.high_school;
+	const { metro_areas: schoolMetroAreas = [] } =
+		schools.find(({ name }) => name === schoolName) || ({} as Partial<School>);
+	const nearestMetroArea = schoolMetroAreas[0] ?? '';
+	const today = DateTime.now();
+	const scholarshipOpenHouseEvents = allScholarshipOpenHouseEvents.filter(
+		({ start_time_nyc }) => {
+			return DateTime.fromISO(start_time_nyc) > today;
+		},
+	);
+	const nextEventInNearestMetroArea = scholarshipOpenHouseEvents.find(
+		({ metro_area_full_name }) => {
+			return metro_area_full_name === nearestMetroArea;
+		},
+	);
+	const nextNearestMetroArea = schoolMetroAreas[1] ?? '';
+	const nextEventInNextNearestMetroArea = scholarshipOpenHouseEvents.find(
+		({ metro_area_full_name }) => {
+			return metro_area_full_name === nextNearestMetroArea;
+		},
+	);
+	const thirdNearestMetroArea = schoolMetroAreas[2] ?? '';
+	const nextEventInThirdNearestMetroArea = scholarshipOpenHouseEvents.find(
+		({ metro_area_full_name }) => {
+			return metro_area_full_name === thirdNearestMetroArea;
+		},
+	);
+	const fallbackEventNextInCalendar = scholarshipOpenHouseEvents[0];
+	const eventToShow = nextEventInNearestMetroArea ??
+		nextEventInNextNearestMetroArea ??
+		nextEventInThirdNearestMetroArea ??
+		fallbackEventNextInCalendar ?? {
+			lookup_key: 'tampa-2025-03-29',
+			metro_area: 'Tampa',
+			time: 'Sat, Mar 29 · 3:00 PM EST',
+		};
+	const isRsvpdToNextEvent =
+		scholarshipApplicationForLoggedInUser?.open_house_rsvps?.some(
+			(lookupKey) => {
+				return lookupKey === eventToShow.lookup_key;
+			},
+		) ?? false;
 
 	// ==== Render ==== //
 	return (
@@ -815,14 +883,14 @@ const Page: NextPage<PageProps> = (props) => {
 								</main>
 
 								{/* Right callout cards (visible on Desktop) */}
-								<aside className='hidden lg:block lg:max-w-56 lg:ml-10'>
+								<aside className='hidden lg:block lg:max-w-64 lg:ml-10 lg:space-y-5'>
 									<div
 										className={cn(
-											'bg-white border border-gray-200 rounded-md shadow-md p-6',
+											'bg-white border border-gray-200 rounded-md shadow-md p-5',
 										)}
 									>
 										<div>
-											<p className='font-semibold text-sm'>Questions?</p>
+											<p className='font-semibold text-base'>Questions?</p>
 										</div>
 										<div className='mt-1'>
 											<p className='text-gray-700 font-light text-xs'>
@@ -853,12 +921,128 @@ const Page: NextPage<PageProps> = (props) => {
 											</p>
 										</div>
 									</div>
+									<div
+										className={cn(
+											'bg-white border border-brand-dark rounded-md shadow-md p-5',
+										)}
+									>
+										<div>
+											<p className='font-semibold text-base'>Next Open House</p>
+										</div>
+										<div className='mt-1'>
+											<p className='text-gray-700 font-light text-sm'>
+												{eventToShow.metro_area} Open House on{' '}
+												{eventToShow.time.replace('·', 'at')}
+											</p>
+										</div>
+										<AsyncLink
+											href={`${getHomeSiteRoute({
+												includeOrigin: false,
+												origin: null,
+												queryParams: {},
+												routeStaticId: 'HOME_SITE__/SCHOLARSHIPS',
+											})}#open-house-events`}
+											target='_blank'
+											isReady={!isRsvpdToNextEvent}
+										>
+											<div className='p-[1.5px] bg-gradient-to-r from-brand-dark via-pink-600 to-red-800 animate-gradient-rotate bg-[length:200%_200%] rounded w-full cursor-pointer mt-3'>
+												<div className='bg-black rounded flex items-center justify-center space-x-1.5 py-1 px-4 w-full'>
+													{isRsvpdToNextEvent && (
+														<GoCheckCircleFill className='text-white' />
+													)}
+													<div className={''}>
+														<p
+															className={cn(
+																'font-extralight text-white text-sm',
+															)}
+														>
+															{isRsvpdToNextEvent
+																? 'Attending'
+																: 'RSVP for the Guest List'}
+														</p>
+													</div>
+												</div>
+											</div>
+										</AsyncLink>
+									</div>
 								</aside>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			<Dialog
+				open={isSubmitConfirmationDialogOpen}
+				onOpenChange={(open) => {
+					setIsSubmitConfirmationDialogOpen(open);
+				}}
+			>
+				<DialogTrigger asChild>
+					<div />
+				</DialogTrigger>
+				<DialogContent className='!max-h-[85vh] !overflow-y-auto'>
+					<div className={cn('flex items-center justify-center space-x-3')}>
+						<div>
+							<PlatformIcon
+								height={380}
+								size='lg'
+								srcMap={{
+									dark: OPEN_GRAPH_CONFIG.siteBrandIconDarkMode ?? '',
+									light: OPEN_GRAPH_CONFIG.siteBrandIconLightMode ?? '',
+								}}
+								width={2048}
+							/>
+						</div>
+					</div>
+					<DialogHeader className='mt-2'>
+						<DialogTitle className=''>
+							You're invited to our next Open House!
+						</DialogTitle>
+						<DialogDescription className=''>
+							Thank you for submitting an application for our scholarship. If
+							your application progresses to our interview round, we will reach
+							out to schedule a time to meet. In the meantime, we invite you to
+							join us for one of our in-person or virtual Open House events.
+						</DialogDescription>
+					</DialogHeader>
+					<div className=''>
+						<p className='font-semibold text-xs'>Our next event near you</p>
+						<p className='font-extralight text-base'>
+							{eventToShow.metro_area} Open House on{' '}
+							{eventToShow.time.replace('·', 'at')}
+						</p>
+					</div>
+					<Link
+						href={`${getHomeSiteRoute({
+							includeOrigin: false,
+							origin: null,
+							queryParams: {},
+							routeStaticId: 'HOME_SITE__/SCHOLARSHIPS',
+						})}#open-house-events`}
+					>
+						<button
+							className='bg-brand-dark rounded-md px-4 py-2 text-center w-full mt-1'
+							onClick={() => setIsSubmitConfirmationDialogOpen(false)}
+						>
+							<p className='text-white'>RSVP for the Guest List</p>
+						</button>
+					</Link>
+					<Separator className='!my-3' />
+					<DialogFooter className=''>
+						<div className={cn('mt-1', 'lg:max-w-2xl')}>
+							<p className='font-semibold text-xs'>Scheduling Conflicts</p>
+							<p className='font-light text-[0.55rem]'>
+								While we have several open houses scheduled, we understand that
+								some students may have scheduling conflicts on account of prior
+								obligations. If you are unable to attend any of the scheduled
+								open houses, please email us at scholarships@wallot.app with
+								your availability and a member of our team will do our best
+								schedule a time to meet with you.
+							</p>
+						</div>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>
 		</PageComponent>
 	);
 };

@@ -373,7 +373,7 @@ const Page: NextPage<PageProps> = (props) => {
 	const rsvps =
 		scholarshipApplicationForLoggedInUser == null
 			? rsvpsGuest
-			: Array.isArray(scholarshipApplicationForLoggedInUser)
+			: Array.isArray(scholarshipApplicationForLoggedInUser.open_house_rsvps)
 			? scholarshipApplicationForLoggedInUser.open_house_rsvps
 			: [];
 
@@ -576,7 +576,7 @@ const Page: NextPage<PageProps> = (props) => {
 								<table className='min-w-full'>
 									{/* Table Head */}
 									<thead>
-										<tr className='bg-slate-50 border-b border-b-gray-400'>
+										<tr className='bg-slate-100 border-b border-b-gray-400'>
 											{headers.map(({ Icon, title }) => (
 												<th
 													key={title}
@@ -705,6 +705,13 @@ const Page: NextPage<PageProps> = (props) => {
 																				? {
 																						subtitle: 'Casual',
 																						title: 'Attire',
+																				  }
+																				: null,
+																			event.type === 'In-person'
+																				? {
+																						subtitle:
+																							'Light refreshments will be served',
+																						title: 'Food',
 																				  }
 																				: null,
 																		]

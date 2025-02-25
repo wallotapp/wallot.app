@@ -13,6 +13,7 @@ import {
 import { db, gcal, log } from '../../../services.js';
 import { FieldValue } from 'firebase-admin/firestore';
 import { variables } from '../../../variables.js';
+import { secrets } from '../../../secrets.js';
 
 export const submitScholarshipOpenHouseRsvp = async ({
 	accessibility_requests,
@@ -88,7 +89,14 @@ ${email}
 Additional Guests:
 ${parent_emails.length ? parent_emails.join('\n') : 'None'}
 
-Accessibility Requests:
+${
+	match.type === 'Virtual'
+		? ''
+		: `Food:
+Light refreshments will be served
+
+`
+}Accessibility Requests:
 ${accessibility_requests || 'None'}
 `,
 				end_time_nyc: match.end_time_nyc,
@@ -101,7 +109,14 @@ ${accessibility_requests || 'None'}
 					match.metro_area
 				} Open House – ${match.time.replace('·', 'at')}`,
 			};
-		await gcal.createEvent(createEventWithGoogleCalendarAPIParams);
+
+		if (secrets.SECRET_CRED_SERVER_PROTOCOL === 'https') {
+			await gcal.createEvent(createEventWithGoogleCalendarAPIParams);
+		} else {
+			console.log(
+				'Skipping Google Calendar event creation in local environment',
+			);
+		}
 
 		// Log event
 		log(

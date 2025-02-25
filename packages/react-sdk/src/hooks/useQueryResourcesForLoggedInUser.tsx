@@ -6,7 +6,7 @@ import { GeneralizedApiResource } from 'ergonomic';
 export function useQueryResourcesForLoggedInUser<
 	TResource extends GeneralizedApiResource,
 >(resourceName: Exclude<WallotResourceName, 'user'>) {
-	return () => {
+	return (options: { refetchOnWindowFocus?: 'always' } = {}) => {
 		const { loggedInUser, isLoggedInUserLoading } = useQueryLoggedInUser();
 		const isUserSignedIn = loggedInUser != null;
 		const isResourcePageQueryEnabled = isUserSignedIn;
@@ -17,6 +17,7 @@ export function useQueryResourcesForLoggedInUser<
 			},
 			reactQueryOptions: {
 				enabled: isResourcePageQueryEnabled,
+				...options,
 			},
 		});
 		const resourcesForLoggedInUser = (resourcePageQueryObserver.data
