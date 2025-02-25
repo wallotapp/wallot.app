@@ -72,7 +72,12 @@ import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
 import { PlatformIcon } from 'ergonomic-react/src/components/brand/PlatformIcon';
 import { DateTime } from 'luxon';
 import { AsyncLink } from 'ergonomic-react/src/components/custom-ui/async-link';
-import { GoCalendar, GoCheckCircleFill, GoCircle } from 'react-icons/go';
+import {
+	GoCalendar,
+	GoCheckCircleFill,
+	GoChevronLeft,
+	GoCircle,
+} from 'react-icons/go';
 
 const steps = ScholarshipApplicationFormDataSectionEnum.arr;
 
@@ -1006,6 +1011,31 @@ const Page: NextPage<PageProps> = (props) => {
 							'!overflow-y-auto': submitConfirmationStep !== 0,
 						})}
 					>
+						<button
+							className='focus:outline-none focus-visible:ring-none !text-left flex items-center space-x-1'
+							onClick={() => {
+								if (submitConfirmationStep === 0) {
+									setSubmitConfirmationStep(null);
+								} else {
+									setSubmitConfirmationStep((prev) => (prev ?? 0) - 1);
+								}
+							}}
+						>
+							<div>
+								<GoChevronLeft className='text-xs' />
+							</div>
+							<div>
+								<p className='text-xs'>
+									{
+										{
+											0: 'Back to application',
+											1: 'Back to application review',
+											2: 'Back to Open House RSVP',
+										}[submitConfirmationStep ?? '']
+									}
+								</p>
+							</div>
+						</button>
 						<div
 							className={cn('flex items-center justify-center space-x-3 mt-3')}
 						>
@@ -1294,6 +1324,117 @@ const Page: NextPage<PageProps> = (props) => {
 										</p>
 									</div>
 								</DialogFooter>
+							</Fragment>
+						)}
+						{submitConfirmationStep === 2 && (
+							<Fragment>
+								<DialogHeader className='mt-4'>
+									<DialogTitle className=''>Review your responses</DialogTitle>
+									<DialogDescription className=''>
+										Please review your responses before submitting your
+										application. If you need to make any changes, click the
+										"Back" button. Once everything looks good, continue to the
+										next step.
+									</DialogDescription>
+								</DialogHeader>
+								<div className={'!max-h-[30vh] !overflow-y-auto'}>
+									{[
+										{
+											question: 'Name',
+											response: `${liveData.given_name} ${liveData.family_name}`,
+										},
+										{
+											question: 'Phone Number',
+											response: liveData.phone_number,
+										},
+										{
+											question: 'High School',
+											response: liveData.high_school,
+										},
+										{
+											question: 'Date of Birth',
+											response: liveData.date_of_birth,
+										},
+										{
+											question: 'Anticipated College',
+											response: liveData.college_name,
+										},
+										{
+											question: 'Type of College',
+											response: liveData.college_type,
+										},
+										{
+											question: 'Academic Achievement',
+											response: liveData.academic_achievement,
+										},
+										{
+											question: 'Honors & Awards',
+											response: liveData.honors_and_awards,
+										},
+										{
+											question: 'Extracurricular Activities',
+											response: liveData.extracurricular_activities,
+										},
+										{
+											question: 'Future Goals',
+											response: liveData.future_goals,
+										},
+										{
+											question: 'Common Essay',
+											response: liveData.common_essay,
+										},
+										{
+											question: 'Academic Achievement Award Essay',
+											response:
+												liveData.academic_achievement_award_essay ||
+												'Not applicable',
+										},
+										{
+											question: 'Outstanding Student-Athlete Award Essay',
+											response:
+												liveData.outstanding_student_athlete_award_essay ||
+												'Not applicable',
+										},
+										{
+											question: 'Community Leadership Award Essay',
+											response:
+												liveData.community_leadership_award_essay ||
+												'Not applicable',
+										},
+										{
+											question: 'Entrepreneurial Excellence Award Essay',
+											response:
+												liveData.entrepreneurial_excellence_award_essay ||
+												'Not applicable',
+										},
+									].map(({ question, response }, responseIdx) => {
+										return (
+											<div
+												key={question}
+												className={cn({ 'mt-2': responseIdx > 0 })}
+											>
+												<p className='font-semibold text-xs'>{question}</p>
+												<p className='font-extralight text-base whitespace-pre-line'>
+													{response}
+												</p>
+											</div>
+										);
+									})}
+								</div>
+								<div className='flex items-center space-x-4 mt-4'>
+									<button
+										className='w-full text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300'
+										onClick={() => setSubmitConfirmationStep(null)}
+									>
+										<p className='font-medium text-xs'>Back</p>
+									</button>
+									<button
+										className='w-full text-center bg-brand-dark px-4 py-1.5 rounded-md border border-transparent'
+										onClick={() => setSubmitConfirmationStep(1)}
+									>
+										<p className='font-medium text-xs text-white'>Continue</p>
+									</button>
+								</div>
 							</Fragment>
 						)}
 					</DialogContent>
