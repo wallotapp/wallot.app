@@ -1,6 +1,6 @@
 import Select from 'react-select/creatable';
 import * as changeCase from 'change-case';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import * as R from 'ramda';
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -82,8 +82,12 @@ const Page: NextPage<PageProps> = (props) => {
 		useState<ScholarshipApplicationFormDataSection>('Contact Details');
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const toggleMobileMenu = () => setMobileMenuOpen(R.not);
-	const [isSubmitConfirmationDialogOpen, setIsSubmitConfirmationDialogOpen] =
-		useState(false);
+	// const [isSubmitConfirmationDialogOpen, setIsSubmitConfirmationDialogOpen] =
+	// 	useState(false);
+	const [submitConfirmationStep, setSubmitConfirmationStep] = useState<
+		number | null
+	>(null);
+	const isSubmitConfirmationDialogOpen = submitConfirmationStep !== null;
 
 	// ==== Hooks ==== //
 
@@ -205,11 +209,6 @@ const Page: NextPage<PageProps> = (props) => {
 						? 'Your application has been saved.'
 						: 'Your application has been submitted.',
 			});
-
-			// Open the confirmation dialog
-			if (operation === 'submit') {
-				setIsSubmitConfirmationDialogOpen(true);
-			}
 		};
 	};
 
@@ -305,7 +304,7 @@ const Page: NextPage<PageProps> = (props) => {
 		isFormSubmitting || isScholarshipApplicationForLoggedInUserSubmitted;
 
 	// Form Submit Handler
-	const onSubmit = (data: ScholarshipApplicationFormDataParams) => {
+	const onSubmit = handleSubmit((data) => {
 		if (loggedInUser == null) {
 			toast({
 				title: 'Error',
@@ -321,7 +320,7 @@ const Page: NextPage<PageProps> = (props) => {
 		});
 
 		submitScholarshipApplication(data);
-	};
+	});
 
 	// ==== Effects ==== //
 	const [isInitialized, setIsInitialized] = useState(false);
@@ -681,7 +680,7 @@ const Page: NextPage<PageProps> = (props) => {
 										<Separator className='mt-1.5' />
 
 										{/* Form fields */}
-										<form onSubmit={handleSubmit(onSubmit) as () => void}>
+										<form>
 											<div className=''>
 												<div
 													className={cn(
@@ -864,7 +863,7 @@ const Page: NextPage<PageProps> = (props) => {
 												</button>
 												<button
 													disabled={isFormDisabled}
-													type='submit'
+													type='button'
 													className={cn(
 														'w-fit text-center px-4 py-1.5 rounded-md border border-slate-300',
 														isLastStep ? '' : 'hidden',
@@ -872,6 +871,7 @@ const Page: NextPage<PageProps> = (props) => {
 															? ' bg-brand-extralight text-gray-400 cursor-not-allowed'
 															: 'bg-brand-dark',
 													)}
+													onClick={() => setSubmitConfirmationStep(0)}
 												>
 													<p className='font-medium text-xs text-white'>
 														Submit Application
@@ -971,78 +971,220 @@ const Page: NextPage<PageProps> = (props) => {
 					</div>
 				</div>
 			</div>
-			<Dialog
-				open={isSubmitConfirmationDialogOpen}
-				onOpenChange={(open) => {
-					setIsSubmitConfirmationDialogOpen(open);
-				}}
-			>
-				<DialogTrigger asChild>
-					<div />
-				</DialogTrigger>
-				<DialogContent className='!max-h-[85vh] !overflow-y-auto'>
-					<div className={cn('flex items-center justify-center space-x-3')}>
-						<div>
-							<PlatformIcon
-								height={380}
-								size='lg'
-								srcMap={{
-									dark: OPEN_GRAPH_CONFIG.siteBrandIconDarkMode ?? '',
-									light: OPEN_GRAPH_CONFIG.siteBrandIconLightMode ?? '',
-								}}
-								width={2048}
-							/>
-						</div>
-					</div>
-					<DialogHeader className='mt-2'>
-						<DialogTitle className=''>
-							You're invited to our next Open House!
-						</DialogTitle>
-						<DialogDescription className=''>
-							Thank you for submitting an application for our scholarship. If
-							your application progresses to our interview round, we will reach
-							out to schedule a time to meet. In the meantime, we invite you to
-							join us for one of our in-person or virtual Open House events.
-						</DialogDescription>
-					</DialogHeader>
-					<div className=''>
-						<p className='font-semibold text-xs'>Our next event near you</p>
-						<p className='font-extralight text-base'>
-							{eventToShow.metro_area} Open House on{' '}
-							{eventToShow.time.replace('·', 'at')}
-						</p>
-					</div>
-					<Link
-						href={`${getHomeSiteRoute({
-							includeOrigin: false,
-							origin: null,
-							queryParams: {},
-							routeStaticId: 'HOME_SITE__/SCHOLARSHIPS',
-						})}#open-house-events`}
+			{isSubmitConfirmationDialogOpen && (
+				<Dialog
+					open={isSubmitConfirmationDialogOpen}
+					onOpenChange={(open) => {
+						setSubmitConfirmationStep(open ? 0 : null);
+					}}
+				>
+					<DialogTrigger asChild></DialogTrigger>
+					<DialogContent
+						className={cn('!max-h-[85vh]', {
+							'!overflow-y-auto': submitConfirmationStep !== 0,
+						})}
 					>
-						<button
-							className='bg-brand-dark rounded-md px-4 py-2 text-center w-full mt-1'
-							onClick={() => setIsSubmitConfirmationDialogOpen(false)}
+						<div
+							className={cn('flex items-center justify-center space-x-3 mt-3')}
 						>
-							<p className='text-white'>RSVP for the Guest List</p>
-						</button>
-					</Link>
-					<Separator className='!my-3' />
-					<DialogFooter className=''>
-						<div className={cn('mt-1', 'lg:max-w-2xl')}>
-							<p className='font-semibold text-xs'>Scheduling Conflicts</p>
-							<p className='font-light text-[0.55rem]'>
-								While we have several open houses scheduled, we understand that
-								some students may have scheduling conflicts on account of prior
-								obligations. If you are unable to attend any of the scheduled
-								open houses, please email us at scholarships@wallot.app with
-								your availability and a member of our team will do our best
-								schedule a time to meet with you.
-							</p>
+							<div>
+								<PlatformIcon
+									height={380}
+									size='lg'
+									srcMap={{
+										dark: OPEN_GRAPH_CONFIG.siteBrandIconDarkMode ?? '',
+										light: OPEN_GRAPH_CONFIG.siteBrandIconLightMode ?? '',
+									}}
+									width={2048}
+								/>
+							</div>
 						</div>
-					</DialogFooter>
-				</DialogContent>
-			</Dialog>
+						<div className='flex justify-center space-x-5 mt-4'>
+							<div className='w-16 h-2 rounded-md bg-brand'></div>
+							<div
+								className={cn(
+									'w-16 h-2 rounded-md',
+									submitConfirmationStep < 1 ? 'bg-gray-200' : 'bg-brand',
+								)}
+							></div>
+							<div
+								className={cn(
+									'w-16 h-2 rounded-md',
+									submitConfirmationStep < 2 ? 'bg-gray-200' : 'bg-brand',
+								)}
+							></div>
+						</div>
+						{submitConfirmationStep === 0 && (
+							<Fragment>
+								<DialogHeader className='mt-4'>
+									<DialogTitle className=''>Review your responses</DialogTitle>
+									<DialogDescription className=''>
+										Please review your responses before submitting your
+										application. If you need to make any changes, click the
+										"Back" button. Once everything looks good, continue to the
+										next step.
+									</DialogDescription>
+								</DialogHeader>
+								<div className={'!max-h-[30vh] !overflow-y-auto'}>
+									{[
+										{
+											question: 'Name',
+											response: `${liveData.given_name} ${liveData.family_name}`,
+										},
+										{
+											question: 'Phone Number',
+											response: liveData.phone_number,
+										},
+										{
+											question: 'High School',
+											response: liveData.high_school,
+										},
+										{
+											question: 'Date of Birth',
+											response: liveData.date_of_birth,
+										},
+										{
+											question: 'Anticipated College',
+											response: liveData.college_name,
+										},
+										{
+											question: 'Type of College',
+											response: liveData.college_type,
+										},
+										{
+											question: 'Academic Achievement',
+											response: liveData.academic_achievement,
+										},
+										{
+											question: 'Honors & Awards',
+											response: liveData.honors_and_awards,
+										},
+										{
+											question: 'Extracurricular Activities',
+											response: liveData.extracurricular_activities,
+										},
+										{
+											question: 'Future Goals',
+											response: liveData.future_goals,
+										},
+										{
+											question: 'Common Essay',
+											response: liveData.common_essay,
+										},
+										{
+											question: 'Academic Achievement Award Essay',
+											response:
+												liveData.academic_achievement_award_essay ||
+												'Not applicable',
+										},
+										{
+											question: 'Outstanding Student-Athlete Award Essay',
+											response:
+												liveData.outstanding_student_athlete_award_essay ||
+												'Not applicable',
+										},
+										{
+											question: 'Community Leadership Award Essay',
+											response:
+												liveData.community_leadership_award_essay ||
+												'Not applicable',
+										},
+										{
+											question: 'Entrepreneurial Excellence Award Essay',
+											response:
+												liveData.entrepreneurial_excellence_award_essay ||
+												'Not applicable',
+										},
+									].map(({ question, response }, responseIdx) => {
+										return (
+											<div
+												key={question}
+												className={cn({ 'mt-2': responseIdx > 0 })}
+											>
+												<p className='font-semibold text-xs'>{question}</p>
+												<p className='font-extralight text-base whitespace-pre-line'>
+													{response}
+												</p>
+											</div>
+										);
+									})}
+								</div>
+								<div className='flex items-center space-x-4 mt-4'>
+									<button
+										className='w-full text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300'
+										onClick={() => setSubmitConfirmationStep(null)}
+									>
+										<p className='font-medium text-xs'>Back</p>
+									</button>
+									<button
+										className='w-full text-center bg-brand-dark px-4 py-1.5 rounded-md border border-transparent'
+										onClick={() => setSubmitConfirmationStep(1)}
+									>
+										<p className='font-medium text-xs text-white'>Continue</p>
+									</button>
+								</div>
+							</Fragment>
+						)}
+						{submitConfirmationStep === 2 && (
+							<Fragment>
+								<DialogHeader className='mt-4'>
+									<DialogTitle className=''>
+										You're invited to our next Open House!
+									</DialogTitle>
+									<DialogDescription className=''>
+										Thank you for submitting an application for our scholarship.
+										If your application progresses to our interview round, we
+										will reach out to schedule a time to meet. In the meantime,
+										we invite you to join us for one of our in-person or virtual
+										Open House events.
+									</DialogDescription>
+								</DialogHeader>
+								<div className=''>
+									<p className='font-semibold text-xs'>
+										Our next event near you
+									</p>
+									<p className='font-extralight text-base'>
+										{eventToShow.metro_area} Open House on{' '}
+										{eventToShow.time.replace('·', 'at')}
+									</p>
+								</div>
+								<Link
+									href={`${getHomeSiteRoute({
+										includeOrigin: false,
+										origin: null,
+										queryParams: {},
+										routeStaticId: 'HOME_SITE__/SCHOLARSHIPS',
+									})}#open-house-events`}
+								>
+									<button
+										className='bg-brand-dark rounded-md px-4 py-2 text-center w-full mt-1'
+										onClick={() => setSubmitConfirmationStep(null)}
+									>
+										<p className='text-white'>RSVP for the Guest List</p>
+									</button>
+								</Link>
+								<Separator className='!my-3' />
+								<DialogFooter className=''>
+									<div className={cn('mt-1', 'lg:max-w-2xl')}>
+										<p className='font-semibold text-xs'>
+											Scheduling Conflicts
+										</p>
+										<p className='font-light text-[0.55rem]'>
+											While we have several open houses scheduled, we understand
+											that some students may have scheduling conflicts on
+											account of prior obligations. If you are unable to attend
+											any of the scheduled open houses, please email us at
+											scholarships@wallot.app with your availability and a
+											member of our team will do our best schedule a time to
+											meet with you.
+										</p>
+									</div>
+								</DialogFooter>
+							</Fragment>
+						)}
+					</DialogContent>
+				</Dialog>
+			)}
 		</PageComponent>
 	);
 };
