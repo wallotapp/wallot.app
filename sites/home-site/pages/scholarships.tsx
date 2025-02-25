@@ -576,7 +576,7 @@ const Page: NextPage<PageProps> = (props) => {
 								<table className='min-w-full'>
 									{/* Table Head */}
 									<thead>
-										<tr className='bg-slate-50 border-b border-b-gray-400'>
+										<tr className='bg-slate-100 border-b border-b-gray-400'>
 											{headers.map(({ Icon, title }) => (
 												<th
 													key={title}
