@@ -94,8 +94,10 @@ const Page: NextPage<PageProps> = (props) => {
 	const query: RouteQueryParams = router?.query ?? {};
 
 	// Router Query Param Values
-	const _ = query;
-	typeof _;
+	const { rsvp } = query;
+
+	// Router Ready
+	const isRouterReady = router?.isReady ?? false;
 
 	// Auth status
 	const { user } = useContext(AuthContext);
@@ -238,6 +240,11 @@ const Page: NextPage<PageProps> = (props) => {
 			// Refetch scholarship applications
 			await refetchScholarshipApplicationsForLoggedInUser();
 		}
+
+		if (rsvp) {
+			// Redirect to route without query param
+			router.push(homeUrl);
+		}
 	};
 
 	// Submit mutation
@@ -300,12 +307,18 @@ const Page: NextPage<PageProps> = (props) => {
 	useEffect(
 		() =>
 			void (async () => {
+				if (!isRouterReady) return;
+				if (rsvp) {
+					setIsDialogOpenForLookupKey(rsvp);
+				}
+
 				// Wait 1 second
 				await new Promise((resolve) => setTimeout(resolve, 1000));
 				setIsReadyToInitialize(true);
 			})(),
-		[],
+		[isRouterReady, rsvp],
 	);
+
 	const [isInitialized, setIsInitialized] = useState(false);
 	useEffect(() => {
 		if (!isReadyToInitialize) return;
