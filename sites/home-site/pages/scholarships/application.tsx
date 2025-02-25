@@ -872,14 +872,14 @@ const Page: NextPage<PageProps> = (props) => {
 								</main>
 
 								{/* Right callout cards (visible on Desktop) */}
-								<aside className='hidden lg:block lg:max-w-56 lg:ml-10'>
+								<aside className='hidden lg:block lg:max-w-64 lg:ml-10 lg:space-y-5'>
 									<div
 										className={cn(
-											'bg-white border border-gray-200 rounded-md shadow-md p-6',
+											'bg-white border border-gray-200 rounded-md shadow-md p-5',
 										)}
 									>
 										<div>
-											<p className='font-semibold text-sm'>Questions?</p>
+											<p className='font-semibold text-base'>Questions?</p>
 										</div>
 										<div className='mt-1'>
 											<p className='text-gray-700 font-light text-xs'>
@@ -909,6 +909,44 @@ const Page: NextPage<PageProps> = (props) => {
 												.
 											</p>
 										</div>
+									</div>
+									<div
+										className={cn(
+											'bg-white border border-brand-dark rounded-md shadow-md p-5',
+										)}
+									>
+										<div>
+											<p className='font-semibold text-base'>Next Open House</p>
+										</div>
+										<div className='mt-1'>
+											<p className='text-gray-700 font-light text-sm'>
+												{eventToShow.metro_area} Open House on{' '}
+												{eventToShow.time.replace('·', 'at')}
+											</p>
+										</div>
+										<Link
+											href={`${getHomeSiteRoute({
+												includeOrigin: false,
+												origin: null,
+												queryParams: {},
+												routeStaticId: 'HOME_SITE__/SCHOLARSHIPS',
+											})}#open-house-events`}
+											target='_blank'
+										>
+											<div className='p-[1.5px] bg-gradient-to-r from-brand-dark via-pink-600 to-red-800 animate-gradient-rotate bg-[length:200%_200%] rounded w-full cursor-pointer mt-3'>
+												<div className='bg-black rounded flex items-center space-x-1 py-1 px-4 w-full'>
+													<div className='mx-auto'>
+														<p
+															className={cn(
+																'font-extralight text-white text-sm',
+															)}
+														>
+															RSVP for the Guest List
+														</p>
+													</div>
+												</div>
+											</div>
+										</Link>
 									</div>
 								</aside>
 							</div>
