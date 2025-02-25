@@ -1,3 +1,15 @@
+export const lastScholarshipOpenHouseEvent = {
+	address_title: 'Carribbean Breeze Event Center near USF',
+	address: '14501 Caribbean Breeze Dr, Tampa, FL 33613',
+	start_time_nyc: '2025-03-29T15:00:00-04:00',
+	end_time_nyc: '2025-03-29T17:00:00-04:00',
+	time: 'Sat, Mar 29 · 3:00 PM EST',
+	lookup_key: 'tampa-2025-03-29',
+	metro_area: 'Tampa',
+	metro_area_full_name: 'Tampa-St. Petersburg-Clearwater',
+	meets_id: '',
+	type: 'In-person',
+};
 export const scholarshipOpenHouseEvents = [
 	{
 		address_title: 'Online Webinar',
@@ -180,16 +192,5 @@ export const scholarshipOpenHouseEvents = [
 		meets_id: '',
 		type: 'In-person',
 	},
-	{
-		address_title: 'Carribbean Breeze Event Center near USF',
-		address: '14501 Caribbean Breeze Dr, Tampa, FL 33613',
-		start_time_nyc: '2025-03-29T15:00:00-04:00',
-		end_time_nyc: '2025-03-29T17:00:00-04:00',
-		time: 'Sat, Mar 29 · 3:00 PM EST',
-		lookup_key: 'tampa-2025-03-29',
-		metro_area: 'Tampa',
-		metro_area_full_name: 'Tampa-St. Petersburg-Clearwater',
-		meets_id: '',
-		type: 'In-person',
-	},
+	lastScholarshipOpenHouseEvent,
 ];

@@ -1,6 +1,6 @@
 import Select from 'react-select/creatable';
 import * as changeCase from 'change-case';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import * as R from 'ramda';
 import type { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -26,6 +26,7 @@ import {
 	getHomeSiteRoute,
 	School,
 	scholarshipOpenHouseEvents as allScholarshipOpenHouseEvents,
+	lastScholarshipOpenHouseEvent,
 } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getSsoSiteRoute } from '@wallot/js';
@@ -72,7 +73,12 @@ import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
 import { PlatformIcon } from 'ergonomic-react/src/components/brand/PlatformIcon';
 import { DateTime } from 'luxon';
 import { AsyncLink } from 'ergonomic-react/src/components/custom-ui/async-link';
-import { GoCheckCircleFill } from 'react-icons/go';
+import {
+	GoCalendar,
+	GoCheckCircleFill,
+	GoChevronLeft,
+	GoCircle,
+} from 'react-icons/go';
 
 const steps = ScholarshipApplicationFormDataSectionEnum.arr;
 
@@ -82,8 +88,18 @@ const Page: NextPage<PageProps> = (props) => {
 		useState<ScholarshipApplicationFormDataSection>('Contact Details');
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const toggleMobileMenu = () => setMobileMenuOpen(R.not);
-	const [isSubmitConfirmationDialogOpen, setIsSubmitConfirmationDialogOpen] =
+	// const [isSubmitConfirmationDialogOpen, setIsSubmitConfirmationDialogOpen] =
+	// 	useState(false);
+	const [submitConfirmationStep, setSubmitConfirmationStep] = useState<
+		number | null
+	>(null);
+	const isSubmitConfirmationDialogOpen = submitConfirmationStep !== null;
+	const [showFullScheduleOfEvents, setShowFullScheduleOfEvents] =
 		useState(false);
+	const [selectedEventLookupKey, setSelectedEventLookupKey] = useState<
+		string | null
+	>(null);
+	const shouldGoToRSVPAfterSubmit = selectedEventLookupKey != null;
 
 	// ==== Hooks ==== //
 
@@ -206,9 +222,20 @@ const Page: NextPage<PageProps> = (props) => {
 						: 'Your application has been submitted.',
 			});
 
-			// Open the confirmation dialog
 			if (operation === 'submit') {
-				setIsSubmitConfirmationDialogOpen(true);
+				setSubmitConfirmationStep(null);
+				if (shouldGoToRSVPAfterSubmit) {
+					void router.push(
+						getHomeSiteRoute({
+							includeOrigin: false,
+							origin: null,
+							queryParams: {
+								rsvp: selectedEventLookupKey,
+							},
+							routeStaticId: 'HOME_SITE__/SCHOLARSHIPS',
+						}),
+					);
+				}
 			}
 		};
 	};
@@ -305,7 +332,7 @@ const Page: NextPage<PageProps> = (props) => {
 		isFormSubmitting || isScholarshipApplicationForLoggedInUserSubmitted;
 
 	// Form Submit Handler
-	const onSubmit = (data: ScholarshipApplicationFormDataParams) => {
+	const onSubmit = handleSubmit((data) => {
 		if (loggedInUser == null) {
 			toast({
 				title: 'Error',
@@ -321,7 +348,7 @@ const Page: NextPage<PageProps> = (props) => {
 		});
 
 		submitScholarshipApplication(data);
-	};
+	});
 
 	// ==== Effects ==== //
 	const [isInitialized, setIsInitialized] = useState(false);
@@ -455,20 +482,30 @@ const Page: NextPage<PageProps> = (props) => {
 		},
 	);
 	const fallbackEventNextInCalendar = scholarshipOpenHouseEvents[0];
-	const eventToShow = nextEventInNearestMetroArea ??
+	const eventToShow =
+		nextEventInNearestMetroArea ??
 		nextEventInNextNearestMetroArea ??
 		nextEventInThirdNearestMetroArea ??
-		fallbackEventNextInCalendar ?? {
-			lookup_key: 'tampa-2025-03-29',
-			metro_area: 'Tampa',
-			time: 'Sat, Mar 29 · 3:00 PM EST',
-		};
+		fallbackEventNextInCalendar ??
+		lastScholarshipOpenHouseEvent;
 	const isRsvpdToNextEvent =
 		scholarshipApplicationForLoggedInUser?.open_house_rsvps?.some(
 			(lookupKey) => {
 				return lookupKey === eventToShow.lookup_key;
 			},
 		) ?? false;
+	const firstAttendingEventFromExistingRsvp = Array.isArray(
+		scholarshipApplicationForLoggedInUser?.open_house_rsvps,
+	)
+		? scholarshipApplicationForLoggedInUser.open_house_rsvps[0]
+		: null;
+	const isAttendingAnOpenHouse = firstAttendingEventFromExistingRsvp != null;
+	const selectedEvent = scholarshipOpenHouseEvents.find(({ lookup_key }) => {
+		return (
+			lookup_key ===
+			(firstAttendingEventFromExistingRsvp || selectedEventLookupKey)
+		);
+	});
 
 	// ==== Render ==== //
 	return (
@@ -681,7 +718,7 @@ const Page: NextPage<PageProps> = (props) => {
 										<Separator className='mt-1.5' />
 
 										{/* Form fields */}
-										<form onSubmit={handleSubmit(onSubmit) as () => void}>
+										<form>
 											<div className=''>
 												<div
 													className={cn(
@@ -864,7 +901,7 @@ const Page: NextPage<PageProps> = (props) => {
 												</button>
 												<button
 													disabled={isFormDisabled}
-													type='submit'
+													type='button'
 													className={cn(
 														'w-fit text-center px-4 py-1.5 rounded-md border border-slate-300',
 														isLastStep ? '' : 'hidden',
@@ -872,6 +909,7 @@ const Page: NextPage<PageProps> = (props) => {
 															? ' bg-brand-extralight text-gray-400 cursor-not-allowed'
 															: 'bg-brand-dark',
 													)}
+													onClick={() => setSubmitConfirmationStep(0)}
 												>
 													<p className='font-medium text-xs text-white'>
 														Submit Application
@@ -971,78 +1009,429 @@ const Page: NextPage<PageProps> = (props) => {
 					</div>
 				</div>
 			</div>
-			<Dialog
-				open={isSubmitConfirmationDialogOpen}
-				onOpenChange={(open) => {
-					setIsSubmitConfirmationDialogOpen(open);
-				}}
-			>
-				<DialogTrigger asChild>
-					<div />
-				</DialogTrigger>
-				<DialogContent className='!max-h-[85vh] !overflow-y-auto'>
-					<div className={cn('flex items-center justify-center space-x-3')}>
-						<div>
-							<PlatformIcon
-								height={380}
-								size='lg'
-								srcMap={{
-									dark: OPEN_GRAPH_CONFIG.siteBrandIconDarkMode ?? '',
-									light: OPEN_GRAPH_CONFIG.siteBrandIconLightMode ?? '',
-								}}
-								width={2048}
-							/>
-						</div>
-					</div>
-					<DialogHeader className='mt-2'>
-						<DialogTitle className=''>
-							You're invited to our next Open House!
-						</DialogTitle>
-						<DialogDescription className=''>
-							Thank you for submitting an application for our scholarship. If
-							your application progresses to our interview round, we will reach
-							out to schedule a time to meet. In the meantime, we invite you to
-							join us for one of our in-person or virtual Open House events.
-						</DialogDescription>
-					</DialogHeader>
-					<div className=''>
-						<p className='font-semibold text-xs'>Our next event near you</p>
-						<p className='font-extralight text-base'>
-							{eventToShow.metro_area} Open House on{' '}
-							{eventToShow.time.replace('·', 'at')}
-						</p>
-					</div>
-					<Link
-						href={`${getHomeSiteRoute({
-							includeOrigin: false,
-							origin: null,
-							queryParams: {},
-							routeStaticId: 'HOME_SITE__/SCHOLARSHIPS',
-						})}#open-house-events`}
+			{isSubmitConfirmationDialogOpen && (
+				<Dialog
+					open={isSubmitConfirmationDialogOpen}
+					onOpenChange={(open) => {
+						setSubmitConfirmationStep(open ? 0 : null);
+					}}
+				>
+					<DialogTrigger asChild></DialogTrigger>
+					<DialogContent
+						className={cn('!max-h-[85vh]', {
+							'!overflow-y-auto': submitConfirmationStep !== 0,
+						})}
 					>
 						<button
-							className='bg-brand-dark rounded-md px-4 py-2 text-center w-full mt-1'
-							onClick={() => setIsSubmitConfirmationDialogOpen(false)}
+							className='focus:outline-none focus-visible:ring-none !text-left flex items-center space-x-1'
+							onClick={() => {
+								if (submitConfirmationStep === 0) {
+									setSubmitConfirmationStep(null);
+								} else {
+									setSubmitConfirmationStep((prev) => (prev ?? 0) - 1);
+								}
+							}}
 						>
-							<p className='text-white'>RSVP for the Guest List</p>
+							<div>
+								<GoChevronLeft className='text-xs' />
+							</div>
+							<div>
+								<p className='text-xs'>
+									{
+										{
+											0: 'Back to application',
+											1: 'Back to application review',
+											2: 'Back to Open House RSVP',
+										}[submitConfirmationStep ?? '']
+									}
+								</p>
+							</div>
 						</button>
-					</Link>
-					<Separator className='!my-3' />
-					<DialogFooter className=''>
-						<div className={cn('mt-1', 'lg:max-w-2xl')}>
-							<p className='font-semibold text-xs'>Scheduling Conflicts</p>
-							<p className='font-light text-[0.55rem]'>
-								While we have several open houses scheduled, we understand that
-								some students may have scheduling conflicts on account of prior
-								obligations. If you are unable to attend any of the scheduled
-								open houses, please email us at scholarships@wallot.app with
-								your availability and a member of our team will do our best
-								schedule a time to meet with you.
-							</p>
+						<div
+							className={cn('flex items-center justify-center space-x-3 mt-3')}
+						>
+							<div>
+								<PlatformIcon
+									height={380}
+									size='lg'
+									srcMap={{
+										dark: OPEN_GRAPH_CONFIG.siteBrandIconDarkMode ?? '',
+										light: OPEN_GRAPH_CONFIG.siteBrandIconLightMode ?? '',
+									}}
+									width={2048}
+								/>
+							</div>
 						</div>
-					</DialogFooter>
-				</DialogContent>
-			</Dialog>
+						<div className='flex justify-center space-x-5 mt-4'>
+							<div className='w-16 h-2 rounded-md bg-brand'></div>
+							<div
+								className={cn(
+									'w-16 h-2 rounded-md',
+									submitConfirmationStep < 1 ? 'bg-gray-200' : 'bg-brand',
+								)}
+							></div>
+							{!isAttendingAnOpenHouse && (
+								<div
+									className={cn(
+										'w-16 h-2 rounded-md',
+										submitConfirmationStep < 2 ? 'bg-gray-200' : 'bg-brand',
+									)}
+								></div>
+							)}
+						</div>
+						{submitConfirmationStep === 0 && (
+							<Fragment>
+								<DialogHeader className='mt-4'>
+									<DialogTitle className=''>Review your responses</DialogTitle>
+									<DialogDescription className=''>
+										Please review your responses before submitting your
+										application. If you need to make any changes, click the
+										"Back" button. Once everything looks good, continue to the
+										next step.
+									</DialogDescription>
+								</DialogHeader>
+								<div className={'!max-h-[30vh] !overflow-y-auto'}>
+									{[
+										{
+											question: 'Name',
+											response: `${liveData.given_name} ${liveData.family_name}`,
+										},
+										{
+											question: 'Phone Number',
+											response: liveData.phone_number,
+										},
+										{
+											question: 'High School',
+											response: liveData.high_school,
+										},
+										{
+											question: 'Date of Birth',
+											response: liveData.date_of_birth,
+										},
+										{
+											question: 'Anticipated College',
+											response: liveData.college_name,
+										},
+										{
+											question: 'Type of College',
+											response: liveData.college_type,
+										},
+										{
+											question: 'Academic Achievement',
+											response: liveData.academic_achievement,
+										},
+										{
+											question: 'Honors & Awards',
+											response: liveData.honors_and_awards,
+										},
+										{
+											question: 'Extracurricular Activities',
+											response: liveData.extracurricular_activities,
+										},
+										{
+											question: 'Future Goals',
+											response: liveData.future_goals,
+										},
+										{
+											question: 'Common Essay',
+											response: liveData.common_essay,
+										},
+										{
+											question: 'Academic Achievement Award Essay',
+											response:
+												liveData.academic_achievement_award_essay ||
+												'Not applicable',
+										},
+										{
+											question: 'Outstanding Student-Athlete Award Essay',
+											response:
+												liveData.outstanding_student_athlete_award_essay ||
+												'Not applicable',
+										},
+										{
+											question: 'Community Leadership Award Essay',
+											response:
+												liveData.community_leadership_award_essay ||
+												'Not applicable',
+										},
+										{
+											question: 'Entrepreneurial Excellence Award Essay',
+											response:
+												liveData.entrepreneurial_excellence_award_essay ||
+												'Not applicable',
+										},
+									].map(({ question, response }, responseIdx) => {
+										return (
+											<div
+												key={question}
+												className={cn({ 'mt-2': responseIdx > 0 })}
+											>
+												<p className='font-semibold text-xs'>{question}</p>
+												<p className='font-extralight text-base whitespace-pre-line'>
+													{response}
+												</p>
+											</div>
+										);
+									})}
+								</div>
+								<div className='flex items-center space-x-4 mt-4'>
+									<button
+										className='w-full text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300'
+										onClick={() => setSubmitConfirmationStep(null)}
+									>
+										<p className='font-medium text-xs'>Back</p>
+									</button>
+									<button
+										className='w-full text-center bg-brand-dark px-4 py-1.5 rounded-md border border-transparent'
+										onClick={() => setSubmitConfirmationStep(1)}
+									>
+										<p className='font-medium text-xs text-white'>Continue</p>
+									</button>
+								</div>
+							</Fragment>
+						)}
+						{!isAttendingAnOpenHouse && (
+							<Fragment>
+								{submitConfirmationStep === 1 && (
+									<Fragment>
+										<DialogHeader className='mt-4'>
+											<DialogTitle className=''>
+												RSVP to an Open House
+											</DialogTitle>
+											<DialogDescription className=''>
+												The Florida Visionary Scholarship program committee is
+												hosting informal open house events both in-person and
+												virtually to help applicants learn more about the
+												scholarship and get to know our team. Spaces at each
+												event are limited, so RSVP asap!
+											</DialogDescription>
+										</DialogHeader>
+										<div className={cn({ hidden: showFullScheduleOfEvents })}>
+											<Fragment>
+												<p className='font-semibold text-xs'>
+													Our next event near you
+												</p>
+												<p className='font-extralight text-base'>
+													{eventToShow.metro_area} Open House on{' '}
+													{eventToShow.time.replace('·', 'at')}
+												</p>
+												<p className='font-extralight text-sm'>
+													– {eventToShow.address_title}
+												</p>
+												<button
+													className='text-brand-dark font-light text-xs mt-3 flex items-center space-x-2 focus:outline-none focus-visible:ring-none'
+													onClick={() => setShowFullScheduleOfEvents(true)}
+												>
+													<div>
+														<GoCalendar className='' />
+													</div>
+													<div>
+														<p>Show full schedule of events</p>
+													</div>
+												</button>
+											</Fragment>
+										</div>
+										<div className={cn({ hidden: !showFullScheduleOfEvents })}>
+											<p className='font-semibold text-xs'>
+												Select the event that you wish to attend
+											</p>
+											{scholarshipOpenHouseEvents.map(
+												(event, eventIdx, arr) => {
+													const isSelected =
+														selectedEventLookupKey === event.lookup_key;
+													const isLast = eventIdx === arr.length - 1;
+													return (
+														<Fragment key={event.lookup_key}>
+															<button
+																key={event.lookup_key}
+																className='flex items-center space-x-2 mt-1 text-left w-full hover:bg-gray-100 focus:outline-none focus-visible:ring-none p-2'
+																onClick={() => {
+																	if (isSelected) {
+																		setSelectedEventLookupKey(null);
+																	} else {
+																		setSelectedEventLookupKey(event.lookup_key);
+																	}
+																}}
+															>
+																<div className='w-8'>
+																	{isSelected ? (
+																		<GoCheckCircleFill className='text-brand-dark' />
+																	) : (
+																		<GoCircle className='text-gray-400' />
+																	)}
+																</div>
+																<div className='w-3/4'>
+																	<div>
+																		<p className='font-extralight text-sm'>
+																			{event.metro_area} Open House
+																		</p>
+																	</div>
+																	<div className=''>
+																		<p className='font-normal text-xs'>
+																			{event.time.replace('·', 'at')}
+																		</p>
+																	</div>
+																</div>
+																<div className='w-1/4 flex justify-end'>
+																	<div
+																		className={cn('px-1.5 py-0.5 rounded-lg', {
+																			'bg-purple-200':
+																				event.type === 'In-person',
+																			'bg-blue-200': event.type === 'Virtual',
+																		})}
+																	>
+																		<p
+																			className={cn('font-extralight text-xs', {
+																				'text-purple-900':
+																					event.type === 'In-person',
+																				'text-blue-900':
+																					event.type === 'Virtual',
+																			})}
+																		>
+																			{event.type}
+																		</p>
+																	</div>
+																</div>
+															</button>
+															{!isLast && <Separator className='my-2' />}
+														</Fragment>
+													);
+												},
+											)}
+										</div>
+										<div className='flex flex-col space-y-4 mt-4'>
+											<button
+												className='bg-brand-dark rounded-md px-4 py-2 text-center w-full mt-1'
+												onClick={() => {
+													if (selectedEventLookupKey == null) {
+														if (showFullScheduleOfEvents) {
+															toast({
+																title: 'Error',
+																description:
+																	'Please select one of the events above',
+															});
+															return;
+														}
+														setSelectedEventLookupKey(eventToShow.lookup_key);
+													}
+													setSubmitConfirmationStep(2);
+												}}
+											>
+												<p className='text-white'>Yes, I can attend</p>
+											</button>
+											<button
+												className='bg-transparent px-4 py-2 text-center w-full mt-1'
+												onClick={() => {
+													setShowFullScheduleOfEvents(false);
+													setSubmitConfirmationStep(2);
+												}}
+											>
+												<p className='text-gray-600 font-light'>
+													No, I have a scheduling conflict with all{' '}
+													{scholarshipOpenHouseEvents.length} events
+												</p>
+											</button>
+										</div>
+										<Separator className='!my-3' />
+										<DialogFooter className=''>
+											<div className={cn('mt-1', 'lg:max-w-2xl')}>
+												<p className='font-semibold text-xs'>
+													Scheduling Conflicts
+												</p>
+												<p className='font-light text-[0.55rem]'>
+													While we have several open houses scheduled, we
+													understand that some students may have scheduling
+													conflicts on account of prior obligations. If you are
+													unable to attend any of the scheduled open houses,
+													please email us at scholarships@wallot.app with your
+													availability and a member of our team will do our best
+													schedule a time to meet with you.
+												</p>
+											</div>
+										</DialogFooter>
+									</Fragment>
+								)}
+							</Fragment>
+						)}
+						{submitConfirmationStep === (isAttendingAnOpenHouse ? 1 : 2) && (
+							<Fragment>
+								<DialogHeader className='mt-4'>
+									<DialogTitle className=''>
+										Submit your application
+									</DialogTitle>
+									<DialogDescription className=''>
+										Thank you for completing your Florida Visionary Scholarship
+										Application. We're excited to learn more about your
+										academic, athletic, and extracurricular achievements.
+									</DialogDescription>
+								</DialogHeader>
+								<div className={'!max-h-[30vh] !overflow-y-auto'}>
+									{[
+										{
+											question: 'Applicant',
+											response: `${liveData.given_name} ${liveData.family_name} from ${liveData.high_school}`,
+										},
+										{
+											question: 'Open House RSVP',
+											response:
+												selectedEvent == null
+													? 'Can not attend due to scheduling conflict'
+													: `Attending ${
+															selectedEvent.metro_area
+													  } Open House on ${selectedEvent.time.replace(
+															'·',
+															'at',
+													  )}`,
+										},
+									].map(({ question, response }, responseIdx) => {
+										return (
+											<div
+												key={question}
+												className={cn({ 'mt-2': responseIdx > 0 })}
+											>
+												<p className='font-semibold text-xs'>{question}</p>
+												<p className='font-extralight text-base whitespace-pre-line'>
+													{response}
+												</p>
+											</div>
+										);
+									})}
+								</div>
+								<div className='flex items-center space-x-4 mt-4'>
+									<button
+										className='w-full text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300'
+										onClick={() =>
+											setSubmitConfirmationStep(isAttendingAnOpenHouse ? 0 : 1)
+										}
+									>
+										<p className='font-medium text-xs'>Back</p>
+									</button>
+									<button
+										className='w-full text-center bg-brand-dark px-4 py-1.5 rounded-md border border-transparent'
+										onClick={onSubmit}
+										disabled={isSubmitScholarshipApplicationRunning}
+									>
+										{isSubmitScholarshipApplicationRunning ? (
+											<div>
+												<div className='flex items-center justify-center min-w-8'>
+													<div
+														className={cn(
+															'w-4 h-4 border-2 border-gray-200 rounded-full animate-spin',
+															'border-t-white border-r-white border-b-white',
+														)}
+													></div>
+												</div>
+											</div>
+										) : (
+											<p className='font-medium text-xs text-white'>Submit</p>
+										)}
+									</button>
+								</div>
+							</Fragment>
+						)}
+					</DialogContent>
+				</Dialog>
+			)}
 		</PageComponent>
 	);
 };
