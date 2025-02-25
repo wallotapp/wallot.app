@@ -974,12 +974,14 @@ const Page: NextPage<PageProps> = (props) => {
 											</p>
 										</div>
 										<AsyncLink
-											href={`${getHomeSiteRoute({
+											href={getHomeSiteRoute({
 												includeOrigin: false,
 												origin: null,
-												queryParams: {},
+												queryParams: {
+													rsvp: eventToShow.lookup_key,
+												},
 												routeStaticId: 'HOME_SITE__/SCHOLARSHIPS',
-											})}#open-house-events`}
+											})}
 											target='_blank'
 											isReady={!isRsvpdToNextEvent}
 										>
