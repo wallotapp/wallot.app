@@ -88,7 +88,14 @@ ${email}
 Additional Guests:
 ${parent_emails.length ? parent_emails.join('\n') : 'None'}
 
-Accessibility Requests:
+${
+	match.type === 'Virtual'
+		? ''
+		: `Food:
+Light refreshments will be served
+
+`
+}Accessibility Requests:
 ${accessibility_requests || 'None'}
 `,
 				end_time_nyc: match.end_time_nyc,

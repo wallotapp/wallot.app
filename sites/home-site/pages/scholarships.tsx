@@ -707,6 +707,13 @@ const Page: NextPage<PageProps> = (props) => {
 																						title: 'Attire',
 																				  }
 																				: null,
+																			event.type === 'In-person'
+																				? {
+																						subtitle:
+																							'Light refreshments will be served',
+																						title: 'Food',
+																				  }
+																				: null,
 																		]
 																			.filter(
 																				(
