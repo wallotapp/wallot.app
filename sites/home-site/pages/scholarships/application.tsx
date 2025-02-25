@@ -494,8 +494,17 @@ const Page: NextPage<PageProps> = (props) => {
 				return lookupKey === eventToShow.lookup_key;
 			},
 		) ?? false;
+	const firstAttendingEventFromExistingRsvp = Array.isArray(
+		scholarshipApplicationForLoggedInUser?.open_house_rsvps,
+	)
+		? scholarshipApplicationForLoggedInUser.open_house_rsvps[0]
+		: null;
+	const isAttendingAnOpenHouse = firstAttendingEventFromExistingRsvp != null;
 	const selectedEvent = scholarshipOpenHouseEvents.find(({ lookup_key }) => {
-		return lookup_key === selectedEventLookupKey;
+		return (
+			lookup_key ===
+			(firstAttendingEventFromExistingRsvp || selectedEventLookupKey)
+		);
 	});
 
 	// ==== Render ==== //
@@ -1061,12 +1070,14 @@ const Page: NextPage<PageProps> = (props) => {
 									submitConfirmationStep < 1 ? 'bg-gray-200' : 'bg-brand',
 								)}
 							></div>
-							<div
-								className={cn(
-									'w-16 h-2 rounded-md',
-									submitConfirmationStep < 2 ? 'bg-gray-200' : 'bg-brand',
-								)}
-							></div>
+							{!isAttendingAnOpenHouse && (
+								<div
+									className={cn(
+										'w-16 h-2 rounded-md',
+										submitConfirmationStep < 2 ? 'bg-gray-200' : 'bg-brand',
+									)}
+								></div>
+							)}
 						</div>
 						{submitConfirmationStep === 0 && (
 							<Fragment>
@@ -1179,159 +1190,170 @@ const Page: NextPage<PageProps> = (props) => {
 								</div>
 							</Fragment>
 						)}
-						{submitConfirmationStep === 1 && (
+						{!isAttendingAnOpenHouse && (
 							<Fragment>
-								<DialogHeader className='mt-4'>
-									<DialogTitle className=''>RSVP to an Open House</DialogTitle>
-									<DialogDescription className=''>
-										The Florida Visionary Scholarship program committee is
-										hosting informal open house events both in-person and
-										virtually to help applicants learn more about the
-										scholarship and get to know our team. Spaces at each event
-										are limited, so RSVP asap!
-									</DialogDescription>
-								</DialogHeader>
-								<div className={cn({ hidden: showFullScheduleOfEvents })}>
+								{submitConfirmationStep === 1 && (
 									<Fragment>
-										<p className='font-semibold text-xs'>
-											Our next event near you
-										</p>
-										<p className='font-extralight text-base'>
-											{eventToShow.metro_area} Open House on{' '}
-											{eventToShow.time.replace('·', 'at')}
-										</p>
-										<p className='font-extralight text-sm'>
-											– {eventToShow.address_title}
-										</p>
-										<button
-											className='text-brand-dark font-light text-xs mt-3 flex items-center space-x-2 focus:outline-none focus-visible:ring-none'
-											onClick={() => setShowFullScheduleOfEvents(true)}
-										>
-											<div>
-												<GoCalendar className='' />
-											</div>
-											<div>
-												<p>Show full schedule of events</p>
-											</div>
-										</button>
-									</Fragment>
-								</div>
-								<div className={cn({ hidden: !showFullScheduleOfEvents })}>
-									<p className='font-semibold text-xs'>
-										Select the event that you wish to attend
-									</p>
-									{scholarshipOpenHouseEvents.map((event, eventIdx, arr) => {
-										const isSelected =
-											selectedEventLookupKey === event.lookup_key;
-										const isLast = eventIdx === arr.length - 1;
-										return (
-											<Fragment key={event.lookup_key}>
+										<DialogHeader className='mt-4'>
+											<DialogTitle className=''>
+												RSVP to an Open House
+											</DialogTitle>
+											<DialogDescription className=''>
+												The Florida Visionary Scholarship program committee is
+												hosting informal open house events both in-person and
+												virtually to help applicants learn more about the
+												scholarship and get to know our team. Spaces at each
+												event are limited, so RSVP asap!
+											</DialogDescription>
+										</DialogHeader>
+										<div className={cn({ hidden: showFullScheduleOfEvents })}>
+											<Fragment>
+												<p className='font-semibold text-xs'>
+													Our next event near you
+												</p>
+												<p className='font-extralight text-base'>
+													{eventToShow.metro_area} Open House on{' '}
+													{eventToShow.time.replace('·', 'at')}
+												</p>
+												<p className='font-extralight text-sm'>
+													– {eventToShow.address_title}
+												</p>
 												<button
-													key={event.lookup_key}
-													className='flex items-center space-x-2 mt-1 text-left w-full hover:bg-gray-100 focus:outline-none focus-visible:ring-none p-2'
-													onClick={() => {
-														if (isSelected) {
-															setSelectedEventLookupKey(null);
-														} else {
-															setSelectedEventLookupKey(event.lookup_key);
-														}
-													}}
+													className='text-brand-dark font-light text-xs mt-3 flex items-center space-x-2 focus:outline-none focus-visible:ring-none'
+													onClick={() => setShowFullScheduleOfEvents(true)}
 												>
-													<div className='w-8'>
-														{isSelected ? (
-															<GoCheckCircleFill className='text-brand-dark' />
-														) : (
-															<GoCircle className='text-gray-400' />
-														)}
+													<div>
+														<GoCalendar className='' />
 													</div>
-													<div className='w-3/4'>
-														<div>
-															<p className='font-extralight text-sm'>
-																{event.metro_area} Open House
-															</p>
-														</div>
-														<div className=''>
-															<p className='font-normal text-xs'>
-																{event.time.replace('·', 'at')}
-															</p>
-														</div>
-													</div>
-													<div className='w-1/4 flex justify-end'>
-														<div
-															className={cn('px-1.5 py-0.5 rounded-lg', {
-																'bg-purple-200': event.type === 'In-person',
-																'bg-blue-200': event.type === 'Virtual',
-															})}
-														>
-															<p
-																className={cn('font-extralight text-xs', {
-																	'text-purple-900': event.type === 'In-person',
-																	'text-blue-900': event.type === 'Virtual',
-																})}
-															>
-																{event.type}
-															</p>
-														</div>
+													<div>
+														<p>Show full schedule of events</p>
 													</div>
 												</button>
-												{!isLast && <Separator className='my-2' />}
 											</Fragment>
-										);
-									})}
-								</div>
-								<div className='flex flex-col space-y-4 mt-4'>
-									<button
-										className='bg-brand-dark rounded-md px-4 py-2 text-center w-full mt-1'
-										onClick={() => {
-											if (selectedEventLookupKey == null) {
-												if (showFullScheduleOfEvents) {
-													toast({
-														title: 'Error',
-														description:
-															'Please select one of the events above',
-													});
-													return;
-												}
-												setSelectedEventLookupKey(eventToShow.lookup_key);
-											}
-											setSubmitConfirmationStep(2);
-										}}
-									>
-										<p className='text-white'>Yes, I can attend</p>
-									</button>
-									<button
-										className='bg-transparent px-4 py-2 text-center w-full mt-1'
-										onClick={() => {
-											setShowFullScheduleOfEvents(false);
-											setSubmitConfirmationStep(2);
-										}}
-									>
-										<p className='text-gray-600 font-light'>
-											No, I have a scheduling conflict with all{' '}
-											{scholarshipOpenHouseEvents.length} events
-										</p>
-									</button>
-								</div>
-								<Separator className='!my-3' />
-								<DialogFooter className=''>
-									<div className={cn('mt-1', 'lg:max-w-2xl')}>
-										<p className='font-semibold text-xs'>
-											Scheduling Conflicts
-										</p>
-										<p className='font-light text-[0.55rem]'>
-											While we have several open houses scheduled, we understand
-											that some students may have scheduling conflicts on
-											account of prior obligations. If you are unable to attend
-											any of the scheduled open houses, please email us at
-											scholarships@wallot.app with your availability and a
-											member of our team will do our best schedule a time to
-											meet with you.
-										</p>
-									</div>
-								</DialogFooter>
+										</div>
+										<div className={cn({ hidden: !showFullScheduleOfEvents })}>
+											<p className='font-semibold text-xs'>
+												Select the event that you wish to attend
+											</p>
+											{scholarshipOpenHouseEvents.map(
+												(event, eventIdx, arr) => {
+													const isSelected =
+														selectedEventLookupKey === event.lookup_key;
+													const isLast = eventIdx === arr.length - 1;
+													return (
+														<Fragment key={event.lookup_key}>
+															<button
+																key={event.lookup_key}
+																className='flex items-center space-x-2 mt-1 text-left w-full hover:bg-gray-100 focus:outline-none focus-visible:ring-none p-2'
+																onClick={() => {
+																	if (isSelected) {
+																		setSelectedEventLookupKey(null);
+																	} else {
+																		setSelectedEventLookupKey(event.lookup_key);
+																	}
+																}}
+															>
+																<div className='w-8'>
+																	{isSelected ? (
+																		<GoCheckCircleFill className='text-brand-dark' />
+																	) : (
+																		<GoCircle className='text-gray-400' />
+																	)}
+																</div>
+																<div className='w-3/4'>
+																	<div>
+																		<p className='font-extralight text-sm'>
+																			{event.metro_area} Open House
+																		</p>
+																	</div>
+																	<div className=''>
+																		<p className='font-normal text-xs'>
+																			{event.time.replace('·', 'at')}
+																		</p>
+																	</div>
+																</div>
+																<div className='w-1/4 flex justify-end'>
+																	<div
+																		className={cn('px-1.5 py-0.5 rounded-lg', {
+																			'bg-purple-200':
+																				event.type === 'In-person',
+																			'bg-blue-200': event.type === 'Virtual',
+																		})}
+																	>
+																		<p
+																			className={cn('font-extralight text-xs', {
+																				'text-purple-900':
+																					event.type === 'In-person',
+																				'text-blue-900':
+																					event.type === 'Virtual',
+																			})}
+																		>
+																			{event.type}
+																		</p>
+																	</div>
+																</div>
+															</button>
+															{!isLast && <Separator className='my-2' />}
+														</Fragment>
+													);
+												},
+											)}
+										</div>
+										<div className='flex flex-col space-y-4 mt-4'>
+											<button
+												className='bg-brand-dark rounded-md px-4 py-2 text-center w-full mt-1'
+												onClick={() => {
+													if (selectedEventLookupKey == null) {
+														if (showFullScheduleOfEvents) {
+															toast({
+																title: 'Error',
+																description:
+																	'Please select one of the events above',
+															});
+															return;
+														}
+														setSelectedEventLookupKey(eventToShow.lookup_key);
+													}
+													setSubmitConfirmationStep(2);
+												}}
+											>
+												<p className='text-white'>Yes, I can attend</p>
+											</button>
+											<button
+												className='bg-transparent px-4 py-2 text-center w-full mt-1'
+												onClick={() => {
+													setShowFullScheduleOfEvents(false);
+													setSubmitConfirmationStep(2);
+												}}
+											>
+												<p className='text-gray-600 font-light'>
+													No, I have a scheduling conflict with all{' '}
+													{scholarshipOpenHouseEvents.length} events
+												</p>
+											</button>
+										</div>
+										<Separator className='!my-3' />
+										<DialogFooter className=''>
+											<div className={cn('mt-1', 'lg:max-w-2xl')}>
+												<p className='font-semibold text-xs'>
+													Scheduling Conflicts
+												</p>
+												<p className='font-light text-[0.55rem]'>
+													While we have several open houses scheduled, we
+													understand that some students may have scheduling
+													conflicts on account of prior obligations. If you are
+													unable to attend any of the scheduled open houses,
+													please email us at scholarships@wallot.app with your
+													availability and a member of our team will do our best
+													schedule a time to meet with you.
+												</p>
+											</div>
+										</DialogFooter>
+									</Fragment>
+								)}
 							</Fragment>
 						)}
-						{submitConfirmationStep === 2 && (
+						{submitConfirmationStep === (isAttendingAnOpenHouse ? 1 : 2) && (
 							<Fragment>
 								<DialogHeader className='mt-4'>
 									<DialogTitle className=''>
@@ -1378,7 +1400,9 @@ const Page: NextPage<PageProps> = (props) => {
 								<div className='flex items-center space-x-4 mt-4'>
 									<button
 										className='w-full text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300'
-										onClick={() => setSubmitConfirmationStep(1)}
+										onClick={() =>
+											setSubmitConfirmationStep(isAttendingAnOpenHouse ? 0 : 1)
+										}
 									>
 										<p className='font-medium text-xs'>Back</p>
 									</button>
