@@ -373,7 +373,7 @@ const Page: NextPage<PageProps> = (props) => {
 	const rsvps =
 		scholarshipApplicationForLoggedInUser == null
 			? rsvpsGuest
-			: Array.isArray(scholarshipApplicationForLoggedInUser)
+			: Array.isArray(scholarshipApplicationForLoggedInUser.open_house_rsvps)
 			? scholarshipApplicationForLoggedInUser.open_house_rsvps
 			: [];
 

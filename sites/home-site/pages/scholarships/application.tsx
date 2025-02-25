@@ -71,6 +71,8 @@ import {
 import { OPEN_GRAPH_CONFIG } from 'ergonomic-react/src/config/openGraphConfig';
 import { PlatformIcon } from 'ergonomic-react/src/components/brand/PlatformIcon';
 import { DateTime } from 'luxon';
+import { AsyncLink } from 'ergonomic-react/src/components/custom-ui/async-link';
+import { GoCheckCircleFill } from 'react-icons/go';
 
 const steps = ScholarshipApplicationFormDataSectionEnum.arr;
 
@@ -137,7 +139,7 @@ const Page: NextPage<PageProps> = (props) => {
 		resourcesForLoggedInUser: scholarshipApplicationsForLoggedInUser,
 		refetch: refetchScholarshipApplicationsForLoggedInUser,
 		isResourcePageLoading: isScholarshipApplicationPageLoading,
-	} = useQueryScholarshipApplicationsForLoggedInUser();
+	} = useQueryScholarshipApplicationsForLoggedInUser({refetchOnWindowFocus: 'always'});
 	const scholarshipApplicationForLoggedInUser =
 		scholarshipApplicationsForLoggedInUser[0] ?? null;
 	const isScholarshipApplicationForLoggedInUserSubmitted =
@@ -455,9 +457,16 @@ const Page: NextPage<PageProps> = (props) => {
 		nextEventInNextNearestMetroArea ??
 		nextEventInThirdNearestMetroArea ??
 		fallbackEventNextInCalendar ?? {
+			lookup_key: 'tampa-2025-03-29',
 			metro_area: 'Tampa',
 			time: 'Sat, Mar 29 · 3:00 PM EST',
 		};
+	const isRsvpdToNextEvent =
+		scholarshipApplicationForLoggedInUser?.open_house_rsvps?.some(
+			(lookupKey) => {
+				return lookupKey === eventToShow.lookup_key;
+			},
+		) ?? false;
 
 	// ==== Render ==== //
 	return (
@@ -924,7 +933,7 @@ const Page: NextPage<PageProps> = (props) => {
 												{eventToShow.time.replace('·', 'at')}
 											</p>
 										</div>
-										<Link
+										<AsyncLink
 											href={`${getHomeSiteRoute({
 												includeOrigin: false,
 												origin: null,
@@ -932,21 +941,27 @@ const Page: NextPage<PageProps> = (props) => {
 												routeStaticId: 'HOME_SITE__/SCHOLARSHIPS',
 											})}#open-house-events`}
 											target='_blank'
+											isReady={!isRsvpdToNextEvent}
 										>
 											<div className='p-[1.5px] bg-gradient-to-r from-brand-dark via-pink-600 to-red-800 animate-gradient-rotate bg-[length:200%_200%] rounded w-full cursor-pointer mt-3'>
-												<div className='bg-black rounded flex items-center space-x-1 py-1 px-4 w-full'>
-													<div className='mx-auto'>
+												<div className='bg-black rounded flex items-center justify-center space-x-1.5 py-1 px-4 w-full'>
+													{isRsvpdToNextEvent && (
+														<GoCheckCircleFill className='text-white' />
+													)}
+													<div className={''}>
 														<p
 															className={cn(
 																'font-extralight text-white text-sm',
 															)}
 														>
-															RSVP for the Guest List
+															{isRsvpdToNextEvent
+																? 'Attending'
+																: 'RSVP for the Guest List'}
 														</p>
 													</div>
 												</div>
 											</div>
-										</Link>
+										</AsyncLink>
 									</div>
 								</aside>
 							</div>
