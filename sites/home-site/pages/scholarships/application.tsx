@@ -92,7 +92,7 @@ const Page: NextPage<PageProps> = (props) => {
 	// 	useState(false);
 	const [submitConfirmationStep, setSubmitConfirmationStep] = useState<
 		number | null
-	>(1);
+	>(null);
 	const isSubmitConfirmationDialogOpen = submitConfirmationStep !== null;
 	const [showFullScheduleOfEvents, setShowFullScheduleOfEvents] =
 		useState(false);
