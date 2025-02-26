@@ -60,7 +60,7 @@ export const submitScholarshipApplication = async (
 
 			if (secrets.SECRET_CRED_DEPLOYMENT_ENVIRONMENT == 'live') {
 				// Send developer alert
-				const log = JSON.stringify(
+				const alertBody = JSON.stringify(
 					{
 						user_id: firebaseUser.uid,
 						scholarship_application_id: scholarshipApplicationId,
@@ -72,8 +72,9 @@ export const submitScholarshipApplication = async (
 				await gmail.sendDeveloperAlert({
 					message: `New scholarship application submission from ${email}.\
 <br/><br/>\
-${log}`,
-					subject: '[Wallot Developer Alerts] New Scholarship Application Submission',
+${alertBody}`,
+					subject:
+						'[Wallot Developer Alerts] New Scholarship Application Submission',
 				});
 			}
 		} else {

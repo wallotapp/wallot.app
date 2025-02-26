@@ -130,13 +130,14 @@ ${accessibility_requests || 'None'}
 			},
 		};
 		log(logData, { type: 'normal' });
+		const alertBody = JSON.stringify(logData, null, 2);
 
 		if (secrets.SECRET_CRED_DEPLOYMENT_ENVIRONMENT == 'live') {
 			// Send developer alert
 			await gmail.sendDeveloperAlert({
 				message: `RSVP submitted for Scholarship Open House from ${email}.\
 <br/><br/>\
-${JSON.stringify(logData, null, 2)}`,
+${alertBody}`,
 				subject: '[Wallot Developer Alerts] New Scholarship Open House RSVP',
 			});
 		}
