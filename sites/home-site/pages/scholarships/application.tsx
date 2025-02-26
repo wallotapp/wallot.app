@@ -481,7 +481,7 @@ const Page: NextPage<PageProps> = (props) => {
 			return metro_area_full_name === thirdNearestMetroArea;
 		},
 	);
-	const fallbackEventNextInCalendar = scholarshipOpenHouseEvents[0];
+	const fallbackEventNextInCalendar = scholarshipOpenHouseEvents[1];
 	const eventToShow =
 		nextEventInNearestMetroArea ??
 		nextEventInNextNearestMetroArea ??
