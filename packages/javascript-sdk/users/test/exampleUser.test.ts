@@ -34,7 +34,6 @@ describe('User', () => {
 			investing_goals: [],
 			parameters: [],
 			risk_preference: 'low',
-			stripe_customer_id: '',
 			username: '',
 		};
 		expect(exampleUser).toEqual<typeof exampleUser>({
@@ -75,7 +74,6 @@ describe('User', () => {
 			investing_goals: [],
 			parameters: [],
 			risk_preference: 'low',
-			stripe_customer_id: '',
 			username: '',
 		});
 	});

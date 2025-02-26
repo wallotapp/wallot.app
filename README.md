@@ -37,10 +37,6 @@ erDiagram
 	ASSET ||--|| ALPACA_ASSET_ID : "owns"
   ASSET ||--|| ALPHA_VANTAGE_COMPANY_NAME : "owns"
   ASSET_ORDER ||--o| ALPACA_ORDER_ID : "owns"
-  BANK_ACCOUNT ||--|| STRIPE_FINANCIAL_CONNECTIONS_ACCOUNT_ID : "owns"
-  BANK_ACCOUNT ||--|| STRIPE_PAYMENT_METHOD_ID : "owns"
-	INVOICE ||--|| STRIPE_INVOICE_ID : "owns"
-	LICENSE ||--o| STRIPE_SUBSCRIPTION_ID : "owns"
 	MODEL_FAMILY ||--o{ MODEL : "owns"
 	OPEN_AI_MODEL_FAMILY ||--o{ OPEN_AI_MODEL : "owns"
 	ORDER ||--o{ ASSET_ORDER : "owns"
@@ -51,12 +47,10 @@ erDiagram
 	USER ||--o{ PAYMENT_METHOD : "owns"
 	USER ||--o{ POSITION : "owns"
 	USER ||--o{ RECOMMENDATION : "owns"
-  USER ||--|| STRIPE_CUSTOMER_ID : "owns"
 
 	%% Production Relationships
 	MODEL ||--o{ RECOMMENDATION : "produces"
 	RECOMMENDATION }o--|{ ASSET_ORDER : "factors_into"
-	STRIPE_FINANCIAL_CONNECTIONS_SESSION_FLOW ||--o{ STRIPE_FINANCIAL_CONNECTIONS_ACCOUNT_LINK : "produces"
 
 	%% Similarity Relationships
 	MODEL_FAMILY }o--o{ PARAMETER : "caters_to"
@@ -99,16 +93,12 @@ erDiagram
   }
   BANK_ACCOUNT {
     string alpaca_ach_relationship_id UK "nullable"
-    string stripe_financial_connections_account_id UK "min(1)"
-    string stripe_payment_method_id UK "min(1)"
   }
   INVOICE {
     string bank_account FK "min(1)"
     string license FK "min(1)"
-    string stripe_invoice_id FK "min(1)"
   }
   LICENSE {
-    string stripe_subscription_id UK "nullable"
     string user FK "min(1)"
   }
   MODEL {
@@ -137,7 +127,6 @@ erDiagram
   USER {
     string alpaca_account_id UK "nullable"
     string[] parameters FK "nullable"
-    string stripe_customer_id UK "min(1)"
   }
 ```
 

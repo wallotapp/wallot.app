@@ -81,10 +81,6 @@ const properties = {
 			label_by_enum_option: riskPreferenceLabelDictionary,
 			label_message_user_text: 'Select a risk level you are comfortable with',
 		}),
-	stripe_customer_id: yup.string().nullable().default(null).meta({
-		unique_key: true,
-		type: GeneralizedFieldTypeEnum.obj.short_text,
-	}),
 	username: usernameSchema().defined().meta({ unique_key: true }),
 	...alpacaAccountProperties,
 } as const;

@@ -1,7 +1,6 @@
 import * as cors from 'cors';
 import * as express from 'express';
 import { statSync } from 'fs';
-import { Stripe } from 'stripe';
 import { FirebaseUserCustomTokenResponse } from 'ergonomic';
 import {
 	GeneralizedResLocals,
@@ -12,10 +11,6 @@ import {
 import {
 	ActivateUserResponse,
 	ActivateUserParams,
-	ConnectBankAccountsParams,
-	ConnectBankAccountsResponse,
-	CreateStripeFinancialConnectionsSessionParams,
-	CreateStripeFinancialConnectionsSessionResponse,
 	RegisterUserParams,
 	RegisterUserResponse,
 	TokenizeBankAccountParams,
@@ -115,31 +110,6 @@ app.get(
 );
 
 // Bank Accounts
-import { connectBankAccounts } from './app/wallot/bankAccounts/connectBankAccounts.js';
-app.options('*/v0/bank-accounts/connect', corsPolicy);
-app.post(
-	'*/v0/bank-accounts/connect',
-	(
-		req: express.Request<
-			Record<string, never>,
-			ConnectBankAccountsResponse,
-			ConnectBankAccountsParams<Stripe.FinancialConnections.Account>,
-			Record<string, never>
-		>,
-		res: express.Response<
-			ConnectBankAccountsResponse,
-			GeneralizedResLocals<ConnectBankAccountsResponse>
-		>,
-		next,
-	) => {
-		corsPolicy(
-			req,
-			res,
-			createRouterFunction(auth, secrets)(connectBankAccounts)(req, res, next),
-		);
-	},
-);
-
 import { tokenizeBankAccount } from './app/wallot/bankAccounts/tokenizeBankAccount.js';
 app.options('*/v0/bank-accounts/:bankAccountId/tokenize', corsPolicy);
 app.post(
@@ -555,37 +525,6 @@ app.post(
 	},
 );
 
-// ---- Application Routes: Stripe ---- //
-
-// Financial Connections Sessions
-import { createStripeFinancialConnectionsSession } from './app/stripe/financialConnections/createStripeFinancialConnectionsSession.js';
-app.options('*/v0/stripe/financial-connections/sessions', corsPolicy);
-app.post(
-	'*/v0/stripe/financial-connections/sessions',
-	(
-		req: express.Request<
-			CreateStripeFinancialConnectionsSessionParams,
-			CreateStripeFinancialConnectionsSessionResponse,
-			Record<string, never>,
-			Record<string, never>
-		>,
-		res: express.Response<
-			CreateStripeFinancialConnectionsSessionResponse,
-			GeneralizedResLocals<CreateStripeFinancialConnectionsSessionResponse>
-		>,
-		next,
-	) => {
-		corsPolicy(
-			req,
-			res,
-			createRouterFunction(
-				auth,
-				secrets,
-			)(createStripeFinancialConnectionsSession)(req, res, next),
-		);
-	},
-);
-
 // ---- Health Checks ---- //
 
 // Gmail API
@@ -603,7 +542,6 @@ const mockApiResource: User = {
 	firebase_auth_email: '...',
 	investing_goals: [],
 	parameters: [],
-	stripe_customer_id: '...',
 	username: '...',
 };
 

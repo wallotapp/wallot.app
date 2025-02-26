@@ -9,7 +9,6 @@ import { FunctionResponse } from '@wallot/node';
 import { auth, db, gmail } from '../../../services.js';
 import { secrets } from '../../../secrets.js';
 import { siteOriginByTarget } from '../../../variables.js';
-import { createStripeCustomer } from '../../stripe/customers/createStripeCustomer.js';
 import { sendWelcomeEmail } from './sendWelcomeEmail.js';
 import { scheduleActivationReminderEmails } from './scheduleActivationReminderEmails.js';
 
@@ -120,18 +119,6 @@ ${alertBody}`,
 				subject: '[Wallot Developer Alerts] New User Registration',
 			});
 		}
-		// Create a Stripe Customer
-		const stripeCustomer = await createStripeCustomer({
-			email,
-			metadata: { user_id: userDocId },
-			username,
-		});
-
-		// Update the USER Firestore document with the Stripe Customer ID
-		await db
-			.collection(usersApi.collectionId)
-			.doc(userDocId)
-			.update({ stripe_customer_id: stripeCustomer.id });
 
 		// Send welcome email to USER
 		await sendWelcomeEmail({ email, username });
