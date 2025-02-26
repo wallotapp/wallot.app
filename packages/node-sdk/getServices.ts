@@ -81,6 +81,18 @@ export const getServices = (
 	const decrypt = decryptString(
 		secrets.SECRET_CRED_FIRESTORE_DATABASE_ENCRYPTION_KEY,
 	);
+	const sendEmail = sendEmailWithGmailAPI(serviceAccountPath, variables);
+	const sendDeveloperAlert = (params: { message: string; subject: string }) =>
+		sendEmail({
+			html_body: `<p>${params.message}</p>`,
+			recipient_email: secrets.SECRET_CRED_SMOKE_TEST_RECIPIENT_EMAIL,
+			subject: params.subject,
+			sender_email:
+				secrets.SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_SEND_FROM_EMAIL,
+			sender_name:
+				secrets.SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_SEND_FROM_NAME,
+			sender_user_id: secrets.SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_USER_ID,
+		});
 
 	return {
 		alpaca: {
@@ -194,7 +206,7 @@ export const getServices = (
 				),
 			},
 		},
-		gmail: { send: sendEmailWithGmailAPI(serviceAccountPath, variables) },
+		gmail: { sendEmail, sendDeveloperAlert },
 		log: logService,
 		openAI: new OpenAI({
 			apiKey: secrets.SECRET_CRED_OPENAI_API_KEY,

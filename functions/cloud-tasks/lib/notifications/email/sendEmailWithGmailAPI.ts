@@ -11,7 +11,7 @@ export const handleSendEmailWithGmailAPITask: CloudTaskHandler<
 	SendEmailWithGmailAPIParams
 > = async ({ data }) => {
 	try {
-		const result = await gmail.send(data);
+		const result = await gmail.sendEmail(data);
 		log({
 			message: 'Email delivery successful',
 			recipientEmail: data.recipient_email,

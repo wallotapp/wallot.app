@@ -21,7 +21,7 @@ export async function sendScholarshipApplicationConfirmationEmail(
 			routeStaticId: 'HOME_SITE__/SCHOLARSHIPS/APPLICATION',
 		}),
 	});
-	const result = await gmail.send({
+	const result = await gmail.sendEmail({
 		html_body: body,
 		recipient_email: recipientEmail,
 		sender_email:
