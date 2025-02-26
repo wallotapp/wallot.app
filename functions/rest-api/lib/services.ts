@@ -16,5 +16,4 @@ export const {
 	gmail,
 	log,
 	openAI,
-	stripe,
 } = getServices(secrets, serviceAccountPath, variables);

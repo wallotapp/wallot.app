@@ -1,4 +1,3 @@
-import { type FinancialConnectionsSession } from '@stripe/stripe-js';
 import { User as FirebaseUser } from 'firebase/auth';
 import { handleKyError } from 'ergonomic';
 import { getAuthenticatedKyInstance } from '@wallot/react/src/lib/ky';
@@ -9,7 +8,7 @@ import {
 
 export const connectBankAccounts = async (
 	firebaseUser: FirebaseUser | null,
-	params: ConnectBankAccountsParams<FinancialConnectionsSession.Account>,
+	params: ConnectBankAccountsParams<Record<string, unknown>>,
 ) => {
 	try {
 		if (!firebaseUser) {

@@ -1,4 +1,3 @@
-import { type FinancialConnectionsSession } from '@stripe/stripe-js';
 import { useContext } from 'react';
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 import { AuthContext } from 'ergonomic-react/src/features/authentication/providers/AuthProvider';
@@ -13,16 +12,16 @@ export function useConnectBankAccountsMutation(
 	options?: UseMutationOptions<
 		ConnectBankAccountsResponse,
 		GeneralizedError,
-		ConnectBankAccountsParams<FinancialConnectionsSession.Account>
+		ConnectBankAccountsParams<Record<string, unknown>>
 	>,
 ) {
 	const { user: firebaseUser } = useContext(AuthContext);
 	return useMutation<
 		ConnectBankAccountsResponse,
 		GeneralizedError,
-		ConnectBankAccountsParams<FinancialConnectionsSession.Account>
+		ConnectBankAccountsParams<Record<string, unknown>>
 	>(
-		(params: ConnectBankAccountsParams<FinancialConnectionsSession.Account>) =>
+		(params: ConnectBankAccountsParams<Record<string, unknown>>) =>
 			connectBankAccounts(firebaseUser, params),
 		{
 			onError: (error: GeneralizedError) => {

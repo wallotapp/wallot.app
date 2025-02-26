@@ -9,7 +9,6 @@ import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { GoCheckCircleFill, GoPlus } from 'react-icons/go';
 import { useQueryBankAccountsForLoggedInUser } from '@wallot/react/src/features/bankAccounts/hooks/useQueryBankAccountsForLoggedInUser';
 import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
-import { stripePromise } from 'ergonomic-react/src/lib/stripe';
 import { useAuthenticatedRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useAuthenticatedRouteRedirect';
 import { BsFillCaretDownFill, BsFillCaretRightFill } from 'react-icons/bs';
 import { BankIcon } from '@wallot/react/src/components/BankIcon';
@@ -146,6 +145,7 @@ export function BankAccountsContainer({
 			});
 		},
 	});
+	connectBankAccounts;
 	const {
 		mutate: createStripeFinancialConnectionSession,
 		isLoading: isCreateStripeFinancialConnectionSessionRunning,
@@ -157,30 +157,12 @@ export function BankAccountsContainer({
 				description: message,
 			});
 		},
-		onSuccess: async ({ client_secret: clientSecret }) => {
-			const stripe = await stripePromise;
-			if (!stripe) {
-				toast({
-					title: 'Error',
-					description: 'Failed to connect to Stripe',
-				});
-				return;
-			}
-			const { financialConnectionsSession } =
-				await stripe.collectFinancialConnectionsAccounts({
-					clientSecret,
-				});
-			if (!financialConnectionsSession) {
-				throw new Error('Failed to collect financial connections accounts');
-			}
-			console.log(
-				'Financial connections session:',
-				financialConnectionsSession,
-			);
-			connectBankAccounts({
-				stripe_financial_connections_accounts:
-					financialConnectionsSession.accounts,
+		onSuccess: () => {
+			toast({
+				title: 'Error',
+				description: 'Failed to connect to Stripe',
 			});
+			return;
 		},
 	});
 

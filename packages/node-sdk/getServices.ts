@@ -4,7 +4,6 @@ import {
 	getCloudFunctionUrl,
 	getFirebaseAuth,
 	getFirestoreDB,
-	getStripeInstance,
 	GeneralizedServerVariables,
 } from 'ergonomic-node';
 import { SecretData } from './SecretDataTypes.js';
@@ -211,6 +210,5 @@ export const getServices = (
 		openAI: new OpenAI({
 			apiKey: secrets.SECRET_CRED_OPENAI_API_KEY,
 		}),
-		stripe: getStripeInstance(secrets),
 	};
 };

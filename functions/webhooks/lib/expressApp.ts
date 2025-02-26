@@ -35,7 +35,6 @@ const mockApiResource: User = {
 	firebase_auth_email: '...',
 	investing_goals: [],
 	parameters: [],
-	stripe_customer_id: '...',
 	username: '...',
 };
 
