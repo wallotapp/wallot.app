@@ -135,7 +135,7 @@
 		{
 			"package_name": "@wallot/js",
 			"access": "public",
-			"version": "0.1.27-rc.0",
+			"version": "0.1.28-rc.0",
 			"name": "JavaScript SDK",
 			"category": "javascript_sdk",
 			"workspace_package_relative_path": "packages/javascript-sdk",
@@ -143,7 +143,7 @@
 		},
 		{
 			"package_name": "@wallot/react",
-			"version": "0.1.27-rc.0",
+			"version": "0.1.28-rc.0",
 			"access": "private",
 			"name": "React SDK",
 			"category": "react_sdk",
