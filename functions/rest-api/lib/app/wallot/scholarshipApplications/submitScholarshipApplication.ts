@@ -73,7 +73,7 @@ export const submitScholarshipApplication = async (
 					message: `New scholarship application submission from ${email}.\
 <br/><br/>\
 ${log}`,
-					subject: '[Wallot Alerts] New Scholarship Application Submission',
+					subject: '[Wallot Developer Alerts] New Scholarship Application Submission',
 				});
 			}
 		} else {

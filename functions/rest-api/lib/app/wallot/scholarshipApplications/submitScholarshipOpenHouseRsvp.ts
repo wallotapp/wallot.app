@@ -10,7 +10,7 @@ import {
 	scholarshipApplicationsApi,
 	scholarshipOpenHouseEvents,
 } from '@wallot/js';
-import { db, gcal, log } from '../../../services.js';
+import { db, gcal, gmail, log } from '../../../services.js';
 import { FieldValue } from 'firebase-admin/firestore';
 import { variables } from '../../../variables.js';
 import { secrets } from '../../../secrets.js';
@@ -119,19 +119,27 @@ ${accessibility_requests || 'None'}
 		}
 
 		// Log event
-		log(
-			{
-				message: 'RSVP submitted for Scholarship Open House',
-				open_house_lookup_key,
-				createEventWithGoogleCalendarAPIParams: {
-					...createEventWithGoogleCalendarAPIParams,
-					description:
-						(createEventWithGoogleCalendarAPIParams.description?.slice(0, 50) ??
-							'') + '...',
-				},
+		const logData = {
+			message: 'RSVP submitted for Scholarship Open House',
+			open_house_lookup_key,
+			createEventWithGoogleCalendarAPIParams: {
+				...createEventWithGoogleCalendarAPIParams,
+				description:
+					(createEventWithGoogleCalendarAPIParams.description?.slice(0, 50) ??
+						'') + '...',
 			},
-			{ type: 'normal' },
-		);
+		};
+		log(logData, { type: 'normal' });
+
+		if (secrets.SECRET_CRED_DEPLOYMENT_ENVIRONMENT == 'live') {
+			// Send developer alert
+			await gmail.sendDeveloperAlert({
+				message: `RSVP submitted for Scholarship Open House from ${email}.\
+<br/><br/>\
+${JSON.stringify(logData, null, 2)}`,
+				subject: '[Wallot Developer Alerts] New Scholarship Open House RSVP',
+			});
+		}
 
 		return Promise.resolve();
 	};
