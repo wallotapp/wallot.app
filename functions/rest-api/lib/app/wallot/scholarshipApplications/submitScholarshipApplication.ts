@@ -8,7 +8,7 @@ import {
 	scholarshipApplicationsApi,
 } from '@wallot/js';
 import { sendScholarshipApplicationConfirmationEmail } from './sendScholarshipApplicationConfirmationEmail.js';
-import { db } from '../../../services.js';
+import { db, gmail } from '../../../services.js';
 import { secrets } from '../../../secrets.js';
 import { getUpdateUserParamsFromScholarshipApplicationFormDataParams } from './getUpdateUserParamsFromScholarshipApplicationFormDataParams.js';
 import { getUpdateScholarshipApplicationParamsFromScholarshipApplicationFormDataParams } from './getUpdateScholarshipApplicationParamsFromScholarshipApplicationFormDataParams.js';
@@ -57,6 +57,26 @@ export const submitScholarshipApplication = async (
 		if (secrets.SECRET_CRED_SERVER_PROTOCOL === 'https') {
 			// Send confirmation email
 			await sendScholarshipApplicationConfirmationEmail(email);
+
+			if (secrets.SECRET_CRED_DEPLOYMENT_ENVIRONMENT == 'live') {
+				// Send developer alert
+				const alertBody = JSON.stringify(
+					{
+						user_id: firebaseUser.uid,
+						scholarship_application_id: scholarshipApplicationId,
+						...params,
+					},
+					null,
+					2,
+				);
+				await gmail.sendDeveloperAlert({
+					message: `New scholarship application submission from ${email}.\
+<br/><br/>\
+${alertBody}`,
+					subject:
+						'[Wallot Developer Alerts] New Scholarship Application Submission',
+				});
+			}
 		} else {
 			console.log(
 				`Skipping sending confirmation email to ${email} in local environment`,

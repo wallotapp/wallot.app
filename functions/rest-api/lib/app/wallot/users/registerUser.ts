@@ -6,7 +6,8 @@ import {
 	getHomeSiteRoute,
 } from '@wallot/js';
 import { FunctionResponse } from '@wallot/node';
-import { auth, db } from '../../../services.js';
+import { auth, db, gmail } from '../../../services.js';
+import { secrets } from '../../../secrets.js';
 import { siteOriginByTarget } from '../../../variables.js';
 import { createStripeCustomer } from '../../stripe/customers/createStripeCustomer.js';
 import { sendWelcomeEmail } from './sendWelcomeEmail.js';
@@ -100,6 +101,25 @@ export const registerUser = async ({
 
 	// Construct the post-response callback
 	const onFinished = async () => {
+		if (secrets.SECRET_CRED_DEPLOYMENT_ENVIRONMENT == 'live') {
+			// Send developer alert
+			const alertBody = JSON.stringify(
+				{
+					email,
+					username,
+					user_id: firebaseUser.uid,
+					redirect_uri,
+				},
+				null,
+				2,
+			);
+			await gmail.sendDeveloperAlert({
+				message: `New user registration from ${email}.\
+<br/><br/>\
+${alertBody}`,
+				subject: '[Wallot Developer Alerts] New User Registration',
+			});
+		}
 		// Create a Stripe Customer
 		const stripeCustomer = await createStripeCustomer({
 			email,
