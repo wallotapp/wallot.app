@@ -617,6 +617,7 @@ const Page: NextPage<PageProps> = (props) => {
 											const hasSpacesAvailable =
 												event.status === 'has_spots_open';
 											const atCapacity = !isRsvpd && !hasSpacesAvailable;
+											const isDisabled = isRsvpd || atCapacity;
 											return (
 												<tr key={event.time} className='hover:bg-slate-50'>
 													<td className='border-[0.5px] border-gray-300'>
@@ -628,19 +629,19 @@ const Page: NextPage<PageProps> = (props) => {
 																);
 															}}
 														>
-															<DialogTrigger asChild disabled={isRsvpd}>
+															<DialogTrigger asChild disabled={isDisabled}>
 																<button
-																	disabled={isRsvpd}
+																	disabled={isDisabled}
 																	className={cn(
 																		'font-light text-xs flex items-start text-left w-full h-full px-3 py-2',
-																		isRsvpd || atCapacity
+																		isDisabled
 																			? 'cursor-default'
 																			: 'cursor-pointer',
 																		{
-																			'flex-col': isRsvpd || atCapacity,
+																			'flex-col': isDisabled,
 																			'space-x-1':
 																				!isRsvpd && hasSpacesAvailable,
-																			'space-y-1': isRsvpd || atCapacity,
+																			'space-y-1': isDisabled,
 																		},
 
 																		// Remove rings
