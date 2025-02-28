@@ -460,8 +460,10 @@ const Page: NextPage<PageProps> = (props) => {
 	const nearestMetroArea = schoolMetroAreas[0] ?? '';
 	const today = DateTime.now();
 	const scholarshipOpenHouseEvents = allScholarshipOpenHouseEvents.filter(
-		({ start_time_nyc }) => {
-			return DateTime.fromISO(start_time_nyc) > today;
+		({ start_time_nyc, status }) => {
+			return (
+				status === 'has_spots_open' && DateTime.fromISO(start_time_nyc) > today
+			);
 		},
 	);
 	const nextEventInNearestMetroArea = scholarshipOpenHouseEvents.find(
@@ -481,12 +483,10 @@ const Page: NextPage<PageProps> = (props) => {
 			return metro_area_full_name === thirdNearestMetroArea;
 		},
 	);
-	const fallbackEventNextInCalendar = scholarshipOpenHouseEvents[1];
 	const eventToShow =
 		nextEventInNearestMetroArea ??
 		nextEventInNextNearestMetroArea ??
 		nextEventInThirdNearestMetroArea ??
-		fallbackEventNextInCalendar ??
 		lastScholarshipOpenHouseEvent;
 	const isRsvpdToNextEvent =
 		scholarshipApplicationForLoggedInUser?.open_house_rsvps?.some(

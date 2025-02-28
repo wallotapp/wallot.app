@@ -614,6 +614,9 @@ const Page: NextPage<PageProps> = (props) => {
 											const isRsvpd = rsvps.includes(event.lookup_key);
 											const isOpen =
 												isDialogOpenForLookupKey === event.lookup_key;
+											const hasSpacesAvailable =
+												event.status === 'has_spots_open';
+											const atCapacity = !isRsvpd && !hasSpacesAvailable;
 											return (
 												<tr key={event.time} className='hover:bg-slate-50'>
 													<td className='border-[0.5px] border-gray-300'>
@@ -630,13 +633,14 @@ const Page: NextPage<PageProps> = (props) => {
 																	disabled={isRsvpd}
 																	className={cn(
 																		'font-light text-xs flex items-start text-left w-full h-full px-3 py-2',
-																		isRsvpd
+																		isRsvpd || atCapacity
 																			? 'cursor-default'
 																			: 'cursor-pointer',
 																		{
-																			'flex-col': isRsvpd,
-																			'space-x-1': !isRsvpd,
-																			'space-y-1': isRsvpd,
+																			'flex-col': isRsvpd || atCapacity,
+																			'space-x-1':
+																				!isRsvpd && hasSpacesAvailable,
+																			'space-y-1': isRsvpd || atCapacity,
 																		},
 
 																		// Remove rings
@@ -644,34 +648,48 @@ const Page: NextPage<PageProps> = (props) => {
 																	)}
 																>
 																	<div className='!text-left'>
-																		<p className=''>
+																		<p
+																			className={cn({
+																				'text-gray-400': atCapacity,
+																			})}
+																		>
 																			{event.address_title}
-																			{isRsvpd ? '' : ' ·'}
+																			{isRsvpd || atCapacity ? '' : ' ·'}
 																		</p>
 																	</div>
-																	<div className='flex items-center space-x-1'>
-																		{isRsvpd && (
+																	{hasSpacesAvailable && (
+																		<div className='flex items-center space-x-1'>
+																			{isRsvpd && (
+																				<div>
+																					<GoCheckCircleFill className='text-brand-dark text-sm' />
+																				</div>
+																			)}
 																			<div>
-																				<GoCheckCircleFill className='text-brand-dark text-sm' />
-																			</div>
-																		)}
-																		<div>
-																			<p
-																				className={cn('', {
-																					'hover:underline': !isRsvpd,
-																				})}
-																			>
-																				<span
-																					className={cn('text-left', {
-																						'text-brand-dark': !isRsvpd,
-																						'font-semibold': isRsvpd,
+																				<p
+																					className={cn('', {
+																						'hover:underline':
+																							!isRsvpd && hasSpacesAvailable,
 																					})}
 																				>
-																					{isRsvpd ? 'Attending' : 'RSVP'}
-																				</span>
+																					<span
+																						className={cn('text-left', {
+																							'text-brand-dark': !isRsvpd,
+																							'font-semibold': isRsvpd,
+																						})}
+																					>
+																						{isRsvpd ? 'Attending' : 'RSVP'}
+																					</span>
+																				</p>
+																			</div>
+																		</div>
+																	)}
+																	{atCapacity && (
+																		<div className='bg-amber-300 rounded-md px-2 py-0.5'>
+																			<p className='text-center text-xs font-extralight text-amber-800'>
+																				This event is at capacity
 																			</p>
 																		</div>
-																	</div>
+																	)}
 																</button>
 															</DialogTrigger>
 															<DialogContent className='!max-h-[85vh] !overflow-y-auto'>

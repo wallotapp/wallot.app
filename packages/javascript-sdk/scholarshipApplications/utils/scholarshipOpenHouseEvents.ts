@@ -8,6 +8,7 @@ export const lastScholarshipOpenHouseEvent = {
 	metro_area: 'Tampa',
 	metro_area_full_name: 'Tampa-St. Petersburg-Clearwater',
 	meets_id: '',
+	status: 'has_spots_open' as const,
 	type: 'In-person',
 };
 export const scholarshipOpenHouseEvents = [
@@ -21,6 +22,7 @@ export const scholarshipOpenHouseEvents = [
 		lookup_key: 'gainesville-2025-03-05',
 		metro_area: 'Gainesville',
 		metro_area_full_name: 'Gainesville',
+		status: 'has_spots_open' as const,
 		type: 'Virtual',
 	},
 	{
@@ -33,6 +35,7 @@ export const scholarshipOpenHouseEvents = [
 		metro_area: 'Tampa',
 		metro_area_full_name: 'Tampa-St. Petersburg-Clearwater',
 		meets_id: '',
+		status: 'no_spots_remaining' as const,
 		type: 'In-person',
 	},
 	{
@@ -45,6 +48,7 @@ export const scholarshipOpenHouseEvents = [
 		lookup_key: 'panama-city-2025-03-07',
 		metro_area: 'Panama City',
 		metro_area_full_name: 'Panama City',
+		status: 'has_spots_open' as const,
 		type: 'Virtual',
 	},
 	{
@@ -57,6 +61,7 @@ export const scholarshipOpenHouseEvents = [
 		metro_area: 'Orlando',
 		metro_area_full_name: 'Orlando-Kissimmee-Sanford',
 		meets_id: '',
+		status: 'has_spots_open' as const,
 		type: 'In-person',
 	},
 	// Daylight Saving Time starts
@@ -70,6 +75,7 @@ export const scholarshipOpenHouseEvents = [
 		lookup_key: 'west-palm-beach-2025-03-12',
 		metro_area: 'West Palm Beach',
 		metro_area_full_name: 'West Palm Beach',
+		status: 'has_spots_open' as const,
 		type: 'Virtual',
 	},
 	{
@@ -82,6 +88,7 @@ export const scholarshipOpenHouseEvents = [
 		lookup_key: 'jacksonville-2025-03-13',
 		metro_area: 'Jacksonville',
 		metro_area_full_name: 'Jacksonville',
+		status: 'has_spots_open' as const,
 		type: 'Virtual',
 	},
 	{
@@ -94,6 +101,7 @@ export const scholarshipOpenHouseEvents = [
 		metro_area: 'Tampa',
 		metro_area_full_name: 'Tampa-St. Petersburg-Clearwater',
 		meets_id: '',
+		status: 'has_spots_open' as const,
 		type: 'In-person',
 	},
 	{
@@ -106,6 +114,7 @@ export const scholarshipOpenHouseEvents = [
 		metro_area: 'Sarasota',
 		metro_area_full_name: 'Sarasota-North Port-Bradenton',
 		meets_id: '',
+		status: 'has_spots_open' as const,
 		type: 'In-person',
 	},
 	{
@@ -118,6 +127,7 @@ export const scholarshipOpenHouseEvents = [
 		lookup_key: 'fort-lauderdale-2025-03-19',
 		metro_area: 'Fort Lauderdale',
 		metro_area_full_name: 'Fort Lauderdale',
+		status: 'has_spots_open' as const,
 		type: 'Virtual',
 	},
 	{
@@ -130,6 +140,7 @@ export const scholarshipOpenHouseEvents = [
 		lookup_key: 'tallahassee-2025-03-20',
 		metro_area: 'Tallahassee',
 		metro_area_full_name: 'Tallahassee',
+		status: 'has_spots_open' as const,
 		type: 'Virtual',
 	},
 	{
@@ -142,6 +153,7 @@ export const scholarshipOpenHouseEvents = [
 		metro_area: 'Cape Coral',
 		metro_area_full_name: 'Cape Coral-Fort Myers',
 		meets_id: '',
+		status: 'has_spots_open' as const,
 		type: 'In-person',
 	},
 	{
@@ -154,6 +166,7 @@ export const scholarshipOpenHouseEvents = [
 		metro_area: 'Lakeland',
 		metro_area_full_name: 'Lakeland-Winter Haven',
 		meets_id: '',
+		status: 'no_spots_remaining' as const,
 		type: 'In-person',
 	},
 	{
@@ -166,6 +179,7 @@ export const scholarshipOpenHouseEvents = [
 		lookup_key: 'miami-2025-03-26',
 		metro_area: 'Miami',
 		metro_area_full_name: 'Miami-Dade County',
+		status: 'has_spots_open' as const,
 		type: 'Virtual',
 	},
 	{
@@ -178,6 +192,7 @@ export const scholarshipOpenHouseEvents = [
 		lookup_key: 'pensacola-2025-03-27',
 		metro_area: 'Pensacola',
 		metro_area_full_name: 'Pensacola',
+		status: 'has_spots_open' as const,
 		type: 'Virtual',
 	},
 	{
@@ -190,6 +205,7 @@ export const scholarshipOpenHouseEvents = [
 		metro_area: 'Orlando',
 		metro_area_full_name: 'Orlando-Kissimmee-Sanford',
 		meets_id: '',
+		status: 'has_spots_open' as const,
 		type: 'In-person',
 	},
 	lastScholarshipOpenHouseEvent,
