@@ -1,5 +1,5 @@
 export const lastScholarshipOpenHouseEvent = {
-	address_title: 'Carribbean Breeze Event Center near USF',
+	address_title: 'Caribbean Breeze Event Center near USF',
 	address: '14501 Caribbean Breeze Dr, Tampa, FL 33613',
 	start_time_nyc: '2025-03-29T15:00:00-04:00',
 	end_time_nyc: '2025-03-29T17:00:00-04:00',
@@ -24,7 +24,7 @@ export const scholarshipOpenHouseEvents = [
 		type: 'Virtual',
 	},
 	{
-		address_title: 'Carribbean Breeze Event Center near USF',
+		address_title: 'Caribbean Breeze Event Center near USF',
 		address: '14501 Caribbean Breeze Dr, Tampa, FL 33613',
 		start_time_nyc: '2025-03-06T16:30:00-05:00',
 		end_time_nyc: '2025-03-06T17:30:00-05:00',
@@ -85,7 +85,7 @@ export const scholarshipOpenHouseEvents = [
 		type: 'Virtual',
 	},
 	{
-		address_title: 'Carribbean Breeze Event Center near USF',
+		address_title: 'Caribbean Breeze Event Center near USF',
 		address: '14501 Caribbean Breeze Dr, Tampa, FL 33613',
 		start_time_nyc: '2025-03-14T16:30:00-04:00',
 		end_time_nyc: '2025-03-14T17:30:00-04:00',
