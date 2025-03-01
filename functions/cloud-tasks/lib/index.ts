@@ -9,6 +9,7 @@ import {
 	PlaceAlpacaOrdersTaskParams,
 	RefreshAlpacaOrderStatusTaskParams,
 	SendEmailWithGmailAPIParams,
+	BatchSendScholarshipApplicationCompletionReminderEmailsParams,
 } from '@wallot/node';
 
 // ---- Application Routes: Alpaca Accounts  ---- //
@@ -105,6 +106,19 @@ export const refreshAlpacaOrderStatus =
 	firebaseFunctions.tasks.onTaskDispatched<RefreshAlpacaOrderStatusTaskParams>(
 		handleRefreshAlpacaOrderStatusTaskOptions,
 		handleRefreshAlpacaOrderStatusTask,
+	);
+
+// ---- Application Routes: Scholarship Applications ---- //
+
+// batchSendScholarshipApplicationCompletionReminderEmails
+import {
+	handleBatchSendScholarshipApplicationCompletionReminderEmailsTask,
+	handleBatchSendScholarshipApplicationCompletionReminderEmailsTaskOptions,
+} from './app/scholarshipApplications/batchSendScholarshipApplicationCompletionReminderEmails.js';
+export const batchSendScholarshipApplicationCompletionReminderEmails =
+	firebaseFunctions.tasks.onTaskDispatched<BatchSendScholarshipApplicationCompletionReminderEmailsParams>(
+		handleBatchSendScholarshipApplicationCompletionReminderEmailsTaskOptions,
+		handleBatchSendScholarshipApplicationCompletionReminderEmailsTask,
 	);
 
 // ---- Notifications: Email ---- //

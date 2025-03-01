@@ -51,6 +51,7 @@ const properties = {
 		.nullable()
 		.default(null),
 	open_house_rsvps: YupHelpers.array(yup.string().defined()).defined(),
+	reminder_emails_sent_for_application_completion: YupHelpers.integer(),
 	status:
 		ScholarshipApplicationStatusEnum.getDefinedSchema().default('in_progress'),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: true }),
