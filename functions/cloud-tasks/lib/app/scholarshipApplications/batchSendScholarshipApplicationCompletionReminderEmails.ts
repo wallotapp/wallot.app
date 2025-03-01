@@ -4,11 +4,12 @@ import { CloudTaskHandler, firebaseFunctions } from 'ergonomic-node';
 import {
 	ScholarshipApplication,
 	UserActivatedByAlpaca,
+	getHomeSiteRoute,
 	scholarshipApplicationsApi,
 	usersApi,
 } from '@wallot/js';
 import { db, gcp, log } from '../../services.js';
-import { variables } from '../../variables.js';
+import { variables, siteOriginByTarget } from '../../variables.js';
 import { getEmailBody, SendEmailWithGmailAPIParams } from '@wallot/node';
 import { FieldValue } from 'firebase-admin/firestore';
 import { directoryPath } from '../../directoryPath.js';
@@ -77,7 +78,12 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 					recipient_greeting: firstName
 						? `Hi ${firstName.trim()},`
 						: 'Dear Applicant,',
-					application_link: '',
+					application_link: getHomeSiteRoute({
+						includeOrigin: true,
+						origin: siteOriginByTarget.HOME_SITE,
+						queryParams: {},
+						routeStaticId: 'HOME_SITE__/SCHOLARSHIPS/APPLICATION',
+					}),
 				});
 				return [
 					{
