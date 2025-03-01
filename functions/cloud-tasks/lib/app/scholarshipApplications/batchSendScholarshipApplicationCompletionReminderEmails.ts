@@ -14,9 +14,13 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 	BatchSendScholarshipApplicationCompletionReminderEmailsParams
 > = async ({ data: { ceiling } }) => {
 	try {
-		const result = await gmail.sendEmail({
-			// todo
-		});
+		// Pre-scale
+		// Query all the scholarship applications
+		// Query all the users
+		// Locate the relevant scholarship applications and users in-memory via filter() and find()
+		// Construct the Gmail API parameters from the user's email address and first name
+		// Send the emails 8 seconds apart
+		const result = await gmail.sendEmail();
 		log({
 			message:
 				'Batch delivery of scholarship application completion reminder emails successful',
@@ -42,3 +46,9 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 		);
 	}
 };
+
+// At-scale
+// Query all the scholarship applications whose status is `in_progress` and whose `reminder_emails_sent_for_application_completion` property is an integer less than `ceiling`
+// Query each scholarship application's underlying user by reading the `scholarshipApplication.user` foreign key property and executing chunks of Firestore array-contains-any queries over the user document's `_id` property
+// Construct the Gmail API parameters from the user's email address and first name
+// Send the emails 8 seconds apart
