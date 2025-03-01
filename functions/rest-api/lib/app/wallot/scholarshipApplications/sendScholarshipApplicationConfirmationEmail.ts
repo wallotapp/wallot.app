@@ -10,9 +10,10 @@ const emailTemplateRelativePath =
 const emailTemplateFullPath = `${directoryPath}/../assets/emails/${emailTemplateRelativePath}`;
 const emailTemplate = readFileSync(emailTemplateFullPath, 'utf8');
 
-export async function sendScholarshipApplicationConfirmationEmail(
-	recipientEmail: string,
-) {
+export async function sendScholarshipApplicationConfirmationEmail(params: {
+	recipientEmail: string;
+	recipientGreeting: string;
+}) {
 	const body = getEmailBody(emailTemplate, {
 		application_status_link: getHomeSiteRoute({
 			includeOrigin: true,
@@ -20,10 +21,11 @@ export async function sendScholarshipApplicationConfirmationEmail(
 			queryParams: {},
 			routeStaticId: 'HOME_SITE__/SCHOLARSHIPS/APPLICATION',
 		}),
+		recipient_greeting: params.recipientGreeting,
 	});
 	const result = await gmail.sendEmail({
 		html_body: body,
-		recipient_email: recipientEmail,
+		recipient_email: params.recipientEmail,
 		sender_email:
 			variables.SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_EMAIL_VISIONARY_SCHOLARSHIP,
 		sender_name:
@@ -34,7 +36,7 @@ export async function sendScholarshipApplicationConfirmationEmail(
 	log({
 		message:
 			'Sent Florida Visionary Scholarship Application Confirmation email',
-		recipientEmail,
+		recipientEmail: params.recipientEmail,
 		result,
 	});
 	return Promise.resolve();

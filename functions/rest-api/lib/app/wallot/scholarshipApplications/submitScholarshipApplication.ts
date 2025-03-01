@@ -56,7 +56,12 @@ export const submitScholarshipApplication = async (
 	const onFinished = async () => {
 		if (secrets.SECRET_CRED_SERVER_PROTOCOL === 'https') {
 			// Send confirmation email
-			await sendScholarshipApplicationConfirmationEmail(email);
+			await sendScholarshipApplicationConfirmationEmail({
+				recipientEmail: email,
+				recipientGreeting: params.given_name
+					? `Hi ${params.given_name.trim()},`
+					: 'Dear Applicant,',
+			});
 
 			if (secrets.SECRET_CRED_DEPLOYMENT_ENVIRONMENT == 'live') {
 				// Send developer alert

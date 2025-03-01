@@ -3,6 +3,8 @@
 	"SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_EMAIL": "support-staging@wallot.app",
 	"SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_NAME": "Wallot Staging Support",
 	"SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID": "support@wallot.app",
+	"SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_EMAIL_VISIONARY_SCHOLARSHIP": "scholarships+staging@wallot.app",
+	"SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_NAME_VISIONARY_SCHOLARSHIP": "Wallot Staging Scholarship Programs",
 	"SERVER_VAR_ORIGIN_HTTP": "http://localhost:7106",
 	"SERVER_VAR_ORIGIN_HTTPS": "https://us-central1-app-wallot-staging.cloudfunctions.net/cloud_tasks",
 	"SERVER_VAR_SITE_ORIGIN_BY_PROTOCOL_BY_TARGET": {
