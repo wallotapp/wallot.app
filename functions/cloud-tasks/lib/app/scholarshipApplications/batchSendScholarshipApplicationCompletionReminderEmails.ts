@@ -8,6 +8,7 @@ import {
 	scholarshipApplicationsApi,
 	usersApi,
 } from '@wallot/js';
+import { BatchSendScholarshipApplicationCompletionReminderEmailsParams } from '@wallot/node';
 import { db, gcp, log } from '../../services.js';
 import { variables, siteOriginByTarget } from '../../variables.js';
 import { getEmailBody, SendEmailWithGmailAPIParams } from '@wallot/node';
@@ -25,9 +26,6 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTaskOp
 		retryConfig: { maxAttempts: 3, minBackoffSeconds: 30 },
 	};
 
-export type BatchSendScholarshipApplicationCompletionReminderEmailsParams = {
-	ceiling: number;
-};
 export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: CloudTaskHandler<
 	BatchSendScholarshipApplicationCompletionReminderEmailsParams
 > = async ({ data: { ceiling } }) => {
