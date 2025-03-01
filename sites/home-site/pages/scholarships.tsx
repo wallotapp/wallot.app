@@ -32,6 +32,7 @@ import { BaseComponent } from 'ergonomic-react/src/types/BaseComponentTypes';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import {
 	GoCalendar,
+	GoCheckCircle,
 	GoCheckCircleFill,
 	GoHome,
 	GoLocation,
@@ -685,10 +686,20 @@ const Page: NextPage<PageProps> = (props) => {
 																		</div>
 																	)}
 																	{atCapacity && (
-																		<div className='bg-amber-300 rounded-md px-2 py-0.5'>
-																			<p className='text-center text-xs font-extralight text-amber-800'>
-																				This event is at capacity
-																			</p>
+																		<div
+																			className={cn(
+																				'bg-amber-200 rounded-md px-2 py-0.5',
+																				'xl:flex xl:items-center xl:space-x-1',
+																			)}
+																		>
+																			<div className='hidden xl:block'>
+																				<GoCheckCircle className='text-amber-800 text-xs' />
+																			</div>
+																			<div>
+																				<p className='text-xs font-light text-amber-800'>
+																					This event has reached capacity
+																				</p>
+																			</div>
 																		</div>
 																	)}
 																</button>
