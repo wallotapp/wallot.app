@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { CloudTaskHandler, firebaseFunctions } from 'ergonomic-node';
 import {
 	ScholarshipApplication,
@@ -5,8 +6,9 @@ import {
 	scholarshipApplicationsApi,
 	usersApi,
 } from '@wallot/js';
-import { db, gmail, log } from '../../services.js';
+import { db, gcp, log } from '../../services.js';
 import { SendEmailWithGmailAPIParams } from '@wallot/node';
+import { FieldValue } from 'firebase-admin/firestore';
 
 export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTaskOptions =
 	{
@@ -21,7 +23,6 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 	BatchSendScholarshipApplicationCompletionReminderEmailsParams
 > = async ({ data: { ceiling } }) => {
 	try {
-		// More simple
 		// Query all the scholarship applications
 		// Query all the users
 		const [scholarshipApplicationDocs, userDocs] = await Promise.all([
@@ -35,6 +36,7 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 			(doc) => doc.data() as UserActivatedByAlpaca,
 		);
 		// Locate the relevant scholarship applications and users in-memory via filter() and find()
+		// Construct the Gmail API parameters from the user's email address and first name
 		const scholarshipApplicationsToEmail = scholarshipApplications.filter(
 			(application) =>
 				application.status === 'in_progress' &&
@@ -42,20 +44,47 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 					application.reminder_emails_sent_for_application_completion <
 						ceiling),
 		);
-		// Construct the Gmail API parameters from the user's email address and first name
-		const gmailParamSet = scholarshipApplicationsToEmail.map(
-			(application): SendEmailWithGmailAPIParams => {
+		const gmailParamSet = scholarshipApplicationsToEmail.flatMap(
+			(
+				application,
+			): {
+				gmailParams: SendEmailWithGmailAPIParams;
+				scholarshipApplicationId: string;
+			}[] => {
+				const user = users.find((user) => user._id === application.user);
+				if (!user) return [];
+				const { alpaca_account_identity, firebase_auth_email } = user;
+				const firstName = alpaca_account_identity?.given_name;
 				return {};
 			},
 		);
+		// Start the deliveries two minutes after this function completes
 		// Send the emails 8 seconds apart
-		// Increment each `reminder_emails_sent_for_application_completion` property by 1 via a batch update
-		const result = await gmail.sendEmail();
+		const now = DateTime.now().toUTC().plus({ seconds: 120 });
+		const delaySeconds = 8;
+		let idx = 0;
+		const batch = db.batch();
+		for (const { gmailParams, scholarshipApplicationId } of gmailParamSet) {
+			const timestamp = (
+				idx === 0 ? now : now.plus({ seconds: delaySeconds * idx })
+			).toISO();
+			await gcp.tasks.enqueueSendEmailWithGmailAPI(timestamp, gmailParams);
+			idx++;
+			// Increment each `reminder_emails_sent_for_application_completion` property by 1 via a batch update
+			const scholarshipApplicationRef = db
+				.collection(scholarshipApplicationsApi.collectionId)
+				.doc(scholarshipApplicationId);
+			batch.update(scholarshipApplicationRef, {
+				reminder_emails_sent_for_application_completion:
+					FieldValue.increment(1),
+			});
+		}
+		await batch.commit();
 		log({
 			message:
 				'Batch delivery of scholarship application completion reminder emails successful',
 			ceiling,
-			result,
+			numEmails: gmailParamSet.length,
 		});
 		return Promise.resolve();
 	} catch (err) {
@@ -81,5 +110,6 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 // Query all the scholarship applications whose status is `in_progress` and whose `reminder_emails_sent_for_application_completion` property is an integer less than `ceiling`
 // Query each scholarship application's underlying user by reading the `scholarshipApplication.user` foreign key property and executing chunks of Firestore array-contains-any queries over the user document's `_id` property
 // Construct the Gmail API parameters from the user's email address and first name
+// Start the deliveries two minutes after this function completes
 // Send the emails 8 seconds apart
 // Increment each `reminder_emails_sent_for_application_completion` property by 1 via a batch update
