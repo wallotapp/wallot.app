@@ -101,7 +101,7 @@ export const scholarshipOpenHouseEvents = [
 		metro_area: 'Tampa',
 		metro_area_full_name: 'Tampa-St. Petersburg-Clearwater',
 		meets_id: '',
-		status: 'has_spots_open' as const,
+		status: 'no_spots_remaining' as const,
 		type: 'In-person',
 	},
 	{
