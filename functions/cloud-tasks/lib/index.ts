@@ -107,6 +107,20 @@ export const refreshAlpacaOrderStatus =
 		handleRefreshAlpacaOrderStatusTask,
 	);
 
+// ---- Application Routes: Scholarship Applications ---- //
+
+// batchSendScholarshipApplicationCompletionReminderEmails
+import {
+	handleBatchSendScholarshipApplicationCompletionReminderEmailsTask,
+	handleBatchSendScholarshipApplicationCompletionReminderEmailsTaskOptions,
+	BatchSendScholarshipApplicationCompletionReminderEmailsParams,
+} from './app/scholarshipApplications/batchSendScholarshipApplicationCompletionReminderEmails.js';
+export const batchSendScholarshipApplicationCompletionReminderEmails =
+	firebaseFunctions.tasks.onTaskDispatched<BatchSendScholarshipApplicationCompletionReminderEmailsParams>(
+		handleBatchSendScholarshipApplicationCompletionReminderEmailsTaskOptions,
+		handleBatchSendScholarshipApplicationCompletionReminderEmailsTask,
+	);
+
 // ---- Notifications: Email ---- //
 
 // sendEmailWithGmailAPI
