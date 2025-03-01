@@ -34,7 +34,7 @@
 		"test": "NODE_OPTIONS=\"--experimental-vm-modules\" npx jest --config='jest.config.json' --verbose",
 		"watch": "tsc --build --watch ./tsconfig.json"
 	},
-	"version": "0.1.30",
+	"version": "0.1.31",
 	"workspaces": [
 		"functions/*",
 		"sites/*",
