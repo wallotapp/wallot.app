@@ -104,7 +104,7 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 			},
 		);
 		// Send the emails 8 seconds apart
-		const now = DateTime.now().toUTC();
+		const now = DateTime.now().toUTC().plus({ seconds: 20 });
 		const delaySeconds = 8;
 		let idx = 0;
 		const batches = [db.batch()];
