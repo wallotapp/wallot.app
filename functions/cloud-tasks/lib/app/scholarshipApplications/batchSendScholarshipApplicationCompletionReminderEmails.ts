@@ -109,11 +109,11 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 		let idx = 0;
 		const batches = [db.batch()];
 		for (const { gmailParams, scholarshipApplicationId } of gmailParamSet) {
+			// Queue the email
 			const timestamp = (
 				idx === 0 ? now : now.plus({ seconds: delaySeconds * idx })
 			).toISO();
 			await gcp.tasks.enqueueSendEmailWithGmailAPI(timestamp, gmailParams);
-			idx++;
 			// Increment each `reminder_emails_sent_for_application_completion` property by 1 via a batch update
 			const scholarshipApplicationRef = db
 				.collection(scholarshipApplicationsApi.collectionId)
@@ -128,6 +128,7 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 				reminder_emails_sent_for_application_completion:
 					FieldValue.increment(1),
 			});
+			idx++;
 		}
 		await Promise.all(batches.map((batch) => batch.commit()));
 		log({
