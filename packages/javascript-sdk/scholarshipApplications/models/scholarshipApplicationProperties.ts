@@ -62,6 +62,7 @@ const properties = {
 	...scholarshipApplicationFormDataPropertiesBySection['College Information'],
 	...scholarshipApplicationFormDataPropertiesBySection['Student Profile'],
 	...scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
+	...scholarshipApplicationFormDataPropertiesBySection['Summer Programs'],
 } as const;
 type U = typeof properties;
 
