@@ -148,7 +148,7 @@ export const scholarshipApplicationFormDataPropertiesBySection = {
 			.default(null)
 			.optional()
 			.meta({ type: GeneralizedFieldTypeEnum.obj.boolean }), // scholarship_application
-		summer_plans: yup.string().default('').required().meta({
+		summer_plans: yup.string().default('').meta({
 			label_message_user_text:
 				'Have you made any other plans for the summer during June or July? Include the start and end dates of your prior commitments',
 			type: GeneralizedFieldTypeEnum.obj.long_text,
