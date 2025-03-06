@@ -136,8 +136,18 @@ export const scholarshipApplicationFormDataPropertiesBySection = {
 			}), // scholarship_application
 	},
 	'Summer Programs': {
-		is_looking_for_summer_program: YupHelpers.booleanDefaultUnset(), // scholarship_application
-		prefers_summer_program_housing: YupHelpers.booleanDefaultUnset(), // scholarship_application
+		is_looking_for_summer_program: yup
+			.mixed()
+			.oneOf([true, false, null, ''])
+			.default(null)
+			.optional()
+			.meta({ type: GeneralizedFieldTypeEnum.obj.boolean }), // scholarship_application
+		prefers_summer_program_housing: yup
+			.mixed()
+			.oneOf([true, false, null, ''])
+			.default(null)
+			.optional()
+			.meta({ type: GeneralizedFieldTypeEnum.obj.boolean }), // scholarship_application
 		summer_plans: yup.string().default('').required().meta({
 			label_message_user_text:
 				'Have you made any other plans for the summer during June or July? Include the start and end dates of your prior commitments',
