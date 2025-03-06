@@ -518,18 +518,22 @@ const Page: NextPage<PageProps> = (props) => {
 		);
 	});
 
+	const isLookingForSummerProgramValue =
+		liveData['is_looking_for_summer_program'];
 	const isLookingForSummerProgramUnset =
-		liveData['is_looking_for_summer_program'] === null;
-	const isLookingForSummerProgram =
-		liveData['is_looking_for_summer_program'] === true;
-	const isNotLookingForSummerProgram =
-		liveData['is_looking_for_summer_program'] === false;
+		isLookingForSummerProgramValue == null ||
+		isLookingForSummerProgramValue === '';
+	const isLookingForSummerProgram = isLookingForSummerProgramValue === true;
+	const isNotLookingForSummerProgram = isLookingForSummerProgramValue === false;
+	const isPreferringSummerProgramHousingValue =
+		liveData['prefers_summer_program_housing'];
 	const isPreferringSummerProgramHousingUnset =
-		liveData['prefers_summer_program_housing'] === null;
+		isPreferringSummerProgramHousingValue == null ||
+		isPreferringSummerProgramHousingValue === '';
 	const isPreferringSummerProgramHousing =
-		liveData['prefers_summer_program_housing'] === true;
+		isPreferringSummerProgramHousingValue === true;
 	const isNotPreferringSummerProgramHousing =
-		liveData['prefers_summer_program_housing'] === false;
+		isPreferringSummerProgramHousingValue === false;
 	const disableSubmit =
 		isFormDisabled ||
 		isLookingForSummerProgramUnset ||
