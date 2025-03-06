@@ -13,6 +13,7 @@ export const ScholarshipApplicationFormDataSectionEnum = getEnum([
 	'College Information',
 	'Student Profile',
 	'Personal Essays',
+	'Summer Programs',
 ]);
 export type ScholarshipApplicationFormDataSection = EnumMember<
 	typeof ScholarshipApplicationFormDataSectionEnum
@@ -134,12 +135,22 @@ export const scholarshipApplicationFormDataPropertiesBySection = {
 				type: GeneralizedFieldTypeEnum.obj.long_text,
 			}), // scholarship_application
 	},
+	'Summer Programs': {
+		is_looking_for_summer_program: YupHelpers.booleanDefaultUnset(), // scholarship_application
+		prefers_summer_program_housing: YupHelpers.booleanDefaultUnset(), // scholarship_application
+		summer_plans: yup.string().default('').required().meta({
+			label_message_user_text:
+				'Have you made any other plans for the summer during June or July? Include the start and end dates of your prior commitments',
+			type: GeneralizedFieldTypeEnum.obj.long_text,
+		}), // scholarship_application
+	},
 };
 export const scholarshipApplicationFormDataProperties = {
 	...scholarshipApplicationFormDataPropertiesBySection['Contact Details'],
 	...scholarshipApplicationFormDataPropertiesBySection['College Information'],
 	...scholarshipApplicationFormDataPropertiesBySection['Student Profile'],
 	...scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
+	...scholarshipApplicationFormDataPropertiesBySection['Summer Programs'],
 };
 export const ScholarshipApplicationFormDataFieldEnum = getEnum(
 	Keys(scholarshipApplicationFormDataProperties),

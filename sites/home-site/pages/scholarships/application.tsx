@@ -75,10 +75,12 @@ import { DateTime } from 'luxon';
 import { AsyncLink } from 'ergonomic-react/src/components/custom-ui/async-link';
 import {
 	GoCalendar,
+	GoCheck,
 	GoCheckCircleFill,
 	GoChevronLeft,
 	GoCircle,
 } from 'react-icons/go';
+import Image from 'next/image';
 
 const steps = ScholarshipApplicationFormDataSectionEnum.arr;
 
@@ -289,7 +291,7 @@ const Page: NextPage<PageProps> = (props) => {
 	};
 
 	// Define our steps and their fields.
-	const isLastStep = currentStep === 'Personal Essays';
+	const isLastStep = currentStep === 'Summer Programs';
 
 	// Form
 	const formStatus =
@@ -328,6 +330,17 @@ const Page: NextPage<PageProps> = (props) => {
 	const personalEssaysFields = Keys(
 		scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
 	).map(getLiteFormFieldProps);
+	const summerInternshipsFields = Keys(
+		scholarshipApplicationFormDataPropertiesBySection['Summer Programs'],
+	)
+		.filter(
+			(fieldKey) =>
+				![
+					'is_looking_for_summer_program',
+					'prefers_summer_program_housing',
+				].includes(fieldKey),
+		)
+		.map(getLiteFormFieldProps);
 	const isFormDisabled =
 		isFormSubmitting || isScholarshipApplicationForLoggedInUserSubmitted;
 
@@ -507,6 +520,24 @@ const Page: NextPage<PageProps> = (props) => {
 		);
 	});
 
+	const isLookingForSummerProgramUnset =
+		liveData['is_looking_for_summer_program'] === null;
+	const isLookingForSummerProgram =
+		liveData['is_looking_for_summer_program'] === true;
+	const isNotLookingForSummerProgram =
+		liveData['is_looking_for_summer_program'] === false;
+	const isPreferringSummerProgramHousingUnset =
+		liveData['prefers_summer_program_housing'] === null;
+	const isPreferringSummerProgramHousing =
+		liveData['prefers_summer_program_housing'] === true;
+	const isNotPreferringSummerProgramHousing =
+		liveData['prefers_summer_program_housing'] === false;
+	const disableSubmit =
+		isFormDisabled ||
+		isLookingForSummerProgramUnset ||
+		(isLookingForSummerProgram &&
+			(!liveData.summer_plans || isPreferringSummerProgramHousingUnset));
+
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
@@ -578,7 +609,7 @@ const Page: NextPage<PageProps> = (props) => {
 									{steps.map((step) => {
 										const isActive = step === currentStep;
 										return (
-											<div className='flex items-center space-x-1'>
+											<div className='flex items-center space-x-1 w-44'>
 												<div className='py-1'>
 													<Separator
 														orientation='vertical'
@@ -838,6 +869,221 @@ const Page: NextPage<PageProps> = (props) => {
 														/>
 													))}
 												</div>
+												<div
+													className={cn(
+														'px-1',
+														currentStep === 'Summer Programs' ? '' : 'hidden',
+													)}
+												>
+													<div className='mt-2'>
+														<div className=''>
+															<Image
+																alt='Summer Programs'
+																className='rounded-lg'
+																height={512}
+																priority
+																objectFit='contain'
+																src={'/img/banners/academic-program.jpg'}
+																width={2048}
+															/>
+														</div>
+													</div>
+													<div
+														className={cn(
+															'mt-2 text-right text-sm flex flex-col items-end space-y-1',
+														)}
+													>
+														{[
+															{
+																benefit:
+																	'8-Week Academic Prep for the Fall semester',
+															},
+															{ benefit: 'Housing and meals provided' },
+															{ benefit: 'Fun events in Tampa' },
+														].map(({ benefit }) => {
+															return (
+																<div className='flex items-center space-x-1 font-light'>
+																	<div>
+																		<GoCheck />
+																	</div>
+																	<div>
+																		<p>{benefit}</p>
+																	</div>
+																</div>
+															);
+														})}
+													</div>
+													<div className='mt-6'>
+														<Label>
+															<p className=''>
+																Are you also interested in applying to our free
+																college-prep summer program?
+																<span className='text-red-700 font-semibold'>
+																	*
+																</span>
+															</p>
+														</Label>
+														<div className='font-light mt-0.5 text-gray-500 text-sm'>
+															<p>
+																If so, we'll follow up with more information
+															</p>
+														</div>
+													</div>
+													<div
+														className={cn(
+															'mt-2 flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0',
+														)}
+													>
+														{[
+															{
+																isSelected: isLookingForSummerProgram,
+																subtitle: "I'm looking for a summer program",
+																title: 'Yes',
+															},
+															{
+																isSelected: isNotLookingForSummerProgram,
+																subtitle: 'I already have plans this summer',
+																title: 'No',
+															},
+														].map(({ isSelected, subtitle, title }) => {
+															return (
+																<button
+																	className={cn(
+																		'flex items-center space-x-3 px-3 py-2',
+																		isSelected ? 'bg-gray-200' : 'bg-white',
+																		'border border-gray-300 rounded-md',
+																		{
+																			'transition duration-200 ease-in-out hover:bg-gray-100':
+																				!isFormDisabled,
+																			'cursor-not-allowed': isFormDisabled,
+																		},
+																	)}
+																	key={title}
+																	type='button'
+																	onClick={() => {
+																		setValue(
+																			'is_looking_for_summer_program',
+																			isSelected ? null : title === 'Yes',
+																		);
+																	}}
+																	disabled={isFormDisabled}
+																>
+																	<div className=''>
+																		{isSelected ? (
+																			<GoCheckCircleFill className='text-brand-dark text-lg' />
+																		) : (
+																			<GoCircle className='text-gray-400 text-lg' />
+																		)}
+																	</div>
+																	<div className='text-left'>
+																		<div>
+																			<p className='font-semibold text-sm'>
+																				{title}
+																			</p>
+																		</div>
+																		<div className='lg:max-w-44'>
+																			<p className='font-light text-xs'>
+																				{subtitle}
+																			</p>
+																		</div>
+																	</div>
+																</button>
+															);
+														})}
+													</div>
+													<div
+														className={cn('mt-6', {
+															hidden: !isLookingForSummerProgram,
+														})}
+													>
+														<div>
+															{summerInternshipsFields.map((fieldProps) => (
+																<LiteFormFieldContainer
+																	key={fieldProps.fieldKey}
+																	{...fieldProps}
+																/>
+															))}
+														</div>
+														<div className='mt-4'>
+															<Label>
+																<p className=''>
+																	If accepted, would you prefer to stay in
+																	program housing?
+																	<span className='text-red-700 font-semibold'>
+																		*
+																	</span>
+																</p>
+															</Label>
+															<div className='font-light mt-0.5 text-gray-500 text-sm'>
+																<p>Please note that housing is co-ed</p>
+															</div>
+														</div>
+														<div
+															className={cn(
+																'mt-2 flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0',
+															)}
+														>
+															{[
+																{
+																	isSelected: isPreferringSummerProgramHousing,
+																	subtitle:
+																		'I would prefer to stay in program housing',
+																	title: 'Yes',
+																},
+																{
+																	isSelected:
+																		isNotPreferringSummerProgramHousing,
+																	subtitle: 'I would prefer to commute',
+																	title: 'No',
+																},
+															].map(({ isSelected, subtitle, title }) => {
+																return (
+																	<button
+																		className={cn(
+																			'flex items-center space-x-3 px-3 py-2',
+																			isSelected ? 'bg-gray-200' : 'bg-white',
+																			'border border-gray-300 rounded-md',
+																			{
+																				'transition duration-200 ease-in-out hover:bg-gray-100':
+																					!isFormDisabled,
+																				'cursor-not-allowed': isFormDisabled,
+																			},
+																		)}
+																		key={title}
+																		type='button'
+																		onClick={() => {
+																			setValue(
+																				'prefers_summer_program_housing',
+																				isSelected ? null : title === 'Yes',
+																			);
+																		}}
+																		disabled={isFormDisabled}
+																	>
+																		<div className=''>
+																			{isSelected ? (
+																				<GoCheckCircleFill className='text-brand-dark text-lg' />
+																			) : (
+																				<GoCircle className='text-gray-400 text-lg' />
+																			)}
+																		</div>
+																		<div className='text-left'>
+																			<div>
+																				<p className='font-semibold text-sm'>
+																					{title}
+																				</p>
+																			</div>
+																			<div className='lg:max-w-44'>
+																				<p className='font-light text-xs'>
+																					{subtitle}
+																				</p>
+																			</div>
+																		</div>
+																	</button>
+																);
+															})}
+														</div>
+													</div>
+												</div>
 												{Boolean(formState.errors['root']?.message) && (
 													<div className='mt-4'>
 														<LiteFormFieldError
@@ -900,12 +1146,12 @@ const Page: NextPage<PageProps> = (props) => {
 													<p className='font-medium text-xs'>Continue</p>
 												</button>
 												<button
-													disabled={isFormDisabled}
+													disabled={disableSubmit}
 													type='button'
 													className={cn(
 														'w-fit text-center px-4 py-1.5 rounded-md border border-slate-300',
 														isLastStep ? '' : 'hidden',
-														isFormDisabled
+														disableSubmit
 															? ' bg-brand-extralight text-gray-400 cursor-not-allowed'
 															: 'bg-brand-dark',
 													)}
@@ -921,7 +1167,7 @@ const Page: NextPage<PageProps> = (props) => {
 								</main>
 
 								{/* Right callout cards (visible on Desktop) */}
-								<aside className='hidden lg:block lg:max-w-64 lg:ml-10 lg:space-y-5'>
+								<aside className='hidden xl:block xl:max-w-64 xl:ml-10 xl:space-y-5'>
 									<div
 										className={cn(
 											'bg-white border border-gray-200 rounded-md shadow-md p-5',
