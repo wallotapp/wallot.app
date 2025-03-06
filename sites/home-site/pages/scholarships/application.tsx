@@ -520,10 +520,23 @@ const Page: NextPage<PageProps> = (props) => {
 		);
 	});
 
-	const isLooking = liveData['is_looking_for_summer_program'] === true;
-	const isNotLooking = liveData['is_looking_for_summer_program'] === false;
-	const isPreferring = liveData['prefers_summer_program_housing'] === true;
-	const isNotPreferring = liveData['prefers_summer_program_housing'] === false;
+	const isLookingForSummerProgramUnset =
+		liveData['is_looking_for_summer_program'] === null;
+	const isLookingForSummerProgram =
+		liveData['is_looking_for_summer_program'] === true;
+	const isNotLookingForSummerProgram =
+		liveData['is_looking_for_summer_program'] === false;
+	const isPreferringSummerProgramHousingUnset =
+		liveData['prefers_summer_program_housing'] === null;
+	const isPreferringSummerProgramHousing =
+		liveData['prefers_summer_program_housing'] === true;
+	const isNotPreferringSummerProgramHousing =
+		liveData['prefers_summer_program_housing'] === false;
+	const disableSubmit =
+		isFormDisabled ||
+		isLookingForSummerProgramUnset ||
+		(isLookingForSummerProgram &&
+			(!liveData.summer_plans || isPreferringSummerProgramHousingUnset));
 
 	// ==== Render ==== //
 	return (
@@ -923,12 +936,12 @@ const Page: NextPage<PageProps> = (props) => {
 													>
 														{[
 															{
-																isSelected: isLooking,
+																isSelected: isLookingForSummerProgram,
 																subtitle: "I'm looking for a summer program",
 																title: 'Yes',
 															},
 															{
-																isSelected: isNotLooking,
+																isSelected: isNotLookingForSummerProgram,
 																subtitle: 'I already have plans this summer',
 																title: 'No',
 															},
@@ -978,7 +991,11 @@ const Page: NextPage<PageProps> = (props) => {
 															);
 														})}
 													</div>
-													<div className={cn('mt-6', { hidden: !isLooking })}>
+													<div
+														className={cn('mt-6', {
+															hidden: !isLookingForSummerProgram,
+														})}
+													>
 														<div>
 															{summerInternshipsFields.map((fieldProps) => (
 																<LiteFormFieldContainer
@@ -1008,13 +1025,14 @@ const Page: NextPage<PageProps> = (props) => {
 														>
 															{[
 																{
-																	isSelected: isPreferring,
+																	isSelected: isPreferringSummerProgramHousing,
 																	subtitle:
 																		'I would prefer to stay in program housing',
 																	title: 'Yes',
 																},
 																{
-																	isSelected: isNotPreferring,
+																	isSelected:
+																		isNotPreferringSummerProgramHousing,
 																	subtitle: 'I would prefer to commute',
 																	title: 'No',
 																},
@@ -1128,12 +1146,12 @@ const Page: NextPage<PageProps> = (props) => {
 													<p className='font-medium text-xs'>Continue</p>
 												</button>
 												<button
-													disabled={isFormDisabled}
+													disabled={disableSubmit}
 													type='button'
 													className={cn(
 														'w-fit text-center px-4 py-1.5 rounded-md border border-slate-300',
 														isLastStep ? '' : 'hidden',
-														isFormDisabled
+														disableSubmit
 															? ' bg-brand-extralight text-gray-400 cursor-not-allowed'
 															: 'bg-brand-dark',
 													)}
