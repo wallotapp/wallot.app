@@ -150,7 +150,7 @@ export const scholarshipApplicationFormDataPropertiesBySection = {
 			.meta({ type: GeneralizedFieldTypeEnum.obj.boolean }), // scholarship_application
 		summer_plans: yup.string().default('').meta({
 			label_message_user_text:
-				'Have you made any other plans for the summer during June or July? Include the start and end dates of your prior commitments',
+				'Have you made any other plans for the summer during June or July? Include the start and end dates of your prior commitments. (required)',
 			type: GeneralizedFieldTypeEnum.obj.long_text,
 		}), // scholarship_application
 	},
