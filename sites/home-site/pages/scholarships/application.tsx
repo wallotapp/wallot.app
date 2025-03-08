@@ -289,7 +289,7 @@ const Page: NextPage<PageProps> = (props) => {
 	};
 
 	// Define our steps and their fields.
-	const isLastStep = currentStep === 'Summer Programs';
+	const isLastStep = currentStep === 'Summer Research';
 
 	// Form
 	const formStatus =
@@ -329,7 +329,7 @@ const Page: NextPage<PageProps> = (props) => {
 		scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
 	).map(getLiteFormFieldProps);
 	const summerInternshipsFields = Keys(
-		scholarshipApplicationFormDataPropertiesBySection['Summer Programs'],
+		scholarshipApplicationFormDataPropertiesBySection['Summer Research'],
 	)
 		.filter(
 			(fieldKey) =>
@@ -874,18 +874,18 @@ const Page: NextPage<PageProps> = (props) => {
 												<div
 													className={cn(
 														'px-1',
-														currentStep === 'Summer Programs' ? '' : 'hidden',
+														currentStep === 'Summer Research' ? '' : 'hidden',
 													)}
 												>
 													<div className='mt-2'>
 														<div className=''>
 															<Image
-																alt='Summer Programs'
+																alt='Summer Research'
 																className='rounded-lg'
 																height={512}
 																priority
 																objectFit='contain'
-																src={'/img/banners/academic-program.jpg'}
+																src={'/img/banners/academic-program_v2.jpg'}
 																width={2048}
 															/>
 														</div>
@@ -898,7 +898,11 @@ const Page: NextPage<PageProps> = (props) => {
 														{[
 															{
 																benefit:
-																	'8-Week Academic Prep for the Fall semester',
+																	'8-Week research projects with college professors in your field',
+															},
+															{
+																benefit:
+																	'Publish your research in an academic journal',
 															},
 															{ benefit: 'Housing and meals provided' },
 															{ benefit: 'Fun events in Tampa' },
@@ -918,8 +922,8 @@ const Page: NextPage<PageProps> = (props) => {
 													<div className='mt-6'>
 														<Label>
 															<p className=''>
-																Are you also interested in applying to our free
-																college-prep summer program?
+																Are you also interested in applying to our
+																academic research program?
 																<span className='text-red-700 font-semibold'>
 																	*
 																</span>
@@ -927,7 +931,8 @@ const Page: NextPage<PageProps> = (props) => {
 														</Label>
 														<div className='font-light mt-0.5 text-gray-500 text-sm'>
 															<p>
-																If so, we'll follow up with more information
+																Designed for students interested in pursuing
+																STEM, Pre-med or Nursing.
 															</p>
 														</div>
 													</div>

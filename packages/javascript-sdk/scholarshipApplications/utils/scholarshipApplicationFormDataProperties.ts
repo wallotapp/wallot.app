@@ -13,7 +13,7 @@ export const ScholarshipApplicationFormDataSectionEnum = getEnum([
 	'College Information',
 	'Student Profile',
 	'Personal Essays',
-	'Summer Programs',
+	'Summer Research',
 ]);
 export type ScholarshipApplicationFormDataSection = EnumMember<
 	typeof ScholarshipApplicationFormDataSectionEnum
@@ -135,7 +135,7 @@ export const scholarshipApplicationFormDataPropertiesBySection = {
 				type: GeneralizedFieldTypeEnum.obj.long_text,
 			}), // scholarship_application
 	},
-	'Summer Programs': {
+	'Summer Research': {
 		is_looking_for_summer_program: yup
 			.mixed()
 			.oneOf([true, false, null, ''])
@@ -160,7 +160,7 @@ export const scholarshipApplicationFormDataProperties = {
 	...scholarshipApplicationFormDataPropertiesBySection['College Information'],
 	...scholarshipApplicationFormDataPropertiesBySection['Student Profile'],
 	...scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
-	...scholarshipApplicationFormDataPropertiesBySection['Summer Programs'],
+	...scholarshipApplicationFormDataPropertiesBySection['Summer Research'],
 };
 export const ScholarshipApplicationFormDataFieldEnum = getEnum(
 	Keys(scholarshipApplicationFormDataProperties),
