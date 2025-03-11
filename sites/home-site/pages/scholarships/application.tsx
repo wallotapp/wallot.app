@@ -1022,7 +1022,7 @@ const Page: NextPage<PageProps> = (props) => {
 																</p>
 															</Label>
 															<div className='font-light mt-0.5 text-gray-500 text-sm'>
-																<p>Please note that housing is co-ed</p>
+																<p>Please note that housing is co-ed.</p>
 															</div>
 														</div>
 														<div
