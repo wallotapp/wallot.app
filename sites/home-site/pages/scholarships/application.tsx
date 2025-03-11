@@ -885,7 +885,7 @@ const Page: NextPage<PageProps> = (props) => {
 																height={512}
 																priority
 																objectFit='contain'
-																src={'/img/banners/academic-program_v2.jpg'}
+																src={'/img/banners/academic-program_v3.jpg'}
 																width={2048}
 															/>
 														</div>
@@ -932,7 +932,7 @@ const Page: NextPage<PageProps> = (props) => {
 														<div className='font-light mt-0.5 text-gray-500 text-sm'>
 															<p>
 																Designed for students interested in pursuing
-																STEM, Pre-med or Nursing.
+																STEM, Pre-med, Nursing or Business.
 															</p>
 														</div>
 													</div>
@@ -1022,7 +1022,7 @@ const Page: NextPage<PageProps> = (props) => {
 																</p>
 															</Label>
 															<div className='font-light mt-0.5 text-gray-500 text-sm'>
-																<p>Please note that housing is co-ed.</p>
+																<p>Please note that housing is co-ed</p>
 															</div>
 														</div>
 														<div
