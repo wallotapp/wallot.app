@@ -1015,7 +1015,7 @@ const Page: NextPage<PageProps> = (props) => {
 															<Label>
 																<p className=''>
 																	If accepted, would you prefer to stay in
-																	program housing?
+																	program housing in Tampa?
 																	<span className='text-red-700 font-semibold'>
 																		*
 																	</span>
