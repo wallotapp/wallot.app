@@ -83,7 +83,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 				});
 				setError('root', {
 					type: 'manual',
-					message: 'An error occurred. Please try again.',
+					message: 'An error occurred: ' + (message || 'Please try again.'),
 				});
 			},
 			onSuccess: async ({
