@@ -67,7 +67,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 
 	// Form
 	const initialFormData = loginUserSchema.getDefault();
-	const { control, formState, handleSubmit, reset, setError } =
+	const { control, formState, handleSubmit, setError } =
 		useForm<LoginUserParams>({
 			defaultValues: initialFormData,
 			resolver,
@@ -186,9 +186,6 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					type: 'manual',
 					message: 'An error occurred. Please try again.',
 				});
-
-				// Reset form
-				reset();
 
 				// Log to console
 				console.error('Error:', err);
