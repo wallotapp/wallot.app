@@ -885,7 +885,7 @@ const Page: NextPage<PageProps> = (props) => {
 																height={512}
 																priority
 																objectFit='contain'
-																src={'/img/banners/academic-program_v3.jpg'}
+																src={'/img/banners/academic-program_v4.jpg'}
 																width={2048}
 															/>
 														</div>
@@ -931,8 +931,8 @@ const Page: NextPage<PageProps> = (props) => {
 														</Label>
 														<div className='font-light mt-0.5 text-gray-500 text-sm'>
 															<p>
-																Designed for students interested in pursuing
-																STEM, Pre-med, Nursing or Business.
+																Designed for students who wish to gain valuable
+																research experience for their resume/portfolio
 															</p>
 														</div>
 													</div>
