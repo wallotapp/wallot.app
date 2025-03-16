@@ -79,6 +79,8 @@ import {
 	GoCheckCircleFill,
 	GoChevronLeft,
 	GoCircle,
+	GoChevronDown,
+	GoChevronUp,
 } from 'react-icons/go';
 import Image from 'next/image';
 import { ApplicationDashboardPageSuspense } from '@wallot/home-site/src/components/ApplicationDashboardPageSuspense';
@@ -651,39 +653,23 @@ const Page: NextPage<PageProps> = (props) => {
 									{/* Mobile collapsible steps menu (visible on Mobile) */}
 									<div className='md:hidden mb-4'>
 										<button
-											className='w-full flex justify-between items-center p-2 shadow rounded'
+											className='bg-white w-full flex justify-between items-center p-2 shadow rounded'
 											onClick={toggleMobileMenu}
 										>
-											<span className='font-bold'>{currentStep}</span>
-											<svg
-												className={cn(
-													'w-4 h-4 transform transition-transform duration-200',
-													{
-														'rotate-180': isMobileMenuOpen,
-													},
-												)}
-												fill='none'
-												stroke='currentColor'
-												viewBox='0 0 24 24'
-											>
-												<path
-													strokeLinecap='round'
-													strokeLinejoin='round'
-													strokeWidth='2'
-													d='M19 9l-7 7-7-7'
-												/>
-											</svg>
+											<span className='font-semibold'>{currentStep}</span>
+											{isMobileMenuOpen ? <GoChevronUp /> : <GoChevronDown />}
 										</button>
 										{isMobileMenuOpen && (
 											<ul className='mt-2 shadow rounded'>
-												{steps.map((step) => (
+												{steps.map((step, stepIdx) => (
 													<li
 														key={step}
 														className={cn(
-															'cursor-pointer p-2 border-b last:border-b-0',
+															'cursor-pointer p-2 border-b last:border-b-0 text-xs',
 															{
-																'font-bold text-blue-500': step === currentStep,
-																'text-gray-700': step !== currentStep,
+																'font-medium text-brand-dark':
+																	step === currentStep,
+																'font-light': step !== currentStep,
 															},
 														)}
 														onClick={() => {
@@ -693,7 +679,7 @@ const Page: NextPage<PageProps> = (props) => {
 															setMobileMenuOpen(false);
 														}}
 													>
-														{step}
+														{stepIdx + 1}. {step}
 													</li>
 												))}
 											</ul>
