@@ -159,6 +159,12 @@ const Page: NextPage<PageProps> = (props) => {
 		refetch: refetchLoggedInUser,
 	} = useQueryLoggedInUser();
 
+	// Research application form schema
+	const {
+		isLoading: isResearchApplicationFormSchemaDataLoading,
+		data: researchApplicationFormSchemaData,
+	} = useRetrieveResearchApplicationFormSchema();
+
 	// Application status
 	const {
 		resourcesForLoggedInUser: scholarshipApplicationsForLoggedInUser,
@@ -380,6 +386,7 @@ const Page: NextPage<PageProps> = (props) => {
 		if (isSchoolsLoading) return;
 		if (isLoggedInUserLoading || loggedInUser == null) return;
 		if (isScholarshipApplicationPageLoading) return;
+		if (isResearchApplicationFormSchemaDataLoading) return;
 		return void (async function () {
 			try {
 				const initialServerData: ScholarshipApplicationFormDataParams =
@@ -467,6 +474,7 @@ const Page: NextPage<PageProps> = (props) => {
 		isSchoolsLoading,
 		isLoggedInUserLoading,
 		isScholarshipApplicationPageLoading,
+		isResearchApplicationFormSchemaDataLoading,
 		loggedInUser,
 		scholarshipApplicationForLoggedInUser,
 	]);
@@ -526,15 +534,8 @@ const Page: NextPage<PageProps> = (props) => {
 	});
 
 	// Research application logic
-	const {
-		isLoading: isResearchApplicationFormSchemaLoading,
-		data: researchApplicationFormSchemaData,
-	} = useRetrieveResearchApplicationFormSchema();
 	const researchApplicationFormSchema =
 		researchApplicationFormSchemaData ?? fallbackResearchApplicationFormSchema;
-	isResearchApplicationFormSchemaLoading;
-	researchApplicationFormSchema;
-
 	const isLookingForSummerProgramValue =
 		liveData['is_looking_for_summer_program'];
 	const isLookingForSummerProgramUnset =
@@ -619,18 +620,10 @@ const Page: NextPage<PageProps> = (props) => {
 						)}
 					</div>
 					<div className={cn('mt-5')}>
-						<div
-							className={cn(
-								isScholarshipApplicationPageLoading ? '' : 'hidden',
-							)}
-						>
+						<div className={cn({ hidden: isInitialized })}>
 							<ApplicationDashboardPageSuspense />
 						</div>
-						<div
-							className={cn(
-								!isScholarshipApplicationPageLoading ? '' : 'hidden',
-							)}
-						>
+						<div className={cn({ hidden: !isInitialized })}>
 							<div className='flex flex-col md:flex-row md:space-x-5'>
 								{/* Left sidebar (visible on Tablet and Desktop) */}
 								<aside className='hidden md:block'>
@@ -697,47 +690,49 @@ const Page: NextPage<PageProps> = (props) => {
 													'mt-1.5': enableResearchApplication,
 												})}
 											>
-												{researchApplicationFormSchema.steps.map((step) => {
-													const isActive = step === currentStep;
-													return (
-														<div className='flex items-center space-x-1 w-44 -ml-3.5'>
-															<div className='py-1'>
-																<Separator
-																	orientation='vertical'
+												{researchApplicationFormSchema.steps.map(
+													({ title: step }) => {
+														const isActive = step === currentStep;
+														return (
+															<div className='flex items-center space-x-1 w-44 -ml-3.5'>
+																<div className='py-1'>
+																	<Separator
+																		orientation='vertical'
+																		className={cn(
+																			'!h-5 !w-1 !rounded-lg',
+																			isActive
+																				? 'bg-brand-dark'
+																				: 'bg-transparent',
+																		)}
+																	/>
+																</div>
+																<button
+																	key={step}
 																	className={cn(
-																		'!h-5 !w-1 !rounded-lg',
+																		'block w-full text-left pl-2 pr-10 py-1 rounded',
 																		isActive
-																			? 'bg-brand-dark'
-																			: 'bg-transparent',
+																			? 'bg-gray-200'
+																			: 'hover:bg-gray-100',
 																	)}
-																/>
-															</div>
-															<button
-																key={step}
-																className={cn(
-																	'block w-full text-left pl-2 pr-10 py-1 rounded',
-																	isActive
-																		? 'bg-gray-200'
-																		: 'hover:bg-gray-100',
-																)}
-																onClick={() =>
-																	setCurrentStep(
-																		step as ScholarshipApplicationFormDataSection,
-																	)
-																}
-															>
-																<p
-																	className={cn(
-																		'text-xs',
-																		isActive ? 'font-semibold' : 'font-light',
-																	)}
+																	onClick={() =>
+																		setCurrentStep(
+																			step as ScholarshipApplicationFormDataSection,
+																		)
+																	}
 																>
-																	{step}
-																</p>
-															</button>
-														</div>
-													);
-												})}
+																	<p
+																		className={cn(
+																			'text-xs',
+																			isActive ? 'font-semibold' : 'font-light',
+																		)}
+																	>
+																		{step}
+																	</p>
+																</button>
+															</div>
+														);
+													},
+												)}
 											</div>
 										</Fragment>
 									)}
