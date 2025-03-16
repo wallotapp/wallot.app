@@ -541,6 +541,10 @@ const Page: NextPage<PageProps> = (props) => {
 		(isLookingForSummerProgram &&
 			(!liveData.summer_plans || isPreferringSummerProgramHousingUnset));
 
+	const enableResearchApplication = Boolean(
+		scholarshipApplicationForLoggedInUser?.enable_research_application,
+	);
+
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
@@ -560,9 +564,15 @@ const Page: NextPage<PageProps> = (props) => {
 								<div>
 									<p className='font-semibold text-lg'>
 										Florida Visionary Scholarship Application
+										<span className='hidden md:inline'>
+											<span>{' · '}</span>
+											<span className='font-extralight text-sm'>
+												Class of 2025 Cohort
+											</span>
+										</span>
 									</p>
 								</div>
-								<div className='-mt-0.5'>
+								<div className='-mt-0.5 block md:hidden'>
 									<p className='font-extralight text-sm'>
 										Class of 2025 Cohort
 									</p>
@@ -608,44 +618,55 @@ const Page: NextPage<PageProps> = (props) => {
 						>
 							<div className='flex flex-col md:flex-row md:space-x-5'>
 								{/* Left sidebar (visible on Tablet and Desktop) */}
-								<aside className='hidden md:block space-y-0.5'>
-									{steps.map((step) => {
-										const isActive = step === currentStep;
-										return (
-											<div className='flex items-center space-x-1 w-44'>
-												<div className='py-1'>
-													<Separator
-														orientation='vertical'
+								<aside className='hidden md:block'>
+									{enableResearchApplication && (
+										<div>
+											<p className='font-medium text-xs'>Scholarship</p>
+										</div>
+									)}
+									<div
+										className={cn('space-y-0.5', {
+											'mt-1.5': enableResearchApplication,
+										})}
+									>
+										{steps.map((step) => {
+											const isActive = step === currentStep;
+											return (
+												<div className='flex items-center space-x-1 w-44'>
+													<div className='py-1'>
+														<Separator
+															orientation='vertical'
+															className={cn(
+																'!h-5 !w-1 !rounded-lg',
+																isActive ? 'bg-brand-dark' : 'bg-transparent',
+															)}
+														/>
+													</div>
+													<button
+														key={step}
 														className={cn(
-															'!h-5 !w-1 !rounded-lg',
-															isActive ? 'bg-brand-dark' : 'bg-transparent',
+															'block w-full text-left pl-2 pr-10 py-1 rounded',
+															isActive ? 'bg-gray-200' : '',
 														)}
-													/>
-												</div>
-												<button
-													key={step}
-													className={cn(
-														'block w-full text-left pl-2 pr-10 py-1 rounded',
-														isActive ? 'bg-gray-200' : '',
-													)}
-													onClick={() =>
-														setCurrentStep(
-															step as ScholarshipApplicationFormDataSection,
-														)
-													}
-												>
-													<p
-														className={cn(
-															'text-xs',
-															isActive ? 'font-semibold' : 'font-light',
-														)}
+														onClick={() =>
+															setCurrentStep(
+																step as ScholarshipApplicationFormDataSection,
+															)
+														}
 													>
-														{step}
-													</p>
-												</button>
-											</div>
-										);
-									})}
+														<p
+															className={cn(
+																'text-xs',
+																isActive ? 'font-semibold' : 'font-light',
+															)}
+														>
+															{step}
+														</p>
+													</button>
+												</div>
+											);
+										})}
+									</div>
 								</aside>
 
 								{/* Main content area */}
