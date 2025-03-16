@@ -27,7 +27,6 @@ describe('ScholarshipApplication', () => {
 			description: '',
 			name: 'My ScholarshipApplication',
 			decision: null,
-			enable_research_application: false,
 			open_house_rsvps: [],
 			reminder_emails_sent_for_application_completion: 0,
 			status: 'in_progress',
