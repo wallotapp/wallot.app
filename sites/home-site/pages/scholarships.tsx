@@ -243,8 +243,16 @@ const Page: NextPage<PageProps> = (props) => {
 		}
 
 		if (rsvp) {
-			// Redirect to route without query param
-			router.push(homeUrl);
+			if (
+				scholarshipApplicationForLoggedInUser != null &&
+				scholarshipApplicationForLoggedInUser.is_looking_for_summer_program
+			) {
+				// Redirect back to the application to complete the research application
+				router.push(loggedInApplicationUrl);
+			} else {
+				// Redirect to route without query param
+				router.replace(homeUrl);
+			}
 		}
 	};
 
