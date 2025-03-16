@@ -646,7 +646,7 @@ const Page: NextPage<PageProps> = (props) => {
 														key={step}
 														className={cn(
 															'block w-full text-left pl-2 pr-10 py-1 rounded',
-															isActive ? 'bg-gray-200' : '',
+															isActive ? 'bg-gray-200' : 'hover:bg-gray-100',
 														)}
 														onClick={() =>
 															setCurrentStep(
@@ -669,7 +669,7 @@ const Page: NextPage<PageProps> = (props) => {
 									</div>
 									{enableResearchApplication && (
 										<Fragment>
-											<Separator className='my-3'/>
+											<Separator className='my-3' />
 											<div>
 												<p className='font-medium text-xs'>Research Program</p>
 											</div>
@@ -697,7 +697,9 @@ const Page: NextPage<PageProps> = (props) => {
 																key={step}
 																className={cn(
 																	'block w-full text-left pl-2 pr-10 py-1 rounded',
-																	isActive ? 'bg-gray-200' : '',
+																	isActive
+																		? 'bg-gray-200'
+																		: 'hover:bg-gray-100',
 																)}
 																onClick={() =>
 																	setCurrentStep(
