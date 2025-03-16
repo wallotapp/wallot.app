@@ -547,7 +547,7 @@ const Page: NextPage<PageProps> = (props) => {
 								<br />
 								This award honors students who excel academically and
 								athletically. Recipients balance competitive spirit with
-								scholastic diligence and demonstrate leadership under pressure.
+								scholastic diligence and demonstrate leadership under pressure.{' '}
 								<span className='italic'>
 									Applicants must have at minimum{' '}
 									<span className='font-medium'>two years</span> of varsity
