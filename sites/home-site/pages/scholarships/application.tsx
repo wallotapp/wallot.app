@@ -630,7 +630,7 @@ const Page: NextPage<PageProps> = (props) => {
 									{enableResearchApplication && (
 										<div>
 											<p className='font-medium text-xs underline'>
-												Scholarship Program
+												Scholarship Application
 											</p>
 										</div>
 									)}
@@ -682,7 +682,7 @@ const Page: NextPage<PageProps> = (props) => {
 											<Separator className='my-3' />
 											<div>
 												<p className='font-medium text-xs underline'>
-													Research Program
+													Research Application
 												</p>
 											</div>
 											<div
