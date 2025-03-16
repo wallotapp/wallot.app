@@ -91,8 +91,6 @@ const Page: NextPage<PageProps> = (props) => {
 		useState<ScholarshipApplicationFormDataSection>('Contact Details');
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const toggleMobileMenu = () => setMobileMenuOpen(R.not);
-	// const [isSubmitConfirmationDialogOpen, setIsSubmitConfirmationDialogOpen] =
-	// 	useState(false);
 	const [submitConfirmationStep, setSubmitConfirmationStep] = useState<
 		number | null
 	>(null);
