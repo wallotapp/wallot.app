@@ -91,12 +91,12 @@ import {
 import Image from 'next/image';
 import { ApplicationDashboardPageSuspense } from '@wallot/home-site/src/components/ApplicationDashboardPageSuspense';
 
-const steps = ScholarshipApplicationFormDataSectionEnum.arr;
+const scholarshipApplicationSteps =
+	ScholarshipApplicationFormDataSectionEnum.arr;
 
 const Page: NextPage<PageProps> = (props) => {
 	// ==== State ==== //
-	const [currentStep, setCurrentStep] =
-		useState<ScholarshipApplicationFormDataSection>('Contact Details');
+	const [currentStep, setCurrentStep] = useState<string>('Contact Details');
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const toggleMobileMenu = () => setMobileMenuOpen(R.not);
 	const [submitConfirmationStep, setSubmitConfirmationStep] = useState<
@@ -639,7 +639,7 @@ const Page: NextPage<PageProps> = (props) => {
 											'mt-1.5': enableResearchApplication,
 										})}
 									>
-										{steps.map((step) => {
+										{scholarshipApplicationSteps.map((step) => {
 											const isActive = step === currentStep;
 											return (
 												<div className='flex items-center space-x-1 w-44 -ml-3.5'>
@@ -751,7 +751,7 @@ const Page: NextPage<PageProps> = (props) => {
 										</button>
 										{isMobileMenuOpen && (
 											<ul className='mt-2 shadow rounded'>
-												{steps.map((step, stepIdx) => (
+												{scholarshipApplicationSteps.map((step, stepIdx) => (
 													<li
 														key={step}
 														className={cn(
@@ -825,279 +825,198 @@ const Page: NextPage<PageProps> = (props) => {
 
 										<Separator className='mt-1.5' />
 
-										{/* Form fields */}
-										<form>
-											<div className=''>
-												<div
-													className={cn(
-														'px-1',
-														currentStep === 'Contact Details' ? '' : 'hidden',
-													)}
-												>
-													{contactDetailsFields.map((fieldProps) => (
-														<LiteFormFieldContainer
-															key={fieldProps.fieldKey}
-															{...fieldProps}
-														/>
-													))}
-
-													<div className='mt-3'>
-														<Label className='flex items-center space-x-1'>
-															<div>
-																<div>
-																	<p>
-																		High School
-																		<span className='text-red-700 font-semibold'>
-																			*
-																		</span>
-																	</p>
-																</div>
-																<div className='text-gray-500 font-light text-sm'>
-																	<p>
-																		Enter the name of your current high school
-																	</p>
-																</div>
-															</div>
-														</Label>
-														<div className='mt-1'>
-															{initialHighSchoolValue == null ? (
-																<div>
-																	<Skeleton className='bg-slate-300 h-10' />
-																</div>
-															) : (
-																<Select
-																	className='font-light text-sm'
-																	defaultValue={initialHighSchoolValue}
-																	isDisabled={
-																		isFormSubmitting ||
-																		isScholarshipApplicationForLoggedInUserSubmitted
-																	}
-																	isMulti={false}
-																	name={'high_school'}
-																	onChange={(changedValues) => {
-																		const schoolName =
-																			changedValues?.value ?? '';
-																		setValue('high_school', schoolName);
-																	}}
-																	options={[
-																		{
-																			label: 'Select one',
-																			value: '',
-																		},
-																	].concat(
-																		schools.map(
-																			({
-																				address: schoolAddress,
-																				name: schoolName,
-																			}) => ({
-																				label: `${schoolName}${
-																					schoolAddress
-																						? ' - ' + schoolAddress
-																						: ''
-																				}`,
-																				value: schoolName,
-																			}),
-																		),
-																	)}
-																	required={true}
-																/>
-															)}
-														</div>
-													</div>
-												</div>
-												<div
-													className={cn(
-														'px-1',
-														currentStep === 'College Information'
-															? ''
-															: 'hidden',
-													)}
-												>
-													{collegeInformationFields.map((fieldProps) => (
-														<LiteFormFieldContainer
-															key={fieldProps.fieldKey}
-															{...fieldProps}
-														/>
-													))}
-												</div>
-												<div
-													className={cn(
-														'px-1',
-														currentStep === 'Student Profile' ? '' : 'hidden',
-													)}
-												>
-													{studentProfileFields.map((fieldProps) => (
-														<LiteFormFieldContainer
-															key={fieldProps.fieldKey}
-															{...fieldProps}
-														/>
-													))}
-												</div>
-												<div
-													className={cn(
-														'px-1',
-														currentStep === 'Personal Essays' ? '' : 'hidden',
-													)}
-												>
-													{personalEssaysFields.map((fieldProps) => (
-														<LiteFormFieldContainer
-															key={fieldProps.fieldKey}
-															{...fieldProps}
-														/>
-													))}
-												</div>
-												<div
-													className={cn(
-														'px-1',
-														currentStep === 'Summer Research' ? '' : 'hidden',
-													)}
-												>
-													<div className='mt-2'>
-														<div className=''>
-															<Image
-																alt='Summer Research'
-																className='rounded-lg'
-																height={512}
-																priority
-																objectFit='contain'
-																src={'/img/banners/academic-program_v4.jpg'}
-																width={2048}
+										{/* Scholarship Form */}
+										<div
+											className={cn({
+												hidden: !(
+													scholarshipApplicationSteps as string[]
+												).includes(currentStep),
+											})}
+										>
+											<form>
+												<div className=''>
+													<div
+														className={cn(
+															'px-1',
+															currentStep === 'Contact Details' ? '' : 'hidden',
+														)}
+													>
+														{contactDetailsFields.map((fieldProps) => (
+															<LiteFormFieldContainer
+																key={fieldProps.fieldKey}
+																{...fieldProps}
 															/>
-														</div>
-													</div>
-													<div
-														className={cn(
-															'mt-2 text-right text-sm flex flex-col items-end space-y-1',
-														)}
-													>
-														{[
-															{
-																benefit:
-																	'8-Week research projects with college professors in your field',
-															},
-															{
-																benefit:
-																	'Publish your research in an academic journal',
-															},
-															{ benefit: 'Housing and meals provided' },
-															{ benefit: 'Fun events in Tampa' },
-														].map(({ benefit }) => {
-															return (
-																<div className='flex items-center space-x-1 font-light'>
+														))}
+
+														<div className='mt-3'>
+															<Label className='flex items-center space-x-1'>
+																<div>
 																	<div>
-																		<GoCheck />
+																		<p>
+																			High School
+																			<span className='text-red-700 font-semibold'>
+																				*
+																			</span>
+																		</p>
 																	</div>
-																	<div>
-																		<p>{benefit}</p>
+																	<div className='text-gray-500 font-light text-sm'>
+																		<p>
+																			Enter the name of your current high school
+																		</p>
 																	</div>
 																</div>
-															);
-														})}
-													</div>
-													<div className='mt-6'>
-														<Label>
-															<p className=''>
-																Are you also interested in applying to our
-																academic research program?
-																<span className='text-red-700 font-semibold'>
-																	*
-																</span>
-															</p>
-														</Label>
-														<div className='font-light mt-0.5 text-gray-500 text-sm'>
-															<p>
-																Designed for students who wish to gain valuable
-																research experience for their resume/portfolio
-															</p>
+															</Label>
+															<div className='mt-1'>
+																{initialHighSchoolValue == null ? (
+																	<div>
+																		<Skeleton className='bg-slate-300 h-10' />
+																	</div>
+																) : (
+																	<Select
+																		className='font-light text-sm'
+																		defaultValue={initialHighSchoolValue}
+																		isDisabled={
+																			isFormSubmitting ||
+																			isScholarshipApplicationForLoggedInUserSubmitted
+																		}
+																		isMulti={false}
+																		name={'high_school'}
+																		onChange={(changedValues) => {
+																			const schoolName =
+																				changedValues?.value ?? '';
+																			setValue('high_school', schoolName);
+																		}}
+																		options={[
+																			{
+																				label: 'Select one',
+																				value: '',
+																			},
+																		].concat(
+																			schools.map(
+																				({
+																					address: schoolAddress,
+																					name: schoolName,
+																				}) => ({
+																					label: `${schoolName}${
+																						schoolAddress
+																							? ' - ' + schoolAddress
+																							: ''
+																					}`,
+																					value: schoolName,
+																				}),
+																			),
+																		)}
+																		required={true}
+																	/>
+																)}
+															</div>
 														</div>
 													</div>
 													<div
 														className={cn(
-															'mt-2 flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0',
+															'px-1',
+															currentStep === 'College Information'
+																? ''
+																: 'hidden',
 														)}
 													>
-														{[
-															{
-																isSelected: isLookingForSummerProgram,
-																subtitle: "I'm looking for a summer program",
-																title: 'Yes',
-															},
-															{
-																isSelected: isNotLookingForSummerProgram,
-																subtitle: 'I already have plans this summer',
-																title: 'No',
-															},
-														].map(({ isSelected, subtitle, title }) => {
-															return (
-																<button
-																	className={cn(
-																		'flex items-center space-x-3 px-3 py-2',
-																		isSelected ? 'bg-gray-200' : 'bg-white',
-																		'border border-gray-300 rounded-md',
-																		{
-																			'transition duration-200 ease-in-out hover:bg-gray-100':
-																				!isFormDisabled,
-																			'cursor-not-allowed': isFormDisabled,
-																		},
-																	)}
-																	key={title}
-																	type='button'
-																	onClick={() => {
-																		setValue(
-																			'is_looking_for_summer_program',
-																			isSelected ? null : title === 'Yes',
-																		);
-																	}}
-																	disabled={isFormDisabled}
-																>
-																	<div className=''>
-																		{isSelected ? (
-																			<GoCheckCircleFill className='text-brand-dark text-lg' />
-																		) : (
-																			<GoCircle className='text-gray-400 text-lg' />
-																		)}
-																	</div>
-																	<div className='text-left'>
-																		<div>
-																			<p className='font-semibold text-sm'>
-																				{title}
-																			</p>
-																		</div>
-																		<div className='lg:max-w-44'>
-																			<p className='font-light text-xs'>
-																				{subtitle}
-																			</p>
-																		</div>
-																	</div>
-																</button>
-															);
-														})}
+														{collegeInformationFields.map((fieldProps) => (
+															<LiteFormFieldContainer
+																key={fieldProps.fieldKey}
+																{...fieldProps}
+															/>
+														))}
 													</div>
 													<div
-														className={cn('mt-6', {
-															hidden: !isLookingForSummerProgram,
-														})}
+														className={cn(
+															'px-1',
+															currentStep === 'Student Profile' ? '' : 'hidden',
+														)}
 													>
-														<div>
-															{summerInternshipsFields.map((fieldProps) => (
-																<LiteFormFieldContainer
-																	key={fieldProps.fieldKey}
-																	{...fieldProps}
+														{studentProfileFields.map((fieldProps) => (
+															<LiteFormFieldContainer
+																key={fieldProps.fieldKey}
+																{...fieldProps}
+															/>
+														))}
+													</div>
+													<div
+														className={cn(
+															'px-1',
+															currentStep === 'Personal Essays' ? '' : 'hidden',
+														)}
+													>
+														{personalEssaysFields.map((fieldProps) => (
+															<LiteFormFieldContainer
+																key={fieldProps.fieldKey}
+																{...fieldProps}
+															/>
+														))}
+													</div>
+													<div
+														className={cn(
+															'px-1',
+															currentStep === 'Summer Research' ? '' : 'hidden',
+														)}
+													>
+														<div className='mt-2'>
+															<div className=''>
+																<Image
+																	alt='Summer Research'
+																	className='rounded-lg'
+																	height={512}
+																	priority
+																	objectFit='contain'
+																	src={'/img/banners/academic-program_v4.jpg'}
+																	width={2048}
 																/>
-															))}
+															</div>
 														</div>
-														<div className='mt-4'>
+														<div
+															className={cn(
+																'mt-2 text-right text-sm flex flex-col items-end space-y-1',
+															)}
+														>
+															{[
+																{
+																	benefit:
+																		'8-Week research projects with college professors in your field',
+																},
+																{
+																	benefit:
+																		'Publish your research in an academic journal',
+																},
+																{ benefit: 'Housing and meals provided' },
+																{ benefit: 'Fun events in Tampa' },
+															].map(({ benefit }) => {
+																return (
+																	<div className='flex items-center space-x-1 font-light'>
+																		<div>
+																			<GoCheck />
+																		</div>
+																		<div>
+																			<p>{benefit}</p>
+																		</div>
+																	</div>
+																);
+															})}
+														</div>
+														<div className='mt-6'>
 															<Label>
 																<p className=''>
-																	If accepted, would you prefer to stay in
-																	program housing near USF-Tampa?
+																	Are you also interested in applying to our
+																	academic research program?
 																	<span className='text-red-700 font-semibold'>
 																		*
 																	</span>
 																</p>
 															</Label>
 															<div className='font-light mt-0.5 text-gray-500 text-sm'>
-																<p>Please note that housing is co-ed</p>
+																<p>
+																	Designed for students who wish to gain
+																	valuable research experience for their
+																	resume/portfolio
+																</p>
 															</div>
 														</div>
 														<div
@@ -1107,15 +1026,13 @@ const Page: NextPage<PageProps> = (props) => {
 														>
 															{[
 																{
-																	isSelected: isPreferringSummerProgramHousing,
-																	subtitle:
-																		'I would prefer to stay in program housing',
+																	isSelected: isLookingForSummerProgram,
+																	subtitle: "I'm looking for a summer program",
 																	title: 'Yes',
 																},
 																{
-																	isSelected:
-																		isNotPreferringSummerProgramHousing,
-																	subtitle: 'I would prefer to commute',
+																	isSelected: isNotLookingForSummerProgram,
+																	subtitle: 'I already have plans this summer',
 																	title: 'No',
 																},
 															].map(({ isSelected, subtitle, title }) => {
@@ -1135,7 +1052,7 @@ const Page: NextPage<PageProps> = (props) => {
 																		type='button'
 																		onClick={() => {
 																			setValue(
-																				'prefers_summer_program_housing',
+																				'is_looking_for_summer_program',
 																				isSelected ? null : title === 'Yes',
 																			);
 																		}}
@@ -1164,87 +1081,180 @@ const Page: NextPage<PageProps> = (props) => {
 																);
 															})}
 														</div>
+														<div
+															className={cn('mt-6', {
+																hidden: !isLookingForSummerProgram,
+															})}
+														>
+															<div>
+																{summerInternshipsFields.map((fieldProps) => (
+																	<LiteFormFieldContainer
+																		key={fieldProps.fieldKey}
+																		{...fieldProps}
+																	/>
+																))}
+															</div>
+															<div className='mt-4'>
+																<Label>
+																	<p className=''>
+																		If accepted, would you prefer to stay in
+																		program housing near USF-Tampa?
+																		<span className='text-red-700 font-semibold'>
+																			*
+																		</span>
+																	</p>
+																</Label>
+																<div className='font-light mt-0.5 text-gray-500 text-sm'>
+																	<p>Please note that housing is co-ed</p>
+																</div>
+															</div>
+															<div
+																className={cn(
+																	'mt-2 flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0',
+																)}
+															>
+																{[
+																	{
+																		isSelected:
+																			isPreferringSummerProgramHousing,
+																		subtitle:
+																			'I would prefer to stay in program housing',
+																		title: 'Yes',
+																	},
+																	{
+																		isSelected:
+																			isNotPreferringSummerProgramHousing,
+																		subtitle: 'I would prefer to commute',
+																		title: 'No',
+																	},
+																].map(({ isSelected, subtitle, title }) => {
+																	return (
+																		<button
+																			className={cn(
+																				'flex items-center space-x-3 px-3 py-2',
+																				isSelected ? 'bg-gray-200' : 'bg-white',
+																				'border border-gray-300 rounded-md',
+																				{
+																					'transition duration-200 ease-in-out hover:bg-gray-100':
+																						!isFormDisabled,
+																					'cursor-not-allowed': isFormDisabled,
+																				},
+																			)}
+																			key={title}
+																			type='button'
+																			onClick={() => {
+																				setValue(
+																					'prefers_summer_program_housing',
+																					isSelected ? null : title === 'Yes',
+																				);
+																			}}
+																			disabled={isFormDisabled}
+																		>
+																			<div className=''>
+																				{isSelected ? (
+																					<GoCheckCircleFill className='text-brand-dark text-lg' />
+																				) : (
+																					<GoCircle className='text-gray-400 text-lg' />
+																				)}
+																			</div>
+																			<div className='text-left'>
+																				<div>
+																					<p className='font-semibold text-sm'>
+																						{title}
+																					</p>
+																				</div>
+																				<div className='lg:max-w-44'>
+																					<p className='font-light text-xs'>
+																						{subtitle}
+																					</p>
+																				</div>
+																			</div>
+																		</button>
+																	);
+																})}
+															</div>
+														</div>
 													</div>
+													{Boolean(formState.errors['root']?.message) && (
+														<div className='mt-4'>
+															<LiteFormFieldError
+																fieldErrorMessage={
+																	formState.errors['root']?.message ?? ''
+																}
+															/>
+														</div>
+													)}
 												</div>
-												{Boolean(formState.errors['root']?.message) && (
-													<div className='mt-4'>
-														<LiteFormFieldError
-															fieldErrorMessage={
-																formState.errors['root']?.message ?? ''
-															}
-														/>
-													</div>
-												)}
-											</div>
 
-											{/* Navigation buttons */}
-											<div className='mt-6 flex justify-end space-x-3'>
-												<button
-													type='button'
-													disabled={
-														isFormSubmitting ||
-														currentStep === 'Contact Details'
-													}
-													className={cn(
-														'w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300',
-														currentStep === 'Contact Details'
-															? ' text-gray-400 cursor-not-allowed'
-															: '',
-													)}
-													onClick={() =>
-														currentStep !== 'Contact Details' &&
-														setCurrentStep(
-															steps[
-																steps.findIndex(
-																	(step) => step === currentStep,
-																) - 1
-															] as ScholarshipApplicationFormDataSection,
-														)
-													}
-												>
-													<p className='font-medium text-xs'>Back</p>
-												</button>
+												{/* Navigation buttons */}
+												<div className='mt-6 flex justify-end space-x-3'>
+													<button
+														type='button'
+														disabled={
+															isFormSubmitting ||
+															currentStep === 'Contact Details'
+														}
+														className={cn(
+															'w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300',
+															currentStep === 'Contact Details'
+																? ' text-gray-400 cursor-not-allowed'
+																: '',
+														)}
+														onClick={() =>
+															currentStep !== 'Contact Details' &&
+															setCurrentStep(
+																scholarshipApplicationSteps[
+																	scholarshipApplicationSteps.findIndex(
+																		(step) => step === currentStep,
+																	) - 1
+																] as ScholarshipApplicationFormDataSection,
+															)
+														}
+													>
+														<p className='font-medium text-xs'>Back</p>
+													</button>
 
-												<button
-													disabled={isFormSubmitting}
-													type='button'
-													className={cn(
-														'w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300',
-														isLastStep ? 'hidden' : '',
-														isFormSubmitting
-															? ' text-gray-400 cursor-not-allowed'
-															: '',
-													)}
-													onClick={() =>
-														setCurrentStep(
-															steps[
-																steps.findIndex(
-																	(step) => step === currentStep,
-																) + 1
-															] as ScholarshipApplicationFormDataSection,
-														)
-													}
-												>
-													<p className='font-medium text-xs'>Continue</p>
-												</button>
-												<button
-													disabled={disableSubmit}
-													type='button'
-													className={cn(
-														'w-fit text-center px-4 py-1.5 rounded-md border border-slate-300',
-														isLastStep ? '' : 'hidden',
-														disableSubmit
-															? ' bg-brand-extralight text-gray-400 cursor-not-allowed'
-															: 'bg-brand-dark',
-													)}
-													onClick={() => setSubmitConfirmationStep(0)}
-												>
-													<p className='font-medium text-xs text-white'>
-														Submit Application
-													</p>
-												</button>
-											</div>
-										</form>
+													<button
+														disabled={isFormSubmitting}
+														type='button'
+														className={cn(
+															'w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300',
+															isLastStep ? 'hidden' : '',
+															isFormSubmitting
+																? ' text-gray-400 cursor-not-allowed'
+																: '',
+														)}
+														onClick={() =>
+															setCurrentStep(
+																scholarshipApplicationSteps[
+																	scholarshipApplicationSteps.findIndex(
+																		(step) => step === currentStep,
+																	) + 1
+																] as ScholarshipApplicationFormDataSection,
+															)
+														}
+													>
+														<p className='font-medium text-xs'>Continue</p>
+													</button>
+													<button
+														disabled={disableSubmit}
+														type='button'
+														className={cn(
+															'w-fit text-center px-4 py-1.5 rounded-md border border-slate-300',
+															isLastStep ? '' : 'hidden',
+															disableSubmit
+																? ' bg-brand-extralight text-gray-400 cursor-not-allowed'
+																: 'bg-brand-dark',
+														)}
+														onClick={() => setSubmitConfirmationStep(0)}
+													>
+														<p className='font-medium text-xs text-white'>
+															Submit Application
+														</p>
+													</button>
+												</div>
+											</form>
+										</div>
 									</div>
 								</main>
 
