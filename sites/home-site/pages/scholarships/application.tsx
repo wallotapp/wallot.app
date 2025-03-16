@@ -464,9 +464,6 @@ const Page: NextPage<PageProps> = (props) => {
 		scholarshipApplicationForLoggedInUser,
 	]);
 
-	// Reload UI
-	useReloadEffect('v4_ui');
-
 	// School logic
 	const schoolName = liveData.high_school;
 	const { metro_areas: schoolMetroAreas = [] } =
@@ -1746,19 +1743,4 @@ function ApplicationPageSuspense({ length = 5 }) {
 			)}
 		</div>
 	);
-}
-
-function useReloadEffect(version: string) {
-	const router = useRouter();
-	const isReady = router.isReady;
-
-	useEffect(() => {
-		if (!isReady) return;
-
-		const onV4 = localStorage.getItem(version);
-		if (!onV4) {
-			localStorage.setItem(version, '1');
-			router.reload();
-		}
-	}, [isReady, version]);
 }
