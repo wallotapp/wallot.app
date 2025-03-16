@@ -27,6 +27,7 @@ import {
 	School,
 	scholarshipOpenHouseEvents as allScholarshipOpenHouseEvents,
 	lastScholarshipOpenHouseEvent,
+	fallbackResearchApplicationFormSchema,
 } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getSsoSiteRoute } from '@wallot/js';
@@ -58,7 +59,12 @@ import {
 	retrieveScholarshipApplicationSchoolsQueryKey,
 	useRetrieveScholarshipApplicationSchools,
 } from '@wallot/react/src/features/scholarshipApplications/hooks/useRetrieveScholarshipApplicationSchools';
+import {
+	retrieveResearchApplicationFormSchemaQueryKey,
+	useRetrieveResearchApplicationFormSchema,
+} from '@wallot/react/src/features/scholarshipApplications/hooks/useRetrieveResearchApplicationFormSchema';
 import { retrieveScholarshipApplicationSchools } from '@wallot/react/src/features/scholarshipApplications/api/retrieveScholarshipApplicationSchools';
+import { retrieveResearchApplicationFormSchema } from '@wallot/react/src/features/scholarshipApplications/api/retrieveResearchApplicationFormSchema';
 import { Label } from 'ergonomic-react/src/components/ui/label';
 import {
 	DialogHeader,
@@ -465,7 +471,7 @@ const Page: NextPage<PageProps> = (props) => {
 		scholarshipApplicationForLoggedInUser,
 	]);
 
-	// School logic
+	// Open house logic
 	const schoolName = liveData.high_school;
 	const { metro_areas: schoolMetroAreas = [] } =
 		schools.find(({ name }) => name === schoolName) || ({} as Partial<School>);
@@ -519,6 +525,16 @@ const Page: NextPage<PageProps> = (props) => {
 		);
 	});
 
+	// Research application logic
+	const {
+		isLoading: isResearchApplicationFormSchemaLoading,
+		data: researchApplicationFormSchemaData,
+	} = useRetrieveResearchApplicationFormSchema();
+	const researchApplicationFormSchema =
+		researchApplicationFormSchemaData ?? fallbackResearchApplicationFormSchema;
+	isResearchApplicationFormSchemaLoading;
+	researchApplicationFormSchema;
+
 	const isLookingForSummerProgramValue =
 		liveData['is_looking_for_summer_program'];
 	const isLookingForSummerProgramUnset =
@@ -541,9 +557,8 @@ const Page: NextPage<PageProps> = (props) => {
 		(isLookingForSummerProgram &&
 			(!liveData.summer_plans || isPreferringSummerProgramHousingUnset));
 
-	const enableResearchApplication = Boolean(
-		scholarshipApplicationForLoggedInUser?.enable_research_application,
-	);
+	const enableResearchApplication =
+		isLookingForSummerProgram && isSubmittedScholarshipApplication;
 
 	// ==== Render ==== //
 	return (
@@ -583,7 +598,7 @@ const Page: NextPage<PageProps> = (props) => {
 							<div className='mt-4 mb-10 bg-gray-100 border border-gray-200 rounded-md shadow-md p-6 font-light text-sm max-w-md'>
 								<div>
 									<p className='font-semibold text-sm'>
-										Application Status –{' '}
+										Scholarship Application Status –{' '}
 										{changeCase.capitalCase(
 											scholarshipApplicationForLoggedInUser?.status ?? '',
 										)}
@@ -594,9 +609,9 @@ const Page: NextPage<PageProps> = (props) => {
 										<p>{decisionText}</p>
 									) : (
 										<p>
-											Your application has been received and is under review.
-											You will be notified once our committee has reached a
-											decision regarding your application.
+											Your scholarship application has been received and is
+											under review. You will be notified once our committee has
+											reached a decision regarding your application.
 										</p>
 									)}
 								</div>
@@ -621,7 +636,9 @@ const Page: NextPage<PageProps> = (props) => {
 								<aside className='hidden md:block'>
 									{enableResearchApplication && (
 										<div>
-											<p className='font-medium text-xs'>Scholarship Program</p>
+											<p className='font-medium text-xs underline'>
+												Scholarship Program
+											</p>
 										</div>
 									)}
 									<div
@@ -632,7 +649,7 @@ const Page: NextPage<PageProps> = (props) => {
 										{steps.map((step) => {
 											const isActive = step === currentStep;
 											return (
-												<div className='flex items-center space-x-1 w-44'>
+												<div className='flex items-center space-x-1 w-44 -ml-3.5'>
 													<div className='py-1'>
 														<Separator
 															orientation='vertical'
@@ -671,17 +688,19 @@ const Page: NextPage<PageProps> = (props) => {
 										<Fragment>
 											<Separator className='my-3' />
 											<div>
-												<p className='font-medium text-xs'>Research Program</p>
+												<p className='font-medium text-xs underline'>
+													Research Program
+												</p>
 											</div>
 											<div
 												className={cn('space-y-0.5', {
 													'mt-1.5': enableResearchApplication,
 												})}
 											>
-												{steps.map((step) => {
+												{researchApplicationFormSchema.steps.map((step) => {
 													const isActive = step === currentStep;
 													return (
-														<div className='flex items-center space-x-1 w-44'>
+														<div className='flex items-center space-x-1 w-44 -ml-3.5'>
 															<div className='py-1'>
 																<Separator
 																	orientation='vertical'
@@ -1767,6 +1786,11 @@ export const getStaticProps: GetStaticProps<PageStaticProps> = async () => {
 	await queryClient.prefetchQuery(
 		retrieveScholarshipApplicationSchoolsQueryKey,
 		retrieveScholarshipApplicationSchools,
+	);
+	// Prefetch the Research Application form schema
+	await queryClient.prefetchQuery(
+		retrieveResearchApplicationFormSchemaQueryKey,
+		retrieveResearchApplicationFormSchema,
 	);
 
 	// Route Static Props
