@@ -8,6 +8,7 @@ import {
 	YupHelpers,
 	getApiResourceSpec,
 	getEnum,
+	GeneralizedFieldTypeEnum,
 } from 'ergonomic';
 import {
 	apiYupHelpers,
@@ -54,6 +55,12 @@ const properties = {
 	reminder_emails_sent_for_application_completion: YupHelpers.integer(),
 	status:
 		ScholarshipApplicationStatusEnum.getDefinedSchema().default('in_progress'),
+	enable_research_application: yup
+		.mixed()
+		.oneOf([true, false, null, ''])
+		.default(null)
+		.optional()
+		.meta({ type: GeneralizedFieldTypeEnum.obj.boolean }),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: true }),
 	...R.pick(
 		['high_school'],
