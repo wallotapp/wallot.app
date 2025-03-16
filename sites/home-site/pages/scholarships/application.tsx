@@ -621,7 +621,7 @@ const Page: NextPage<PageProps> = (props) => {
 								<aside className='hidden md:block'>
 									{enableResearchApplication && (
 										<div>
-											<p className='font-medium text-xs'>Scholarship</p>
+											<p className='font-medium text-xs'>Scholarship Program</p>
 										</div>
 									)}
 									<div
@@ -667,6 +667,59 @@ const Page: NextPage<PageProps> = (props) => {
 											);
 										})}
 									</div>
+									{enableResearchApplication && (
+										<Fragment>
+											<Separator className='my-3'/>
+											<div>
+												<p className='font-medium text-xs'>Research Program</p>
+											</div>
+											<div
+												className={cn('space-y-0.5', {
+													'mt-1.5': enableResearchApplication,
+												})}
+											>
+												{steps.map((step) => {
+													const isActive = step === currentStep;
+													return (
+														<div className='flex items-center space-x-1 w-44'>
+															<div className='py-1'>
+																<Separator
+																	orientation='vertical'
+																	className={cn(
+																		'!h-5 !w-1 !rounded-lg',
+																		isActive
+																			? 'bg-brand-dark'
+																			: 'bg-transparent',
+																	)}
+																/>
+															</div>
+															<button
+																key={step}
+																className={cn(
+																	'block w-full text-left pl-2 pr-10 py-1 rounded',
+																	isActive ? 'bg-gray-200' : '',
+																)}
+																onClick={() =>
+																	setCurrentStep(
+																		step as ScholarshipApplicationFormDataSection,
+																	)
+																}
+															>
+																<p
+																	className={cn(
+																		'text-xs',
+																		isActive ? 'font-semibold' : 'font-light',
+																	)}
+																>
+																	{step}
+																</p>
+															</button>
+														</div>
+													);
+												})}
+											</div>
+										</Fragment>
+									)}
 								</aside>
 
 								{/* Main content area */}
