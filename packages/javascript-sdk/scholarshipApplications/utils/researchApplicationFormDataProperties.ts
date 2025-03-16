@@ -1,4 +1,4 @@
-import { GeneralizedFieldTypeEnum } from 'ergonomic';
+import { EnumMember, GeneralizedFieldTypeEnum, getEnum } from 'ergonomic';
 import * as yup from 'yup';
 
 export type ResearchApplicationFormSchema = {
@@ -93,31 +93,39 @@ export const researchApplicationFormDataPropertiesBySectionSource = {
 	},
 };
 
-export type ResearchApplicationFormData = {
-	research_application_s0_q0: string;
-	research_application_s0_q1: string;
-	research_application_s0_q2: string;
-	research_application_s0_q3: string;
-	research_application_s1_q0: string;
-	research_application_s2_q0: string;
-	research_application_s2_q1: string;
-	research_application_s2_q2: string;
-	research_application_s2_q3: string;
-	research_application_s2_q4: string;
-	research_application_s2_q5: string;
-	research_application_s3_q0: string;
-	research_application_s3_q1: string;
-	research_application_s3_q2: string;
-	research_application_s4_q0: string;
-	research_application_s5_q0: string;
-	research_application_s5_q1: string;
-	research_application_s5_q2: string;
-	research_application_s5_q3: string;
-	research_application_s5_q4: string;
-	research_application_s5_q5: string;
-	research_application_s6_q0: string;
-	research_application_s6_q1: string;
-	research_application_s6_q2: string;
-	research_application_s6_q3: string;
-	research_application_s6_q4: string;
-};
+export const ResearchApplicationFormDataFieldKeyEnum = getEnum([
+	'research_application_s0_q0',
+	'research_application_s0_q1',
+	'research_application_s0_q2',
+	'research_application_s0_q3',
+	'research_application_s1_q0',
+	'research_application_s2_q0',
+	'research_application_s2_q1',
+	'research_application_s2_q2',
+	'research_application_s2_q3',
+	'research_application_s2_q4',
+	'research_application_s2_q5',
+	'research_application_s3_q0',
+	'research_application_s3_q1',
+	'research_application_s3_q2',
+	'research_application_s4_q0',
+	'research_application_s4_q1',
+	'research_application_s4_q2',
+	'research_application_s4_q3',
+	'research_application_s4_q4',
+	'research_application_s4_q5',
+	'research_application_s5_q0',
+	'research_application_s6_q0',
+	'research_application_s6_q1',
+	'research_application_s6_q2',
+	'research_application_s6_q3',
+	'research_application_s6_q4',
+]);
+export type ResearchApplicationFormDataFieldKey = EnumMember<
+	typeof ResearchApplicationFormDataFieldKeyEnum
+>;
+
+export type ResearchApplicationFormData = Record<
+	ResearchApplicationFormDataFieldKey,
+	string
+>;
