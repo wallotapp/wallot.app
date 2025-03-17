@@ -640,12 +640,28 @@ const Page: NextPage<PageProps> = (props) => {
 					}));
 				}
 
-				// Save initial scholarship application to db
 				if (noScholarshipApplicationFound) {
+					// Save initial scholarship application to db
 					await createScholarshipApplication([
 						newScholarshipApplicationForLoggedInUser,
 					]);
 					await refetchScholarshipApplicationsForLoggedInUser();
+				} else {
+					// If the scholarship app is submitted
+					// start with the research application questions
+					if (scholarshipApplicationForLoggedInUser.status === 'submitted') {
+						if (
+							scholarshipApplicationForLoggedInUser.is_looking_for_summer_program
+						) {
+							setCurrentStep(researchApplicationStepTitles[0]);
+						} else {
+							setCurrentStep(
+								ScholarshipApplicationFormDataSectionEnum.obj[
+									'Summer Research'
+								],
+							);
+						}
+					}
 				}
 			} catch (error) {
 				console.error('Error initializing scholarship application:', error);
