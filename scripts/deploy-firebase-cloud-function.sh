@@ -21,7 +21,7 @@ docker run --rm \
     npm ci &&
     npm run build &&
     cd ~ &&
-    npm install -g firebase-tools@13.0.2 &&
+    npm install -g firebase-tools@latest &&
     cd - &&
     cd functions/${FUNCTION_NAME} &&
     npm i &&

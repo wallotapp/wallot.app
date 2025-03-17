@@ -46,7 +46,7 @@
 	},
 	"description": "",
 	"engines": {
-		"node": "22.12.0"
+		"node": "20"
 	},
 	"files": [
 		"**/*"
@@ -67,5 +67,5 @@
 	},
 	"type": "module",
 	"types": "./index.ts",
-	"version": "0.1.40-rc.0"
+	"version": "0.1.41-rc.0"
 }
