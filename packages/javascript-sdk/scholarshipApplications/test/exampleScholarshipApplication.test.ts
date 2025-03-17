@@ -12,6 +12,9 @@ describe('ScholarshipApplication', () => {
 			name: 'My ScholarshipApplication',
 			user: '',
 			open_house_rsvps: [],
+			research_application_s1_q0: [],
+			research_application_s4_q2: [],
+			research_application_s4_q3: [],
 		};
 		expect(exampleScholarshipApplication).toEqual<
 			typeof exampleScholarshipApplication
@@ -29,9 +32,10 @@ describe('ScholarshipApplication', () => {
 			decision: null,
 			open_house_rsvps: [],
 			reminder_emails_sent_for_application_completion: 0,
+			research_status: 'in_progress',
 			status: 'in_progress',
 			user: '',
-			// Application Form
+			// Scholarship application form
 			common_essay: '',
 			academic_achievement_award_essay: '',
 			outstanding_student_athlete_award_essay: '',
@@ -47,6 +51,33 @@ describe('ScholarshipApplication', () => {
 			college_name: '',
 			college_type: '2-Year College',
 			high_school: '',
+			// Research application form
+			research_application_s0_q0: '',
+			research_application_s0_q1: '',
+			research_application_s0_q2: '',
+			research_application_s0_q3: '',
+			research_application_s1_q0: [],
+			research_application_s2_q0: '',
+			research_application_s2_q1: '',
+			research_application_s2_q2: '',
+			research_application_s2_q3: '',
+			research_application_s2_q5: '',
+			research_application_s2_q4: '',
+			research_application_s3_q0: '',
+			research_application_s3_q1: '',
+			research_application_s3_q2: '',
+			research_application_s4_q0: '',
+			research_application_s4_q1: '',
+			research_application_s4_q2: [],
+			research_application_s4_q3: [],
+			research_application_s4_q4: '',
+			research_application_s4_q5: '',
+			research_application_s5_q0: '',
+			research_application_s6_q0: '',
+			research_application_s6_q1: '',
+			research_application_s6_q2: '',
+			research_application_s6_q3: '',
+			research_application_s6_q4: '',
 		});
 	});
 });
