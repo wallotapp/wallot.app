@@ -30,7 +30,7 @@ import {
 	fallbackResearchApplicationFormSchema,
 	ResearchApplicationFormDataParams,
 	ResearchApplicationFormDataField,
-	researchApplicationFormDataSchemaFieldSpecByFieldKey,
+	getResearchApplicationFormDataSchemaFieldSpecByFieldKey,
 	researchApplicationFormDataSchema,
 	researchFieldsBySection,
 	ResearchApplicationArrayField,
@@ -450,6 +450,10 @@ const Page: NextPage<PageProps> = (props) => {
 			? 'running'
 			: 'idle';
 	const isResearchFormSubmitting = researchFormStatus === 'running';
+	const researchApplicationFormDataSchemaFieldSpecByFieldKey =
+		getResearchApplicationFormDataSchemaFieldSpecByFieldKey(
+			researchApplicationFormSchema,
+		);
 	const getResearchLiteFormFieldProps = (
 		fieldKey: Exclude<
 			ResearchApplicationFormDataField,
@@ -779,7 +783,7 @@ const Page: NextPage<PageProps> = (props) => {
 													<button
 														key={step}
 														className={cn(
-															'block w-full text-left pl-2 pr-10 py-1 rounded',
+															'block w-full text-left pl-2 pr-6 py-1 rounded',
 															isActive ? 'bg-gray-200' : 'hover:bg-gray-100',
 														)}
 														onClick={() =>
@@ -833,7 +837,7 @@ const Page: NextPage<PageProps> = (props) => {
 																<button
 																	key={step}
 																	className={cn(
-																		'block w-full text-left pl-2 pr-10 py-1 rounded',
+																		'block w-full text-left pl-2 pr-6 py-1 rounded',
 																		isActive
 																			? 'bg-gray-200'
 																			: 'hover:bg-gray-100',

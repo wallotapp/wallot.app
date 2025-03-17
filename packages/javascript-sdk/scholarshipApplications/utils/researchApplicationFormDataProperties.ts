@@ -124,11 +124,29 @@ export type ResearchApplicationFormDataField = EnumMember<
 export const researchApplicationFormDataSchema = yup.object(
 	researchApplicationFormDataPropertiesSource,
 );
-export const researchApplicationFormDataSchemaFieldSpecByFieldKey =
-	getFieldSpecByFieldKey(
-		researchApplicationFormDataSchema,
-		ResearchApplicationFormDataFieldEnum.arr,
+export const getResearchApplicationFormDataSchemaFieldSpecByFieldKey = ({
+	label_data_by_field_key,
+}: ResearchApplicationFormSchema) => {
+	const x = Object.entries(label_data_by_field_key).reduce(
+		(acc, [field, { label, label_message }]) => {
+			if (ResearchApplicationFormDataFieldEnum.isMember(field)) {
+				return {
+					...acc,
+					[field]: researchApplicationFormDataPropertiesSource[field]
+						.label(label)
+						.meta(
+							label_message == null
+								? {}
+								: { label_message_user_text: label_message },
+						),
+				};
+			} else return acc;
+		},
+		researchApplicationFormDataPropertiesSource,
 	);
+	const y = yup.object(x);
+	return getFieldSpecByFieldKey(y, ResearchApplicationFormDataFieldEnum.arr);
+};
 export type ResearchApplicationFormDataParams = yup.InferType<
 	typeof researchApplicationFormDataSchema
 >;
