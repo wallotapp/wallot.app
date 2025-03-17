@@ -68,7 +68,7 @@ export const researchApplicationFormDataPropertiesSource = {
 		type: GeneralizedFieldTypeEnum.obj.long_text,
 	}),
 	research_application_s2_q1: yup.string().default('').required().meta({
-		type: GeneralizedFieldTypeEnum.obj.short_text,
+		type: GeneralizedFieldTypeEnum.obj.long_text,
 	}),
 	research_application_s2_q2: yup.string().default('').optional().meta({
 		type: GeneralizedFieldTypeEnum.obj.long_text,
@@ -100,7 +100,7 @@ export const researchApplicationFormDataPropertiesSource = {
 	research_application_s4_q2: list(),
 	research_application_s4_q3: list(),
 	research_application_s4_q4: yup.string().default('').optional().meta({
-		type: GeneralizedFieldTypeEnum.obj.short_text,
+		type: GeneralizedFieldTypeEnum.obj.long_text,
 	}),
 	research_application_s4_q5: yup.string().default('').optional().meta({
 		type: GeneralizedFieldTypeEnum.obj.short_text,
@@ -162,12 +162,31 @@ export const researchFieldsBySection = {
 		'research_application_s0_q2',
 		'research_application_s0_q3',
 	],
+	2: [
+		'research_application_s2_q0',
+		'research_application_s2_q1',
+		'research_application_s2_q2',
+		'research_application_s2_q3',
+		'research_application_s2_q5',
+		'research_application_s2_q4',
+	],
 	3: [
 		'research_application_s3_q0',
 		'research_application_s3_q1',
 		'research_application_s3_q2',
 	],
+	4: {
+		0: ['research_application_s4_q0', 'research_application_s4_q1'],
+		2: ['research_application_s4_q4', 'research_application_s4_q5'],
+	},
 	5: ['research_application_s5_q0'],
+	6: [
+		'research_application_s6_q0',
+		'research_application_s6_q1',
+		'research_application_s6_q2',
+		'research_application_s6_q3',
+		'research_application_s6_q4',
+	],
 } as const;
 
 export type ResearchApplicationArrayField =

@@ -232,7 +232,13 @@ const Page: NextPage<PageProps> = (props) => {
 	const [s4Q3, setS4Q3] = useState<{ details: string; title: string }[]>([]);
 	const researchApplicationFormSchema =
 		researchApplicationFormSchemaData ?? fallbackResearchApplicationFormSchema;
-	const { steps: researchApplicationSteps } = researchApplicationFormSchema;
+	const {
+		label_data_by_field_key,
+		steps: researchApplicationSteps,
+		research_application_s1_q0_entries,
+		research_application_s4_q2_entries,
+		// research_application_s4_q3_entries,
+	} = researchApplicationFormSchema;
 	const researchApplicationStepTitles = researchApplicationSteps.map(
 		R.prop('title'),
 	) as [string, string, string, string, string, string, string];
@@ -476,15 +482,26 @@ const Page: NextPage<PageProps> = (props) => {
 	const researchFieldsSection0 = researchFieldsBySection[0].map(
 		getResearchLiteFormFieldProps,
 	);
+	const researchFieldsSection2 = researchFieldsBySection[2].map(
+		getResearchLiteFormFieldProps,
+	);
 	const researchFieldsSection3 = researchFieldsBySection[3].map(
+		getResearchLiteFormFieldProps,
+	);
+	const researchFieldsSection4_0 = researchFieldsBySection[4][0].map(
+		getResearchLiteFormFieldProps,
+	);
+	const researchFieldsSection4_2 = researchFieldsBySection[4][2].map(
 		getResearchLiteFormFieldProps,
 	);
 	const researchFieldsSection5 = researchFieldsBySection[5].map(
 		getResearchLiteFormFieldProps,
 	);
+	const researchFieldKeysSection6 = researchFieldsBySection[6];
 	const researchFields =
 		{
 			[researchApplicationStepTitles[0]]: researchFieldsSection0,
+			[researchApplicationStepTitles[2]]: researchFieldsSection2,
 			[researchApplicationStepTitles[3]]: researchFieldsSection3,
 			[researchApplicationStepTitles[5]]: researchFieldsSection5,
 		}[currentStep] ?? [];
@@ -1461,11 +1478,12 @@ const Page: NextPage<PageProps> = (props) => {
 													<div
 														className={cn(
 															'px-1',
-															currentStep ===
-																researchApplicationStepTitles[0] ||
-																currentStep ===
-																	researchApplicationStepTitles[3] ||
-																currentStep === researchApplicationStepTitles[5]
+															[
+																researchApplicationStepTitles[0],
+																researchApplicationStepTitles[2],
+																researchApplicationStepTitles[3],
+																researchApplicationStepTitles[5],
+															].includes(currentStep)
 																? ''
 																: 'hidden',
 														)}
@@ -1476,6 +1494,91 @@ const Page: NextPage<PageProps> = (props) => {
 																{...fieldProps}
 															/>
 														))}
+													</div>
+													<div
+														className={cn(
+															'px-1',
+															currentStep === researchApplicationStepTitles[1]
+																? ''
+																: 'hidden',
+														)}
+													>
+														<p>
+															{
+																label_data_by_field_key
+																	.research_application_s1_q0?.label
+															}
+														</p>
+														{research_application_s1_q0_entries.map(
+															({ subtitle, title }) => {
+																return (
+																	<div>
+																		<p className='text-sm'>{title}</p>
+																		<p className='text-light text-xs'>
+																			{subtitle}
+																		</p>
+																	</div>
+																);
+															},
+														)}
+													</div>
+													<div
+														className={cn(
+															'px-1',
+															currentStep === researchApplicationStepTitles[4]
+																? ''
+																: 'hidden',
+														)}
+													>
+														{researchFieldsSection4_0.map((fieldProps) => (
+															<LiteFormFieldContainer
+																key={fieldProps.fieldKey}
+																{...fieldProps}
+															/>
+														))}
+														<p>
+															{
+																label_data_by_field_key
+																	.research_application_s4_q2?.label
+															}
+														</p>
+														{research_application_s4_q2_entries.map(
+															({ subtitle, title }) => {
+																return (
+																	<div>
+																		<p className='text-sm'>{title}</p>
+																		<p className='text-light text-xs'>
+																			{subtitle}
+																		</p>
+																	</div>
+																);
+															},
+														)}
+														{researchFieldsSection4_2.map((fieldProps) => (
+															<LiteFormFieldContainer
+																key={fieldProps.fieldKey}
+																{...fieldProps}
+															/>
+														))}
+													</div>
+													<div
+														className={cn(
+															'px-1',
+															currentStep === researchApplicationStepTitles[6]
+																? ''
+																: 'hidden',
+														)}
+													>
+														{researchFieldKeysSection6.map((fieldKey) => {
+															const { label, label_message } =
+																label_data_by_field_key[fieldKey]!;
+															return (
+																<div>
+																	<p>{label}</p>
+																	<p>{label_message}</p>
+																</div>
+															);
+														})}
 													</div>
 													{Boolean(formState.errors['root']?.message) && (
 														<div className='mt-4'>
