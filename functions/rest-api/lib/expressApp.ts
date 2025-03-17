@@ -37,6 +37,9 @@ import {
 	ScholarshipApplicationFormDataRouteParams,
 	ScholarshipOpenHouseRsvpFormDataResponse,
 	ScholarshipOpenHouseRsvpFormDataParams,
+	ResearchApplicationFormDataParams,
+	ResearchApplicationFormDataResponse,
+	ResearchApplicationFormDataRouteParams,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -382,6 +385,70 @@ app.post(
 			createRouterFunction(auth, secrets)(submitScholarshipOpenHouseRsvp, {
 				requiresAuth: false,
 			})(req, res, next),
+		);
+	},
+);
+
+import { saveResearchApplication } from './app/wallot/scholarshipApplications/saveResearchApplication.js';
+app.options(
+	'*/v0/scholarship-applications/:scholarshipApplicationId/research',
+	corsPolicy,
+);
+app.patch(
+	'*/v0/scholarship-applications/:scholarshipApplicationId/research',
+	(
+		req: express.Request<
+			ResearchApplicationFormDataRouteParams,
+			ResearchApplicationFormDataResponse,
+			ResearchApplicationFormDataParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			ResearchApplicationFormDataResponse,
+			GeneralizedResLocals<ResearchApplicationFormDataResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(saveResearchApplication)(
+				req,
+				res,
+				next,
+			),
+		);
+	},
+);
+
+import { submitResearchApplication } from './app/wallot/scholarshipApplications/submitResearchApplication.js';
+app.options(
+	'*/v0/scholarship-applications/:scholarshipApplicationId/research/submit',
+	corsPolicy,
+);
+app.post(
+	'*/v0/scholarship-applications/:scholarshipApplicationId/research/submit',
+	(
+		req: express.Request<
+			ResearchApplicationFormDataRouteParams,
+			ResearchApplicationFormDataResponse,
+			ResearchApplicationFormDataParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			ResearchApplicationFormDataResponse,
+			GeneralizedResLocals<ResearchApplicationFormDataResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(submitResearchApplication)(
+				req,
+				res,
+				next,
+			),
 		);
 	},
 );
