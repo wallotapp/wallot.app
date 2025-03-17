@@ -100,6 +100,7 @@ import {
 } from 'react-icons/go';
 import Image from 'next/image';
 import { ApplicationDashboardPageSuspense } from '@wallot/home-site/src/components/ApplicationDashboardPageSuspense';
+import { updateScholarshipApplication } from '@wallot/react/src/features/scholarshipApplications/api/updateScholarshipApplication';
 
 const scholarshipApplicationSteps =
 	ScholarshipApplicationFormDataSectionEnum.arr;
@@ -1311,6 +1312,7 @@ const Page: NextPage<PageProps> = (props) => {
 																	title: 'No',
 																},
 															].map(({ isSelected, subtitle, title }) => {
+																const isYesButton = title === 'Yes';
 																return (
 																	<button
 																		className={cn(
@@ -1319,19 +1321,46 @@ const Page: NextPage<PageProps> = (props) => {
 																			'border border-gray-300 rounded-md',
 																			{
 																				'transition duration-200 ease-in-out hover:bg-gray-100':
-																					!isFormDisabled,
-																				'cursor-not-allowed': isFormDisabled,
+																					!isFormDisabled || isYesButton,
+																				'cursor-not-allowed':
+																					isFormDisabled && !isYesButton,
 																			},
 																		)}
 																		key={title}
 																		type='button'
 																		onClick={() => {
-																			setValue(
-																				'is_looking_for_summer_program',
-																				isSelected ? null : title === 'Yes',
-																			);
+																			if (
+																				isScholarshipApplicationForLoggedInUserSubmitted
+																			) {
+																				return void (async function () {
+																					toast({
+																						title: 'Saving Changes',
+																						description:
+																							'This may take a few moments...',
+																					});
+																					await updateScholarshipApplication({
+																						_id: scholarshipApplicationForLoggedInUser._id,
+																						is_looking_for_summer_program: true,
+																					});
+																					await refetchScholarshipApplicationsForLoggedInUser();
+																					setValue(
+																						'is_looking_for_summer_program',
+																						true,
+																					);
+																					toast({
+																						title: 'Success',
+																						description:
+																							'Your updates have been saved.',
+																					});
+																				})();
+																			} else {
+																				setValue(
+																					'is_looking_for_summer_program',
+																					isSelected ? null : isYesButton,
+																				);
+																			}
 																		}}
-																		disabled={isFormDisabled}
+																		disabled={isFormDisabled && !isYesButton}
 																	>
 																		<div className=''>
 																			{isSelected ? (
