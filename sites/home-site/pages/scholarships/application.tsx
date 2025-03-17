@@ -97,6 +97,9 @@ const scholarshipApplicationSteps =
 const Page: NextPage<PageProps> = (props) => {
 	// ==== State ==== //
 	const [currentStep, setCurrentStep] = useState<string>('Contact Details');
+	const isOnScholarshipStep = scholarshipApplicationSteps.includes(
+		currentStep as ScholarshipApplicationFormDataSection,
+	);
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const toggleMobileMenu = () => setMobileMenuOpen(R.not);
 	const [submitConfirmationStep, setSubmitConfirmationStep] = useState<
@@ -534,8 +537,7 @@ const Page: NextPage<PageProps> = (props) => {
 	});
 
 	// Research application logic
-	const researchApplicationFormSchema =
-		researchApplicationFormSchemaData ?? fallbackResearchApplicationFormSchema;
+	// Part 1
 	const isLookingForSummerProgramValue =
 		liveData['is_looking_for_summer_program'];
 	const isLookingForSummerProgramUnset =
@@ -552,14 +554,34 @@ const Page: NextPage<PageProps> = (props) => {
 		isPreferringSummerProgramHousingValue === true;
 	const isNotPreferringSummerProgramHousing =
 		isPreferringSummerProgramHousingValue === false;
+	// Part 2 (if applicable)
+	const enableResearchApplication =
+		isLookingForSummerProgram && isSubmittedScholarshipApplication;
+	const researchApplicationFormSchema =
+		researchApplicationFormSchemaData ?? fallbackResearchApplicationFormSchema;
+	const { steps: researchApplicationSteps } = researchApplicationFormSchema;
+	const researchApplicationStepTitles = researchApplicationSteps.map(
+		R.prop('title'),
+	) as [string, string, string, string, string, string, string];
+	const isResearchFormSubmitting = Math.random() > 1; // <= fix this
+	const isResearchFormDisabled = isResearchFormSubmitting; // <= fix this
+	const isLastResearchStep = currentStep === researchApplicationStepTitles[6]; // <= fix this
+	const handleResearchSubmit = handleSubmit; // <= fix this
+	const submitResearchApplication = submitScholarshipApplication; // <= fix this
+	const liveResearchData = liveData; // <= fix this
+	const researchFormDataTransformationOptions = formDataTransformationOptions; // <= fix this
+	const saveResearchApplication = saveScholarshipApplication; // <= fix this
+	const isSaveResearchApplicationRunning = isSaveScholarshipApplicationRunning; // <= fix this
+
+	// Disable scholarship application submission
 	const disableSubmit =
 		isFormDisabled ||
 		isLookingForSummerProgramUnset ||
 		(isLookingForSummerProgram &&
 			(!liveData.summer_plans || isPreferringSummerProgramHousingUnset));
 
-	const enableResearchApplication =
-		isLookingForSummerProgram && isSubmittedScholarshipApplication;
+	// Disable scholarship application submission
+	const disableResearchSubmit = isResearchFormDisabled;
 
 	// ==== Render ==== //
 	return (
@@ -787,25 +809,50 @@ const Page: NextPage<PageProps> = (props) => {
 												<button
 													className={cn(
 														'w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300',
-														isFormDisabled
+														(
+															isOnScholarshipStep
+																? isFormDisabled
+																: isResearchFormDisabled
+														)
 															? ' text-gray-400 cursor-not-allowed'
 															: '',
 													)}
-													disabled={isFormDisabled}
+													disabled={
+														isOnScholarshipStep
+															? isFormDisabled
+															: isResearchFormDisabled
+													}
 													onClick={() => {
-														const serverData =
-															getGeneralizedServerDataFromFormData(
-																liveData,
-																formDataTransformationOptions,
-															);
-														toast({
-															title: 'Saving Application',
-															description: 'This may take a few moments...',
-														});
-														saveScholarshipApplication(serverData);
+														if (isOnScholarshipStep) {
+															const serverData =
+																getGeneralizedServerDataFromFormData(
+																	liveData,
+																	formDataTransformationOptions,
+																);
+															toast({
+																title: 'Saving Application',
+																description: 'This may take a few moments...',
+															});
+															saveScholarshipApplication(serverData);
+														} else {
+															const serverData =
+																getGeneralizedServerDataFromFormData(
+																	liveResearchData,
+																	researchFormDataTransformationOptions,
+																);
+															toast({
+																title: 'Saving Research Application',
+																description: 'This may take a few moments...',
+															});
+															saveResearchApplication(serverData);
+														}
 													}}
 												>
-													{isSaveScholarshipApplicationRunning ? (
+													{(
+														isOnScholarshipStep
+															? isSaveScholarshipApplicationRunning
+															: isSaveResearchApplicationRunning
+													) ? (
 														<div>
 															<div className='flex items-center justify-center min-w-8'>
 																<div
@@ -828,9 +875,7 @@ const Page: NextPage<PageProps> = (props) => {
 										{/* Scholarship Form */}
 										<div
 											className={cn({
-												hidden: !(
-													scholarshipApplicationSteps as string[]
-												).includes(currentStep),
+												hidden: !isOnScholarshipStep,
 											})}
 										>
 											<form>
@@ -1250,6 +1295,126 @@ const Page: NextPage<PageProps> = (props) => {
 													>
 														<p className='font-medium text-xs text-white'>
 															Submit Application
+														</p>
+													</button>
+												</div>
+											</form>
+										</div>
+
+										{/* Research Form */}
+										<div
+											className={cn({
+												hidden: isOnScholarshipStep,
+											})}
+										>
+											<form
+												onSubmit={handleResearchSubmit((data) => {
+													if (loggedInUser == null) {
+														toast({
+															title: 'Error',
+															description: 'Try logging in again',
+														});
+														return;
+													}
+
+													console.log(
+														'Submitting Research Application with following data:',
+														data,
+													);
+													toast({
+														title: 'Submitting Research Application',
+														description: 'This may take a few moments...',
+													});
+
+													submitResearchApplication(data);
+												})}
+											>
+												<div className=''>
+													<div
+														className={cn(
+															'px-1',
+															currentStep === researchApplicationStepTitles[0]
+																? ''
+																: 'hidden',
+														)}
+													>
+														Hello world!
+													</div>
+													{Boolean(formState.errors['root']?.message) && (
+														<div className='mt-4'>
+															<LiteFormFieldError
+																fieldErrorMessage={
+																	formState.errors['root']?.message ?? ''
+																}
+															/>
+														</div>
+													)}
+												</div>
+
+												{/* Navigation buttons */}
+												<div className='mt-6 flex justify-end space-x-3'>
+													<button
+														type='button'
+														disabled={isResearchFormSubmitting}
+														className={cn(
+															'w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300',
+														)}
+														onClick={() => {
+															if (
+																currentStep === researchApplicationStepTitles[0]
+															) {
+																setCurrentStep(
+																	R.last(scholarshipApplicationSteps)!,
+																);
+															} else {
+																setCurrentStep(
+																	researchApplicationStepTitles[
+																		researchApplicationStepTitles.findIndex(
+																			(step) => step === currentStep,
+																		) - 1
+																	]!,
+																);
+															}
+														}}
+													>
+														<p className='font-medium text-xs'>Back</p>
+													</button>
+
+													<button
+														disabled={isResearchFormSubmitting}
+														type='button'
+														className={cn(
+															'w-fit text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300',
+															isLastResearchStep ? 'hidden' : '',
+															isResearchFormSubmitting
+																? ' text-gray-400 cursor-not-allowed'
+																: '',
+														)}
+														onClick={() =>
+															setCurrentStep(
+																researchApplicationStepTitles[
+																	researchApplicationStepTitles.findIndex(
+																		(step) => step === currentStep,
+																	) + 1
+																]!,
+															)
+														}
+													>
+														<p className='font-medium text-xs'>Continue</p>
+													</button>
+													<button
+														disabled={disableResearchSubmit}
+														type='submit'
+														className={cn(
+															'w-fit text-center px-4 py-1.5 rounded-md border border-slate-300',
+															isLastResearchStep ? '' : 'hidden',
+															disableResearchSubmit
+																? ' bg-brand-extralight text-gray-400 cursor-not-allowed'
+																: 'bg-brand-dark',
+														)}
+													>
+														<p className='font-medium text-xs text-white'>
+															Submit Research Application
 														</p>
 													</button>
 												</div>
