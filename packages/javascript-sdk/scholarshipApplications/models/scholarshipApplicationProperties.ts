@@ -14,6 +14,7 @@ import {
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 import { scholarshipApplicationFormDataPropertiesBySection } from '../utils/scholarshipApplicationFormDataProperties.js';
+import { researchApplicationFormDataPropertiesSource } from '../utils/researchApplicationFormDataProperties.js';
 
 export const ScholarshipApplicationCategoryEnum = getEnum(['default']);
 export type ScholarshipApplicationCategory =
@@ -52,6 +53,8 @@ const properties = {
 		.default(null),
 	open_house_rsvps: YupHelpers.array(yup.string().defined()).defined(),
 	reminder_emails_sent_for_application_completion: YupHelpers.integer(),
+	research_status:
+		ScholarshipApplicationStatusEnum.getOptionalSchema().default('in_progress'),
 	status:
 		ScholarshipApplicationStatusEnum.getDefinedSchema().default('in_progress'),
 	user: apiYupHelpers.idRef(['user']).min(1).meta({ unique_key: true }),
@@ -63,6 +66,7 @@ const properties = {
 	...scholarshipApplicationFormDataPropertiesBySection['Student Profile'],
 	...scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
 	...scholarshipApplicationFormDataPropertiesBySection['Summer Research'],
+	...researchApplicationFormDataPropertiesSource,
 } as const;
 type U = typeof properties;
 
