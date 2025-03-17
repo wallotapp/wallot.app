@@ -32,6 +32,7 @@ describe('ScholarshipApplication', () => {
 			decision: null,
 			open_house_rsvps: [],
 			reminder_emails_sent_for_application_completion: 0,
+			research_status: 'in_progress',
 			status: 'in_progress',
 			user: '',
 			// Scholarship application form

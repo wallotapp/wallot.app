@@ -4,6 +4,7 @@ import {
 	ResearchApplicationFormDataRouteParams,
 	ResearchApplicationFormDataResponse,
 	ResearchApplicationFormDataParams,
+	UpdateScholarshipApplicationParams,
 	scholarshipApplicationsApi,
 	ScholarshipApplication,
 } from '@wallot/js';
@@ -36,7 +37,10 @@ export const submitResearchApplication = async (
 		);
 
 	// Submit application
-	const updateParams: ResearchApplicationFormDataParams = { ...params };
+	const updateParams: UpdateScholarshipApplicationParams = {
+		...params,
+		research_status: 'submitted',
+	};
 	await researchApplicationRef.update(updateParams);
 
 	const onFinished = async () => {
