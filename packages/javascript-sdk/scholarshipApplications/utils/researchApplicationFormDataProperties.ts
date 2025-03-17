@@ -1,4 +1,4 @@
-import { GeneralizedFieldTypeEnum, YupHelpers } from 'ergonomic';
+import { GeneralizedFieldTypeEnum, getFieldSpecByFieldKey, Keys, YupHelpers } from 'ergonomic';
 import * as yup from 'yup';
 
 export type ResearchApplicationFormSchema = {
@@ -107,3 +107,19 @@ export const researchApplicationFormDataPropertiesSource = {
 	research_application_s6_q3: checkbox(),
 	research_application_s6_q4: checkbox(),
 };
+
+export const researchApplicationFormDataSchema = yup.object(
+	researchApplicationFormDataPropertiesSource,
+);
+export const researchApplicationFormDataSchemaFieldSpecByFieldKey =
+	getFieldSpecByFieldKey(
+		researchApplicationFormDataSchema,
+		Keys(researchApplicationFormDataPropertiesSource),
+	);
+export type ResearchApplicationFormDataParams = yup.InferType<
+	typeof researchApplicationFormDataSchema
+>;
+export type ResearchApplicationFormDataRouteParams = {
+	scholarshipApplicationId: string;
+};
+export type ResearchApplicationFormDataResponse = Record<string, never>;
