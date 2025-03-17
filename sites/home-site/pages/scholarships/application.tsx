@@ -489,7 +489,7 @@ const Page: NextPage<PageProps> = (props) => {
 
 	// Research Form
 	const researchFormStatus =
-		formState.isSubmitting ||
+		researchFormState.isSubmitting ||
 		isSaveResearchApplicationRunning ||
 		isSubmitResearchApplicationRunning
 			? 'running'
