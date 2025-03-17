@@ -34,6 +34,8 @@ import {
 	researchApplicationFormDataSchema,
 	researchFieldsBySection,
 	ResearchApplicationArrayField,
+	ResearchApplicationFormDataFieldEnum,
+	ResearchApplicationArrayFieldEnum,
 } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getSsoSiteRoute } from '@wallot/js';
@@ -164,8 +166,8 @@ const Page: NextPage<PageProps> = (props) => {
 	const researchFormDataTransformationOptions =
 		defaultGeneralizedFormDataTransformationOptions;
 	const researchResolver = useYupValidationResolver(
-		scholarshipApplicationFormDataSchema,
-		formDataTransformationOptions,
+		researchApplicationFormDataSchema,
+		researchFormDataTransformationOptions,
 	);
 
 	// Router
@@ -286,11 +288,6 @@ const Page: NextPage<PageProps> = (props) => {
 		shouldUnregister: false,
 	});
 	const liveResearchData = watchResearch();
-	defaultResearchFormData; // <= fix this
-	resetResearch; // <= fix this
-	setResearchValue; // <= fix this
-	setS4Q2; // <= fix this
-	setS4Q3; // <= fix this
 
 	// Mutation error
 	const onMutationError = ({ error: { message } }: GeneralizedError) => {
@@ -653,6 +650,47 @@ const Page: NextPage<PageProps> = (props) => {
 						if (
 							scholarshipApplicationForLoggedInUser.is_looking_for_summer_program
 						) {
+							const initialResearchServerData: Omit<
+								ResearchApplicationFormDataParams,
+								ResearchApplicationArrayField
+							> = defaultResearchFormData;
+							ResearchApplicationFormDataFieldEnum.arr
+								.filter(
+									(
+										field,
+									): field is Exclude<
+										typeof field,
+										ResearchApplicationArrayField
+									> => !ResearchApplicationArrayFieldEnum.isMember(field),
+								)
+								.forEach((field) => {
+									const value = scholarshipApplicationServerData[field];
+									(initialResearchServerData[
+										field
+									] as unknown as ResearchApplicationFormDataParams[typeof field]) =
+										value ?? '';
+								});
+							const defaultResearchFormValues =
+								getGeneralizedFormDataFromServerData(
+									initialResearchServerData,
+									formDataTransformationOptions,
+								);
+							resetResearch(defaultResearchFormValues);
+							setS1Q0(
+								() =>
+									scholarshipApplicationForLoggedInUser.research_application_s1_q0 ??
+									[],
+							);
+							setS4Q2(
+								() =>
+									scholarshipApplicationForLoggedInUser.research_application_s4_q2 ??
+									[],
+							);
+							setS4Q3(
+								() =>
+									scholarshipApplicationForLoggedInUser.research_application_s4_q3 ??
+									[],
+							);
 							setCurrentStep(researchApplicationStepTitles[0]);
 						} else {
 							setCurrentStep(
@@ -1786,6 +1824,12 @@ const Page: NextPage<PageProps> = (props) => {
 																												),
 																											);
 																										}}
+																										defaultValue={
+																											containerArr.find(
+																												(x) =>
+																													x.title === title,
+																											)?.details
+																										}
 																									/>
 																								</div>
 																							)}

@@ -189,7 +189,11 @@ export const researchFieldsBySection = {
 	],
 } as const;
 
-export type ResearchApplicationArrayField =
-	| 'research_application_s1_q0'
-	| 'research_application_s4_q2'
-	| 'research_application_s4_q3';
+export const ResearchApplicationArrayFieldEnum = getEnum([
+	'research_application_s1_q0',
+	'research_application_s4_q2',
+	'research_application_s4_q3',
+]);
+export type ResearchApplicationArrayField = EnumMember<
+	typeof ResearchApplicationArrayFieldEnum
+>;
