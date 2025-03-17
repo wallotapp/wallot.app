@@ -857,26 +857,55 @@ const Page: NextPage<PageProps> = (props) => {
 							</div>
 						</div>
 						{isScholarshipApplicationForLoggedInUserSubmitted && (
-							<div className='mt-4 mb-10 bg-gray-100 border border-gray-200 rounded-md shadow-md p-6 font-light text-sm max-w-md'>
-								<div>
-									<p className='font-semibold text-sm'>
-										Scholarship Application Status –{' '}
-										{changeCase.capitalCase(
-											scholarshipApplicationForLoggedInUser?.status ?? '',
-										)}
-									</p>
-								</div>
-								<div className='mt-1 text-gray-700 font-light text-xs'>
-									{isScholarshipApplicationForLoggedInUserReviewed ? (
-										<p>{decisionText}</p>
-									) : (
-										<p>
-											Your scholarship application has been received and is
-											under review. You will be notified once our committee has
-											reached a decision regarding your application.
+							<div
+								className={cn(
+									'mt-4 mb-10 space-y-4',
+									'lg:flex lg:space-x-4 lg:space-y-0',
+								)}
+							>
+								<div className='bg-gray-100 border border-gray-200 rounded-md shadow-md p-6 font-light text-sm max-w-md'>
+									<div>
+										<p className='font-semibold text-sm'>
+											Scholarship Application Status –{' '}
+											{changeCase.capitalCase(
+												scholarshipApplicationForLoggedInUser?.status ?? '',
+											)}
 										</p>
-									)}
+									</div>
+									<div className='mt-1 text-gray-700 font-light text-xs'>
+										{isScholarshipApplicationForLoggedInUserReviewed ? (
+											<p>{decisionText}</p>
+										) : (
+											<p>
+												Your scholarship application has been received and is
+												under review. You will be notified once our committee
+												has reached a decision regarding your application. Check
+												your email and phone daily for communication.
+											</p>
+										)}
+									</div>
 								</div>
+								{isResearchApplicationForLoggedInUserSubmitted && (
+									<div className='bg-gray-100 border border-gray-200 rounded-md shadow-md p-6 font-light text-sm max-w-md'>
+										<div>
+											<p className='font-semibold text-sm'>
+												Academic Research Program Application Status –{' '}
+												{changeCase.capitalCase(
+													scholarshipApplicationForLoggedInUser?.status ?? '',
+												)}
+											</p>
+										</div>
+										<div className='mt-1 text-gray-700 font-light text-xs'>
+											<p>
+												Your application to the Academic Research Program has
+												also been received and is under review. You will be
+												notified once our committee has reached a decision
+												regarding your application. Check your email and phone
+												daily for communication.
+											</p>
+										</div>
+									</div>
+								)}
 							</div>
 						)}
 					</div>
@@ -1002,18 +1031,23 @@ const Page: NextPage<PageProps> = (props) => {
 								{/* Main content area */}
 								<main className='flex-1 lg:pr-10'>
 									{/* Mobile collapsible steps menu (visible on Mobile) */}
-									{!enableResearchApplication && (
-										<div className='md:hidden mb-4'>
-											<button
-												className='bg-white w-full flex justify-between items-center p-2 shadow rounded'
-												onClick={toggleMobileMenu}
-											>
-												<span className='font-semibold'>{currentStep}</span>
-												{isMobileMenuOpen ? <GoChevronUp /> : <GoChevronDown />}
-											</button>
-											{isMobileMenuOpen && (
-												<ul className='mt-2 shadow rounded'>
-													{scholarshipApplicationSteps.map((step, stepIdx) => (
+									<div className='md:hidden mb-4'>
+										<button
+											className='bg-white w-full flex justify-between items-center p-2 shadow rounded'
+											onClick={toggleMobileMenu}
+										>
+											<span className='font-semibold'>{currentStep}</span>
+											{isMobileMenuOpen ? <GoChevronUp /> : <GoChevronDown />}
+										</button>
+										{isMobileMenuOpen && (
+											<ul className='mt-2 shadow rounded'>
+												{(scholarshipApplicationSteps as string[])
+													.concat(
+														researchApplicationFormSchema.steps.map(
+															(x) => x.title,
+														),
+													)
+													.map((step, stepIdx) => (
 														<li
 															key={step}
 															className={cn(
@@ -1034,10 +1068,9 @@ const Page: NextPage<PageProps> = (props) => {
 															{stepIdx + 1}. {step}
 														</li>
 													))}
-												</ul>
-											)}
-										</div>
-									)}
+											</ul>
+										)}
+									</div>
 
 									{/* Form container */}
 									<div className=''>
