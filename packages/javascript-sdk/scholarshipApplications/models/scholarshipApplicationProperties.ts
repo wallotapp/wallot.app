@@ -14,6 +14,7 @@ import {
 	idPrefixByResourceName,
 } from '../../utils/apiYupHelpers.js';
 import { scholarshipApplicationFormDataPropertiesBySection } from '../utils/scholarshipApplicationFormDataProperties.js';
+import { researchApplicationFormDataPropertiesSource } from '../utils/researchApplicationFormDataProperties.js';
 
 export const ScholarshipApplicationCategoryEnum = getEnum(['default']);
 export type ScholarshipApplicationCategory =
@@ -63,6 +64,7 @@ const properties = {
 	...scholarshipApplicationFormDataPropertiesBySection['Student Profile'],
 	...scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
 	...scholarshipApplicationFormDataPropertiesBySection['Summer Research'],
+	...researchApplicationFormDataPropertiesSource,
 } as const;
 type U = typeof properties;
 

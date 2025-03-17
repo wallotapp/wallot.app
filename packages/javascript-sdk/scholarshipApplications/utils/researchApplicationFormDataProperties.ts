@@ -41,7 +41,7 @@ const list = () =>
 		}),
 	).defined();
 
-export const researchApplicationFormDataPropertiesBySectionSource = {
+export const researchApplicationFormDataPropertiesSource = {
 	research_application_s0_q0: yup.string().default('').required().meta({
 		type: GeneralizedFieldTypeEnum.obj.long_text,
 	}),
