@@ -237,7 +237,7 @@ const Page: NextPage<PageProps> = (props) => {
 		steps: researchApplicationSteps,
 		research_application_s1_q0_entries,
 		research_application_s4_q2_entries,
-		// research_application_s4_q3_entries,
+		research_application_s4_q3_entries,
 	} = researchApplicationFormSchema;
 	const s1Q0entriesByCategory = research_application_s1_q0_entries.reduce(
 		(acc, { category, ...entry }) => {
@@ -289,7 +289,6 @@ const Page: NextPage<PageProps> = (props) => {
 	defaultResearchFormData; // <= fix this
 	resetResearch; // <= fix this
 	setResearchValue; // <= fix this
-	setS1Q0; // <= fix this
 	setS4Q2; // <= fix this
 	setS4Q3; // <= fix this
 
@@ -532,6 +531,12 @@ const Page: NextPage<PageProps> = (props) => {
 			[researchApplicationStepTitles[3]]: researchFieldsSection3,
 			[researchApplicationStepTitles[5]]: researchFieldsSection5,
 		}[currentStep] ?? [];
+	const researchStepSubtitle =
+		researchApplicationStepSubtitles[
+			researchApplicationFormSchema.steps.findIndex(
+				({ title: stepTitle }) => stepTitle === currentStep,
+			)
+		];
 	const isResearchFormDisabled =
 		isResearchFormSubmitting || isResearchApplicationForLoggedInUserSubmitted;
 
@@ -743,7 +748,9 @@ const Page: NextPage<PageProps> = (props) => {
 			(!liveData.summer_plans || isPreferringSummerProgramHousingUnset));
 
 	// Disable scholarship application submission
-	const disableResearchSubmit = isResearchFormDisabled;
+	const disableResearchSubmit =
+		isResearchFormDisabled ||
+		researchFieldKeysSection6.some((k) => !liveResearchData[k]);
 
 	// ==== Render ==== //
 	return (
@@ -1515,6 +1522,14 @@ const Page: NextPage<PageProps> = (props) => {
 																: 'hidden',
 														)}
 													>
+														{researchStepSubtitle && (
+															<Fragment>
+																<p className='text-gray-500 font-normal text-sm mt-4'>
+																	{researchStepSubtitle}
+																</p>
+																<Separator className='my-4 !max-w-[25%]' />
+															</Fragment>
+														)}
 														{researchFields.map((fieldProps) => (
 															<LiteFormFieldContainer
 																key={fieldProps.fieldKey}
@@ -1533,6 +1548,7 @@ const Page: NextPage<PageProps> = (props) => {
 														<p className='text-gray-500 font-normal text-sm'>
 															{researchApplicationStepSubtitles[1]}
 														</p>
+														<Separator className='my-4 !max-w-[25%]' />
 														<Label className='flex items-center space-x-1 mt-4'>
 															<p>
 																{
@@ -1584,6 +1600,7 @@ const Page: NextPage<PageProps> = (props) => {
 																									);
 																								}
 																							}}
+																							type='button'
 																						>
 																							<div className='w-5'>
 																								{isSelected ? (
@@ -1622,30 +1639,149 @@ const Page: NextPage<PageProps> = (props) => {
 																: 'hidden',
 														)}
 													>
+														<p className='font-semibold text-lg mt-4'>
+															{researchApplicationStepSubtitles[4]}
+														</p>
+														<Separator className='my-4 !max-w-[25%]' />
 														{researchFieldsSection4_0.map((fieldProps) => (
 															<LiteFormFieldContainer
 																key={fieldProps.fieldKey}
 																{...fieldProps}
 															/>
 														))}
-														<p>
-															{
-																label_data_by_field_key
-																	.research_application_s4_q2?.label
-															}
-														</p>
-														{research_application_s4_q2_entries.map(
-															({ subtitle, title }) => {
-																return (
-																	<div>
-																		<p className='text-sm'>{title}</p>
-																		<p className='text-light text-xs'>
-																			{subtitle}
-																		</p>
-																	</div>
-																);
-															},
-														)}
+														<div>
+															{[
+																{
+																	containerArr: s4Q2,
+																	entries: research_application_s4_q2_entries,
+																	label:
+																		label_data_by_field_key
+																			.research_application_s4_q2?.label,
+																	setContainerArr: setS4Q2,
+																},
+																{
+																	containerArr: s4Q3,
+																	entries: research_application_s4_q3_entries,
+																	label:
+																		label_data_by_field_key
+																			.research_application_s4_q3?.label,
+																	setContainerArr: setS4Q3,
+																},
+															].map(
+																({
+																	containerArr,
+																	entries,
+																	label,
+																	setContainerArr,
+																}) => {
+																	return (
+																		<div className='mt-4'>
+																			<Label className='flex items-center space-x-1'>
+																				<p>
+																					{label}
+																					<span className='text-red-700 font-semibold'>
+																						*
+																					</span>
+																				</p>
+																			</Label>
+																			<div className='grid grid-cols-2 gap-2'>
+																				{entries.map(({ subtitle, title }) => {
+																					const isSelected = containerArr.some(
+																						({ title: matchTitle }) =>
+																							title === matchTitle,
+																					);
+																					return (
+																						<Fragment key={title}>
+																							<button
+																								className={cn(
+																									'flex items-center space-x-2 mt-1 text-left w-full focus:outline-none focus-visible:ring-none px-3 py-2 rounded-lg',
+																									'col-span-2',
+																									{
+																										'lg:col-span-1':
+																											!isSelected,
+																									},
+																									'border border-gray-200',
+																									{
+																										'bg-gray-200': isSelected,
+																										'hover:bg-gray-100':
+																											!isSelected,
+																									},
+																								)}
+																								onClick={() => {
+																									if (isSelected) {
+																										setContainerArr((prev) =>
+																											prev.filter(
+																												(data) =>
+																													data.title !== title,
+																											),
+																										);
+																									} else {
+																										setContainerArr((prev) =>
+																											prev.concat({
+																												details: '',
+																												title,
+																											}),
+																										);
+																									}
+																								}}
+																								type='button'
+																							>
+																								<div className='w-5'>
+																									{isSelected ? (
+																										<GoCheckCircleFill className='text-brand-dark' />
+																									) : (
+																										<GoCircle className='text-gray-400' />
+																									)}
+																								</div>
+																								<div className='w-3/4'>
+																									<div>
+																										<p className='font-normal text-sm'>
+																											{title}
+																										</p>
+																									</div>
+																									<div className=''>
+																										<p className='font-extralight text-xs'>
+																											{subtitle}
+																										</p>
+																									</div>
+																								</div>
+																							</button>
+																							{isSelected && (
+																								<div className='col-span-2'>
+																									<textarea
+																										className='border border-amber-900 rounded-md text-xs p-2 w-full'
+																										placeholder={
+																											'Briefly provide additional details*'
+																										}
+																										rows={6}
+																										onChange={(
+																											e: React.ChangeEvent<HTMLTextAreaElement>,
+																										) => {
+																											setContainerArr((prev) =>
+																												prev.map((x) =>
+																													x.title === title
+																														? {
+																																...x,
+																																details:
+																																	e.target
+																																		.value,
+																														  }
+																														: x,
+																												),
+																											);
+																										}}
+																									/>
+																								</div>
+																							)}
+																						</Fragment>
+																					);
+																				})}
+																			</div>
+																		</div>
+																	);
+																},
+															)}
+														</div>
 														{researchFieldsSection4_2.map((fieldProps) => (
 															<LiteFormFieldContainer
 																key={fieldProps.fieldKey}
@@ -1662,15 +1798,64 @@ const Page: NextPage<PageProps> = (props) => {
 														)}
 													>
 														{researchFieldKeysSection6.map((fieldKey) => {
-															const { label, label_message } =
+															const { label: title, label_message: subtitle } =
 																label_data_by_field_key[fieldKey]!;
+															const liveValue = liveResearchData[fieldKey] as
+																| ''
+																| null
+																| boolean;
+															const isSelected = liveValue === true;
 															return (
-																<div>
-																	<p>{label}</p>
-																	<p>{label_message}</p>
-																</div>
+																<button
+																	className={cn(
+																		'flex items-center space-x-3 px-3 py-2 mt-3',
+																		isSelected ? 'bg-gray-200' : 'bg-white',
+																		'border border-gray-300 rounded-md',
+																		{
+																			'transition duration-200 ease-in-out hover:bg-gray-100':
+																				!isResearchFormDisabled,
+																			'cursor-not-allowed':
+																				isResearchFormDisabled,
+																		},
+																	)}
+																	key={title}
+																	type='button'
+																	onClick={() => {
+																		setResearchValue(
+																			fieldKey,
+																			isSelected ? null : true,
+																		);
+																	}}
+																	disabled={isResearchFormDisabled}
+																>
+																	<div className=''>
+																		{isSelected ? (
+																			<GoCheckCircleFill className='text-brand-dark text-lg' />
+																		) : (
+																			<GoCircle className='text-gray-400 text-lg' />
+																		)}
+																	</div>
+																	<div className='text-left'>
+																		<div>
+																			<p className='font-semibold text-sm'>
+																				{title}
+																			</p>
+																		</div>
+																		<div className='mt-1'>
+																			<p className='font-light text-xs'>
+																				{subtitle}
+																			</p>
+																		</div>
+																	</div>
+																</button>
 															);
 														})}
+														<div className='mt-4 text-right'>
+															<p className='text-sm'>Signed</p>
+															<p className='font-light underline italic'>
+																x{liveData.given_name} {liveData.family_name}
+															</p>
+														</div>
 													</div>
 													{Boolean(formState.errors['root']?.message) && (
 														<div className='mt-4'>
