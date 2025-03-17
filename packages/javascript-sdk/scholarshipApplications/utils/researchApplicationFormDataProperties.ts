@@ -43,8 +43,8 @@ const checkbox = () =>
 const list = () =>
 	YupHelpers.array(
 		yup.object({
-			title: yup.string().default('').defined(),
 			details: yup.string().default('').defined(),
+			title: yup.string().default('').defined(),
 		}),
 	).defined();
 
@@ -145,3 +145,8 @@ export const researchFieldsBySection = {
 		'research_application_s0_q3',
 	],
 } as const;
+
+export type ResearchApplicationArrayField =
+	| 'research_application_s1_q0'
+	| 'research_application_s4_q2'
+	| 'research_application_s4_q3';

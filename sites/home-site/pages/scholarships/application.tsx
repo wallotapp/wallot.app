@@ -33,6 +33,7 @@ import {
 	researchApplicationFormDataSchemaFieldSpecByFieldKey,
 	researchApplicationFormDataSchema,
 	researchFieldsBySection,
+	ResearchApplicationArrayField,
 } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getSsoSiteRoute } from '@wallot/js';
@@ -226,6 +227,9 @@ const Page: NextPage<PageProps> = (props) => {
 	const liveData = watch();
 
 	// Research Form
+	const [s1Q0, setS1Q0] = useState<string[]>([]);
+	const [s4Q2, setS4Q2] = useState<{ details: string; title: string }[]>([]);
+	const [s4Q3, setS4Q3] = useState<{ details: string; title: string }[]>([]);
 	const researchApplicationFormSchema =
 		researchApplicationFormSchemaData ?? fallbackResearchApplicationFormSchema;
 	const { steps: researchApplicationSteps } = researchApplicationFormSchema;
@@ -242,7 +246,9 @@ const Page: NextPage<PageProps> = (props) => {
 		setError: setResearchError,
 		setValue: setResearchValue,
 		watch: watchResearch,
-	} = useForm<ResearchApplicationFormDataParams>({
+	} = useForm<
+		Omit<ResearchApplicationFormDataParams, ResearchApplicationArrayField>
+	>({
 		resolver: researchResolver,
 		shouldUnregister: false,
 	});
@@ -250,6 +256,9 @@ const Page: NextPage<PageProps> = (props) => {
 	defaultResearchFormData; // <= fix this
 	resetResearch; // <= fix this
 	setResearchValue; // <= fix this
+	setS1Q0; // <= fix this
+	setS4Q2; // <= fix this
+	setS4Q3; // <= fix this
 
 	// Mutation error
 	const onMutationError = ({ error: { message } }: GeneralizedError) => {
@@ -442,8 +451,13 @@ const Page: NextPage<PageProps> = (props) => {
 			: 'idle';
 	const isResearchFormSubmitting = researchFormStatus === 'running';
 	const getResearchLiteFormFieldProps = (
-		fieldKey: ResearchApplicationFormDataField,
-	): LiteFormFieldProps<ResearchApplicationFormDataParams> => ({
+		fieldKey: Exclude<
+			ResearchApplicationFormDataField,
+			ResearchApplicationArrayField
+		>,
+	): LiteFormFieldProps<
+		Omit<ResearchApplicationFormDataParams, ResearchApplicationArrayField>
+	> => ({
 		control: researchControl,
 		fieldErrors: researchFormState.errors,
 		fieldKey,
@@ -932,7 +946,12 @@ const Page: NextPage<PageProps> = (props) => {
 																title: 'Saving Research Application',
 																description: 'This may take a few moments...',
 															});
-															saveResearchApplication(serverData);
+															saveResearchApplication({
+																...serverData,
+																research_application_s1_q0: s1Q0,
+																research_application_s4_q2: s4Q2,
+																research_application_s4_q3: s4Q3,
+															});
 														}
 													}}
 												>
@@ -1414,7 +1433,12 @@ const Page: NextPage<PageProps> = (props) => {
 														description: 'This may take a few moments...',
 													});
 
-													submitResearchApplication(data);
+													submitResearchApplication({
+														...data,
+														research_application_s1_q0: s1Q0,
+														research_application_s4_q2: s4Q2,
+														research_application_s4_q3: s4Q3,
+													});
 												})}
 											>
 												<div className=''>
