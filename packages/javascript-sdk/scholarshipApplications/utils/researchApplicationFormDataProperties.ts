@@ -162,6 +162,12 @@ export const researchFieldsBySection = {
 		'research_application_s0_q2',
 		'research_application_s0_q3',
 	],
+	3: [
+		'research_application_s3_q0',
+		'research_application_s3_q1',
+		'research_application_s3_q2',
+	],
+	5: ['research_application_s5_q0'],
 } as const;
 
 export type ResearchApplicationArrayField =
