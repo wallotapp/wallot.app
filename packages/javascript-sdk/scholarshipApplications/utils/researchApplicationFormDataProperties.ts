@@ -1,5 +1,7 @@
 import {
+	EnumMember,
 	GeneralizedFieldTypeEnum,
+	getEnum,
 	getFieldSpecByFieldKey,
 	Keys,
 	YupHelpers,
@@ -113,13 +115,19 @@ export const researchApplicationFormDataPropertiesSource = {
 	research_application_s6_q4: checkbox(),
 };
 
+export const ResearchApplicationFormDataFieldEnum = getEnum(
+	Keys(researchApplicationFormDataPropertiesSource),
+);
+export type ResearchApplicationFormDataField = EnumMember<
+	typeof ResearchApplicationFormDataFieldEnum
+>;
 export const researchApplicationFormDataSchema = yup.object(
 	researchApplicationFormDataPropertiesSource,
 );
 export const researchApplicationFormDataSchemaFieldSpecByFieldKey =
 	getFieldSpecByFieldKey(
 		researchApplicationFormDataSchema,
-		Keys(researchApplicationFormDataPropertiesSource),
+		ResearchApplicationFormDataFieldEnum.arr,
 	);
 export type ResearchApplicationFormDataParams = yup.InferType<
 	typeof researchApplicationFormDataSchema
@@ -128,3 +136,12 @@ export type ResearchApplicationFormDataRouteParams = {
 	scholarshipApplicationId: string;
 };
 export type ResearchApplicationFormDataResponse = Record<string, never>;
+
+export const researchFieldsBySection = {
+	0: [
+		'research_application_s0_q0',
+		'research_application_s0_q1',
+		'research_application_s0_q2',
+		'research_application_s0_q3',
+	],
+} as const;

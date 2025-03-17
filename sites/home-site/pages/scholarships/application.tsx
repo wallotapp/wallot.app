@@ -28,6 +28,11 @@ import {
 	scholarshipOpenHouseEvents as allScholarshipOpenHouseEvents,
 	lastScholarshipOpenHouseEvent,
 	fallbackResearchApplicationFormSchema,
+	ResearchApplicationFormDataParams,
+	ResearchApplicationFormDataField,
+	researchApplicationFormDataSchemaFieldSpecByFieldKey,
+	researchApplicationFormDataSchema,
+	researchFieldsBySection,
 } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { getSsoSiteRoute } from '@wallot/js';
@@ -50,6 +55,8 @@ import { getGeneralizedFormDataFromServerData } from 'ergonomic-react/src/featur
 import { createScholarshipApplication } from '@wallot/react/src/features/scholarshipApplications/api/createScholarshipApplication';
 import { useSaveScholarshipApplicationMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useSaveScholarshipApplicationMutation';
 import { useSubmitScholarshipApplicationMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useSubmitScholarshipApplicationMutation';
+import { useSaveResearchApplicationMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useSaveResearchApplicationMutation';
+import { useSubmitResearchApplicationMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useSubmitResearchApplicationMutation';
 import { getGeneralizedServerDataFromFormData } from 'ergonomic-react/src/features/data/utils/getGeneralizedServerDataFromFormData';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import Link from 'next/link';
@@ -152,6 +159,14 @@ const Page: NextPage<PageProps> = (props) => {
 		formDataTransformationOptions,
 	);
 
+	// Research Form Resolver
+	const researchFormDataTransformationOptions =
+		defaultGeneralizedFormDataTransformationOptions;
+	const researchResolver = useYupValidationResolver(
+		scholarshipApplicationFormDataSchema,
+		formDataTransformationOptions,
+	);
+
 	// Router
 	const router = useRouter();
 
@@ -195,6 +210,11 @@ const Page: NextPage<PageProps> = (props) => {
 						'You have been waitlisted. We will notify you if a spot opens up. Please monitor your email address and phone number for updates.',
 			  }[decision];
 
+	// Research Application status
+	const isResearchApplicationForLoggedInUserSubmitted =
+		scholarshipApplicationForLoggedInUser != null &&
+		scholarshipApplicationForLoggedInUser.research_status === 'submitted';
+
 	// Form
 	const defaultFormData =
 		scholarshipApplicationFormDataSchema.getDefault() as ScholarshipApplicationFormDataParams;
@@ -204,6 +224,32 @@ const Page: NextPage<PageProps> = (props) => {
 			shouldUnregister: false,
 		});
 	const liveData = watch();
+
+	// Research Form
+	const researchApplicationFormSchema =
+		researchApplicationFormSchemaData ?? fallbackResearchApplicationFormSchema;
+	const { steps: researchApplicationSteps } = researchApplicationFormSchema;
+	const researchApplicationStepTitles = researchApplicationSteps.map(
+		R.prop('title'),
+	) as [string, string, string, string, string, string, string];
+	const defaultResearchFormData =
+		researchApplicationFormDataSchema.getDefault();
+	const {
+		control: researchControl,
+		formState: researchFormState,
+		handleSubmit: handleResearchSubmit,
+		reset: resetResearch,
+		setError: setResearchError,
+		setValue: setResearchValue,
+		watch: watchResearch,
+	} = useForm<ResearchApplicationFormDataParams>({
+		resolver: researchResolver,
+		shouldUnregister: false,
+	});
+	const liveResearchData = watchResearch();
+	defaultResearchFormData; // <= fix this
+	resetResearch; // <= fix this
+	setResearchValue; // <= fix this
 
 	// Mutation error
 	const onMutationError = ({ error: { message } }: GeneralizedError) => {
@@ -219,7 +265,10 @@ const Page: NextPage<PageProps> = (props) => {
 	};
 
 	// Mutation success
-	const onMutationSuccess = (operation: 'save' | 'submit') => {
+	const onMutationSuccess = (
+		operation: 'save' | 'submit',
+		app: 'scholarship' | 'research' = 'scholarship',
+	) => {
 		return async () => {
 			// Refetch the queries
 			await Promise.all(
@@ -238,7 +287,7 @@ const Page: NextPage<PageProps> = (props) => {
 						: 'Your application has been submitted.',
 			});
 
-			if (operation === 'submit') {
+			if (app === 'scholarship' && operation === 'submit') {
 				setSubmitConfirmationStep(null);
 				if (shouldGoToRSVPAfterSubmit) {
 					void router.push(
@@ -268,6 +317,18 @@ const Page: NextPage<PageProps> = (props) => {
 		},
 	);
 
+	// Research Save mutation
+	const {
+		mutate: saveResearchApplication,
+		isLoading: isSaveResearchApplicationRunning,
+	} = useSaveResearchApplicationMutation(
+		scholarshipApplicationForLoggedInUser?._id ?? null,
+		{
+			onError: onMutationError,
+			onSuccess: onMutationSuccess('save', 'research'),
+		},
+	);
+
 	// Submit mutation
 	const {
 		mutate: submitScholarshipApplication,
@@ -277,6 +338,18 @@ const Page: NextPage<PageProps> = (props) => {
 		{
 			onError: onMutationError,
 			onSuccess: onMutationSuccess('submit'),
+		},
+	);
+
+	// Research Submit mutation
+	const {
+		mutate: submitResearchApplication,
+		isLoading: isSubmitResearchApplicationRunning,
+	} = useSubmitResearchApplicationMutation(
+		scholarshipApplicationForLoggedInUser?._id ?? null,
+		{
+			onError: onMutationError,
+			onSuccess: onMutationSuccess('submit', 'research'),
 		},
 	);
 
@@ -306,6 +379,8 @@ const Page: NextPage<PageProps> = (props) => {
 
 	// Define our steps and their fields.
 	const isLastStep = currentStep === 'Summer Research';
+	const isLastResearchStep =
+		currentStep === R.last(researchApplicationStepTitles);
 
 	// Form
 	const formStatus =
@@ -357,6 +432,34 @@ const Page: NextPage<PageProps> = (props) => {
 		.map(getLiteFormFieldProps);
 	const isFormDisabled =
 		isFormSubmitting || isScholarshipApplicationForLoggedInUserSubmitted;
+
+	// Research Form
+	const researchFormStatus =
+		formState.isSubmitting ||
+		isSaveResearchApplicationRunning ||
+		isSubmitResearchApplicationRunning
+			? 'running'
+			: 'idle';
+	const isResearchFormSubmitting = researchFormStatus === 'running';
+	const getResearchLiteFormFieldProps = (
+		fieldKey: ResearchApplicationFormDataField,
+	): LiteFormFieldProps<ResearchApplicationFormDataParams> => ({
+		control: researchControl,
+		fieldErrors: researchFormState.errors,
+		fieldKey,
+		fieldSpec: researchApplicationFormDataSchemaFieldSpecByFieldKey[fieldKey],
+		initialFormData: defaultFormData,
+		isSubmitting:
+			isResearchFormSubmitting || isResearchApplicationForLoggedInUserSubmitted,
+		operation: 'update',
+		renderTooltipContent: undefined,
+		setError: (message) => setResearchError(fieldKey, { message }),
+	});
+	const researchFieldsSection0 = researchFieldsBySection[0].map(
+		getResearchLiteFormFieldProps,
+	);
+	const isResearchFormDisabled =
+		isResearchFormSubmitting || isResearchApplicationForLoggedInUserSubmitted;
 
 	// Form Submit Handler
 	const onSubmit = handleSubmit((data) => {
@@ -557,21 +660,6 @@ const Page: NextPage<PageProps> = (props) => {
 	// Part 2 (if applicable)
 	const enableResearchApplication =
 		isLookingForSummerProgram && isSubmittedScholarshipApplication;
-	const researchApplicationFormSchema =
-		researchApplicationFormSchemaData ?? fallbackResearchApplicationFormSchema;
-	const { steps: researchApplicationSteps } = researchApplicationFormSchema;
-	const researchApplicationStepTitles = researchApplicationSteps.map(
-		R.prop('title'),
-	) as [string, string, string, string, string, string, string];
-	const isResearchFormSubmitting = Math.random() > 1; // <= fix this
-	const isResearchFormDisabled = isResearchFormSubmitting; // <= fix this
-	const isLastResearchStep = currentStep === researchApplicationStepTitles[6]; // <= fix this
-	const handleResearchSubmit = handleSubmit; // <= fix this
-	const submitResearchApplication = submitScholarshipApplication; // <= fix this
-	const liveResearchData = liveData; // <= fix this
-	const researchFormDataTransformationOptions = formDataTransformationOptions; // <= fix this
-	const saveResearchApplication = saveScholarshipApplication; // <= fix this
-	const isSaveResearchApplicationRunning = isSaveScholarshipApplicationRunning; // <= fix this
 
 	// Disable scholarship application submission
 	const disableSubmit =
@@ -1338,7 +1426,12 @@ const Page: NextPage<PageProps> = (props) => {
 																: 'hidden',
 														)}
 													>
-														Hello world!
+														{researchFieldsSection0.map((fieldProps) => (
+															<LiteFormFieldContainer
+																key={fieldProps.fieldKey}
+																{...fieldProps}
+															/>
+														))}
 													</div>
 													{Boolean(formState.errors['root']?.message) && (
 														<div className='mt-4'>
