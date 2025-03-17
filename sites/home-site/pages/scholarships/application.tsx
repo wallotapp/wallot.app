@@ -986,40 +986,42 @@ const Page: NextPage<PageProps> = (props) => {
 								{/* Main content area */}
 								<main className='flex-1 lg:pr-10'>
 									{/* Mobile collapsible steps menu (visible on Mobile) */}
-									<div className='md:hidden mb-4'>
-										<button
-											className='bg-white w-full flex justify-between items-center p-2 shadow rounded'
-											onClick={toggleMobileMenu}
-										>
-											<span className='font-semibold'>{currentStep}</span>
-											{isMobileMenuOpen ? <GoChevronUp /> : <GoChevronDown />}
-										</button>
-										{isMobileMenuOpen && (
-											<ul className='mt-2 shadow rounded'>
-												{scholarshipApplicationSteps.map((step, stepIdx) => (
-													<li
-														key={step}
-														className={cn(
-															'cursor-pointer p-2 border-b last:border-b-0 text-xs',
-															{
-																'font-medium text-brand-dark':
-																	step === currentStep,
-																'font-light': step !== currentStep,
-															},
-														)}
-														onClick={() => {
-															setCurrentStep(
-																step as ScholarshipApplicationFormDataSection,
-															);
-															setMobileMenuOpen(false);
-														}}
-													>
-														{stepIdx + 1}. {step}
-													</li>
-												))}
-											</ul>
-										)}
-									</div>
+									{!enableResearchApplication && (
+										<div className='md:hidden mb-4'>
+											<button
+												className='bg-white w-full flex justify-between items-center p-2 shadow rounded'
+												onClick={toggleMobileMenu}
+											>
+												<span className='font-semibold'>{currentStep}</span>
+												{isMobileMenuOpen ? <GoChevronUp /> : <GoChevronDown />}
+											</button>
+											{isMobileMenuOpen && (
+												<ul className='mt-2 shadow rounded'>
+													{scholarshipApplicationSteps.map((step, stepIdx) => (
+														<li
+															key={step}
+															className={cn(
+																'cursor-pointer p-2 border-b last:border-b-0 text-xs',
+																{
+																	'font-medium text-brand-dark':
+																		step === currentStep,
+																	'font-light': step !== currentStep,
+																},
+															)}
+															onClick={() => {
+																setCurrentStep(
+																	step as ScholarshipApplicationFormDataSection,
+																);
+																setMobileMenuOpen(false);
+															}}
+														>
+															{stepIdx + 1}. {step}
+														</li>
+													))}
+												</ul>
+											)}
+										</div>
+									)}
 
 									{/* Form container */}
 									<div className=''>
