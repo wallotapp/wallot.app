@@ -458,7 +458,7 @@ const Page: NextPage<PageProps> = (props) => {
 	const personalEssaysFields = Keys(
 		scholarshipApplicationFormDataPropertiesBySection['Personal Essays'],
 	).map(getLiteFormFieldProps);
-	const summerInternshipsFields = Keys(
+	const summerResearchFields = Keys(
 		scholarshipApplicationFormDataPropertiesBySection['Summer Research'],
 	)
 		.filter(
@@ -468,7 +468,22 @@ const Page: NextPage<PageProps> = (props) => {
 					'prefers_summer_program_housing',
 				].includes(fieldKey),
 		)
-		.map(getLiteFormFieldProps);
+		.map(
+			(
+				fieldKey: ScholarshipApplicationFormDataField,
+			): LiteFormFieldProps<ScholarshipApplicationFormDataParams> => ({
+				control,
+				fieldErrors: formState.errors,
+				fieldKey,
+				fieldSpec:
+					scholarshipApplicationFormDataSchemaFieldSpecByFieldKey[fieldKey],
+				initialFormData: defaultFormData,
+				isSubmitting: isFormSubmitting,
+				operation: 'update',
+				renderTooltipContent: undefined,
+				setError: (message) => setError(fieldKey, { message }),
+			}),
+		);
 	const isFormDisabled =
 		isFormSubmitting || isScholarshipApplicationForLoggedInUserSubmitted;
 
@@ -1391,13 +1406,42 @@ const Page: NextPage<PageProps> = (props) => {
 															})}
 														>
 															<div>
-																{summerInternshipsFields.map((fieldProps) => (
+																{summerResearchFields.map((fieldProps) => (
 																	<LiteFormFieldContainer
 																		key={fieldProps.fieldKey}
 																		{...fieldProps}
 																	/>
 																))}
 															</div>
+															{isScholarshipApplicationForLoggedInUserSubmitted && (
+																<div className='text-right mt-1'>
+																	<button
+																		className='bg-gray-800 text-white text-xs rounded-md px-2.5 py-1'
+																		type='button'
+																		onClick={() => {
+																			return void (async function () {
+																				toast({
+																					title: 'Saving Changes',
+																					description:
+																						'This may take a few moments...',
+																				});
+																				await updateScholarshipApplication({
+																					_id: scholarshipApplicationForLoggedInUser._id,
+																					summer_plans: liveData.summer_plans,
+																				});
+																				await refetchScholarshipApplicationsForLoggedInUser();
+																				toast({
+																					title: 'Success',
+																					description:
+																						'Your updates have been saved.',
+																				});
+																			})();
+																		}}
+																	>
+																		Update
+																	</button>
+																</div>
+															)}
 															<div className='mt-4'>
 																<Label>
 																	<p className=''>
@@ -1432,27 +1476,50 @@ const Page: NextPage<PageProps> = (props) => {
 																		title: 'No',
 																	},
 																].map(({ isSelected, subtitle, title }) => {
+																	const isYesButton = title === 'Yes';
 																	return (
 																		<button
 																			className={cn(
 																				'flex items-center space-x-3 px-3 py-2',
 																				isSelected ? 'bg-gray-200' : 'bg-white',
 																				'border border-gray-300 rounded-md',
-																				{
-																					'transition duration-200 ease-in-out hover:bg-gray-100':
-																						!isFormDisabled,
-																					'cursor-not-allowed': isFormDisabled,
-																				},
+																				'transition duration-200 ease-in-out hover:bg-gray-100',
 																			)}
 																			key={title}
 																			type='button'
 																			onClick={() => {
-																				setValue(
-																					'prefers_summer_program_housing',
-																					isSelected ? null : title === 'Yes',
-																				);
+																				if (
+																					isScholarshipApplicationForLoggedInUserSubmitted
+																				) {
+																					return void (async function () {
+																						toast({
+																							title: 'Saving Changes',
+																							description:
+																								'This may take a few moments...',
+																						});
+																						await updateScholarshipApplication({
+																							_id: scholarshipApplicationForLoggedInUser._id,
+																							prefers_summer_program_housing:
+																								isYesButton,
+																						});
+																						await refetchScholarshipApplicationsForLoggedInUser();
+																						setValue(
+																							'prefers_summer_program_housing',
+																							isYesButton,
+																						);
+																						toast({
+																							title: 'Success',
+																							description:
+																								'Your updates have been saved.',
+																						});
+																					})();
+																				} else {
+																					setValue(
+																						'prefers_summer_program_housing',
+																						isSelected ? null : isYesButton,
+																					);
+																				}
 																			}}
-																			disabled={isFormDisabled}
 																		>
 																			<div className=''>
 																				{isSelected ? (
