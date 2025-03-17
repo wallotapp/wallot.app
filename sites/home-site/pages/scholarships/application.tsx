@@ -482,6 +482,12 @@ const Page: NextPage<PageProps> = (props) => {
 	const researchFieldsSection5 = researchFieldsBySection[5].map(
 		getResearchLiteFormFieldProps,
 	);
+	const researchFields =
+		{
+			[researchApplicationStepTitles[0]]: researchFieldsSection0,
+			[researchApplicationStepTitles[3]]: researchFieldsSection3,
+			[researchApplicationStepTitles[5]]: researchFieldsSection5,
+		}[currentStep] ?? [];
 	const isResearchFormDisabled =
 		isResearchFormSubmitting || isResearchApplicationForLoggedInUserSubmitted;
 
@@ -1464,14 +1470,7 @@ const Page: NextPage<PageProps> = (props) => {
 																: 'hidden',
 														)}
 													>
-														{{
-															[researchApplicationStepTitles[0]]:
-																researchFieldsSection0,
-															[researchApplicationStepTitles[3]]:
-																researchFieldsSection3,
-															[researchApplicationStepTitles[5]]:
-																researchFieldsSection5,
-														}[currentStep]!.map((fieldProps) => (
+														{researchFields.map((fieldProps) => (
 															<LiteFormFieldContainer
 																key={fieldProps.fieldKey}
 																{...fieldProps}
