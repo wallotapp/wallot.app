@@ -239,9 +239,36 @@ const Page: NextPage<PageProps> = (props) => {
 		research_application_s4_q2_entries,
 		// research_application_s4_q3_entries,
 	} = researchApplicationFormSchema;
+	const s1Q0entriesByCategory = research_application_s1_q0_entries.reduce(
+		(acc, { category, ...entry }) => {
+			const categoryIdx = acc.findIndex(
+				({ category: matchCategory }) => category === matchCategory,
+			);
+			if (categoryIdx === -1) {
+				return acc.concat({ category, entries: [{ category, ...entry }] });
+			}
+			acc[categoryIdx]!.entries.push({ category, ...entry });
+			return acc;
+		},
+		[] as {
+			category: string;
+			entries: typeof research_application_s1_q0_entries;
+		}[],
+	);
 	const researchApplicationStepTitles = researchApplicationSteps.map(
 		R.prop('title'),
 	) as [string, string, string, string, string, string, string];
+	const researchApplicationStepSubtitles = researchApplicationSteps.map(
+		R.prop('subtitle'),
+	) as [
+		string | undefined,
+		string | undefined,
+		string | undefined,
+		string | undefined,
+		string | undefined,
+		string | undefined,
+		string | undefined,
+	];
 	const defaultResearchFormData =
 		researchApplicationFormDataSchema.getDefault();
 	const {
@@ -1497,30 +1524,95 @@ const Page: NextPage<PageProps> = (props) => {
 													</div>
 													<div
 														className={cn(
-															'px-1',
+															'px-1 pt-3',
 															currentStep === researchApplicationStepTitles[1]
 																? ''
 																: 'hidden',
 														)}
 													>
-														<p>
-															{
-																label_data_by_field_key
-																	.research_application_s1_q0?.label
-															}
+														<p className='text-gray-500 font-normal text-sm'>
+															{researchApplicationStepSubtitles[1]}
 														</p>
-														{research_application_s1_q0_entries.map(
-															({ subtitle, title }) => {
-																return (
-																	<div>
-																		<p className='text-sm'>{title}</p>
-																		<p className='text-light text-xs'>
-																			{subtitle}
-																		</p>
-																	</div>
-																);
-															},
-														)}
+														<Label className='flex items-center space-x-1 mt-4'>
+															<p>
+																{
+																	label_data_by_field_key
+																		.research_application_s1_q0?.label
+																}
+																<span className='text-red-700 font-semibold'>
+																	*
+																</span>
+															</p>
+														</Label>
+														<div>
+															{s1Q0entriesByCategory.map(
+																({ category, entries }) => {
+																	return (
+																		<div className='mt-4' key={category}>
+																			<div>
+																				<p className='text-light text-sm'>
+																					{category}
+																				</p>
+																			</div>
+																			<div className='grid grid-cols-3 gap-2'>
+																				{entries.map(({ subtitle, title }) => {
+																					const isSelected =
+																						s1Q0.includes(title);
+																					return (
+																						<button
+																							key={title}
+																							className={cn(
+																								'flex items-center space-x-2 mt-1 text-left w-full focus:outline-none focus-visible:ring-none px-3 py-2 rounded-lg',
+																								'col-span-2 lg:col-span-1',
+																								'border border-gray-200',
+																								{
+																									'bg-gray-200': isSelected,
+																									'hover:bg-gray-100':
+																										!isSelected,
+																								},
+																							)}
+																							onClick={() => {
+																								if (isSelected) {
+																									setS1Q0((prev) =>
+																										prev.filter(
+																											(k) => k !== title,
+																										),
+																									);
+																								} else {
+																									setS1Q0((prev) =>
+																										prev.concat(title),
+																									);
+																								}
+																							}}
+																						>
+																							<div className='w-5'>
+																								{isSelected ? (
+																									<GoCheckCircleFill className='text-brand-dark' />
+																								) : (
+																									<GoCircle className='text-gray-400' />
+																								)}
+																							</div>
+																							<div className='w-3/4'>
+																								<div>
+																									<p className='font-normal text-sm'>
+																										{title}
+																									</p>
+																								</div>
+																								<div className=''>
+																									<p className='font-extralight text-xs'>
+																										{subtitle}
+																									</p>
+																								</div>
+																							</div>
+																						</button>
+																					);
+																				})}
+																			</div>
+																		</div>
+																	);
+																},
+															)}
+														</div>
 													</div>
 													<div
 														className={cn(
