@@ -1,4 +1,9 @@
-import { GeneralizedFieldTypeEnum, getFieldSpecByFieldKey, Keys, YupHelpers } from 'ergonomic';
+import {
+	GeneralizedFieldTypeEnum,
+	getFieldSpecByFieldKey,
+	Keys,
+	YupHelpers,
+} from 'ergonomic';
 import * as yup from 'yup';
 
 export type ResearchApplicationFormSchema = {
