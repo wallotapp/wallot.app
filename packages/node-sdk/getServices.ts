@@ -51,6 +51,7 @@ import {
 	enqueueRefreshAlpacaOrderStatus,
 } from './wallot/orders/placeAlpacaOrders.js';
 import { enqueueBatchSendScholarshipApplicationCompletionReminderEmailsParams } from './wallot/scholarshipApplications/batchSendScholarshipApplicationReminderEmails.js';
+import { enqueueBatchSendResearchApplicationEmailsParams } from './wallot/scholarshipApplications/batchSendResearchApplicationEmails.js';
 import {
 	enqueueCreateAlpacaAccount,
 	enqueueRefreshAlpacaAccountStatus,
@@ -202,6 +203,11 @@ export const getServices = (
 				// Scholarship applications
 				enqueueBatchSendScholarshipApplicationCompletionReminderEmailsParams:
 					enqueueBatchSendScholarshipApplicationCompletionReminderEmailsParams(
+						getCloudFunctionUrlService,
+						logService,
+					),
+				enqueueBatchSendResearchApplicationEmailsParams:
+					enqueueBatchSendResearchApplicationEmailsParams(
 						getCloudFunctionUrlService,
 						logService,
 					),
