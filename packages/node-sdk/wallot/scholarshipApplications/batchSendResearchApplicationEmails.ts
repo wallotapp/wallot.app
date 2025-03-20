@@ -21,8 +21,7 @@ export function enqueueBatchSendResearchApplicationEmailsParams(
 			'batchSendResearchApplicationEmails',
 		);
 		log({
-			message:
-				'Enqueuing batchSendResearchApplicationEmails task',
+			message: 'Enqueuing batchSendResearchApplicationEmails task',
 			targetUri,
 			targetUtcIso,
 			params,
