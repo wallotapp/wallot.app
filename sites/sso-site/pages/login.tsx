@@ -26,7 +26,6 @@ import { ChangeAuthenticationRoute } from '@wallot/react/src/components/ChangeAu
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { AuthenticationLegalNotice } from '@wallot/react/src/components/AuthenticationLegalNotice';
 import { useSiteOriginByTarget } from '@wallot/react/src/hooks/useSiteOriginByTarget';
-import { useGuestRouteRedirect } from 'ergonomic-react/src/features/authentication/hooks/useGuestRouteRedirect';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
@@ -37,21 +36,11 @@ import { useState } from 'react';
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== State ==== //
 	const [isLoginUserRunning, setIsLoginUserRunning] = useState(false);
-	const [
-		shouldPauseFirebaseAuthRedirects,
-		setShouldPauseFirebaseAuthRedirects,
-	] = useState(false);
 
 	// ==== Hooks ==== //
 
 	// Site origins
 	const siteOriginByTarget = useSiteOriginByTarget();
-
-	// Auth
-	useGuestRouteRedirect({
-		shouldPauseFirebaseAuthRedirects,
-		welcomeSiteOrigin: siteOriginByTarget.HOME_SITE,
-	});
 
 	// Router
 	const router = useRouter();
@@ -146,7 +135,6 @@ const Page: NextPage<PageStaticProps> = (props) => {
 			});
 			try {
 				setIsLoginUserRunning(true);
-				setShouldPauseFirebaseAuthRedirects(true);
 
 				const { password, email } = data;
 				const { user: firebaseUser } = await signInWithEmailAndPassword(
