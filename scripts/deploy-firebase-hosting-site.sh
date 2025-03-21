@@ -3,8 +3,9 @@
 # Exit on error
 set -e
 
-# Usage: ./deploy-firebase-hosting-site.sh <site_name>
+# Usage: ./deploy-firebase-hosting-site.sh <site_name> <platform_version>
 SITE_NAME=$1
+PLATFORM_VERSION=${2:-"latest"}
 
 if [[ -z "$SITE_NAME" ]]; then
   echo "Usage: $0 <site_name>"
@@ -27,10 +28,12 @@ docker run --rm \
     echo \"${SHARED_HTTPS_NEXT_PUBLIC_VARIABLES}\" >> ./sites/${SITE_NAME}/.env.local &&
     if [ \"${SECRET_CRED_DEPLOYMENT_ENVIRONMENT}\" = \"live\" ]; then
       echo 'NEXT_PUBLIC_DEPLOYMENT_ENVIRONMENT=live' >> ./sites/${SITE_NAME}/.env.local;
+      echo 'NEXT_PUBLIC_PLATFORM_VERSION=${PLATFORM_VERSION}' >> ./sites/${SITE_NAME}/.env.local;
       mv ./sites/${SITE_NAME}/public/robots.live.txt ./sites/${SITE_NAME}/public/robots.txt;
       rm ./sites/${SITE_NAME}/public/robots.test.txt;
     else
       echo 'NEXT_PUBLIC_DEPLOYMENT_ENVIRONMENT=test' >> ./sites/${SITE_NAME}/.env.local;
+      echo 'NEXT_PUBLIC_PLATFORM_VERSION=${PLATFORM_VERSION}' >> ./sites/${SITE_NAME}/.env.local;
       mv ./sites/${SITE_NAME}/public/robots.test.txt ./sites/${SITE_NAME}/public/robots.txt
       rm ./sites/${SITE_NAME}/public/robots.live.txt;
     fi &&

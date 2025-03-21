@@ -20,6 +20,10 @@ export const saveScholarshipApplication = async (
 		}
 		const data = await getAuthenticatedKyInstance(firebaseUser)
 			.patch(`v0/scholarship-applications/${scholarshipApplicationId}`, {
+				headers: {
+					'X-Platform-Version':
+						process.env.NEXT_PUBLIC_PLATFORM_VERSION || undefined,
+				},
 				json: params,
 			})
 			.json<ScholarshipApplicationFormDataResponse>();

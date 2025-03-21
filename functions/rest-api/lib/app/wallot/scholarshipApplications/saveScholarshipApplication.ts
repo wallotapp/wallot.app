@@ -16,6 +16,7 @@ export const saveScholarshipApplication = async (
 	{ scholarshipApplicationId }: ScholarshipApplicationFormDataRouteParams,
 	_query: Record<string, never>,
 	firebaseUser: FirebaseUser | null,
+	headers: Record<string, unknown>,
 ): Promise<FunctionResponse<ScholarshipApplicationFormDataResponse>> => {
 	if (!firebaseUser) throw new Error('Unauthorized');
 	const email = firebaseUser.email;
@@ -51,5 +52,10 @@ export const saveScholarshipApplication = async (
 	// Commit changes
 	await batch.commit();
 
-	return { json: {} };
+	// Check headers for 'X-Platform-Version'
+	if (headers['X-Platform-Version']) {
+		return { json: {} };
+	}
+
+	throw new Error('Please refresh the page and save your changes again.');
 };

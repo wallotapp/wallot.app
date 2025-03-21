@@ -20,6 +20,10 @@ export const submitScholarshipApplication = async (
 		}
 		const data = await getAuthenticatedKyInstance(firebaseUser)
 			.post(`v0/scholarship-applications/${scholarshipApplicationId}/submit`, {
+				headers: {
+					'X-Platform-Version':
+						process.env.NEXT_PUBLIC_PLATFORM_VERSION || undefined,
+				},
 				json: params,
 			})
 			.json<ScholarshipApplicationFormDataResponse>();
