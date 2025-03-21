@@ -53,7 +53,7 @@ export const saveScholarshipApplication = async (
 	await batch.commit();
 
 	// Check headers for 'X-Platform-Version'
-	if (headers['X-Platform-Version']) {
+	if (headers['x-platform-version']) {
 		return { json: {} };
 	}
 

@@ -1,4 +1,4 @@
-import { readFileSync, statSync } from 'fs';
+import { statSync } from 'fs';
 import { getSecretData } from 'ergonomic-node';
 import { SecretData } from '@wallot/node';
 import { directoryPath } from './directoryPath.js';
@@ -13,14 +13,4 @@ if (secretData === null) {
 	throw new Error('Incomplete or missing secrets');
 }
 
-const rootPackageJsonPath = `${directoryPath}/../../../package.json`;
-if (!statSync(rootPackageJsonPath).isFile()) {
-	throw new Error(`${rootPackageJsonPath} is not a file`);
-}
-const { version: PLATFORM_VERSION } = JSON.parse(
-	readFileSync(rootPackageJsonPath, 'utf-8'),
-) as {
-	version: string;
-};
-
-export const secrets = { ...secretData, PLATFORM_VERSION };
+export const secrets = secretData;
