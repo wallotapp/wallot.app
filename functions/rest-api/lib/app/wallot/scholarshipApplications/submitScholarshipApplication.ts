@@ -42,7 +42,7 @@ export const submitScholarshipApplication = async (
 	const updateScholarshipApplicationParams =
 		getUpdateScholarshipApplicationParamsFromScholarshipApplicationFormDataParams(
 			params,
-			'submit',
+			Boolean(headers['x-platform-version']) ? 'submit' : 'save',
 		);
 	batch.update(
 		db
