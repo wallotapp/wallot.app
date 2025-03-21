@@ -18,6 +18,7 @@ export const submitScholarshipApplication = async (
 	{ scholarshipApplicationId }: ScholarshipApplicationFormDataRouteParams,
 	_query: Record<string, never>,
 	firebaseUser: FirebaseUser | null,
+	headers: Record<string, unknown>,
 ): Promise<FunctionResponse<ScholarshipApplicationFormDataResponse>> => {
 	if (!firebaseUser) throw new Error('Unauthorized');
 	const email = firebaseUser.email;
@@ -90,5 +91,12 @@ ${alertBody}`,
 		return Promise.resolve();
 	};
 
-	return { json: {}, onFinished };
+	// Check headers for 'X-Platform-Version'
+	if (headers['X-Platform-Version']) {
+		return { json: {}, onFinished };
+	}
+
+	throw new Error(
+		'Please refresh the page and try to submit your application again.',
+	);
 };

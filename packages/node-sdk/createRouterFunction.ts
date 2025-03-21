@@ -27,8 +27,7 @@ export const createRouterFunction =
 			firebaseUser: FirebaseUser | null,
 			headers: Record<string, unknown>,
 		) => Promise<FunctionResponse<TResponseBody>>,
-		options: { headers?: Record<string, unknown>; requiresAuth?: boolean } = {
-			headers: {},
+		options: { requiresAuth?: boolean } = {
 			requiresAuth: true,
 		},
 	) => {
@@ -72,13 +71,16 @@ export const createRouterFunction =
 						// Extract the query parameters from the request
 						const query = req.query;
 
+						// Extract the headers from the request
+						const headers = req.headers ?? {};
+
 						// Call the router function
 						const { json, onFinished = () => Promise.resolve() } = await fn(
 							body,
 							params,
 							query,
 							firebaseUser ?? null,
-							options.headers ?? {},
+							headers,
 						);
 
 						// Set the response body in res.locals.json

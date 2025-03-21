@@ -47,4 +47,4 @@ jobs:
         if: env.SKIP_BUILD == 'false' && (env.DEPLOY_ALL_SITES == 'true' || env.DEPLOY_HOME_SITE == 'true')
         run: |
           chmod +x ./scripts/deploy-firebase-hosting-site.sh;
-          ./scripts/deploy-firebase-hosting-site.sh home-site;
+          ./scripts/deploy-firebase-hosting-site.sh home-site $(jq -r '.version' ./package.json);
