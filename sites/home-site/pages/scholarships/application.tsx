@@ -228,6 +228,10 @@ const Page: NextPage<PageProps> = (props) => {
 			shouldUnregister: false,
 		});
 	const liveData = watch();
+	const formStateErrorValues = Object.values(formState.errors ?? {});
+	const formStateErrorMessages = formStateErrorValues
+		.flatMap((x) => (x?.message ? [String(x.message)] : []))
+		.join('\n');
 
 	// Research Form
 	const [s1Q0, setS1Q0] = useState<string[]>([]);
@@ -2347,31 +2351,31 @@ const Page: NextPage<PageProps> = (props) => {
 										},
 										{
 											question: 'Common Essay',
-											response: liveData.common_essay,
+											response: liveData.common_essay || 'None',
 										},
 										{
 											question: 'Academic Achievement Award Essay',
 											response:
 												liveData.academic_achievement_award_essay ||
-												'Not applicable',
+												'N/A - Not applying for the Academic Achievement scholarship',
 										},
 										{
 											question: 'Outstanding Student-Athlete Award Essay',
 											response:
 												liveData.outstanding_student_athlete_award_essay ||
-												'Not applicable',
+												'N/A - Not applying for the Student Athlete scholarship',
 										},
 										{
 											question: 'Community Leadership Award Essay',
 											response:
 												liveData.community_leadership_award_essay ||
-												'Not applicable',
+												'N/A - Not applying for the Community Leadership scholarship',
 										},
 										{
 											question: 'Entrepreneurial Excellence Award Essay',
 											response:
 												liveData.entrepreneurial_excellence_award_essay ||
-												'Not applicable',
+												'N/A - Not applying for the Entrepreneurial Excellence scholarship',
 										},
 									].map(({ question, response }, responseIdx) => {
 										return (
@@ -2612,6 +2616,13 @@ const Page: NextPage<PageProps> = (props) => {
 										);
 									})}
 								</div>
+								{Boolean(formStateErrorMessages) && (
+									<div className='mt-2.5'>
+										<LiteFormFieldError
+											fieldErrorMessage={formStateErrorMessages}
+										/>
+									</div>
+								)}
 								<div className='flex items-center space-x-4 mt-4'>
 									<button
 										className='w-full text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300'
