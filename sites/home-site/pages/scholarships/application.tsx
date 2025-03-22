@@ -2540,8 +2540,10 @@ const Page: NextPage<PageProps> = (props) => {
 												}}
 											>
 												<p className='text-gray-600 font-light'>
-													No, I have a scheduling conflict with all{' '}
-													{scholarshipOpenHouseEvents.length} events
+													No, I have a scheduling conflict with{' '}
+													{scholarshipOpenHouseEvents.length === 1
+														? 'this event'
+														: `all ${scholarshipOpenHouseEvents.length} events`}
 												</p>
 											</button>
 										</div>
