@@ -151,7 +151,11 @@ export function enqueueSendEmailWithGmailAPI(
 	getCloudFunctionUrl: (functionName: string) => Promise<string>,
 	log: (log: unknown, options?: { type: 'error' | 'normal' }) => void,
 ) {
-	return async (targetUtcIso: string, params: SendEmailWithGmailAPIParams) => {
+	return async (
+		targetUtcIso: string,
+		params: SendEmailWithGmailAPIParams,
+		taskId: string | null = null,
+	) => {
 		const queue = getFunctions().taskQueue<SendEmailWithGmailAPIParams>(
 			'sendEmailWithGmailAPI',
 		);
@@ -165,6 +169,7 @@ export function enqueueSendEmailWithGmailAPI(
 		await queue.enqueue(params, {
 			scheduleDelaySeconds: getCloudTasksScheduleDelaySeconds(targetUtcIso),
 			uri: targetUri,
+			...(taskId == null ? {} : { id: taskId }),
 		});
 	};
 }
