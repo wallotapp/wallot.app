@@ -38,7 +38,7 @@ const emailTemplate = {
 const emailSubject = {
 	reminder:
 		'Reminder to complete your Florida Visionary Scholarship application',
-	final_reminder: 'Florida Visionary Scholarship – Last Day to Apply',
+	final_reminder: 'Florida Visionary Scholarship - Last Day to Apply',
 };
 
 export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTaskOptions =
