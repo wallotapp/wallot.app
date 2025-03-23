@@ -3,6 +3,7 @@ import { getCloudTasksScheduleDelaySeconds } from '../../getCloudTasksScheduleDe
 
 export type BatchSendScholarshipApplicationCompletionReminderEmailsParams = {
 	ceiling: number;
+	type: 'reminder' | 'final_reminder';
 };
 
 export function enqueueBatchSendScholarshipApplicationCompletionReminderEmailsParams(
