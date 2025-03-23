@@ -812,7 +812,7 @@ const Page: NextPage<PageProps> = (props) => {
 		isPreferringSummerProgramHousingValue === false;
 	// Part 2 (if applicable)
 	const enableResearchApplication =
-		isLookingForSummerProgram && isSubmittedScholarshipApplication;
+		isLookingForSummerProgram && isScholarshipApplicationForLoggedInUserSubmitted;
 
 	// Disable scholarship application submission
 	const disableSubmit =
