@@ -104,6 +104,22 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 				continue;
 			}
 			const { alpaca_account_identity, firebase_auth_email } = user;
+
+			if (
+				gmailParamSet.length &&
+				gmailParamSet.some(
+					({ gmailParams: { recipient_email } }) =>
+						recipient_email === firebase_auth_email,
+				)
+			) {
+				await gmail.sendDeveloperAlert({
+					message: `Duplicate emails found for scholarship applications ${application._id}`,
+					subject:
+						'[Wallot Developer Alerts] Duplicate emails found in scholarship application reminder GCP Task',
+				});
+				continue;
+			}
+
 			const firstName = alpaca_account_identity?.given_name;
 			const body = getEmailBody(emailTemplate[type], {
 				recipient_greeting: firstName
@@ -131,9 +147,9 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 			});
 		}
 
-		// Send the emails 6 seconds apart
-		const now = DateTime.now().toUTC().plus({ seconds: 20 });
-		const delaySeconds = 6;
+		// Send the emails 8 seconds apart
+		const now = DateTime.now().toUTC().plus({ seconds: 300 });
+		const delaySeconds = 8;
 		let idx = 0;
 		const batches = [db.batch()];
 		for (const { gmailParams, scholarshipApplicationId } of gmailParamSet) {
@@ -141,7 +157,11 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 			const timestamp = (
 				idx === 0 ? now : now.plus({ seconds: delaySeconds * idx })
 			).toISO();
-			await gcp.tasks.enqueueSendEmailWithGmailAPI(timestamp, gmailParams);
+			await gcp.tasks.enqueueSendEmailWithGmailAPI(
+				timestamp,
+				gmailParams,
+				`final_reminder_email_${scholarshipApplicationId}`,
+			);
 			// Increment each `reminder_emails_sent_for_application_completion` property by 1 via a batch update
 			const scholarshipApplicationRef = db
 				.collection(scholarshipApplicationsApi.collectionId)
