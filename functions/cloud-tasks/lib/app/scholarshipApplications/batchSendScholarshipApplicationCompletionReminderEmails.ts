@@ -9,16 +9,37 @@ import {
 	usersApi,
 } from '@wallot/js';
 import { BatchSendScholarshipApplicationCompletionReminderEmailsParams } from '@wallot/node';
-import { db, gcp, log } from '../../services.js';
+import { db, gcp, gmail, log } from '../../services.js';
 import { variables, siteOriginByTarget } from '../../variables.js';
 import { getEmailBody, SendEmailWithGmailAPIParams } from '@wallot/node';
 import { FieldValue } from 'firebase-admin/firestore';
 import { directoryPath } from '../../directoryPath.js';
 
-const emailTemplateRelativePath =
+const reminderEmailTemplateRelativePath =
 	'visionaryScholarships/visionaryScholarshipApplicationReminderEmail.html';
-const emailTemplateFullPath = `${directoryPath}/../assets/emails/${emailTemplateRelativePath}`;
-const emailTemplate = readFileSync(emailTemplateFullPath, 'utf8');
+const reminderEmailTemplateFullPath = `${directoryPath}/../assets/emails/${reminderEmailTemplateRelativePath}`;
+const reminderEmailTemplate = readFileSync(
+	reminderEmailTemplateFullPath,
+	'utf8',
+);
+
+const finalReminderEmailTemplateRelativePath =
+	'visionaryScholarships/visionaryScholarshipApplicationFinalReminderEmail.html';
+const finalReminderEmailTemplateFullPath = `${directoryPath}/../assets/emails/${finalReminderEmailTemplateRelativePath}`;
+const finalReminderEmailTemplate = readFileSync(
+	finalReminderEmailTemplateFullPath,
+	'utf8',
+);
+
+const emailTemplate = {
+	reminder: reminderEmailTemplate,
+	final_reminder: finalReminderEmailTemplate,
+};
+const emailSubject = {
+	reminder:
+		'Reminder to complete your Florida Visionary Scholarship application',
+	final_reminder: 'Florida Visionary Scholarship – Last Day to Apply',
+};
 
 export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTaskOptions =
 	{
@@ -28,12 +49,15 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTaskOp
 
 export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: CloudTaskHandler<
 	BatchSendScholarshipApplicationCompletionReminderEmailsParams
-> = async ({ data: { ceiling } }) => {
+> = async ({ data: { ceiling, type } }) => {
 	try {
 		// Query all the scholarship applications
 		// Query all the users
 		const [scholarshipApplicationDocs, userDocs] = await Promise.all([
-			db.collection(scholarshipApplicationsApi.collectionId).get(),
+			db
+				.collection(scholarshipApplicationsApi.collectionId)
+				.where('status', '==', 'in_progress')
+				.get(),
 			db.collection(usersApi.collectionId).get(),
 		]);
 		const scholarshipApplications = scholarshipApplicationDocs.docs.map(
@@ -46,64 +70,70 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 		// Construct the Gmail API parameters from the user's email address and first name
 		const scholarshipApplicationsToEmail = scholarshipApplications.filter(
 			(application) =>
-				application.status === 'in_progress' &&
-				(application.reminder_emails_sent_for_application_completion == null ||
-					application.reminder_emails_sent_for_application_completion <
-						ceiling),
+				application.reminder_emails_sent_for_application_completion == null ||
+				application.reminder_emails_sent_for_application_completion < ceiling,
 		);
-		const gmailParamSet = scholarshipApplicationsToEmail.flatMap(
-			(
-				application,
-			): {
-				gmailParams: SendEmailWithGmailAPIParams;
-				scholarshipApplicationId: string;
-			}[] => {
-				const user = users.find((user) => user._id === application.user);
-				if (user == null) {
-					log(
-						{
-							message: `User not found for scholarship application ${application._id}`,
-							code: 'USER_NOT_FOUND',
-							ceiling,
-						},
-						{ type: 'error' },
-					);
-					return [];
-				}
-				const { alpaca_account_identity, firebase_auth_email } = user;
-				const firstName = alpaca_account_identity?.given_name;
-				const body = getEmailBody(emailTemplate, {
-					recipient_greeting: firstName
-						? `Hi ${firstName.trim()},`
-						: 'Dear Applicant,',
-					application_link: getHomeSiteRoute({
-						includeOrigin: true,
-						origin: siteOriginByTarget.HOME_SITE,
-						queryParams: {},
-						routeStaticId: 'HOME_SITE__/SCHOLARSHIPS/APPLICATION',
-					}),
-				});
-				return [
+		const gmailParamSet: {
+			gmailParams: SendEmailWithGmailAPIParams;
+			scholarshipApplicationId: string;
+		}[] = [];
+
+		for (const application of scholarshipApplicationsToEmail) {
+			let user = users.find((user) => user._id === application.user);
+			if (user == null) {
+				const userDoc = await db
+					.collection(usersApi.collectionId)
+					.doc(application.user)
+					.get();
+				user = userDoc.data() as UserActivatedByAlpaca;
+			}
+			if (user == null) {
+				log(
 					{
-						gmailParams: {
-							html_body: body,
-							recipient_email: firebase_auth_email,
-							subject:
-								'Reminder to complete your Florida Visionary Scholarship application',
-							sender_email:
-								variables.SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_EMAIL_VISIONARY_SCHOLARSHIP,
-							sender_name:
-								variables.SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_NAME_VISIONARY_SCHOLARSHIP,
-							sender_user_id: variables.SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID,
-						},
-						scholarshipApplicationId: application._id,
+						message: `User not found for scholarship application ${application._id}`,
+						code: 'USER_NOT_FOUND',
+						ceiling,
 					},
-				];
-			},
-		);
-		// Send the emails 8 seconds apart
+					{ type: 'error' },
+				);
+				await gmail.sendDeveloperAlert({
+					message: `User not found for scholarship application ${application._id}`,
+					subject:
+						'[Wallot Developer Alerts] USER_NOT_FOUND error in scholarship application reminder GCP Task',
+				});
+				continue;
+			}
+			const { alpaca_account_identity, firebase_auth_email } = user;
+			const firstName = alpaca_account_identity?.given_name;
+			const body = getEmailBody(emailTemplate[type], {
+				recipient_greeting: firstName
+					? `Hi ${firstName.trim()},`
+					: 'Dear Applicant,',
+				application_link: getHomeSiteRoute({
+					includeOrigin: true,
+					origin: siteOriginByTarget.HOME_SITE,
+					queryParams: {},
+					routeStaticId: 'HOME_SITE__/SCHOLARSHIPS/APPLICATION',
+				}),
+			});
+			gmailParamSet.push({
+				gmailParams: {
+					html_body: body,
+					recipient_email: firebase_auth_email,
+					subject: emailSubject[type],
+					sender_email:
+						variables.SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_EMAIL_VISIONARY_SCHOLARSHIP,
+					sender_name:
+						variables.SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_NAME_VISIONARY_SCHOLARSHIP,
+					sender_user_id: variables.SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID,
+				},
+				scholarshipApplicationId: application._id,
+			});
+		}
+
+		// Send the emails 6 seconds apart
 		const now = DateTime.now().toUTC().plus({ seconds: 20 });
-		const delaySeconds = 8;
+		const delaySeconds = 6;
 		let idx = 0;
 		const batches = [db.batch()];
 		for (const { gmailParams, scholarshipApplicationId } of gmailParamSet) {
@@ -130,8 +160,7 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 		}
 		await Promise.all(batches.map((batch) => batch.commit()));
 		log({
-			message:
-				'Batch delivery of scholarship application completion reminder emails successful',
+			message: `Batch delivery of scholarship application completion ${type} emails successful`,
 			ceiling,
 			numEmails: gmailParamSet.length,
 		});
@@ -139,8 +168,7 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 	} catch (err) {
 		log(
 			{
-				message:
-					'Batch delivery of scholarship application completion reminder emails failed',
+				message: `Batch delivery of scholarship application completion ${type} emails failed`,
 				code: 'EMAIL_DELIVERY_FAILED',
 				ceiling,
 				err,
@@ -150,15 +178,7 @@ export const handleBatchSendScholarshipApplicationCompletionReminderEmailsTask: 
 		// If email failed, throw an error
 		throw new firebaseFunctions.https.HttpsError(
 			'internal',
-			'Batch delivery of scholarship application completion reminder emails failed',
+			`Batch delivery of scholarship application completion ${type} emails failed`,
 		);
 	}
 };
-
-// More scalable
-// Query all the scholarship applications whose status is `in_progress` and whose `reminder_emails_sent_for_application_completion` property is an integer less than `ceiling`
-// Query each scholarship application's underlying user by reading the `scholarshipApplication.user` foreign key property and executing chunks of Firestore array-contains-any queries over the user document's `_id` property
-// Construct the Gmail API parameters from the user's email address and first name
-// Start the deliveries two minutes after this function completes
-// Send the emails 8 seconds apart
-// Increment each `reminder_emails_sent_for_application_completion` property by 1 via a batch update
