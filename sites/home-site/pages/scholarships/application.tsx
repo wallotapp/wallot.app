@@ -784,7 +784,9 @@ const Page: NextPage<PageProps> = (props) => {
 	)
 		? scholarshipApplicationForLoggedInUser.open_house_rsvps[0]
 		: null;
+	const openHousesLeft = scholarshipOpenHouseEvents.length > 0;
 	const isAttendingAnOpenHouse = firstAttendingEventFromExistingRsvp != null;
+	const promptOpenHouseRsvp = openHousesLeft && !isAttendingAnOpenHouse;
 	const selectedEvent = scholarshipOpenHouseEvents.find(({ lookup_key }) => {
 		return (
 			lookup_key ===
@@ -812,7 +814,8 @@ const Page: NextPage<PageProps> = (props) => {
 		isPreferringSummerProgramHousingValue === false;
 	// Part 2 (if applicable)
 	const enableResearchApplication =
-		isLookingForSummerProgram && isScholarshipApplicationForLoggedInUserSubmitted;
+		isLookingForSummerProgram &&
+		isScholarshipApplicationForLoggedInUserSubmitted;
 
 	// Disable scholarship application submission
 	const disableSubmit =
@@ -2287,7 +2290,7 @@ const Page: NextPage<PageProps> = (props) => {
 									submitConfirmationStep < 1 ? 'bg-gray-200' : 'bg-brand',
 								)}
 							></div>
-							{!isAttendingAnOpenHouse && (
+							{promptOpenHouseRsvp && (
 								<div
 									className={cn(
 										'w-16 h-2 rounded-md',
@@ -2407,7 +2410,7 @@ const Page: NextPage<PageProps> = (props) => {
 								</div>
 							</Fragment>
 						)}
-						{!isAttendingAnOpenHouse && (
+						{promptOpenHouseRsvp && (
 							<Fragment>
 								{submitConfirmationStep === 1 && (
 									<Fragment>
@@ -2572,7 +2575,7 @@ const Page: NextPage<PageProps> = (props) => {
 								)}
 							</Fragment>
 						)}
-						{submitConfirmationStep === (isAttendingAnOpenHouse ? 1 : 2) && (
+						{submitConfirmationStep === (promptOpenHouseRsvp ? 2 : 1) && (
 							<Fragment>
 								<DialogHeader className='mt-4'>
 									<DialogTitle className=''>
@@ -2590,31 +2593,35 @@ const Page: NextPage<PageProps> = (props) => {
 											question: 'Applicant',
 											response: `${liveData.given_name} ${liveData.family_name} from ${liveData.high_school}`,
 										},
-										{
-											question: 'Open House RSVP',
-											response:
-												selectedEvent == null
-													? 'Can not attend due to scheduling conflict'
-													: `Attending ${
-															selectedEvent.metro_area
-													  } Open House on ${selectedEvent.time.replace(
-															'·',
-															'at',
-													  )}`,
-										},
-									].map(({ question, response }, responseIdx) => {
-										return (
-											<div
-												key={question}
-												className={cn({ 'mt-2': responseIdx > 0 })}
-											>
-												<p className='font-semibold text-xs'>{question}</p>
-												<p className='font-extralight text-base whitespace-pre-line'>
-													{response}
-												</p>
-											</div>
-										);
-									})}
+										openHousesLeft
+											? {
+													question: 'Open House RSVP',
+													response:
+														selectedEvent == null
+															? 'Can not attend due to scheduling conflict'
+															: `Attending ${
+																	selectedEvent.metro_area
+															  } Open House on ${selectedEvent.time.replace(
+																	'·',
+																	'at',
+															  )}`,
+											  }
+											: null,
+									]
+										.filter((x) => x != null)
+										.map(({ question, response }, responseIdx) => {
+											return (
+												<div
+													key={question}
+													className={cn({ 'mt-2': responseIdx > 0 })}
+												>
+													<p className='font-semibold text-xs'>{question}</p>
+													<p className='font-extralight text-base whitespace-pre-line'>
+														{response}
+													</p>
+												</div>
+											);
+										})}
 								</div>
 								{Boolean(formStateErrorMessages) && (
 									<div className='mt-2.5'>
@@ -2627,7 +2634,7 @@ const Page: NextPage<PageProps> = (props) => {
 									<button
 										className='w-full text-center bg-slate-50 px-4 py-1.5 rounded-md border border-slate-300'
 										onClick={() =>
-											setSubmitConfirmationStep(isAttendingAnOpenHouse ? 0 : 1)
+											setSubmitConfirmationStep(promptOpenHouseRsvp ? 1 : 0)
 										}
 									>
 										<p className='font-medium text-xs'>Back</p>
