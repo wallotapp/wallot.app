@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#__next {
+	height: 100%;
+}
+
+@layer base {
+	:root {
+		--background: 216 2% 98%; /* Soft blue-white sheen */
+		--foreground: 222.2 47.4% 11.2%;
+
+		--muted: 210 40% 94%; /* Slightly more contrast for muted backgrounds */
+		--muted-foreground: 215.4 16.3% 46.9%;
+
+		--popover: 216 2% 98%;
+		--popover-foreground: 222.2 47.4% 11.2%;
+
+		--card: 216 2% 98%;
+		--card-foreground: 222.2 47.4% 11.2%;
+
+		--border: 213 30% 90%; /* Softer borders that complement the new background */
+		--input: 213 30% 90%;
+
+		--primary: 222.2 47.4% 11.2%;
+		--primary-foreground: 210 50% 99%; /* Slightly brighter for better contrast */
+
+		--secondary: 210 40% 94%; /* Matches the updated muted color for harmony */
+		--secondary-foreground: 222.2 47.4% 11.2%;
+
+		--accent: 210 40% 94%; /* Matches secondary */
+		--accent-foreground: 222.2 47.4% 11.2%;
+
+		--destructive: 0 100% 50%;
+		--destructive-foreground: 210 50% 99%;
+
+		--ring: 215 20.2% 70%; /* Subtle but noticeable ring effect */
+
+		--radius: 0.5rem;
+	}
+
+	.dark {
+		--background: 224 71% 4%;
+		--foreground: 213 31% 91%;
+
+		--muted: 223 47% 11%;
+		--muted-foreground: 215.4 16.3% 56.9%;
+
+		--popover: 224 71% 4%;
+		--popover-foreground: 215 20.2% 65.1%;
+
+		--card: 224 71% 4%;
+		--card-foreground: 213 31% 91%;
+
+		--border: 216 34% 17%;
+		--input: 216 34% 17%;
+
+		--primary: 210 40% 98%;
+		--primary-foreground: 222.2 47.4% 1.2%;
+
+		--secondary: 222.2 47.4% 11.2%;
+		--secondary-foreground: 210 40% 98%;
+
+		--accent: 216 34% 17%;
+		--accent-foreground: 210 40% 98%;
+
+		--destructive: 0 63% 31%;
+		--destructive-foreground: 210 40% 98%;
+
+		--ring: 216 34% 17%;
+
+		--radius: 0.5rem;
+	}
+}
+
+@layer base {
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background text-foreground;
+		font-feature-settings: 'rlig' 1, 'calt' 1;
+	}
+}
+
+.prose .mermaid .node rect {
+	rx: 7; /* Horizontal border radius */
+	ry: 7; /* Vertical border radius */
+}

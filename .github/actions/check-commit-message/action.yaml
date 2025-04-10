@@ -119,6 +119,12 @@ runs:
         else
           echo "DEPLOY_REFERRALS_SITE=false" >> $GITHUB_ENV
         fi
+        if echo '${{ inputs.commit_message }}' | grep -q '\[deploy site:research-site\]'
+        then
+          echo "DEPLOY_RESEARCH_SITE=true" >> $GITHUB_ENV
+        else
+          echo "DEPLOY_RESEARCH_SITE=false" >> $GITHUB_ENV
+        fi
         if echo '${{ inputs.commit_message }}' | grep -q '\[deploy site:sso-site\]'
         then
           echo "DEPLOY_SSO_SITE=true" >> $GITHUB_ENV
