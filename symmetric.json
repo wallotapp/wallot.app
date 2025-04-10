@@ -416,6 +416,22 @@
 				"visibility": "public"
 			},
 			{
+				"name": "Research Site",
+				"description": "Stock trading for absolutely everyone",
+				"workspace_package_package_name": "@wallot/research-site",
+				"workspace_package_relative_path": "sites/research-site",
+				"homepage": "https://research.wallot.app",
+				"targets": [
+					"{\"label\":\"app-wallot-research-production\",\"local_development_port\":\"17156\",\"public_url\":\"https://research.wallot.app\",\"firebase_config_api_key\":\"AIzaSyAv253le2vYG8tbm2GgEhfJUbZN2Z71B3c\",\"firebase_config_app_id\":\"1:315699416195:web:8e37fc74d0a06549385fb6\",\"firebase_config_auth_domain\":\"app-wallot-production.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-QFCL6ES3R3\",\"firebase_config_messaging_sender_id\":\"315699416195\",\"firebase_config_project_id\":\"app-wallot-production\",\"firebase_config_storage_bucket\":\"app-wallot-production.appspot.com\",\"deployment_environment\":\"live\"}",
+					"{\"label\":\"app-wallot-research-staging\",\"local_development_port\":\"7156\",\"public_url\":\"https://app-wallot-research-staging.web.app\",\"firebase_config_api_key\":\"AIzaSyAWoWzRH01lGIx2jLx5sWPFDdfKsTSNaDc\",\"firebase_config_app_id\":\"1:721995107731:web:c1c9432430973bc264ac66\",\"firebase_config_auth_domain\":\"app-wallot-staging.firebaseapp.com\",\"firebase_config_measurement_id\":\"G-65HXF7BM80\",\"firebase_config_messaging_sender_id\":\"721995107731\",\"firebase_config_project_id\":\"app-wallot-staging\",\"firebase_config_storage_bucket\":\"app-wallot-staging.firebasestorage.app\",\"deployment_environment\":\"test\"}"
+				],
+				"rewrites": [
+					"{\"source\":\"/posts/**/content\",\"destination\":\"/posts/[slug]/content.html\"}"
+				],
+				"category": "default",
+				"visibility": "public"
+			},
+			{
 				"name": "SSO Site",
 				"description": "Stock trading for absolutely everyone",
 				"workspace_package_package_name": "@wallot/sso-site",

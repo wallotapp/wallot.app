@@ -159,6 +159,22 @@
 			"type": "shell"
 		},
 		{
+			"command": "npm run dev-site --site_name=\"research-site\"",
+			"label": "Run Research Site Locally in Test Environment",
+			"options": {
+				"statusbar": {
+					"detail": "Run Research Site Locally in Test Environment",
+					"label": "$(globe) research"
+				}
+			},
+			"presentation": {
+				"group": "Sites",
+				"reveal": "always"
+			},
+			"problemMatcher": [],
+			"type": "shell"
+		},
+		{
 			"command": "npm run dev-site --site_name=\"sso-site\"",
 			"label": "Run SSO Site Locally in Test Environment",
 			"options": {

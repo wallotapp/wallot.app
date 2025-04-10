@@ -26,6 +26,10 @@
 			"http": "http://localhost:17153",
 			"https": "https://signup.wallot.app"
 		},
+		"RESEARCH_SITE": {
+			"http": "http://localhost:17156",
+			"https": "https://research.wallot.app"
+		},
 		"SSO_SITE": {
 			"http": "http://localhost:17154",
 			"https": "https://sso.wallot.app"

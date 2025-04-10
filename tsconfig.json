@@ -32,6 +32,7 @@
 		{ "path": "sites/blog-site/tsconfig.ref.json" },
 		{ "path": "sites/knowledge-base-site/tsconfig.ref.json" },
 		{ "path": "sites/referrals-site/tsconfig.ref.json" },
+		{ "path": "sites/research-site/tsconfig.ref.json" },
 		{ "path": "sites/sso-site/tsconfig.ref.json" },
 		{ "path": "sites/status-site/tsconfig.ref.json" },
 		{ "path": "sites/support-site/tsconfig.ref.json" },
