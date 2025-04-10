@@ -40,6 +40,8 @@ import {
 	ResearchApplicationFormDataParams,
 	ResearchApplicationFormDataResponse,
 	ResearchApplicationFormDataRouteParams,
+	AcceptResearchSeatFormDataParams,
+	AcceptResearchSeatFormDataResponse,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -447,6 +449,36 @@ app.post(
 				res,
 				next,
 			),
+		);
+	},
+);
+
+import { acceptResearchSeat } from './app/wallot/scholarshipApplications/acceptResearchSeat.js';
+app.options(
+	'*/v0/scholarship-applications/:scholarshipApplicationId/research/accept-seat',
+	corsPolicy,
+);
+app.post(
+	'*/v0/scholarship-applications/:scholarshipApplicationId/research/accept-seat',
+	(
+		req: express.Request<
+			ResearchApplicationFormDataRouteParams,
+			AcceptResearchSeatFormDataResponse,
+			AcceptResearchSeatFormDataParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			AcceptResearchSeatFormDataResponse,
+			GeneralizedResLocals<AcceptResearchSeatFormDataResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(acceptResearchSeat, {
+				requiresAuth: false,
+			})(req, res, next),
 		);
 	},
 );

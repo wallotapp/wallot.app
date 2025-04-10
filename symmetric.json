@@ -171,7 +171,8 @@
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_SEND_FROM_EMAIL",
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_SEND_FROM_NAME",
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_USER_ID",
-					"SECRET_CRED_OPENAI_API_KEY"
+					"SECRET_CRED_OPENAI_API_KEY",
+					"SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL"
 				],
 				"targets": [
 					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"17106\",\"project_id\":\"app-wallot-production\",\"deployment_environment\":\"live\",\"label\":\"cloud_tasks\"}",
@@ -200,7 +201,8 @@
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_SEND_FROM_EMAIL",
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_SEND_FROM_NAME",
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_USER_ID",
-					"SECRET_CRED_OPENAI_API_KEY"
+					"SECRET_CRED_OPENAI_API_KEY",
+					"SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL"
 				],
 				"targets": [
 					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"17104\",\"project_id\":\"app-wallot-production\",\"deployment_environment\":\"live\",\"label\":\"cronjobs\"}",
@@ -229,7 +231,8 @@
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_SEND_FROM_EMAIL",
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_SEND_FROM_NAME",
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_USER_ID",
-					"SECRET_CRED_OPENAI_API_KEY"
+					"SECRET_CRED_OPENAI_API_KEY",
+					"SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL"
 				],
 				"targets": [
 					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"17105\",\"project_id\":\"app-wallot-production\",\"deployment_environment\":\"live\",\"label\":\"pubsub\"}",
@@ -258,7 +261,8 @@
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_SEND_FROM_EMAIL",
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_SEND_FROM_NAME",
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_USER_ID",
-					"SECRET_CRED_OPENAI_API_KEY"
+					"SECRET_CRED_OPENAI_API_KEY",
+					"SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL"
 				],
 				"targets": [
 					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"17101\",\"project_id\":\"app-wallot-production\",\"deployment_environment\":\"live\",\"label\":\"rest_api\"}",
@@ -287,7 +291,8 @@
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_SEND_FROM_EMAIL",
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_SEND_FROM_NAME",
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_USER_ID",
-					"SECRET_CRED_OPENAI_API_KEY"
+					"SECRET_CRED_OPENAI_API_KEY",
+					"SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL"
 				],
 				"targets": [
 					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"17103\",\"project_id\":\"app-wallot-production\",\"deployment_environment\":\"live\",\"label\":\"triggers\"}",
@@ -316,7 +321,8 @@
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_SEND_FROM_EMAIL",
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_SEND_FROM_NAME",
 					"SECRET_CRED_GMAIL_API_DEVELOPER_ALERTS_USER_ID",
-					"SECRET_CRED_OPENAI_API_KEY"
+					"SECRET_CRED_OPENAI_API_KEY",
+					"SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL"
 				],
 				"targets": [
 					"{\"custom_domain\":\"\",\"gmail_api_notifications_send_from_email\":\"support@wallot.app\",\"gmail_api_notifications_send_from_name\":\"Wallot Support\",\"gmail_api_notifications_user_id\":\"support@wallot.app\",\"local_development_port\":\"17102\",\"project_id\":\"app-wallot-production\",\"deployment_environment\":\"live\",\"label\":\"webhooks\"}",
