@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
+import { default as fontkit } from '@pdf-lib/fontkit';
 import { default as fs } from 'fs/promises';
 import { default as ky } from 'ky-universal';
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
@@ -60,16 +61,21 @@ export const acceptResearchSeat = async (
 	// Load the PDF document from the downloaded buffer.
 	const pdfDoc = await PDFDocument.load(pdfArrayBuffer);
 
+	// // Register fontkit with PDFDocument
+	pdfDoc.registerFontkit(fontkit);
+
 	// Access the 21st page
 	const page = pdfDoc.getPages()[20];
 
 	if (page == null) throw new Error('No 21st page');
 
 	// Load and embed the custom cursive font for the signature.
-	const cursiveFontName = 'DancingScript-Regular.ttf';
+	const cursiveFontName = 'DancingScriptRegular.ttf';
 	const cursiveFontPath = `${directoryPath}/../assets/fonts/${cursiveFontName}`;
 	const cursiveFontBytes = await fs.readFile(cursiveFontPath);
-	const cursiveFont = await pdfDoc.embedFont(cursiveFontBytes);
+	const cursiveFont = await pdfDoc.embedFont(cursiveFontBytes, {
+		subset: true,
+	});
 
 	// Embed a standard font for printed text (using Helvetica).
 	const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -78,15 +84,15 @@ export const acceptResearchSeat = async (
 	// 1. Student name (normal font)
 	page.drawText(student_name, {
 		x: 100,
-		y: 300,
+		y: 375,
 		size: 12,
 		font: helveticaFont,
 	});
 
 	// 2. Student date (normal font)
 	page.drawText(fullFormattedDate, {
-		x: 400,
-		y: 300,
+		x: 100,
+		y: 360,
 		size: 12,
 		font: helveticaFont,
 	});
@@ -95,22 +101,22 @@ export const acceptResearchSeat = async (
 	// Here, we’re simply drawing the student’s name in cursive to simulate a signature.
 	page.drawText(student_name, {
 		x: 100,
-		y: 280,
-		size: 14,
+		y: 315,
+		size: 18,
 		font: cursiveFont,
 	});
 
 	// 4. Parent name (normal font)
 	page.drawText(parent_name, {
 		x: 100,
-		y: 220,
+		y: 240,
 		size: 12,
 		font: helveticaFont,
 	});
 
 	// 5. Parent relationship to student (normal font)
 	page.drawText(parent_relationship_to_student, {
-		x: 300,
+		x: 180,
 		y: 220,
 		size: 12,
 		font: helveticaFont,
@@ -118,8 +124,8 @@ export const acceptResearchSeat = async (
 
 	// 6. Parent date (normal font)
 	page.drawText(fullFormattedDate, {
-		x: 500,
-		y: 220,
+		x: 100,
+		y: 205,
 		size: 12,
 		font: helveticaFont,
 	});
@@ -128,8 +134,8 @@ export const acceptResearchSeat = async (
 	// As with the student signature, we are using the parent's name in a cursive font.
 	page.drawText(parent_name, {
 		x: 100,
-		y: 200,
-		size: 14,
+		y: 160,
+		size: 18,
 		font: cursiveFont,
 	});
 
