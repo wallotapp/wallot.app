@@ -1,0 +1,50 @@
+{
+	"hosting": [
+		{
+			"cleanUrls": true,
+			"headers": [
+				{
+					"source": "**",
+					"headers": [
+						{
+							"key": "Cache-Control",
+							"value": "max-age=0, must-revalidate"
+						}
+					]
+				}
+			],
+			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+			"public": "out",
+			"rewrites": [
+				{
+					"source": "/applications/**/acceptance-letter",
+					"destination": "/applications/[slug]/acceptance-letter.html"
+				}
+			],
+			"site": "app-wallot-research-production"
+		},
+		{
+			"cleanUrls": true,
+			"headers": [
+				{
+					"source": "**",
+					"headers": [
+						{
+							"key": "Cache-Control",
+							"value": "max-age=0, must-revalidate"
+						}
+					]
+				}
+			],
+			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+			"public": "out",
+			"rewrites": [
+				{
+					"source": "/applications/**/acceptance-letter",
+					"destination": "/applications/[slug]/acceptance-letter.html"
+				}
+			],
+			"site": "app-wallot-research-staging"
+		}
+	]
+}
