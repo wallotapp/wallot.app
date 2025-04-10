@@ -183,8 +183,8 @@ export type ResearchSiteRouteQueryParams = {
 		//
 	};
 	'RESEARCH_SITE__/APPLICATIONS/[APPLICATION_ID]/ACCEPTANCE_LETTER': {
-		application_id: string | undefined;
-		client_verification: string | undefined;
+		application_id: string;
+		client_verification: string;
 	};
 };
 
