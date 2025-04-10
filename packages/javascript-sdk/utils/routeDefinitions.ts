@@ -169,6 +169,25 @@ export type ReferralsSiteRouteQueryParams = {
 	};
 };
 
+// Research Site
+export const ResearchSiteRouteStaticIdEnum = getEnum([
+	'RESEARCH_SITE__/INDEX',
+	'RESEARCH_SITE__/APPLICATIONS/[APPLICATION_ID]/ACCEPTANCE_LETTER',
+]);
+export type ResearchSiteRouteStaticId = EnumMember<
+	typeof ResearchSiteRouteStaticIdEnum
+>;
+
+export type ResearchSiteRouteQueryParams = {
+	'RESEARCH_SITE__/INDEX': {
+		//
+	};
+	'RESEARCH_SITE__/APPLICATIONS/[APPLICATION_ID]/ACCEPTANCE_LETTER': {
+		application_id: string | undefined;
+		client_verification: string | undefined;
+	};
+};
+
 // SSO Site
 export const SsoSiteRouteStaticIdEnum = getEnum([
 	'SSO_SITE__/INDEX',
@@ -236,6 +255,7 @@ export const RouteStaticIdEnum = getEnum([
 	...BlogSiteRouteStaticIdEnum.arr,
 	...KnowledgeBaseSiteRouteStaticIdEnum.arr,
 	...ReferralsSiteRouteStaticIdEnum.arr,
+	...ResearchSiteRouteStaticIdEnum.arr,
 	...SsoSiteRouteStaticIdEnum.arr,
 	...StatusSiteRouteStaticIdEnum.arr,
 	...SupportSiteRouteStaticIdEnum.arr,
