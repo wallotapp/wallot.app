@@ -18,7 +18,7 @@
 			"rewrites": [
 				{
 					"source": "/applications/**/acceptance-letter",
-					"destination": "/applications/[slug]/acceptance-letter.html"
+					"destination": "/applications/[application_id]/acceptance-letter.html"
 				}
 			],
 			"site": "app-wallot-research-production"
@@ -41,7 +41,7 @@
 			"rewrites": [
 				{
 					"source": "/applications/**/acceptance-letter",
-					"destination": "/applications/[slug]/acceptance-letter.html"
+					"destination": "/applications/[application_id]/acceptance-letter.html"
 				}
 			],
 			"site": "app-wallot-research-staging"
