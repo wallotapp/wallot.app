@@ -5,6 +5,8 @@ import { default as ky } from 'ky-universal';
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
 import { FunctionResponse } from '@wallot/node';
 import {
+	AcceptResearchSeatFormDataParams,
+	AcceptResearchSeatFormDataResponse,
 	ResearchApplicationFormDataRouteParams,
 	scholarshipApplicationsApi,
 	ScholarshipApplication,
@@ -14,17 +16,6 @@ import { secrets } from '../../../secrets.js';
 import { directoryPath } from '../../../directoryPath.js';
 
 const isLocal = secrets.SECRET_CRED_SERVER_PROTOCOL === 'http';
-
-type AcceptResearchSeatFormDataParams = {
-	client_verification: string;
-	date: string; // in YYYY-MM-MM format
-	parent_name: string; // e.g. "Joe Smith"
-	parent_relationship_to_student: string; // e.g. "Father"
-	student_name: string; // e.g. "John Smith"
-};
-type AcceptResearchSeatFormDataResponse = {
-	download_url: string;
-};
 
 export const acceptResearchSeat = async (
 	params: AcceptResearchSeatFormDataParams,
@@ -170,11 +161,11 @@ export const acceptResearchSeat = async (
 	});
 
 	// Generate a signed URL for the uploaded PDF.
-	// Set the expiration date to 100 years from now.
+	// Set the expiration date to 10 years from now.
 	const file = bucket.file(destination);
 	const expiresAt = new Date();
-	expiresAt.setFullYear(expiresAt.getFullYear() + 100);
-	const [download_url] = await file.getSignedUrl({
+	expiresAt.setFullYear(expiresAt.getFullYear() + 10);
+	const [signed_acceptance_letter_download_url] = await file.getSignedUrl({
 		action: 'read',
 		expires: expiresAt,
 	});
@@ -183,6 +174,9 @@ export const acceptResearchSeat = async (
 	if (!isLocal) await fs.rm(tempDir, { recursive: true });
 
 	// Log the download URL to the console.
-	console.log('Signed PDF Download URL:', download_url);
-	return { json: { download_url } };
+	console.log(
+		'Signed PDF Download URL:',
+		signed_acceptance_letter_download_url,
+	);
+	return { json: { signed_acceptance_letter_download_url } };
 };
