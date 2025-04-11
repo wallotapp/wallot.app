@@ -1,3 +1,6 @@
+import { PageHeader } from '@wallot/react/src/components/PageHeader';
+import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
+import { default as cn } from 'ergonomic-react/src/lib/cn';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -51,15 +54,27 @@ const Page: NextPage = () => {
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
-			<p className='font-medium text-xl'>
-				Hello, and welcome to a dynamic route in Wallot's Research Site! 🚀
-			</p>
-			<p className='font-light text-sm'>
-				The application_id for this page is: {application_id}
-			</p>
-			<p className='font-light text-sm'>
-				The client_verification for this page is: {client_verification}
-			</p>
+			<div className={cn('flex flex-col min-h-screen min-w-screen relative')}>
+				<PageHeader showHomeLink={false} />
+				<PageActionHeader />
+				<div
+					className={cn(
+						'min-h-[95vh] w-full',
+						'py-36 px-6',
+						'lg:py-36 lg:px-28',
+					)}
+				>
+					<p className='font-medium text-xl'>
+						Hello, and welcome to a dynamic route in Wallot's Research Site! 🚀
+					</p>
+					<p className='font-light text-sm'>
+						The application_id for this page is: {application_id}
+					</p>
+					<p className='font-light text-sm'>
+						The client_verification for this page is: {client_verification}
+					</p>
+				</div>
+			</div>
 		</PageComponent>
 	);
 };
