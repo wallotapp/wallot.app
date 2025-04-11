@@ -172,7 +172,7 @@ export const acceptResearchSeat = async (
 		'+',
 	);
 	const suffix = isLocal ? '_' + Date.now() : '';
-	const destination = `research/acceptance-letters/${studentName}+SHARP+Orientation+Guide+Completed${suffix}.pdf`;
+	const destination = `research/acceptance-letters/${studentName}+SHARP+Orientation+Guide+Signed${suffix}.pdf`;
 
 	// Upload the signed PDF file to Cloud Storage.
 	await bucket.upload(signedPdfPath, {
@@ -204,6 +204,6 @@ export const acceptResearchSeat = async (
 		);
 		return Promise.resolve();
 	};
-	
+
 	return { json: {}, onFinished };
 };
