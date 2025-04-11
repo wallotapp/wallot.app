@@ -152,11 +152,12 @@ export const acceptResearchSeat = async (
 	await fs.writeFile(signedPdfPath, signedPdfBytes);
 
 	// Define a destination path
-	const destination = `research/acceptance-letters/${encodeURI(
-		student_name,
-	)}%20SHARP%20Orientation%20Guide_Signed${
-		isLocal ? '_' + Date.now() : ''
-	}.pdf`;
+	const studentName = encodeURI(student_name).replace(
+		new RegExp('%20', 'g'),
+		'+',
+	);
+	const suffix = isLocal ? '_' + Date.now() : '';
+	const destination = `research/acceptance-letters/${studentName}+SHARP+Orientation+Guide+Completed${suffix}.pdf`;
 
 	// Upload the signed PDF file to Cloud Storage.
 	await bucket.upload(signedPdfPath, {
