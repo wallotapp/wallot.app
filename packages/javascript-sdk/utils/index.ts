@@ -10,6 +10,7 @@ export * from './getAdminSiteRoute.js';
 export * from './getBlogSiteRoute.js';
 export * from './getKnowledgeBaseSiteRoute.js';
 export * from './getReferralsSiteRoute.js';
+export * from './getResearchSiteRoute.js';
 export * from './getSsoSiteRoute.js';
 export * from './getStatusSiteRoute.js';
 export * from './getSupportSiteRoute.js';

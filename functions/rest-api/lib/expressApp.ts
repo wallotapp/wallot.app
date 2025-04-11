@@ -40,6 +40,9 @@ import {
 	ResearchApplicationFormDataParams,
 	ResearchApplicationFormDataResponse,
 	ResearchApplicationFormDataRouteParams,
+	AcceptResearchSeatFormDataParams,
+	AcceptResearchSeatFormDataResponse,
+	ResearchAcceptanceLetter,
 } from '@wallot/js';
 import { createRouterFunction } from '@wallot/node';
 import { secrets } from './secrets.js';
@@ -447,6 +450,66 @@ app.post(
 				res,
 				next,
 			),
+		);
+	},
+);
+
+import { acceptResearchSeat } from './app/wallot/scholarshipApplications/acceptResearchSeat.js';
+app.options(
+	'*/v0/scholarship-applications/:scholarshipApplicationId/research/accept-seat',
+	corsPolicy,
+);
+app.post(
+	'*/v0/scholarship-applications/:scholarshipApplicationId/research/accept-seat',
+	(
+		req: express.Request<
+			ResearchApplicationFormDataRouteParams,
+			AcceptResearchSeatFormDataResponse,
+			AcceptResearchSeatFormDataParams,
+			Record<string, never>
+		>,
+		res: express.Response<
+			AcceptResearchSeatFormDataResponse,
+			GeneralizedResLocals<AcceptResearchSeatFormDataResponse>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(acceptResearchSeat, {
+				requiresAuth: false,
+			})(req, res, next),
+		);
+	},
+);
+
+import { retrieveAcceptanceLetter } from './app/wallot/scholarshipApplications/retrieveAcceptanceLetter.js';
+app.options('*/v0/scholarship-applications/acceptance-letters', corsPolicy);
+app.get(
+	'*/v0/scholarship-applications/acceptance-letters',
+	(
+		req: express.Request<
+			Record<string, never>,
+			ResearchAcceptanceLetter,
+			Record<string, never>,
+			Pick<AcceptResearchSeatFormDataParams, 'client_verification'>
+		>,
+		res: express.Response<
+			ResearchAcceptanceLetter,
+			GeneralizedResLocals<ResearchAcceptanceLetter>
+		>,
+		next,
+	) => {
+		corsPolicy(
+			req,
+			res,
+			createRouterFunction(auth, secrets)(
+				retrieveAcceptanceLetter,
+				{
+					requiresAuth: false,
+				},
+			)(req, res, next),
 		);
 	},
 );

@@ -31,6 +31,8 @@ describe('ScholarshipApplication', () => {
 			name: 'My ScholarshipApplication',
 			decision: null,
 			open_house_rsvps: [],
+			research_seat_client_verification: '',
+			research_seat_signed_acceptance_letter: null,
 			reminder_emails_sent_for_application_completion: 0,
 			reminder_emails_sent_for_research_application: 0,
 			research_status: 'in_progress',
