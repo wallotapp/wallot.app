@@ -1,5 +1,5 @@
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
-import { GoCheckCircleFill, GoCircle } from 'react-icons/go';
+import { GoCheckCircleFill, GoChevronLeft, GoCircle } from 'react-icons/go';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
@@ -19,8 +19,6 @@ import {
 	AcceptResearchSeatFormDataField,
 	ResearchSiteRouteQueryParams,
 	acceptResearchSeatFormDataSchemaFieldSpecByFieldKey,
-	AcceptResearchSeatFormDataFieldEnum,
-	AcceptResearchSeatFormDataFieldFromUserDataEnum,
 } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
@@ -49,11 +47,7 @@ type RouteQueryParams = ResearchSiteRouteQueryParams[typeof ROUTE_STATIC_ID];
 
 const Page: NextPage = () => {
 	// ==== State ==== //
-	const [hasReadAgreement, setHasReadAgreement] = useState<boolean | null>(
-		null,
-	);
-	const isReadyToSign = hasReadAgreement === true;
-	const isStillReading = hasReadAgreement === false;
+	const [hasReadAgreement, setHasReadAgreement] = useState<boolean>(false);
 
 	// ==== Hooks ==== //
 
@@ -174,9 +168,14 @@ const Page: NextPage = () => {
 		renderTooltipContent: undefined,
 		setError: (message) => setError(fieldKey, { message }),
 	});
-	const fields = AcceptResearchSeatFormDataFieldEnum.arr
-		.filter(AcceptResearchSeatFormDataFieldFromUserDataEnum.isMember)
-		.map(getLiteFormFieldProps);
+	const fields = (
+		[
+			'student_name',
+			'parent_name',
+			'parent_email',
+			'parent_relationship_to_student',
+		] as const
+	).map(getLiteFormFieldProps);
 
 	const documentUrl =
 		acceptanceLetter?.research_seat_signed_acceptance_letter ||
@@ -218,7 +217,16 @@ const Page: NextPage = () => {
 								</p>
 							</div>
 							<Separator className='my-6' />
-							<div className={cn(hasReadAgreement ? 'hidden' : '')}>
+							<div className='flex justify-start space-x-5 mt-4'>
+								<div className='w-16 h-2 rounded-md bg-brand'></div>
+								<div
+									className={cn(
+										'w-16 h-2 rounded-md',
+										hasReadAgreement ? 'bg-brand' : 'bg-gray-200',
+									)}
+								></div>
+							</div>
+							<div className={cn(hasReadAgreement ? 'hidden' : 'mt-6')}>
 								<div className='max-w-sm'>
 									<p className='font-light text-xs'>
 										Once you have reviewed the orientation guide with a parent
@@ -232,12 +240,11 @@ const Page: NextPage = () => {
 								>
 									{[
 										{
-											isSelected: isReadyToSign,
+											isSelected: hasReadAgreement,
 											subtitle: "I'm ready to accept my seat in the program",
 											title: 'Continue',
 										},
 									].map(({ isSelected, subtitle, title }) => {
-										const isYesButton = title === 'Continue';
 										return (
 											<button
 												className={cn(
@@ -248,13 +255,7 @@ const Page: NextPage = () => {
 												)}
 												key={title}
 												type='button'
-												onClick={() => {
-													if (isSelected) {
-														setHasReadAgreement(null);
-													} else {
-														setHasReadAgreement(isYesButton);
-													}
-												}}
+												onClick={() => setHasReadAgreement(true)}
 											>
 												<div className=''>
 													{isSelected ? (
@@ -276,9 +277,12 @@ const Page: NextPage = () => {
 									})}
 								</div>
 							</div>
-							<div className={cn(hasReadAgreement ? '' : 'hidden')}>
-								<button className='' onClick={() => setHasReadAgreement(null)}>
-									<p className='font-medium text-xs'>Back</p>
+							<div className={cn(hasReadAgreement ? 'mt-6' : 'hidden')}>
+								<button className='' onClick={() => setHasReadAgreement(false)}>
+									<div className='flex items-center space-x-1'>
+										<GoChevronLeft className='text-xs text-gray-500' />
+										<p className='font-medium text-xs text-gray-500'>Back</p>
+									</div>
 								</button>
 								<form
 									onSubmit={handleSubmit((formData) => {
@@ -310,12 +314,14 @@ const Page: NextPage = () => {
 									{fields.map((fieldProps) => (
 										<LiteFormFieldContainer
 											key={fieldProps.fieldKey}
-											{...fieldProps}
+											{...fieldProps}											
 										/>
 									))}
 									<SubmitButton
-										className='w-full'
+										className='w-full lg:w-1/2 mt-4 !bg-slate-100 !border-slate-300 !border'
+										textClassName='!text-brand-dark'
 										isSubmitting={isFormSubmitting}
+										text='Confirm Agreement'
 									/>
 									{Boolean(formStateErrorMessages) && (
 										<div className='mt-2.5'>

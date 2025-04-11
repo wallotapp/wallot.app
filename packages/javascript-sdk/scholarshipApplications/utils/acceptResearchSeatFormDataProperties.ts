@@ -12,7 +12,11 @@ import {
 export const acceptResearchSeatFormDataProperties = {
 	client_verification: yup.string().default(''),
 	date: YupHelpers.date().default(DateTime.local().toFormat('yyyy-MM-dd')), // user
-	parent_email: YupHelpers.emailAddress().required().trim().lowercase(),
+	parent_email: YupHelpers.emailAddress()
+		.required()
+		.trim()
+		.lowercase()
+		.label('Parent or Guardian Email'),
 	parent_name: yup
 		.string()
 		.default('')
@@ -36,7 +40,7 @@ export const acceptResearchSeatFormDataProperties = {
 		.string()
 		.default('')
 		.required()
-		.label('Full Name')
+		.label('Your Full Name')
 		.trim()
 		.meta({
 			type: GeneralizedFieldTypeEnum.obj.short_text,
