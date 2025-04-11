@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { PDFDocument, StandardFonts } from 'pdf-lib';
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { default as fontkit } from '@pdf-lib/fontkit';
 import { default as fs } from 'fs/promises';
 import { default as ky } from 'ky-universal';
@@ -137,6 +137,15 @@ export const acceptResearchSeat = async (
 		y: 160,
 		size: 18,
 		font: cursiveFont,
+	});
+
+	// 8. Signature ID (normal font)
+	page.drawText(`Wallot E-Signature ID: ${client_verification}`, {
+		x: 20,
+		y: 20,
+		size: 8,
+		font: helveticaFont,
+		color: rgb(55 / 255, 65 / 255, 81 / 255),
 	});
 
 	// Save the updated PDF document to a byte array.
