@@ -30,6 +30,10 @@ import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hook
 import { useRetrieveAcceptanceLetter } from '@wallot/react/src/features/scholarshipApplications/hooks/useRetrieveAcceptanceLetter';
 import { useAcceptResearchSeatMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useAcceptResearchSeatMutation';
 import Link from 'next/link';
+import Image from 'next/image';
+import { FiDownloadCloud } from 'react-icons/fi';
+const mobileThumbnail =
+	'https://firebasestorage.googleapis.com/v0/b/app-wallot-production.appspot.com/o/scholarships%2FSHARP%20Orientation%20Guide.png?alt=media&token=d73adb7c-b622-448e-9ea9-1d76b53c394c';
 
 // ==== Static Page Props ==== //
 
@@ -389,19 +393,35 @@ const Page: NextPage = () => {
 						</div>
 						{Boolean(documentUrl) ? (
 							<Fragment>
-								<div
-									className={cn(
-										'block lg:hidden rounded-lg h-screen overflow-auto w-full',
-									)}
+								{/* Mobile: tappable thumbnail that downloads the PDF */}
+								<a
+									href={documentUrl}
+									download='SHARP Acceptance Letter.pdf'
+									target='_blank'
+									rel='noopener noreferrer'
+									className={cn('block lg:hidden relative')}
 									style={{ WebkitOverflowScrolling: 'touch' }}
 								>
-									<iframe
-										src={getAcceptanceLetterDownloadUrl(documentUrl, 'mobile')}
-										title='PDF Document'
-										className={cn('w-full h-full border-none')}
-										allowFullScreen
+									<Image
+										src={mobileThumbnail}
+										alt='Tap to view your SHARP Acceptance Letter'
+										className='rounded-lg'
+										layout='responsive'
+										height={1920}
+										width={1080}
+										priority
 									/>
-								</div>
+									{/* Dark overlay */}
+									<div className='absolute top-0 left-0 w-full h-full bg-black opacity-[15%] rounded-xl cursor-pointer z-[5]' />
+									{/* Download button/icon */}
+									<button
+										className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white z-10'
+										aria-label='Download Acceptance Letter'
+									>
+										<FiDownloadCloud className='text-7xl' />
+									</button>
+								</a>
+
 								<div
 									className={cn(
 										'hidden lg:block rounded-lg h-screen overflow-auto w-full',
@@ -409,7 +429,7 @@ const Page: NextPage = () => {
 									style={{ WebkitOverflowScrolling: 'touch' }}
 								>
 									<iframe
-										src={getAcceptanceLetterDownloadUrl(documentUrl, 'desktop')}
+										src={getAcceptanceLetterDownloadUrl(documentUrl)}
 										title='PDF Document'
 										className={cn('w-full h-full border-none')}
 										allowFullScreen
@@ -428,13 +448,6 @@ const Page: NextPage = () => {
 
 export default Page;
 
-function getAcceptanceLetterDownloadUrl(
-	url: string,
-	mode: 'mobile' | 'desktop',
-) {
-	return (
-		url +
-		'#view=fitH' +
-		(mode === 'mobile' ? '&toolbar=1&navpanes=1' : '&navpanes=0')
-	);
+function getAcceptanceLetterDownloadUrl(url: string) {
+	return url + '#view=fitH&navpanes=0'; // toolbar=0& is also option
 }
