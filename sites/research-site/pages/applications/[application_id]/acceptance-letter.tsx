@@ -29,6 +29,7 @@ import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 import { useRetrieveAcceptanceLetter } from '@wallot/react/src/features/scholarshipApplications/hooks/useRetrieveAcceptanceLetter';
 import { useAcceptResearchSeatMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useAcceptResearchSeatMutation';
+import Link from 'next/link';
 
 // ==== Static Page Props ==== //
 
@@ -205,15 +206,28 @@ const Page: NextPage = () => {
 					>
 						<div className={cn('lg:max-w-lg')}>
 							<div>
-								<p className='font-semibold text-xl'>What is Lorem Ipsum?</p>
-								<p className='font-light text-sm'>
-									What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
-									printing and typesetting industry. Lorem Ipsum has been the
-									industry's standard dummy text ever since the 1500s, when an
-									unknown printer took a galley of type and scrambled it to make
-									a type specimen book. It has survived not only five centuries,
-									but also the leap into electronic typesetting, remaining
-									essentially unchanged.
+								<p className='font-semibold text-xl'>
+									Congratulations! Let's Confirm Your Spot.
+								</p>
+								<p className='font-light text-sm mt-1'>
+									It's our distinct pleasure to welcome you to{' '}
+									<span className='font-semibold'>
+										SHARP (Summer Honors Academic Research Program)
+									</span>
+									, Wallot's flagship research opportunity for graduating
+									seniors! If you would like to accept your invitation to
+									participate in the program, please review our Orientation
+									Guide with your parents asap. This document details the Summer
+									packing list, housing logistics and community rules for the
+									program. If you have any questions, feel free to{' '}
+									<Link
+										className='text-brand-dark font-semibold'
+										href='mailto:kamar.mack@wallot.app'
+										target='_blank'
+									>
+										contact our team
+									</Link>
+									.
 								</p>
 							</div>
 							<Separator className='my-6' />
@@ -249,7 +263,8 @@ const Page: NextPage = () => {
 									{[
 										{
 											isSelected: hasReadAgreement,
-											subtitle: "I'm ready to accept my seat in the program",
+											subtitle:
+												"I'm ready to accept my invitation to the program",
 											title: 'Continue',
 										},
 									].map(({ isSelected, subtitle, title }) => {
@@ -297,9 +312,7 @@ const Page: NextPage = () => {
 										<div className='border border-gray-400 py-3 px-4 rounded-md w-fit lg:max-w-sm'>
 											<div className='flex items-center space-x-2'>
 												<GoCheckCircleFill className='text-brand-dark' />
-												<p className='font-semibold text-base'>
-													Accepted
-												</p>
+												<p className='font-semibold text-base'>Accepted</p>
 											</div>
 											<div className='mt-1'>
 												<p className='font-light text-xs'>
