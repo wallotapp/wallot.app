@@ -38,6 +38,7 @@ const Page: NextPage = () => {
 
 	// Router Query Param Values
 	const { application_id, client_verification } = query;
+	client_verification;
 
 	// Runtime Route ID
 	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace(
@@ -64,15 +65,52 @@ const Page: NextPage = () => {
 						'lg:py-36 lg:px-28',
 					)}
 				>
-					<p className='font-medium text-xl'>
-						Hello, and welcome to a dynamic route in Wallot's Research Site! 🚀
-					</p>
-					<p className='font-light text-sm'>
-						The application_id for this page is: {application_id}
-					</p>
-					<p className='font-light text-sm'>
-						The client_verification for this page is: {client_verification}
-					</p>
+					<div
+						className={cn(
+							'mt-8 flex',
+							'flex-col lg:flex-row',
+							'space-y-4 lg:space-y-0',
+							'lg:space-x-4',
+						)}
+					>
+						<div className={cn('lg:max-w-md')}>
+							<div>
+								<p className='font-semibold text-xl'>What is Lorem Ipsum?</p>
+								<p className='font-light text-sm'>
+									What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
+									printing and typesetting industry. Lorem Ipsum has been the
+									industry's standard dummy text ever since the 1500s, when an
+									unknown printer took a galley of type and scrambled it to make
+									a type specimen book. It has survived not only five centuries,
+									but also the leap into electronic typesetting, remaining
+									essentially unchanged.
+								</p>
+							</div>
+							<div>
+								<p>I've read the entire agreement.</p>
+							</div>
+							<div>
+								<p>Yes</p>
+								<p>I'm ready to sign</p>
+							</div>
+							<div>
+								<form>
+									<input placeholder='Full name' />
+									<input placeholder='Parent name' />
+									<input placeholder='Relationship' />
+									<button>Submit</button>
+								</form>
+							</div>
+						</div>
+						<div className={cn('rounded-lg w-full')}>
+							<iframe
+								src={getAcceptanceLetterDownloadUrl()}
+								title='PDF Document'
+								className={cn('rounded-lg w-full h-screen')}
+								allowFullScreen
+							/>
+						</div>
+					</div>
 				</div>
 			</div>
 		</PageComponent>
@@ -80,3 +118,10 @@ const Page: NextPage = () => {
 };
 
 export default Page;
+
+function getAcceptanceLetterDownloadUrl() {
+	return (
+		'https://firebasestorage.googleapis.com/v0/b/app-wallot-production.appspot.com/o/_temp-pdfs%2Fhello-world.pdf?alt=media&token=40cb7ed5-3fe3-422d-b61b-1408dd7e61b7' +
+		'#toolbar=0&navpanes=0'
+	);
+}
