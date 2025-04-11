@@ -23,7 +23,7 @@ import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
 import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
-import { useQueryAcceptanceLetterForVerifiedUser } from '@wallot/react/src/features/scholarshipApplications/hooks/useQueryAcceptanceLetterForVerifiedUser';
+import { useRetrieveAcceptanceLetter } from '@wallot/react/src/features/scholarshipApplications/hooks/useRetrieveAcceptanceLetter';
 import { useAcceptResearchSeatMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useAcceptResearchSeatMutation';
 
 // ==== Static Page Props ==== //
@@ -83,17 +83,15 @@ const Page: NextPage = () => {
 
 	// Acceptance Letter
 	const {
-		acceptanceLetterForVerifiedUser,
-		refetchAcceptanceLetterForVerifiedUser,
-		isAcceptanceLetterForVerifiedUserLoading,
-	} = useQueryAcceptanceLetterForVerifiedUser({
+		data: acceptanceLetter,
+		refetch: refetchAcceptanceLetter,
+		isLoading: isAcceptanceLetterLoading,
+	} = useRetrieveAcceptanceLetter({
 		client_verification,
 	});
-	const isAcceptanceLetterForVerifiedUserSigned =
-		acceptanceLetterForVerifiedUser != null &&
-		Boolean(
-			acceptanceLetterForVerifiedUser.research_seat_signed_acceptance_letter,
-		);
+	const isAcceptanceLetterSigned =
+		acceptanceLetter != null &&
+		Boolean(acceptanceLetter.research_seat_signed_acceptance_letter);
 
 	// Form
 	const defaultFormData =
@@ -125,7 +123,7 @@ const Page: NextPage = () => {
 	// Mutation success
 	const onMutationSuccess = async () => {
 		// Refetch the queries
-		await refetchAcceptanceLetterForVerifiedUser();
+		await refetchAcceptanceLetter();
 
 		// Show success toast
 		toast({
@@ -146,9 +144,7 @@ const Page: NextPage = () => {
 		formState.isSubmitting || isAcceptResearchSeatRunning ? 'running' : 'idle';
 	const isFormSubmitting = formStatus === 'running';
 	const isFormDisabled =
-		isAcceptanceLetterForVerifiedUserLoading ||
-		isFormSubmitting ||
-		isAcceptanceLetterForVerifiedUserSigned;
+		isAcceptanceLetterLoading || isFormSubmitting || isAcceptanceLetterSigned;
 	const getLiteFormFieldProps = (
 		fieldKey: AcceptResearchSeatFormDataField,
 	): LiteFormFieldProps<AcceptResearchSeatFormDataParams> => ({

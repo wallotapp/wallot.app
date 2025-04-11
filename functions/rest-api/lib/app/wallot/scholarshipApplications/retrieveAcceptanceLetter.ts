@@ -9,7 +9,7 @@ import {
 import { db } from '../../../services.js';
 import { secrets } from '../../../secrets.js';
 
-export const retrieveAcceptanceLetterForVerifiedUser = async (
+export const retrieveAcceptanceLetter = async (
 	_body: Record<string, never>,
 	_params: Record<string, never>,
 	{

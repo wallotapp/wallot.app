@@ -484,7 +484,7 @@ app.post(
 	},
 );
 
-import { retrieveAcceptanceLetterForVerifiedUser } from './app/wallot/scholarshipApplications/retrieveAcceptanceLetterForVerifiedUser.js';
+import { retrieveAcceptanceLetter } from './app/wallot/scholarshipApplications/retrieveAcceptanceLetter.js';
 app.options('*/v0/scholarship-applications/acceptance-letters', corsPolicy);
 app.get(
 	'*/v0/scholarship-applications/acceptance-letters',
@@ -505,7 +505,7 @@ app.get(
 			req,
 			res,
 			createRouterFunction(auth, secrets)(
-				retrieveAcceptanceLetterForVerifiedUser,
+				retrieveAcceptanceLetter,
 				{
 					requiresAuth: false,
 				},
