@@ -388,17 +388,34 @@ const Page: NextPage = () => {
 							</div>
 						</div>
 						{Boolean(documentUrl) ? (
-							<div
-								className={cn('rounded-lg h-screen overflow-auto w-full')}
-								style={{ WebkitOverflowScrolling: 'touch' }}
-							>
-								<iframe
-									src={getAcceptanceLetterDownloadUrl(documentUrl)}
-									title='PDF Document'
-									className={cn('w-full h-full border-none')}
-									allowFullScreen
-								/>
-							</div>
+							<Fragment>
+								<div
+									className={cn(
+										'block lg:hidden rounded-lg h-screen overflow-auto w-full',
+									)}
+									style={{ WebkitOverflowScrolling: 'touch' }}
+								>
+									<iframe
+										src={getAcceptanceLetterDownloadUrl(documentUrl, 'mobile')}
+										title='PDF Document'
+										className={cn('w-full h-full border-none')}
+										allowFullScreen
+									/>
+								</div>
+								<div
+									className={cn(
+										'hidden lg:block rounded-lg h-screen overflow-auto w-full',
+									)}
+									style={{ WebkitOverflowScrolling: 'touch' }}
+								>
+									<iframe
+										src={getAcceptanceLetterDownloadUrl(documentUrl, 'desktop')}
+										title='PDF Document'
+										className={cn('w-full h-full border-none')}
+										allowFullScreen
+									/>
+								</div>
+							</Fragment>
 						) : (
 							<div>Loading...</div>
 						)}
@@ -411,6 +428,13 @@ const Page: NextPage = () => {
 
 export default Page;
 
-function getAcceptanceLetterDownloadUrl(url: string) {
-	return url + '#navpanes=0'; // toolbar=0& is also option
+function getAcceptanceLetterDownloadUrl(
+	url: string,
+	mode: 'mobile' | 'desktop',
+) {
+	return (
+		url +
+		'#view=fitH' +
+		(mode === 'mobile' ? '&toolbar=1&navpanes=1' : '&navpanes=0')
+	);
 }
