@@ -1,3 +1,9 @@
+import { Separator } from 'ergonomic-react/src/components/ui/separator';
+import { GoCheckCircleFill, GoCircle } from 'react-icons/go';
+import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
+import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
+import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
+import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { PageHeader } from '@wallot/react/src/components/PageHeader';
 import { useState } from 'react';
 import type { NextPage } from 'next';
@@ -14,6 +20,7 @@ import {
 	ResearchSiteRouteQueryParams,
 	acceptResearchSeatFormDataSchemaFieldSpecByFieldKey,
 	AcceptResearchSeatFormDataFieldEnum,
+	AcceptResearchSeatFormDataFieldFromUserDataEnum,
 } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
@@ -21,7 +28,6 @@ import { GeneralizedError } from 'ergonomic';
 import { useForm } from 'react-hook-form';
 import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
 import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
-import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
 import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
 import { useRetrieveAcceptanceLetter } from '@wallot/react/src/features/scholarshipApplications/hooks/useRetrieveAcceptanceLetter';
 import { useAcceptResearchSeatMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useAcceptResearchSeatMutation';
@@ -43,7 +49,11 @@ type RouteQueryParams = ResearchSiteRouteQueryParams[typeof ROUTE_STATIC_ID];
 
 const Page: NextPage = () => {
 	// ==== State ==== //
-	const [hasReadAgreement, setHasReadAgreement] = useState(false);
+	const [hasReadAgreement, setHasReadAgreement] = useState<boolean | null>(
+		null,
+	);
+	const isReadyToSign = hasReadAgreement === true;
+	const isStillReading = hasReadAgreement === false;
 
 	// ==== Hooks ==== //
 
@@ -96,12 +106,18 @@ const Page: NextPage = () => {
 	// Form
 	const defaultFormData =
 		acceptResearchSeatFormDataSchema.getDefault() as AcceptResearchSeatFormDataParams;
-	const { control, formState, handleSubmit, reset, setError, setValue, watch } =
-		useForm<AcceptResearchSeatFormDataParams>({
-			resolver,
-			shouldUnregister: false,
-		});
-	const liveData = watch();
+	const {
+		control,
+		formState,
+		handleSubmit,
+		// reset,
+		setError,
+		// setValue, watch
+	} = useForm<AcceptResearchSeatFormDataParams>({
+		resolver,
+		shouldUnregister: false,
+	});
+	// const liveData = watch();
 	const formStateErrorValues = Object.values(formState.errors ?? {});
 	const formStateErrorMessages = formStateErrorValues
 		.flatMap((x) => (x?.message ? [String(x.message)] : []))
@@ -158,20 +174,14 @@ const Page: NextPage = () => {
 		renderTooltipContent: undefined,
 		setError: (message) => setError(fieldKey, { message }),
 	});
-	const fields = AcceptResearchSeatFormDataFieldEnum.arr.map(
-		getLiteFormFieldProps,
-	);
+	const fields = AcceptResearchSeatFormDataFieldEnum.arr
+		.filter(AcceptResearchSeatFormDataFieldFromUserDataEnum.isMember)
+		.map(getLiteFormFieldProps);
 
-	// Form Submit Handler
-	const onSubmit = handleSubmit((data) => {
-		console.log('Saving e-signatures with following data:', data);
-		toast({
-			title: 'Saving your e-signatures',
-			description: 'This may take a few moments...',
-		});
-
-		acceptResearchSeat(data);
-	});
+	const documentUrl =
+		acceptanceLetter?.research_seat_signed_acceptance_letter ||
+		acceptanceLetter?.research_seat_acceptance_letter ||
+		'';
 
 	// ==== Render ==== //
 	return (
@@ -190,11 +200,11 @@ const Page: NextPage = () => {
 						className={cn(
 							'mt-8 flex',
 							'flex-col lg:flex-row',
-							'space-y-4 lg:space-y-0',
-							'lg:space-x-4',
+							'space-y-8 lg:space-y-0',
+							'lg:space-x-8',
 						)}
 					>
-						<div className={cn('lg:max-w-md')}>
+						<div className={cn('lg:max-w-lg')}>
 							<div>
 								<p className='font-semibold text-xl'>What is Lorem Ipsum?</p>
 								<p className='font-light text-sm'>
@@ -207,30 +217,128 @@ const Page: NextPage = () => {
 									essentially unchanged.
 								</p>
 							</div>
-							<div>
-								<p>I've read the entire agreement.</p>
+							<Separator className='my-6' />
+							<div className={cn(hasReadAgreement ? 'hidden' : '')}>
+								<div className='max-w-sm'>
+									<p className='font-light text-xs'>
+										Once you have reviewed the orientation guide with a parent
+										or guardian, continue to the next step.
+									</p>
+								</div>
+								<div
+									className={cn(
+										'mt-2 flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0',
+									)}
+								>
+									{[
+										{
+											isSelected: isReadyToSign,
+											subtitle: "I'm ready to accept my seat in the program",
+											title: 'Continue',
+										},
+									].map(({ isSelected, subtitle, title }) => {
+										const isYesButton = title === 'Continue';
+										return (
+											<button
+												className={cn(
+													'flex items-center space-x-3 px-3 py-2',
+													isSelected ? 'bg-gray-200' : 'bg-white',
+													'border border-gray-300 rounded-md',
+													'transition duration-200 ease-in-out hover:bg-gray-100',
+												)}
+												key={title}
+												type='button'
+												onClick={() => {
+													if (isSelected) {
+														setHasReadAgreement(null);
+													} else {
+														setHasReadAgreement(isYesButton);
+													}
+												}}
+											>
+												<div className=''>
+													{isSelected ? (
+														<GoCheckCircleFill className='text-brand-dark text-lg' />
+													) : (
+														<GoCircle className='text-gray-400 text-lg' />
+													)}
+												</div>
+												<div className='text-left'>
+													<div>
+														<p className='font-semibold text-sm'>{title}</p>
+													</div>
+													<div className='lg:max-w-44'>
+														<p className='font-light text-xs'>{subtitle}</p>
+													</div>
+												</div>
+											</button>
+										);
+									})}
+								</div>
 							</div>
-							<div>
-								<p>Yes</p>
-								<p>I'm ready to sign</p>
-							</div>
-							<div>
-								<form>
-									<input placeholder='Full name' />
-									<input placeholder='Parent name' />
-									<input placeholder='Relationship' />
-									<button>Submit</button>
+							<div className={cn(hasReadAgreement ? '' : 'hidden')}>
+								<button className='' onClick={() => setHasReadAgreement(null)}>
+									<p className='font-medium text-xs'>Back</p>
+								</button>
+								<form
+									onSubmit={handleSubmit((formData) => {
+										if (!client_verification) {
+											toast({
+												title: 'Invalid verification code.',
+												description:
+													'Please check your email for the correct link to sign your acceptance letter.',
+											});
+											return;
+										}
+										const data = {
+											...formData,
+											client_verification,
+										};
+
+										console.log(
+											'Saving e-signatures with following data:',
+											data,
+										);
+										toast({
+											title: 'Saving your e-signatures',
+											description: 'This may take a few moments...',
+										});
+
+										acceptResearchSeat(data);
+									})}
+								>
+									{fields.map((fieldProps) => (
+										<LiteFormFieldContainer
+											key={fieldProps.fieldKey}
+											{...fieldProps}
+										/>
+									))}
+									<SubmitButton
+										className='w-full'
+										isSubmitting={isFormSubmitting}
+									/>
+									{Boolean(formStateErrorMessages) && (
+										<div className='mt-2.5'>
+											<LiteFormFieldError
+												fieldErrorMessage={formStateErrorMessages}
+											/>
+										</div>
+									)}
 								</form>
 							</div>
 						</div>
-						<div className={cn('rounded-lg w-full')}>
-							<iframe
-								src={getAcceptanceLetterDownloadUrl()}
-								title='PDF Document'
-								className={cn('rounded-lg w-full h-screen')}
-								allowFullScreen
-							/>
-						</div>
+						{Boolean(documentUrl) ? (
+							<div className={cn('rounded-lg w-full')}>
+								<iframe
+									src={getAcceptanceLetterDownloadUrl(documentUrl)}
+									title='PDF Document'
+									className={cn('rounded-lg w-full h-screen')}
+									allowFullScreen
+								/>
+							</div>
+						) : (
+							<div>Loading...</div>
+						)}
 					</div>
 				</div>
 			</div>
@@ -240,9 +348,6 @@ const Page: NextPage = () => {
 
 export default Page;
 
-function getAcceptanceLetterDownloadUrl() {
-	return (
-		'https://firebasestorage.googleapis.com/v0/b/app-wallot-production.appspot.com/o/_temp-pdfs%2Fhello-world.pdf?alt=media&token=40cb7ed5-3fe3-422d-b61b-1408dd7e61b7' +
-		'#toolbar=0&navpanes=0'
-	);
+function getAcceptanceLetterDownloadUrl(url: string) {
+	return url + '#toolbar=0&navpanes=0';
 }
