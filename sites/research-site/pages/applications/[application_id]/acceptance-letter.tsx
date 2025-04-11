@@ -5,7 +5,7 @@ import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/Lite
 import { LiteFormFieldContainer } from 'ergonomic-react/src/features/data/components/LiteFormFieldContainer';
 import { LiteFormFieldError } from 'ergonomic-react/src/features/data/components/LiteFormFieldError';
 import { PageHeader } from '@wallot/react/src/components/PageHeader';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -222,11 +222,19 @@ const Page: NextPage = () => {
 								<div
 									className={cn(
 										'w-16 h-2 rounded-md',
-										hasReadAgreement ? 'bg-brand' : 'bg-gray-200',
+										hasReadAgreement || isAcceptanceLetterSigned
+											? 'bg-brand'
+											: 'bg-gray-200',
 									)}
 								></div>
 							</div>
-							<div className={cn(hasReadAgreement ? 'hidden' : 'mt-6')}>
+							<div
+								className={cn(
+									hasReadAgreement || isAcceptanceLetterSigned
+										? 'hidden'
+										: 'mt-6',
+								)}
+							>
 								<div className='max-w-sm'>
 									<p className='font-light text-xs'>
 										Once you have reviewed the orientation guide with a parent
@@ -277,60 +285,93 @@ const Page: NextPage = () => {
 									})}
 								</div>
 							</div>
-							<div className={cn(hasReadAgreement ? 'mt-6' : 'hidden')}>
-								<button className='' onClick={() => setHasReadAgreement(false)}>
-									<div className='flex items-center space-x-1'>
-										<GoChevronLeft className='text-xs text-gray-500' />
-										<p className='font-medium text-xs text-gray-500'>Back</p>
-									</div>
-								</button>
-								<form
-									onSubmit={handleSubmit((formData) => {
-										if (!client_verification) {
-											toast({
-												title: 'Invalid verification code.',
-												description:
-													'Please check your email for the correct link to sign your acceptance letter.',
-											});
-											return;
-										}
-										const data = {
-											...formData,
-											client_verification,
-										};
-
-										console.log(
-											'Saving e-signatures with following data:',
-											data,
-										);
-										toast({
-											title: 'Saving your e-signatures',
-											description: 'This may take a few moments...',
-										});
-
-										acceptResearchSeat(data);
-									})}
-								>
-									{fields.map((fieldProps) => (
-										<LiteFormFieldContainer
-											key={fieldProps.fieldKey}
-											{...fieldProps}
-										/>
-									))}
-									<SubmitButton
-										className='w-full lg:w-1/2 mt-4 !bg-slate-100 !border-slate-300 !border'
-										textClassName='!text-brand-dark'
-										isSubmitting={isFormSubmitting}
-										text='Confirm Agreement'
-									/>
-									{Boolean(formStateErrorMessages) && (
-										<div className='mt-2.5'>
-											<LiteFormFieldError
-												fieldErrorMessage={formStateErrorMessages}
-											/>
+							<div
+								className={cn(
+									hasReadAgreement || isAcceptanceLetterSigned
+										? 'mt-6'
+										: 'hidden',
+								)}
+							>
+								{isAcceptanceLetterSigned ? (
+									<Fragment>
+										<div className='border border-gray-400 py-3 px-4 rounded-md w-fit lg:max-w-sm'>
+											<div className='flex items-center space-x-2'>
+												<GoCheckCircleFill className='text-brand-dark' />
+												<p className='font-semibold text-base'>
+													Accepted
+												</p>
+											</div>
+											<div className='mt-1'>
+												<p className='font-light text-xs'>
+													Your seat for the program has been confirmed! Please
+													check your email for additional instructions and
+													communcations from our team.
+												</p>
+											</div>
 										</div>
-									)}
-								</form>
+									</Fragment>
+								) : (
+									<Fragment>
+										<button
+											className=''
+											onClick={() => setHasReadAgreement(false)}
+										>
+											<div className='flex items-center space-x-1'>
+												<GoChevronLeft className='text-xs text-gray-500' />
+												<p className='font-medium text-xs text-gray-500'>
+													Back
+												</p>
+											</div>
+										</button>
+										<form
+											onSubmit={handleSubmit((formData) => {
+												if (!client_verification) {
+													toast({
+														title: 'Invalid verification code.',
+														description:
+															'Please check your email for the correct link to sign your acceptance letter.',
+													});
+													return;
+												}
+												const data = {
+													...formData,
+													client_verification,
+												};
+
+												console.log(
+													'Saving e-signatures with following data:',
+													data,
+												);
+												toast({
+													title: 'Saving your e-signatures',
+													description: 'This may take a few moments...',
+												});
+
+												acceptResearchSeat(data);
+											})}
+										>
+											{fields.map((fieldProps) => (
+												<LiteFormFieldContainer
+													key={fieldProps.fieldKey}
+													{...fieldProps}
+												/>
+											))}
+											<SubmitButton
+												className='w-full lg:w-1/2 mt-4 !bg-slate-100 !border-slate-300 !border'
+												textClassName='!text-brand-dark'
+												isSubmitting={isFormSubmitting}
+												text='Confirm Agreement'
+											/>
+											{Boolean(formStateErrorMessages) && (
+												<div className='mt-2.5'>
+													<LiteFormFieldError
+														fieldErrorMessage={formStateErrorMessages}
+													/>
+												</div>
+											)}
+										</form>
+									</Fragment>
+								)}
 							</div>
 						</div>
 						{Boolean(documentUrl) ? (
