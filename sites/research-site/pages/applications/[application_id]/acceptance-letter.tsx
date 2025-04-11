@@ -314,7 +314,7 @@ const Page: NextPage = () => {
 									{fields.map((fieldProps) => (
 										<LiteFormFieldContainer
 											key={fieldProps.fieldKey}
-											{...fieldProps}											
+											{...fieldProps}
 										/>
 									))}
 									<SubmitButton
