@@ -44,7 +44,10 @@ export const acceptResearchSeat = async (
 	const researchApplication =
 		researchApplicationDoc.data() as ScholarshipApplication;
 
-	if (researchApplication.description !== client_verification)
+	if (
+		researchApplication.research_seat_client_verification !==
+		client_verification
+	)
 		throw new Error('Invalid verification');
 
 	// Format the date to full format: "January 10, 1940"
