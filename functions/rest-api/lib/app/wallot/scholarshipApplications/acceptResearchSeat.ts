@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import { DateTime } from 'luxon';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { default as fontkit } from '@pdf-lib/fontkit';
@@ -11,11 +12,16 @@ import {
 	ResearchApplicationFormDataRouteParams,
 	scholarshipApplicationsApi,
 	ScholarshipApplication,
+	usersApi,
+	User,
+	UpdateScholarshipApplicationParams,
+	ResearchApplicationFormSchema,
 } from '@wallot/js';
-import { bucket, db } from '../../../services.js';
+import { bucket, db, gmail } from '../../../services.js';
 import { secrets } from '../../../secrets.js';
 import { directoryPath } from '../../../directoryPath.js';
 
+const isTest = secrets.SECRET_CRED_DEPLOYMENT_ENVIRONMENT === 'test';
 const isLocal = secrets.SECRET_CRED_SERVER_PROTOCOL === 'http';
 
 export const acceptResearchSeat = async (
@@ -44,7 +50,8 @@ export const acceptResearchSeat = async (
 		throw new Error('Invalid scholarshipApplicationId');
 	const researchApplication =
 		researchApplicationDoc.data() as ScholarshipApplication;
-	const { research_seat_client_verification } = researchApplication;
+	const { research_seat_client_verification, user: userId } =
+		researchApplication;
 
 	if (!research_seat_client_verification)
 		throw new Error(
@@ -187,22 +194,76 @@ export const acceptResearchSeat = async (
 	const file = bucket.file(destination);
 	const expiresAt = new Date();
 	expiresAt.setFullYear(expiresAt.getFullYear() + 10);
-	const [signed_acceptance_letter_download_url] = await file.getSignedUrl({
+	const [downloadUrl] = await file.getSignedUrl({
 		action: 'read',
 		expires: expiresAt,
 	});
+
+	// Save the download URL
+	const updateResearchApplicationParams: UpdateScholarshipApplicationParams = {
+		research_seat_signed_acceptance_letter: downloadUrl,
+	};
+	await db
+		.collection(scholarshipApplicationsApi.collectionId)
+		.doc(scholarshipApplicationId)
+		.update(updateResearchApplicationParams);
 
 	// Delete the temporary directory
 	if (!isLocal) await fs.rm(tempDir, { recursive: true });
 
 	// Email the signed document
 	const onFinished = async () => {
-		console.log(
-			'Signed PDF Download URL to email',
-			parent_email,
-			signed_acceptance_letter_download_url,
-		);
-		return Promise.resolve();
+		// Query user
+		const userRef = db.collection(usersApi.collectionId).doc(userId);
+		const userDoc = await userRef.get();
+		if (!userDoc.exists) throw new Error('Invalid userId');
+		const user = userDoc.data() as User;
+
+		// Query Research Application Form Data
+		const researchApplicationFormDataDocRef = db
+			.collection('_test')
+			.doc('research_data_properties');
+		const researchApplicationFormDataDoc =
+			await researchApplicationFormDataDocRef.get();
+		const researchApplicationFormData =
+			researchApplicationFormDataDoc.data() as ResearchApplicationFormSchema;
+		const { email: sender_email, name: sender_name } =
+			researchApplicationFormData.program_lead;
+
+		// Email params
+		const minusQueryUnsafe = downloadUrl.split('.pdf')?.[0] ?? '';
+		const minusQuery = minusQueryUnsafe ? minusQueryUnsafe + '.pdf' : '';
+		const fileName = minusQuery.split('/')?.slice()?.pop() ?? '';
+		const fileNamePretty = fileName
+			.replace(/\+/g, ' ')
+			.replace(/%2B/g, ' ')
+			.replace(/%2b/g, ' ')
+			.replace(' Signed', ' (Signed)');
+		const testSubjectPrefix = isTest ? '[TEST] ' : '';
+		const testSubjectSuffix = isTest ? ' - ' + Date.now().toString() : '';
+
+		await gmail.sendEmail({
+			recipient_email: R.uniq(
+				[user.firebase_auth_email, parent_email]
+					.map((email) => email?.trim()?.toLowerCase())
+					.filter(Boolean),
+			).join(),
+			pdf: {
+				url: downloadUrl,
+				fileName: fileNamePretty,
+			},
+			subject: `${testSubjectPrefix}Signed - Student and Parent E-Signature: SHARP Orientation Guide${testSubjectSuffix}`,
+			html_body: `Dear Mr. Test,
+
+This is confirmation of your test document. It should be a proper PDF.
+
+Best regards,
+Dr. Developer
+`,
+			sender_email,
+			sender_name,
+			sender_user_id: sender_email,
+		});
 	};
 
 	return { json: {}, onFinished };

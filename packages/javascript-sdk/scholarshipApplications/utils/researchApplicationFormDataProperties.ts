@@ -14,6 +14,10 @@ export type ResearchApplicationFormSchema = {
 		string,
 		{ label: string; label_message?: string }
 	>;
+	program_lead: {
+		email: string;
+		name: string;
+	};
 	research_application_s1_q0_entries: {
 		category: string;
 		subtitle?: string;
@@ -26,6 +30,10 @@ export const fallbackResearchApplicationFormSchema: ResearchApplicationFormSchem
 	{
 		label_data_by_field_key: {},
 		steps: [],
+		program_lead: {
+			email: '',
+			name: '',
+		},
 		research_application_s1_q0_entries: [],
 		research_application_s4_q2_entries: [],
 		research_application_s4_q3_entries: [],
