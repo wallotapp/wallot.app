@@ -71,3 +71,8 @@ export type AcceptResearchSeatFormDataParams = yup.InferType<
 	typeof acceptResearchSeatFormDataSchema
 >;
 export type AcceptResearchSeatFormDataResponse = Record<string, never>;
+
+export type ResearchAcceptanceLetter = {
+	research_seat_acceptance_letter: string;
+	research_seat_signed_acceptance_letter: string | null;
+};

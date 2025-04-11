@@ -1,14 +1,30 @@
 import { PageHeader } from '@wallot/react/src/components/PageHeader';
-import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
-import { default as cn } from 'ergonomic-react/src/lib/cn';
+import { useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
-	Page as PageComponent,
 	PageStaticProps,
 	PageProps,
+	Page as PageComponent,
 } from 'ergonomic-react/src/components/nextjs-pages/Page';
-import { ResearchSiteRouteQueryParams } from '@wallot/js';
+import {
+	AcceptResearchSeatFormDataParams,
+	acceptResearchSeatFormDataSchema,
+	AcceptResearchSeatFormDataField,
+	ResearchSiteRouteQueryParams,
+	acceptResearchSeatFormDataSchemaFieldSpecByFieldKey,
+	AcceptResearchSeatFormDataFieldEnum,
+} from '@wallot/js';
+import { default as cn } from 'ergonomic-react/src/lib/cn';
+import { PageActionHeader } from '@wallot/react/src/components/PageActionHeader';
+import { GeneralizedError } from 'ergonomic';
+import { useForm } from 'react-hook-form';
+import { defaultGeneralizedFormDataTransformationOptions } from 'ergonomic-react/src/features/data/types/GeneralizedFormDataTransformationOptions';
+import { useToast } from 'ergonomic-react/src/components/ui/use-toast';
+import { LiteFormFieldProps } from 'ergonomic-react/src/features/data/types/LiteFormFieldProps';
+import { useYupValidationResolver } from 'ergonomic-react/src/features/data/hooks/useYupValidationResolver';
+import { useQueryAcceptanceLetterForVerifiedUser } from '@wallot/react/src/features/scholarshipApplications/hooks/useQueryAcceptanceLetterForVerifiedUser';
+import { useAcceptResearchSeatMutation } from '@wallot/react/src/features/scholarshipApplications/hooks/useAcceptResearchSeatMutation';
 
 // ==== Static Page Props ==== //
 
@@ -26,6 +42,9 @@ const ROUTE_STATIC_PROPS: PageStaticProps = {
 type RouteQueryParams = ResearchSiteRouteQueryParams[typeof ROUTE_STATIC_ID];
 
 const Page: NextPage = () => {
+	// ==== State ==== //
+	const [hasReadAgreement, setHasReadAgreement] = useState(false);
+
 	// ==== Hooks ==== //
 
 	// Router
@@ -38,7 +57,6 @@ const Page: NextPage = () => {
 
 	// Router Query Param Values
 	const { application_id, client_verification } = query;
-	client_verification;
 
 	// Runtime Route ID
 	const ROUTE_RUNTIME_ID = ROUTE_STATIC_ID.replace(
@@ -51,6 +69,113 @@ const Page: NextPage = () => {
 		...ROUTE_STATIC_PROPS,
 		routeId: ROUTE_RUNTIME_ID,
 	};
+
+	// Toaster
+	const { toast } = useToast();
+
+	// Form Resolver
+	const formDataTransformationOptions =
+		defaultGeneralizedFormDataTransformationOptions;
+	const resolver = useYupValidationResolver(
+		acceptResearchSeatFormDataSchema,
+		formDataTransformationOptions,
+	);
+
+	// Acceptance Letter
+	const {
+		acceptanceLetterForVerifiedUser,
+		refetchAcceptanceLetterForVerifiedUser,
+		isAcceptanceLetterForVerifiedUserLoading,
+	} = useQueryAcceptanceLetterForVerifiedUser({
+		client_verification,
+	});
+	const isAcceptanceLetterForVerifiedUserSigned =
+		acceptanceLetterForVerifiedUser != null &&
+		Boolean(
+			acceptanceLetterForVerifiedUser.research_seat_signed_acceptance_letter,
+		);
+
+	// Form
+	const defaultFormData =
+		acceptResearchSeatFormDataSchema.getDefault() as AcceptResearchSeatFormDataParams;
+	const { control, formState, handleSubmit, reset, setError, setValue, watch } =
+		useForm<AcceptResearchSeatFormDataParams>({
+			resolver,
+			shouldUnregister: false,
+		});
+	const liveData = watch();
+	const formStateErrorValues = Object.values(formState.errors ?? {});
+	const formStateErrorMessages = formStateErrorValues
+		.flatMap((x) => (x?.message ? [String(x.message)] : []))
+		.join('\n');
+
+	// Mutation error
+	const onMutationError = ({ error: { message } }: GeneralizedError) => {
+		// Show the error message
+		toast({
+			title: 'Error',
+			description: message,
+		});
+		setError('root', {
+			type: 'manual',
+			message: 'An error occurred. Please try again.',
+		});
+	};
+
+	// Mutation success
+	const onMutationSuccess = async () => {
+		// Refetch the queries
+		await refetchAcceptanceLetterForVerifiedUser();
+
+		// Show success toast
+		toast({
+			title: 'Success',
+			description: 'Your e-signatures have been saved',
+		});
+	};
+
+	// Save mutation
+	const { mutate: acceptResearchSeat, isLoading: isAcceptResearchSeatRunning } =
+		useAcceptResearchSeatMutation(application_id ?? null, {
+			onError: onMutationError,
+			onSuccess: onMutationSuccess,
+		});
+
+	// Form
+	const formStatus =
+		formState.isSubmitting || isAcceptResearchSeatRunning ? 'running' : 'idle';
+	const isFormSubmitting = formStatus === 'running';
+	const isFormDisabled =
+		isAcceptanceLetterForVerifiedUserLoading ||
+		isFormSubmitting ||
+		isAcceptanceLetterForVerifiedUserSigned;
+	const getLiteFormFieldProps = (
+		fieldKey: AcceptResearchSeatFormDataField,
+	): LiteFormFieldProps<AcceptResearchSeatFormDataParams> => ({
+		control,
+		fieldErrors: formState.errors,
+		fieldKey,
+		fieldSpec: acceptResearchSeatFormDataSchemaFieldSpecByFieldKey[fieldKey],
+		initialFormData: defaultFormData,
+		isSubmitting: isFormDisabled,
+		operation: 'update',
+		renderTooltipContent: undefined,
+		setError: (message) => setError(fieldKey, { message }),
+	});
+	const fields = AcceptResearchSeatFormDataFieldEnum.arr.map(
+		getLiteFormFieldProps,
+	);
+
+	// Form Submit Handler
+	const onSubmit = handleSubmit((data) => {
+		console.log('Saving e-signatures with following data:', data);
+		toast({
+			title: 'Saving your e-signatures',
+			description: 'This may take a few moments...',
+		});
+
+		acceptResearchSeat(data);
+	});
 
 	// ==== Render ==== //
 	return (
