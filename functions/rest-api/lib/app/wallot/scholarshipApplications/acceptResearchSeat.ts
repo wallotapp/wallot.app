@@ -1,3 +1,4 @@
+import { readFileSync } from 'fs';
 import * as R from 'ramda';
 import { DateTime } from 'luxon';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
@@ -5,7 +6,7 @@ import { default as fontkit } from '@pdf-lib/fontkit';
 import { default as fs } from 'fs/promises';
 import { default as ky } from 'ky-universal';
 import { type DecodedIdToken as FirebaseUser } from 'firebase-admin/auth';
-import { FunctionResponse } from '@wallot/node';
+import { FunctionResponse, getEmailBody } from '@wallot/node';
 import {
 	AcceptResearchSeatFormDataParams,
 	AcceptResearchSeatFormDataResponse,
@@ -23,6 +24,9 @@ import { directoryPath } from '../../../directoryPath.js';
 
 const isTest = secrets.SECRET_CRED_DEPLOYMENT_ENVIRONMENT === 'test';
 const isLocal = secrets.SECRET_CRED_SERVER_PROTOCOL === 'http';
+const emailTemplateRelativePath = 'sharp/acceptSeatConfirmationEmail.html';
+const emailTemplateFullPath = `${directoryPath}/../assets/emails/${emailTemplateRelativePath}`;
+const emailTemplate = readFileSync(emailTemplateFullPath, 'utf8');
 
 export const acceptResearchSeat = async (
 	params: AcceptResearchSeatFormDataParams,
@@ -241,28 +245,23 @@ export const acceptResearchSeat = async (
 			.replace(' Signed', ' (Signed)');
 		const testSubjectPrefix = isTest ? '[TEST] ' : '';
 		const testSubjectSuffix = isTest ? ' - ' + Date.now().toString() : '';
+		const body = getEmailBody(emailTemplate, {});
 
 		await gmail.sendEmail({
+			html_body: body,
+			pdf: {
+				url: downloadUrl,
+				fileName: fileNamePretty,
+			},
 			recipient_email: R.uniq(
 				[user.firebase_auth_email, parent_email]
 					.map((email) => email?.trim()?.toLowerCase())
 					.filter(Boolean),
 			).join(),
-			pdf: {
-				url: downloadUrl,
-				fileName: fileNamePretty,
-			},
-			subject: `${testSubjectPrefix}Signed - Student and Parent E-Signature: SHARP Orientation Guide${testSubjectSuffix}`,
-			html_body: `Dear Mr. Test,
-
-This is confirmation of your test document. It should be a proper PDF.
-
-Best regards,
-Dr. Developer
-`,
 			sender_email,
 			sender_name,
 			sender_user_id: sender_email,
+			subject: `${testSubjectPrefix}Signed - Student and Parent E-Signature: SHARP Orientation Guide${testSubjectSuffix}`,
 		});
 	};
 
