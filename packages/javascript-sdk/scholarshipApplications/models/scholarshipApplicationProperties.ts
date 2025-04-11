@@ -58,6 +58,9 @@ const properties = {
 	research_seat_client_verification: yup.string().default('').meta({
 		type: GeneralizedFieldTypeEnum.obj.short_text,
 	}),
+	research_seat_signed_acceptance_letter: YupHelpers.url()
+		.nullable()
+		.default(null),
 	research_status:
 		ScholarshipApplicationStatusEnum.getOptionalSchema().default('in_progress'),
 	status:

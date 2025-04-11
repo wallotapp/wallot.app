@@ -70,6 +70,4 @@ export const acceptResearchSeatFormDataSchemaFieldSpecByFieldKey =
 export type AcceptResearchSeatFormDataParams = yup.InferType<
 	typeof acceptResearchSeatFormDataSchema
 >;
-export type AcceptResearchSeatFormDataResponse = {
-	signed_acceptance_letter_download_url: string;
-};
+export type AcceptResearchSeatFormDataResponse = Record<string, never>;

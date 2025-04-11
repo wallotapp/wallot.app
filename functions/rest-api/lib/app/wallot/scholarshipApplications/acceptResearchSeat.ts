@@ -12,7 +12,7 @@ import {
 	scholarshipApplicationsApi,
 	ScholarshipApplication,
 } from '@wallot/js';
-import { db, bucket } from '../../../services.js';
+import { bucket, db } from '../../../services.js';
 import { secrets } from '../../../secrets.js';
 import { directoryPath } from '../../../directoryPath.js';
 
@@ -29,6 +29,7 @@ export const acceptResearchSeat = async (
 	const {
 		client_verification,
 		date,
+		parent_email,
 		parent_name,
 		parent_relationship_to_student,
 		student_name,
@@ -43,11 +44,13 @@ export const acceptResearchSeat = async (
 		throw new Error('Invalid scholarshipApplicationId');
 	const researchApplication =
 		researchApplicationDoc.data() as ScholarshipApplication;
+	const { research_seat_client_verification } = researchApplication;
 
-	if (
-		researchApplication.research_seat_client_verification !==
-		client_verification
-	)
+	if (!research_seat_client_verification)
+		throw new Error(
+			'Invalid application - There is no research seat pending acceptance',
+		);
+	if (research_seat_client_verification !== client_verification)
 		throw new Error('Invalid verification');
 
 	// Format the date to full format: "January 10, 1940"
@@ -192,10 +195,15 @@ export const acceptResearchSeat = async (
 	// Delete the temporary directory
 	if (!isLocal) await fs.rm(tempDir, { recursive: true });
 
-	// Log the download URL to the console.
-	console.log(
-		'Signed PDF Download URL:',
-		signed_acceptance_letter_download_url,
-	);
-	return { json: { signed_acceptance_letter_download_url } };
+	// Email the signed document
+	const onFinished = async () => {
+		console.log(
+			'Signed PDF Download URL to email',
+			parent_email,
+			signed_acceptance_letter_download_url,
+		);
+		return Promise.resolve();
+	};
+	
+	return { json: {}, onFinished };
 };
