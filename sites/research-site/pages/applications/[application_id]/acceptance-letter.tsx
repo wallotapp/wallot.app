@@ -355,5 +355,5 @@ const Page: NextPage = () => {
 export default Page;
 
 function getAcceptanceLetterDownloadUrl(url: string) {
-	return url + '#toolbar=0&navpanes=0';
+	return url + '#navpanes=0'; // toolbar=0& is also option
 }
