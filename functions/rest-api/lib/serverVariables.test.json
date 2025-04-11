@@ -46,5 +46,5 @@
 		"ENABLE_ALPACA_BROKER_API": false,
 		"ENABLE_ALPACA_OAUTH": true
 	},
-	"NOOP": "hello"
+	"NOOP": "foo"
 }
