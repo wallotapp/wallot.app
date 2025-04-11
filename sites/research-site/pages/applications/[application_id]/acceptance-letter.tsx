@@ -388,11 +388,14 @@ const Page: NextPage = () => {
 							</div>
 						</div>
 						{Boolean(documentUrl) ? (
-							<div className={cn('rounded-lg w-full')}>
+							<div
+								className={cn('rounded-lg h-screen overflow-auto w-full')}
+								style={{ WebkitOverflowScrolling: 'touch' }}
+							>
 								<iframe
 									src={getAcceptanceLetterDownloadUrl(documentUrl)}
 									title='PDF Document'
-									className={cn('rounded-lg w-full h-screen')}
+									className={cn('w-full h-full border-none')}
 									allowFullScreen
 								/>
 							</div>
