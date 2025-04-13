@@ -27,22 +27,13 @@ export function useRetrieveAcceptanceLetter(
 			Pick<AcceptResearchSeatFormDataParams, 'client_verification'>,
 		]
 	>({
-		queryKey: [
-			'retrieveAcceptanceLetter' as const,
-			searchParams,
-		],
+		queryKey: ['retrieveAcceptanceLetter' as const, searchParams],
 		queryFn: () => retrieveAcceptanceLetter(searchParams),
 		onError: (error: GeneralizedError) => {
-			console.error(
-				'retrieveAcceptanceLetter operation failed:',
-				error,
-			);
+			console.error('retrieveAcceptanceLetter operation failed:', error);
 		},
 		onSuccess: (data: ResearchAcceptanceLetter) => {
-			console.log(
-				'retrieveAcceptanceLetter operation successful',
-				data,
-			);
+			console.log('retrieveAcceptanceLetter operation successful', data);
 		},
 		...(options ?? {}),
 	});
