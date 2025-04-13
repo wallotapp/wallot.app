@@ -504,12 +504,9 @@ app.get(
 		corsPolicy(
 			req,
 			res,
-			createRouterFunction(auth, secrets)(
-				retrieveAcceptanceLetter,
-				{
-					requiresAuth: false,
-				},
-			)(req, res, next),
+			createRouterFunction(auth, secrets)(retrieveAcceptanceLetter, {
+				requiresAuth: false,
+			})(req, res, next),
 		);
 	},
 );
