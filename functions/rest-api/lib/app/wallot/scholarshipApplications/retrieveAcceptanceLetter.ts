@@ -5,8 +5,9 @@ import {
 	ResearchAcceptanceLetter,
 	ScholarshipApplication,
 	scholarshipApplicationsApi,
+	ResearchSeatCohortEnum,
 } from '@wallot/js';
-import { db } from '../../../services.js';
+import { db, gmail } from '../../../services.js';
 import { secrets } from '../../../secrets.js';
 
 export const retrieveAcceptanceLetter = async (
@@ -27,9 +28,29 @@ export const retrieveAcceptanceLetter = async (
 		throw new Error(
 			'Invalid verification code. Please check your email for the correct link to sign your acceptance letter.',
 		);
+
+	const { research_seat_cohort } = application;
+	if (!ResearchSeatCohortEnum.isMember(research_seat_cohort)) {
+		await gmail.sendDeveloperAlert({
+			subject:
+				'[Wallot Developer Alerts] Error with Research Acceptance Letter',
+			message: `Attempted to access an acceptance letter but no cohort is assigned.
+
+${JSON.stringify({ application, client_verification }, null, 2)}
+`,
+		});
+
+		throw new Error(
+			'There was an error loading your acceptance letter. Please contact our program staff.',
+		);
+	}
+
 	const json: ResearchAcceptanceLetter = {
 		research_seat_acceptance_letter:
-			secrets.SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL,
+			research_seat_cohort === 'fall'
+				? secrets.SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL_FALL
+				: secrets.SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL_SUMMER,
+		research_seat_cohort,
 		research_seat_signed_acceptance_letter:
 			application.research_seat_signed_acceptance_letter ?? null,
 	};

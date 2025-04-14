@@ -78,5 +78,6 @@ export type AcceptResearchSeatFormDataResponse = Record<string, never>;
 
 export type ResearchAcceptanceLetter = {
 	research_seat_acceptance_letter: string;
+	research_seat_cohort: 'summer_a' | 'summer_b' | 'summer_full' | 'fall';
 	research_seat_signed_acceptance_letter: string | null;
 };

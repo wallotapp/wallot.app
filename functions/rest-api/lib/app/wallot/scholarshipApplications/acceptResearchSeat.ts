@@ -16,15 +16,16 @@ import {
 	usersApi,
 	User,
 	UpdateScholarshipApplicationParams,
-	ResearchApplicationFormSchema,
+	ResearchSeatCohortEnum,
 } from '@wallot/js';
 import { bucket, db, gmail } from '../../../services.js';
 import { secrets } from '../../../secrets.js';
+import { variables } from '../../../variables.js';
 import { directoryPath } from '../../../directoryPath.js';
 
 const isTest = secrets.SECRET_CRED_DEPLOYMENT_ENVIRONMENT === 'test';
 const isLocal = secrets.SECRET_CRED_SERVER_PROTOCOL === 'http';
-const emailTemplateRelativePath = 'sharp/acceptSeatConfirmationEmail.html';
+const emailTemplateRelativePath = 'research/acceptSeatConfirmationEmail.html';
 const emailTemplateFullPath = `${directoryPath}/../assets/emails/${emailTemplateRelativePath}`;
 const emailTemplate = readFileSync(emailTemplateFullPath, 'utf8');
 
@@ -54,8 +55,11 @@ export const acceptResearchSeat = async (
 		throw new Error('Invalid scholarshipApplicationId');
 	const researchApplication =
 		researchApplicationDoc.data() as ScholarshipApplication;
-	const { research_seat_client_verification, user: userId } =
-		researchApplication;
+	const {
+		research_seat_cohort,
+		research_seat_client_verification,
+		user: userId,
+	} = researchApplication;
 
 	if (!research_seat_client_verification)
 		throw new Error(
@@ -63,13 +67,29 @@ export const acceptResearchSeat = async (
 		);
 	if (research_seat_client_verification !== client_verification)
 		throw new Error('Invalid verification');
+	if (!ResearchSeatCohortEnum.isMember(research_seat_cohort)) {
+		await gmail.sendDeveloperAlert({
+			subject:
+				'[Wallot Developer Alerts] Error with Research Acceptance Letter',
+			message: `Attempted to access an acceptance letter but no cohort is assigned.
+
+${JSON.stringify({ researchApplication, client_verification }, null, 2)}
+`,
+		});
+
+		throw new Error(
+			'There was an error loading your acceptance letter. Please contact our program staff.',
+		);
+	}
 
 	// Format the date to full format: "January 10, 1940"
 	const fullFormattedDate = DateTime.fromISO(date).toFormat('MMMM d, yyyy');
 
 	// URL of the original PDF stored in Cloud Storage
 	const originalPdfUrl =
-		secrets.SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL;
+		research_seat_cohort === 'fall'
+			? secrets.SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL_FALL
+			: secrets.SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL_SUMMER;
 
 	// Download the original PDF using ky-universal.
 	// This returns an ArrayBuffer that is used to load the PDF.
@@ -183,7 +203,9 @@ export const acceptResearchSeat = async (
 		'+',
 	);
 	const suffix = isLocal ? '_' + Date.now() : '';
-	const destination = `research/acceptance-letters/${studentName}+SHARP+Orientation+Guide+Signed${suffix}.pdf`;
+	const programNameForFile =
+		research_seat_cohort === 'fall' ? 'Wallot+Research+Fellowship' : 'SHARP';
+	const destination = `research/acceptance-letters/${studentName}+${programNameForFile}+Orientation+Guide+Signed${suffix}.pdf`;
 
 	// Upload the signed PDF file to Cloud Storage.
 	await bucket.upload(signedPdfPath, {
@@ -223,17 +245,6 @@ export const acceptResearchSeat = async (
 		if (!userDoc.exists) throw new Error('Invalid userId');
 		const user = userDoc.data() as User;
 
-		// Query Research Application Form Data
-		const researchApplicationFormDataDocRef = db
-			.collection('_test')
-			.doc('research_data_properties');
-		const researchApplicationFormDataDoc =
-			await researchApplicationFormDataDocRef.get();
-		const researchApplicationFormData =
-			researchApplicationFormDataDoc.data() as ResearchApplicationFormSchema;
-		const { email: sender_email, name: sender_name } =
-			researchApplicationFormData.program_lead;
-
 		// Email params
 		const minusQueryUnsafe = downloadUrl.split('.pdf')?.[0] ?? '';
 		const minusQuery = minusQueryUnsafe ? minusQueryUnsafe + '.pdf' : '';
@@ -245,7 +256,13 @@ export const acceptResearchSeat = async (
 			.replace(' Signed', ' (Signed)');
 		const testSubjectPrefix = isTest ? '[TEST] ' : '';
 		const testSubjectSuffix = isTest ? ' - ' + Date.now().toString() : '';
-		const body = getEmailBody(emailTemplate, {});
+		const body = getEmailBody(emailTemplate, {
+			program_season: research_seat_cohort === 'fall' ? 'fall' : 'summer',
+		});
+		const documentName =
+			research_seat_cohort === 'fall'
+				? 'Wallot Research Fellowship Orientation Guide'
+				: 'SHARP Orientation Guide';
 
 		await gmail.sendEmail({
 			html_body: body,
@@ -258,10 +275,12 @@ export const acceptResearchSeat = async (
 					.map((email) => email?.trim()?.toLowerCase())
 					.filter(Boolean),
 			).join(),
-			sender_email,
-			sender_name,
-			sender_user_id: sender_email,
-			subject: `${testSubjectPrefix}Signed - Student and Parent E-Signature: SHARP Orientation Guide${testSubjectSuffix}`,
+			sender_email:
+				variables.SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_EMAIL_VISIONARY_SCHOLARSHIP,
+			sender_name:
+				variables.SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_NAME_VISIONARY_SCHOLARSHIP,
+			sender_user_id: variables.SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID,
+			subject: `${testSubjectPrefix}Signed - Student and Parent E-Signature: ${documentName}${testSubjectSuffix}`,
 		});
 	};
 

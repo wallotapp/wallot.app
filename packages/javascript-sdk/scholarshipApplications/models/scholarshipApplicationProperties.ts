@@ -37,6 +37,14 @@ export const ScholarshipApplicationStatusEnum = getEnum([
 export type ScholarshipApplicationStatus =
 	keyof typeof ScholarshipApplicationStatusEnum.obj;
 
+export const ResearchSeatCohortEnum = getEnum([
+	'summer_a',
+	'summer_b',
+	'summer_full',
+	'fall',
+]);
+export type ResearchSeatCohort = keyof typeof ResearchSeatCohortEnum.obj;
+
 const createParamsRequiredFieldEnum = getEnum([
 	...GeneralizedApiResourceCreateParamsRequiredFieldEnum.arr,
 	'user',
@@ -55,6 +63,9 @@ const properties = {
 	open_house_rsvps: YupHelpers.array(yup.string().defined()).defined(),
 	reminder_emails_sent_for_application_completion: YupHelpers.integer(),
 	reminder_emails_sent_for_research_application: YupHelpers.integer(),
+	research_seat_cohort: ResearchSeatCohortEnum.getOptionalSchema()
+		.nullable()
+		.default(null),
 	research_seat_client_verification: yup.string().default('').meta({
 		type: GeneralizedFieldTypeEnum.obj.short_text,
 	}),
