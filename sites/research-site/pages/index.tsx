@@ -8,6 +8,7 @@ import {
 import { ResearchSiteRouteQueryParams } from '@wallot/js';
 import { default as cn } from 'ergonomic-react/src/lib/cn';
 import Link from 'next/link';
+import Image from 'next/image';
 import { PlatformLogo } from 'ergonomic-react/src/components/brand/PlatformLogo';
 
 const Page: NextPage<PageStaticProps> = (props) => {
@@ -93,6 +94,17 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</div>
 					</div>
 					{/* Hero Picture */}
+					<div className={cn('mt-10', 'lg:max-w-4xl lg:mx-auto')}>
+						<Image
+							src='/img/photos/researcher.jpg'
+							alt='Researcher'
+							className='rounded-lg'
+							layout='responsive'
+							height={1920}
+							width={1080}
+							priority
+						/>
+					</div>
 					{/* Toggle Menu between SHARP and Fellowship */}
 					{/* About the Program */}
 					{/* Promo Quote */}
