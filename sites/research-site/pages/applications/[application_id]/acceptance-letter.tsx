@@ -81,6 +81,13 @@ const Page: NextPage = () => {
 	const pageProps: PageProps = {
 		...ROUTE_STATIC_PROPS,
 		routeId: ROUTE_RUNTIME_ID,
+		thumbnailData: {
+			thumbnail: '/img/brand/og-image-research.jpg',
+			thumbnailAlt: 'Wallot Research',
+			thumbnailHeight: 538,
+			thumbnailType: 'image/jpeg',
+			thumbnailWidth: '1024',
+		},
 	};
 
 	// Toaster
