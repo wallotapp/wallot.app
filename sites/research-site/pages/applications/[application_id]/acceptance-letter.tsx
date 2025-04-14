@@ -32,7 +32,10 @@ import { useAcceptResearchSeatMutation } from '@wallot/react/src/features/schola
 import Link from 'next/link';
 import Image from 'next/image';
 import { FiDownloadCloud } from 'react-icons/fi';
-const mobileThumbnail =
+
+const mobileThumbnailFall =
+	'https://firebasestorage.googleapis.com/v0/b/app-wallot-production.appspot.com/o/scholarships%2FWallot%20Research%20Fellowship%20Orientation%20Guide.png?alt=media&token=f8ba4a90-9274-4ffb-a6f8-b029e2c6a19c';
+const mobileThumbnailSummer =
 	'https://firebasestorage.googleapis.com/v0/b/app-wallot-production.appspot.com/o/scholarships%2FSHARP%20Orientation%20Guide.png?alt=media&token=d73adb7c-b622-448e-9ea9-1d76b53c394c';
 
 // ==== Static Page Props ==== //
@@ -186,6 +189,11 @@ const Page: NextPage = () => {
 		acceptanceLetter?.research_seat_signed_acceptance_letter ||
 		acceptanceLetter?.research_seat_acceptance_letter ||
 		'';
+	const mobileThumbnail = acceptanceLetter?.research_seat_cohort
+		? acceptanceLetter?.research_seat_cohort === 'fall'
+			? mobileThumbnailFall
+			: mobileThumbnailSummer
+		: '';
 
 	// ==== Render ==== //
 	return (
@@ -391,7 +399,7 @@ const Page: NextPage = () => {
 								)}
 							</div>
 						</div>
-						{Boolean(documentUrl) ? (
+						{Boolean(documentUrl) && Boolean(mobileThumbnail) ? (
 							<Fragment>
 								{/* Mobile: tappable thumbnail that downloads the PDF */}
 								<a
