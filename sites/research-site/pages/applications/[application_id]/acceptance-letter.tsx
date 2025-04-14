@@ -119,6 +119,7 @@ const Page: NextPage = () => {
 	const isAcceptanceLetterSigned =
 		isAcceptanceLetterReady &&
 		Boolean(acceptanceLetter.research_seat_signed_acceptance_letter);
+	const isFallCohort = acceptanceLetter?.research_seat_cohort === 'fall';
 
 	// Form
 	const defaultFormData =
@@ -220,25 +221,29 @@ const Page: NextPage = () => {
 								'flex-col lg:flex-row',
 								'space-y-8 lg:space-y-0',
 								'lg:space-x-8',
-								'',
 							)}
 						>
 							<div className={cn('lg:max-w-lg')}>
 								<div>
 									<p className='font-semibold text-xl'>
-										Congratulations! Let's Confirm Your Spot.
+										Congratulations! Let's Confirm Your Spot
+										{isFallCohort ? ' in our Fall 2025 Cohort' : ''}.
 									</p>
 									<p className='font-light text-sm mt-1'>
 										It's our distinct pleasure to welcome you to{' '}
 										<span className='font-semibold'>
-											SHARP (Summer Honors Academic Research Program)
+											{isFallCohort
+												? 'the Wallot Research Fellowship'
+												: 'SHARP (Summer Honors Academic Research Program)'}
 										</span>
-										, Wallot's flagship research opportunity for graduating
-										seniors! If you would like to accept your invitation to
-										participate in the program, please review our Orientation
-										Guide with your parents asap. This document details the
-										Summer packing list, housing logistics and community rules
-										for the program. If you have any questions, feel free to{' '}
+										, {isFallCohort ? 'our' : "Wallot's"} flagship research
+										opportunity for graduating seniors! If you would like to
+										accept your invitation to participate in the program, please
+										review our Orientation Guide with your parents asap. This
+										document details the{' '}
+										{isFallCohort ? 'Fall semester' : 'Summer'} packing list,
+										housing logistics and community rules for the program. If
+										you have any questions, feel free to{' '}
 										<Link
 											className='text-brand-dark font-semibold'
 											href='mailto:kamar.mack@wallot.app'
