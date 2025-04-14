@@ -69,7 +69,7 @@ export const acceptResearchSeat = async (
 
 	// URL of the original PDF stored in Cloud Storage
 	const originalPdfUrl =
-		secrets.SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL;
+		secrets.SECRET_CRED_SUMMER_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL;
 
 	// Download the original PDF using ky-universal.
 	// This returns an ArrayBuffer that is used to load the PDF.

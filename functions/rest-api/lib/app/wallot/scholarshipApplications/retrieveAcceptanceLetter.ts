@@ -29,7 +29,7 @@ export const retrieveAcceptanceLetter = async (
 		);
 	const json: ResearchAcceptanceLetter = {
 		research_seat_acceptance_letter:
-			secrets.SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL,
+			secrets.SECRET_CRED_SUMMER_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL,
 		research_seat_signed_acceptance_letter:
 			application.research_seat_signed_acceptance_letter ?? null,
 	};
