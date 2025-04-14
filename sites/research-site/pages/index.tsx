@@ -73,7 +73,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</Link>
 					</div>
 					<div>
-						<Link href='mailto:research@wallot.app'>
+						<Link href='mailto:research@wallot.app' target='_blank'>
 							<div className='hover:underline'>
 								<p className='font-light text-base'>Contact Us</p>
 							</div>
@@ -289,7 +289,25 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							);
 						})}
 					</div>
-					{/* Footer */}
+				</div>
+				{/* Footer */}
+				<div className='p-6 bg-black text-gray-400 flex items-center justify-between'>
+					<div>
+						<p className={cn('font-extralight p-2 text-white text-sm')}>
+							© 2025 Wallot
+						</p>
+					</div>
+					<div>
+						<Link
+							className=''
+							href='mailto:research@wallot.app'
+							target='_blank'
+						>
+							<div className={cn('font-extralight p-2 text-white text-sm')}>
+								Contact Us
+							</div>
+						</Link>
+					</div>
 				</div>
 			</div>
 		</PageComponent>
