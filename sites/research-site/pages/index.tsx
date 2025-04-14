@@ -23,12 +23,12 @@ const faqs = [
 	{
 		question: 'What is the Wallot Research Fellowship?',
 		answer:
-			'A four‑month fall research fellowship offering hands‑on academic research experience and professional development.',
+			'A 1-2 semester research fellowship offering hands‑on academic research experience and professional development.',
 	},
 	{
 		question: 'What are the program dates?',
 		answer:
-			'SHARP runs June 2–August 1, 2025; the Fall Fellowship runs September 1–December 12, 2025.',
+			'SHARP runs June 2–August 1, 2025; the Fall Fellowship runs September 1–December 12, 2025. Dates for the Spring will be released in the coming weeks.',
 	},
 	{
 		question: 'Where will I live?',
@@ -53,7 +53,7 @@ const faqs = [
 	{
 		question: 'What is the time commitment?',
 		answer:
-			'SHARP is full‑time for two months; the fall fellowship can either be completed part-time (e.g. after classes) or full-time for one semester.',
+			'SHARP is full‑time for two months; the Research Fellowship can either be completed part-time (e.g. while taking other college classes in Tampa) or full-time for one semester.',
 	},
 	{
 		question: 'What outcomes can I expect?',
@@ -109,7 +109,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 				{/* Navigation Menu */}
 				<div
 					className={cn(
-						'flex h-12 items-center justify-between px-6 fixed top-0 left-0 w-full z-10',
+						'flex h-12 items-center justify-between px-6 fixed top-0 left-0 w-full z-10 !bg-white',
 					)}
 				>
 					<div>
