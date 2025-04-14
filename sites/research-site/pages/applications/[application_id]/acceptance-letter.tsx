@@ -415,7 +415,9 @@ const Page: NextPage = () => {
 								{/* Mobile: tappable thumbnail that downloads the PDF */}
 								<a
 									href={documentUrl}
-									download='SHARP Acceptance Letter.pdf'
+									download={`${
+										isFallCohort ? 'Wallot Research Fellowship' : 'SHARP'
+									} Acceptance Letter.pdf`}
 									target='_blank'
 									rel='noopener noreferrer'
 									className={cn('block lg:hidden relative')}
@@ -423,7 +425,9 @@ const Page: NextPage = () => {
 								>
 									<Image
 										src={mobileThumbnail}
-										alt='Tap to view your SHARP Acceptance Letter'
+										alt={`Tap to view your ${
+											isFallCohort ? 'Wallot Research Fellowship' : 'SHARP'
+										} Acceptance Letter`}
 										className='rounded-lg'
 										layout='responsive'
 										height={1920}
