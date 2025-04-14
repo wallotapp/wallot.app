@@ -395,7 +395,7 @@ export const getStaticProps: GetStaticProps<PageStaticProps> = () => {
 	// Route Static Props
 	const ROUTE_STATIC_PROPS: PageStaticProps = {
 		routeStaticId: ROUTE_STATIC_ID,
-		title: 'Welcome',
+		title: 'Explore our Research Programs',
 	};
 	return Promise.resolve({
 		props: ROUTE_STATIC_PROPS,
