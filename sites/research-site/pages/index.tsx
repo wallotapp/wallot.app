@@ -44,7 +44,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					'flex flex-col min-h-screen min-w-screen relative bg-white',
 				)}
 			>
-				{/* Header */}
+				{/* Navigation Menu */}
 				<div
 					className={cn(
 						'flex h-12 items-center justify-between px-6 fixed top-0 left-0 w-full z-10',
@@ -72,7 +72,9 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</Link>
 					</div>
 				</div>
+				{/* Main stuff */}
 				<div className={cn('min-h-[95vh] w-full', 'py-36 px-4', 'lg:px-10')}>
+					{/* Hero Title */}
 					<div
 						className={cn('flex flex-col items-center text-center space-y-4')}
 					>
@@ -90,6 +92,14 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							</p>
 						</div>
 					</div>
+					{/* Hero Picture */}
+					{/* Toggle Menu between SHARP and Fellowship */}
+					{/* About the Program */}
+					{/* Promo Quote */}
+					{/* Sidekick Picture */}
+					{/* Who We're Looking For */}
+					{/* FAQ */}
+					{/* Footer */}
 				</div>
 			</div>
 		</PageComponent>
