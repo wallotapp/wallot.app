@@ -150,7 +150,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							<p className='font-normal text-2xl'>About the program</p>
 						</div>
 						<div>
-							<p className='font-light text-sm'>
+							<p className='font-light text-sm text-gray-700'>
 								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
 								printing and typesetting industry. Lorem Ipsum has been the
 								industry's standard dummy text ever since the 1500s, when an
@@ -194,6 +194,35 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						/>
 					</div>
 					{/* Who We're Looking For */}
+					<div
+						className={cn(
+							'mt-20',
+							'flex flex-col space-y-3.5',
+							'lg:max-w-lg lg:mx-auto',
+						)}
+					>
+						<div>
+							<p className='font-normal text-2xl'>Who we're looking for</p>
+						</div>
+						<div>
+							<p className='font-light text-sm text-gray-700'>
+								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
+								printing and typesetting industry. Lorem Ipsum has been the
+								industry's standard dummy text ever since the 1500s, when an
+								unknown printer took a galley of type and scrambled it to make a
+								type specimen book.
+							</p>
+						</div>
+						<div>
+							<p className='font-light text-sm text-gray-700'>
+								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
+								printing and typesetting industry. Lorem Ipsum has been the
+								industry's standard dummy text ever since the 1500s, when an
+								unknown printer took a galley of type and scrambled it to make a
+								type specimen book.
+							</p>
+						</div>
+					</div>
 					{/* FAQ */}
 					{/* Footer */}
 				</div>
