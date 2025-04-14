@@ -36,5 +36,8 @@ export function useRetrieveAcceptanceLetter(
 			console.log('retrieveAcceptanceLetter operation successful', data);
 		},
 		...(options ?? {}),
+		enabled:
+			(options?.enabled == null || options.enabled === true) &&
+			Boolean(searchParams?.client_verification),
 	});
 }
