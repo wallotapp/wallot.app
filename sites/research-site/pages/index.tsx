@@ -96,6 +96,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 	const pageProps: PageProps = {
 		...props,
 		routeId: ROUTE_RUNTIME_ID,
+		thumbnailData: {
+			thumbnail: '/img/brand/og-image-research.jpg',
+			thumbnailAlt: 'Wallot Research',
+			thumbnailHeight: 538,
+			thumbnailType: 'image/jpeg',
+			thumbnailWidth: '1024',
+		},
 	};
 
 	// ==== Render ==== //
@@ -157,8 +164,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					{/* Hero Picture */}
 					<div className={cn('mt-10', 'lg:max-w-4xl lg:mx-auto')}>
 						<Image
-							src='/img/photos/researcher.jpg'
-							alt='Researcher'
+							src='/img/photos/research-team.jpg'
+							alt='Research Team'
 							className='rounded-lg'
 							layout='responsive'
 							height={1920}
@@ -255,8 +262,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					{/* Sidekick Picture */}
 					<div className={cn('mt-20', 'lg:max-w-4xl lg:mx-auto')}>
 						<Image
-							src='/img/photos/research-team.jpg'
-							alt='Research Team'
+							src='/img/photos/researcher.jpg'
+							alt='Researcher'
 							className='rounded-lg'
 							layout='responsive'
 							height={1920}
@@ -335,7 +342,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							return (
 								<div className='border-b border-b-gray-200 py-4'>
 									<button
-										className='flex items-center justify-between w-full'
+										className='flex items-center justify-between w-full text-left space-x-4'
 										onClick={() =>
 											setOpenQuestion((prev) =>
 												prev === question ? null : question,
@@ -394,8 +401,10 @@ type RouteQueryParams = ResearchSiteRouteQueryParams[typeof ROUTE_STATIC_ID];
 export const getStaticProps: GetStaticProps<PageStaticProps> = () => {
 	// Route Static Props
 	const ROUTE_STATIC_PROPS: PageStaticProps = {
+		description:
+			'Explore areas of academic curiosity through structured inquiry, guided faculty mentorship, and dedicated support from a collaborative academic community.',
 		routeStaticId: ROUTE_STATIC_ID,
-		title: 'Explore our Research Programs',
+		title: 'Research Programs',
 	};
 	return Promise.resolve({
 		props: ROUTE_STATIC_PROPS,
