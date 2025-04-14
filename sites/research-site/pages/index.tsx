@@ -182,6 +182,17 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</div>
 					</div>
 					{/* Sidekick Picture */}
+					<div className={cn('mt-20', 'lg:max-w-4xl lg:mx-auto')}>
+						<Image
+							src='/img/photos/researcher.jpg'
+							alt='Researcher'
+							className='rounded-lg'
+							layout='responsive'
+							height={1920}
+							width={1080}
+							priority
+						/>
+					</div>
 					{/* Who We're Looking For */}
 					{/* FAQ */}
 					{/* Footer */}
