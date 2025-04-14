@@ -72,19 +72,24 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</Link>
 					</div>
 				</div>
-				<div
-					className={cn(
-						'min-h-[95vh] w-full',
-						'py-36 px-6',
-						'lg:py-36 lg:px-28',
-					)}
-				>
-					<p className='font-medium text-xl'>
-						Hello, and welcome to Wallot's Research Site! 🚀
-					</p>
-					<p className='font-light text-sm'>
-						Almost before we knew it, we had left the ground.
-					</p>
+				<div className={cn('min-h-[95vh] w-full', 'py-36 px-4', 'lg:px-10')}>
+					<div
+						className={cn('flex flex-col items-center text-center space-y-4')}
+					>
+						<div>
+							<p className='font-extralight text-xs'>Welcome</p>
+						</div>
+						<div>
+							<p className='font-normal text-5xl'>Wallot Research</p>
+						</div>
+						<div className='lg:max-w-2xl'>
+							<p className='font-extralight text-sm'>
+								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
+								printing and typesetting industry. Lorem Ipsum has been the
+								industry's.
+							</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</PageComponent>
