@@ -50,6 +50,7 @@ ${JSON.stringify({ application, client_verification }, null, 2)}
 			research_seat_cohort === 'fall'
 				? secrets.SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL_FALL
 				: secrets.SECRET_CRED_RESEARCH_ACCEPTANCE_LETTER_DOWNLOAD_URL_SUMMER,
+		research_seat_cohort,
 		research_seat_signed_acceptance_letter:
 			application.research_seat_signed_acceptance_letter ?? null,
 	};
