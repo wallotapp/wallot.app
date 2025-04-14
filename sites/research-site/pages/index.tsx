@@ -92,7 +92,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							<p className='font-normal text-5xl'>Wallot Research</p>
 						</div>
 						<div className='lg:max-w-2xl'>
-							<p className='font-light text-sm'>
+							<p className='font-light text-sm leading-relaxed'>
 								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
 								printing and typesetting industry. Lorem Ipsum has been the
 								industry's.
@@ -150,7 +150,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							<p className='font-normal text-2xl'>About the program</p>
 						</div>
 						<div>
-							<p className='font-light text-sm text-gray-700'>
+							<p className='font-light text-sm text-gray-700 leading-relaxed'>
 								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
 								printing and typesetting industry. Lorem Ipsum has been the
 								industry's standard dummy text ever since the 1500s, when an
@@ -184,8 +184,8 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					{/* Sidekick Picture */}
 					<div className={cn('mt-20', 'lg:max-w-4xl lg:mx-auto')}>
 						<Image
-							src='/img/photos/researcher.jpg'
-							alt='Researcher'
+							src='/img/photos/research-team.jpg'
+							alt='Research Team'
 							className='rounded-lg'
 							layout='responsive'
 							height={1920}
@@ -205,7 +205,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							<p className='font-normal text-2xl'>Who we're looking for</p>
 						</div>
 						<div>
-							<p className='font-light text-sm text-gray-700'>
+							<p className='font-light text-sm text-gray-700 leading-relaxed'>
 								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
 								printing and typesetting industry. Lorem Ipsum has been the
 								industry's standard dummy text ever since the 1500s, when an
@@ -214,7 +214,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							</p>
 						</div>
 						<div>
-							<p className='font-light text-sm text-gray-700'>
+							<p className='font-light text-sm text-gray-700 leading-relaxed'>
 								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
 								printing and typesetting industry. Lorem Ipsum has been the
 								industry's standard dummy text ever since the 1500s, when an
@@ -223,7 +223,43 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							</p>
 						</div>
 					</div>
+					{/* Highlihgt Picture */}
+					<div className={cn('mt-20', 'lg:max-w-4xl lg:mx-auto')}>
+						<Image
+							src='/img/photos/tampa.jpg'
+							alt='Tampa'
+							className='rounded-lg'
+							layout='responsive'
+							height={1920}
+							width={1920}
+							priority
+						/>
+					</div>
 					{/* FAQ */}
+					<div className={cn('mt-28', 'text-center')}>
+						<p className='font-normal text-2xl'>FAQ</p>
+					</div>
+					<div
+						className={cn(
+							'mt-8',
+							'flex flex-col space-y-3.5',
+							'lg:max-w-lg lg:mx-auto',
+						)}
+					>
+						<div>
+							<p className='font-normal text-3xl'>
+								1960s with the release of Letraset
+							</p>
+						</div>
+						<div>
+							<p className='font-light text-xs leading-relaxed'>
+								It was popularised in the 1960s with the release of Letraset
+								sheets containing Lorem Ipsum passages, and more recently with
+								desktop publishing software like Aldus PageMaker including
+								versions of Lorem Ipsum.
+							</p>
+						</div>
+					</div>
 					{/* Footer */}
 				</div>
 			</div>
