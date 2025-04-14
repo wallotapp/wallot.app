@@ -77,13 +77,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						className={cn('flex flex-col items-center text-center space-y-4')}
 					>
 						<div>
-							<p className='font-extralight text-xs'>Welcome</p>
+							<p className='font-normal text-xs'>Welcome</p>
 						</div>
 						<div>
 							<p className='font-normal text-5xl'>Wallot Research</p>
 						</div>
 						<div className='lg:max-w-2xl'>
-							<p className='font-extralight text-sm'>
+							<p className='font-light text-sm'>
 								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
 								printing and typesetting industry. Lorem Ipsum has been the
 								industry's.
