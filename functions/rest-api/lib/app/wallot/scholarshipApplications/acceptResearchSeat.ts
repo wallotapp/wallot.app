@@ -16,16 +16,16 @@ import {
 	usersApi,
 	User,
 	UpdateScholarshipApplicationParams,
-	ResearchApplicationFormSchema,
 	ResearchSeatCohortEnum,
 } from '@wallot/js';
 import { bucket, db, gmail } from '../../../services.js';
 import { secrets } from '../../../secrets.js';
+import { variables } from '../../../variables.js';
 import { directoryPath } from '../../../directoryPath.js';
 
 const isTest = secrets.SECRET_CRED_DEPLOYMENT_ENVIRONMENT === 'test';
 const isLocal = secrets.SECRET_CRED_SERVER_PROTOCOL === 'http';
-const emailTemplateRelativePath = 'sharp/acceptSeatConfirmationEmail.html';
+const emailTemplateRelativePath = 'research/acceptSeatConfirmationEmail.html';
 const emailTemplateFullPath = `${directoryPath}/../assets/emails/${emailTemplateRelativePath}`;
 const emailTemplate = readFileSync(emailTemplateFullPath, 'utf8');
 
@@ -203,7 +203,9 @@ ${JSON.stringify({ researchApplication, client_verification }, null, 2)}
 		'+',
 	);
 	const suffix = isLocal ? '_' + Date.now() : '';
-	const destination = `research/acceptance-letters/${studentName}+SHARP+Orientation+Guide+Signed${suffix}.pdf`;
+	const programNameForFile =
+		research_seat_cohort === 'fall' ? 'Wallot+Research+Fellowship' : 'SHARP';
+	const destination = `research/acceptance-letters/${studentName}+${programNameForFile}+Orientation+Guide+Signed${suffix}.pdf`;
 
 	// Upload the signed PDF file to Cloud Storage.
 	await bucket.upload(signedPdfPath, {
@@ -243,17 +245,6 @@ ${JSON.stringify({ researchApplication, client_verification }, null, 2)}
 		if (!userDoc.exists) throw new Error('Invalid userId');
 		const user = userDoc.data() as User;
 
-		// Query Research Application Form Data
-		const researchApplicationFormDataDocRef = db
-			.collection('_test')
-			.doc('research_data_properties');
-		const researchApplicationFormDataDoc =
-			await researchApplicationFormDataDocRef.get();
-		const researchApplicationFormData =
-			researchApplicationFormDataDoc.data() as ResearchApplicationFormSchema;
-		const { email: sender_email, name: sender_name } =
-			researchApplicationFormData.program_lead;
-
 		// Email params
 		const minusQueryUnsafe = downloadUrl.split('.pdf')?.[0] ?? '';
 		const minusQuery = minusQueryUnsafe ? minusQueryUnsafe + '.pdf' : '';
@@ -265,7 +256,13 @@ ${JSON.stringify({ researchApplication, client_verification }, null, 2)}
 			.replace(' Signed', ' (Signed)');
 		const testSubjectPrefix = isTest ? '[TEST] ' : '';
 		const testSubjectSuffix = isTest ? ' - ' + Date.now().toString() : '';
-		const body = getEmailBody(emailTemplate, {});
+		const body = getEmailBody(emailTemplate, {
+			program_season: research_seat_cohort === 'fall' ? 'fall' : 'summer',
+		});
+		const documentName =
+			research_seat_cohort === 'fall'
+				? 'Wallot Research Fellowship Orientation Guide'
+				: 'SHARP Orientation Guide';
 
 		await gmail.sendEmail({
 			html_body: body,
@@ -278,10 +275,12 @@ ${JSON.stringify({ researchApplication, client_verification }, null, 2)}
 					.map((email) => email?.trim()?.toLowerCase())
 					.filter(Boolean),
 			).join(),
-			sender_email,
-			sender_name,
-			sender_user_id: sender_email,
-			subject: `${testSubjectPrefix}Signed - Student and Parent E-Signature: SHARP Orientation Guide${testSubjectSuffix}`,
+			sender_email:
+				variables.SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_EMAIL_VISIONARY_SCHOLARSHIP,
+			sender_name:
+				variables.SERVER_VAR_GMAIL_NOTIFICATIONS_SEND_FROM_NAME_VISIONARY_SCHOLARSHIP,
+			sender_user_id: variables.SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID,
+			subject: `${testSubjectPrefix}Signed - Student and Parent E-Signature: ${documentName}${testSubjectSuffix}`,
 		});
 	};
 
