@@ -223,17 +223,28 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							</p>
 						</div>
 					</div>
-					{/* Highlihgt Picture */}
-					<div className={cn('mt-20', 'lg:max-w-4xl lg:mx-auto')}>
-						<Image
-							src='/img/photos/tampa.jpg'
-							alt='Tampa'
-							className='rounded-lg'
-							layout='responsive'
-							height={1920}
-							width={1920}
-							priority
-						/>
+					{/* Tampa Picture */}
+					<div
+						className={cn(
+							'mt-20 flex',
+							'flex-col space-y-6',
+							'lg:flex-row lg:items-center lg:justify-center',
+							'lg:max-w-4xl lg:mx-auto lg:space-x-20 lg:space-y-0',
+						)}
+					>
+						<TampaCopy className={cn('hidden', 'lg:block lg:flex-[3_3_0%]')} />
+						<div className='flex-[5_5_0%]'>
+							<Image
+								src='/img/photos/tampa.jpg'
+								alt='Tampa'
+								className='rounded-lg'
+								layout='responsive'
+								height={1920}
+								width={1920}
+								priority
+							/>
+						</div>
+						<TampaCopy className='block lg:hidden' />
 					</div>
 					{/* FAQ */}
 					<div className={cn('mt-28', 'text-center')}>
@@ -287,3 +298,25 @@ export const getStaticProps: GetStaticProps<PageStaticProps> = () => {
 		props: ROUTE_STATIC_PROPS,
 	});
 };
+
+function TampaCopy({ className = '' }) {
+	return (
+		<div className={className}>
+			<div>
+				<p className='font-light text-sm text-gray-700 leading-relaxed'>
+					What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing
+					and typesetting industry. Lorem Ipsum has been the industry's standard
+					dummy text ever since the 1500s.
+				</p>
+			</div>
+			<div className='mt-4'>
+				<p className='font-normal text-base'>Who we're looking for</p>
+			</div>
+			<div>
+				<p className='font-light text-sm text-gray-700'>
+					Lorem Ipsum is simply dummy.
+				</p>
+			</div>
+		</div>
+	);
+}
