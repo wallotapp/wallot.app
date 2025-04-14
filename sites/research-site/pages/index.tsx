@@ -160,6 +160,27 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</div>
 					</div>
 					{/* Promo Quote */}
+					<div
+						className={cn(
+							'mt-20',
+							'flex flex-col space-y-6',
+							'lg:max-w-2xl lg:mx-auto',
+							'text-center',
+						)}
+					>
+						<div>
+							<p className='font-normal text-3xl'>
+								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
+								printing and typesetting industry. Lorem Ipsum has been the
+								industry's standard.
+							</p>
+						</div>
+						<div>
+							<p className='font-light text-xs'>
+								Kamar Mack, Lead Engineer of Wallot
+							</p>
+						</div>
+					</div>
 					{/* Sidekick Picture */}
 					{/* Who We're Looking For */}
 					{/* FAQ */}
