@@ -112,7 +112,9 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						/>
 					</div>
 					{/* Toggle Menu between SHARP and Fellowship */}
-					<div className={cn('flex mt-14 space-x-4', 'lg:max-w-md lg:mx-auto')}>
+					<div
+						className={cn('mt-14', 'flex space-x-4', 'lg:max-w-lg lg:mx-auto')}
+					>
 						{[
 							{ title: 'Summer Program' as const },
 							{ title: 'Research Fellowship' as const },
@@ -137,6 +139,26 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						})}
 					</div>
 					{/* About the Program */}
+					<div
+						className={cn(
+							'mt-10',
+							'flex flex-col space-y-2.5',
+							'lg:max-w-lg lg:mx-auto',
+						)}
+					>
+						<div>
+							<p className='font-normal text-2xl'>About the program</p>
+						</div>
+						<div>
+							<p className='font-light text-sm'>
+								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
+								printing and typesetting industry. Lorem Ipsum has been the
+								industry's standard dummy text ever since the 1500s, when an
+								unknown printer took a galley of type and scrambled it to make a
+								type specimen book.
+							</p>
+						</div>
+					</div>
 					{/* Promo Quote */}
 					{/* Sidekick Picture */}
 					{/* Who We're Looking For */}
