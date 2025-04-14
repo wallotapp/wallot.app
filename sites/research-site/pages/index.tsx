@@ -11,7 +11,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { PlatformLogo } from 'ergonomic-react/src/components/brand/PlatformLogo';
 import { useState } from 'react';
-import { GoPlus } from 'react-icons/go';
+import { GoDash, GoPlus } from 'react-icons/go';
 
 type Program = 'Summer Program' | 'Research Fellowship';
 const faqs = [
@@ -288,9 +288,7 @@ const Page: NextPage<PageStaticProps> = (props) => {
 										<div>
 											<p className='font-normal text-base'>{question}</p>
 										</div>
-										<div>
-											<GoPlus />
-										</div>
+										<div>{open ? <GoDash /> : <GoPlus />}</div>
 									</button>
 									<div className={cn('mt-2.5', { hidden: !open })}>
 										<p className='font-light text-xs text-gray-700 leading-relaxed'>
