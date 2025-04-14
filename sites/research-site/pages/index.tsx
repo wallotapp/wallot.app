@@ -10,8 +10,14 @@ import { default as cn } from 'ergonomic-react/src/lib/cn';
 import Link from 'next/link';
 import Image from 'next/image';
 import { PlatformLogo } from 'ergonomic-react/src/components/brand/PlatformLogo';
+import { useState } from 'react';
+
+type Program = 'Summer Program' | 'Research Fellowship';
 
 const Page: NextPage<PageStaticProps> = (props) => {
+	// ==== State ==== //
+	const [program, setProgram] = useState<Program>('Summer Program');
+
 	// ==== Hooks ==== //
 
 	// Router
@@ -106,6 +112,30 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						/>
 					</div>
 					{/* Toggle Menu between SHARP and Fellowship */}
+					<div className={cn('flex mt-14 space-x-4', 'lg:max-w-md lg:mx-auto')}>
+						{[
+							{ title: 'Summer Program' as const },
+							{ title: 'Research Fellowship' as const },
+						].map(({ title }) => {
+							const isSelected = program === title;
+
+							return (
+								<div key={title}>
+									<button onClick={() => setProgram(title)}>
+										<p
+											className={cn('text-sm', {
+												'font-semibold underline underline-offset-8':
+													isSelected,
+												'font-light text-gray-600': !isSelected,
+											})}
+										>
+											{title}
+										</p>
+									</button>
+								</div>
+							);
+						})}
+					</div>
 					{/* About the Program */}
 					{/* Promo Quote */}
 					{/* Sidekick Picture */}
