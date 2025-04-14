@@ -16,14 +16,54 @@ import { GoDash, GoPlus } from 'react-icons/go';
 type Program = 'Summer Program' | 'Research Fellowship';
 const faqs = [
 	{
+		question: 'What is SHARP?',
 		answer:
-			'It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-		question: '1960s with the release of Letraset',
+			'A competitive Summer Honors Academic Research Program for recent graduates to conduct faculty‑mentored research in Tampa.',
 	},
 	{
+		question: 'What is the Wallot Research Fellowship?',
 		answer:
-			'It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-		question: '1970s with the release of Letraset',
+			'A four‑month fall research fellowship offering hands‑on academic research experience and professional development.',
+	},
+	{
+		question: 'What are the program dates?',
+		answer:
+			'SHARP runs June 2–August 1, 2025; the Fall Fellowship runs September 1–December 12, 2025.',
+	},
+	{
+		question: 'Where will I live?',
+		answer:
+			"Both programs house students in the North Tampa area near USF's main campus.",
+	},
+	{
+		question: 'What is the housing layout?',
+		answer:
+			'2‑bedroom, 2‑bath apartments with full kitchen, washer/dryer, dishwasher, living area, and outdoor patio.',
+	},
+	{
+		question: 'How much does the program cost?',
+		answer:
+			'The program is fully funded for students. There are no tuition or housing fees associated with the program.',
+	},
+	{
+		question: 'Will I work with a faculty mentor?',
+		answer:
+			'Yes, each participant is paired with a faculty advisor who provides one‑on‑one guidance and regular feedback.',
+	},
+	{
+		question: 'What is the time commitment?',
+		answer:
+			'SHARP is full‑time for two months; the fall fellowship can either be completed part-time (e.g. after classes) or full-time for one semester.',
+	},
+	{
+		question: 'What outcomes can I expect?',
+		answer:
+			'A completed research project, presentation experience, enhanced skills, and a strong academic network.',
+	},
+	{
+		question: 'How does this prepare me for graduate school or careers?',
+		answer:
+			'The programs simulate graduate‑level research, build professional competencies, and provide credentials valued by employers and admissions committees.',
 	},
 ];
 const firstQuestion = faqs[0]?.question ?? null;
