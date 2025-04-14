@@ -14,10 +14,24 @@ import { useState } from 'react';
 import { GoPlus } from 'react-icons/go';
 
 type Program = 'Summer Program' | 'Research Fellowship';
+const faqs = [
+	{
+		answer:
+			'It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+		question: '1960s with the release of Letraset',
+	},
+	{
+		answer:
+			'It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+		question: '1970s with the release of Letraset',
+	},
+];
+const firstQuestion = faqs[0]?.question ?? null;
 
 const Page: NextPage<PageStaticProps> = (props) => {
 	// ==== State ==== //
 	const [program, setProgram] = useState<Program>('Summer Program');
+	const [openQuestion, setOpenQuestion] = useState(firstQuestion);
 
 	// ==== Hooks ==== //
 
@@ -254,33 +268,31 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					<div
 						className={cn(
 							'mt-8',
-							'flex flex-col space-y-3.5',
+							'flex flex-col space-y-1.5',
 							'lg:max-w-lg lg:mx-auto',
 						)}
 					>
-						{[
-							{
-								answer:
-									'It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-								question: '1960s with the release of Letraset',
-							},
-							{
-								answer:
-									'It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-								question: '1960s with the release of Letraset',
-							},
-						].map(({ answer, question }) => {
+						{faqs.map(({ answer, question }) => {
+							const open = openQuestion === question;
+
 							return (
 								<div className='border-b border-b-gray-200 py-4'>
-									<div className='flex items-center justify-between'>
+									<button
+										className='flex items-center justify-between w-full'
+										onClick={() =>
+											setOpenQuestion((prev) =>
+												prev === question ? null : question,
+											)
+										}
+									>
 										<div>
 											<p className='font-normal text-base'>{question}</p>
 										</div>
 										<div>
 											<GoPlus />
 										</div>
-									</div>
-									<div className='mt-2.5'>
+									</button>
+									<div className={cn('mt-2.5', { hidden: !open })}>
 										<p className='font-light text-xs text-gray-700 leading-relaxed'>
 											{answer}
 										</p>
