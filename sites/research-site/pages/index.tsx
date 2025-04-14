@@ -108,9 +108,9 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</div>
 						<div className='lg:max-w-2xl'>
 							<p className='font-light text-sm leading-relaxed'>
-								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
-								printing and typesetting industry. Lorem Ipsum has been the
-								industry's.
+								Explore areas of academic curiosity through structured inquiry,
+								guided faculty mentorship, and dedicated support from a
+								collaborative academic community.
 							</p>
 						</div>
 					</div>
@@ -165,13 +165,30 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							<p className='font-normal text-2xl'>About the program</p>
 						</div>
 						<div>
-							<p className='font-light text-sm text-gray-700 leading-relaxed'>
-								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
-								printing and typesetting industry. Lorem Ipsum has been the
-								industry's standard dummy text ever since the 1500s, when an
-								unknown printer took a galley of type and scrambled it to make a
-								type specimen book.
-							</p>
+							{program === 'Summer Program' && (
+								<p className='font-light text-sm text-gray-700 leading-relaxed'>
+									<span className='font-semibold'>
+										SHARP (Summer Honors Academic Research Program)
+									</span>{' '}
+									is Wallot's flagship research opportunity for graduating
+									seniors. Spend up to eight weeks during the Summer immersed in
+									an intensive research project with the goal of drafting a
+									manuscript for publication in a scholarly journal.
+								</p>
+							)}
+							{program === 'Research Fellowship' && (
+								<p className='font-light text-sm text-gray-700 leading-relaxed'>
+									The{' '}
+									<span className='font-semibold'>
+										Wallot Research Fellowship
+									</span>{' '}
+									is our second flagship research opportunity for students who
+									wish to conduct deep research in their field of interest.
+									Students accepted to the Research Fellowship spend 1-2
+									semesters during their first year of college completing an
+									extended capstone project.
+								</p>
+							)}
 						</div>
 					</div>
 					{/* Promo Quote */}
@@ -185,14 +202,13 @@ const Page: NextPage<PageStaticProps> = (props) => {
 					>
 						<div>
 							<p className='font-normal text-3xl'>
-								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
-								printing and typesetting industry. Lorem Ipsum has been the
-								industry's standard.
+								Wallot Research Programs provide students a unique opportunity
+								to jumpstart their academic and professional careers.
 							</p>
 						</div>
 						<div>
 							<p className='font-light text-xs'>
-								Kamar Mack, Lead Engineer of Wallot
+								Kamar Mack, Lead Engineer at Wallot
 							</p>
 						</div>
 					</div>
@@ -221,20 +237,21 @@ const Page: NextPage<PageStaticProps> = (props) => {
 						</div>
 						<div>
 							<p className='font-light text-sm text-gray-700 leading-relaxed'>
-								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
-								printing and typesetting industry. Lorem Ipsum has been the
-								industry's standard dummy text ever since the 1500s, when an
-								unknown printer took a galley of type and scrambled it to make a
-								type specimen book.
+								Publishing research is an incredibly rigorous undertaking. The
+								process of constructing a manuscript, performing analyses on
+								large datasets and completing multiple rounds of peer-review is
+								not for everyone. As a result, the primary characteristic that
+								we look for in candidates is a strong{' '}
+								<span className='font-semibold'>commitment</span> to academic
+								excellence.
 							</p>
 						</div>
 						<div>
 							<p className='font-light text-sm text-gray-700 leading-relaxed'>
-								What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
-								printing and typesetting industry. Lorem Ipsum has been the
-								industry's standard dummy text ever since the 1500s, when an
-								unknown printer took a galley of type and scrambled it to make a
-								type specimen book.
+								Our research programs are designed for students across all areas
+								of study who genuinely wish to gain valuable research experience
+								in order to strengthen their resume/portfolio and fulfill their
+								innate intellectual curiosity.
 							</p>
 						</div>
 					</div>
@@ -350,17 +367,17 @@ function TampaCopy({ className = '' }) {
 		<div className={className}>
 			<div>
 				<p className='font-light text-sm text-gray-700 leading-relaxed'>
-					What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing
-					and typesetting industry. Lorem Ipsum has been the industry's standard
-					dummy text ever since the 1500s.
+					Wallot research programs are all based in the beautiful and vibrant
+					Tampa area. Come see why Tampa is considered to be one of the top
+					places in the country to live, learn and work.
 				</p>
 			</div>
 			<div className='mt-4'>
-				<p className='font-normal text-base'>Who we're looking for</p>
+				<p className='font-normal text-base'>Tampa, Florida</p>
 			</div>
 			<div>
 				<p className='font-light text-sm text-gray-700'>
-					Lorem Ipsum is simply dummy.
+					Your home for the Research Program
 				</p>
 			</div>
 		</div>
