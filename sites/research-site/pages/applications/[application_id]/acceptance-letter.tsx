@@ -1,3 +1,4 @@
+import { Skeleton } from 'ergonomic-react/src/components/ui/skeleton';
 import { Separator } from 'ergonomic-react/src/components/ui/separator';
 import { GoCheckCircleFill, GoChevronLeft, GoCircle } from 'react-icons/go';
 import { SubmitButton } from '@wallot/react/src/components/SubmitButton';
@@ -101,8 +102,22 @@ const Page: NextPage = () => {
 	} = useRetrieveAcceptanceLetter({
 		client_verification,
 	});
-	const isAcceptanceLetterSigned =
+
+	const documentUrl =
+		acceptanceLetter?.research_seat_signed_acceptance_letter ||
+		acceptanceLetter?.research_seat_acceptance_letter ||
+		'';
+	const mobileThumbnail = acceptanceLetter?.research_seat_cohort
+		? acceptanceLetter?.research_seat_cohort === 'fall'
+			? mobileThumbnailFall
+			: mobileThumbnailSummer
+		: '';
+	const isAcceptanceLetterReady =
 		acceptanceLetter != null &&
+		Boolean(documentUrl) &&
+		Boolean(mobileThumbnail);
+	const isAcceptanceLetterSigned =
+		isAcceptanceLetterReady &&
 		Boolean(acceptanceLetter.research_seat_signed_acceptance_letter);
 
 	// Form
@@ -185,16 +200,6 @@ const Page: NextPage = () => {
 		] as const
 	).map(getLiteFormFieldProps);
 
-	const documentUrl =
-		acceptanceLetter?.research_seat_signed_acceptance_letter ||
-		acceptanceLetter?.research_seat_acceptance_letter ||
-		'';
-	const mobileThumbnail = acceptanceLetter?.research_seat_cohort
-		? acceptanceLetter?.research_seat_cohort === 'fall'
-			? mobileThumbnailFall
-			: mobileThumbnailSummer
-		: '';
-
 	// ==== Render ==== //
 	return (
 		<PageComponent {...pageProps}>
@@ -208,198 +213,199 @@ const Page: NextPage = () => {
 						'lg:py-36 lg:px-28',
 					)}
 				>
-					<div
-						className={cn(
-							'mt-8 flex',
-							'flex-col lg:flex-row',
-							'space-y-8 lg:space-y-0',
-							'lg:space-x-8',
-						)}
-					>
-						<div className={cn('lg:max-w-lg')}>
-							<div>
-								<p className='font-semibold text-xl'>
-									Congratulations! Let's Confirm Your Spot.
-								</p>
-								<p className='font-light text-sm mt-1'>
-									It's our distinct pleasure to welcome you to{' '}
-									<span className='font-semibold'>
-										SHARP (Summer Honors Academic Research Program)
-									</span>
-									, Wallot's flagship research opportunity for graduating
-									seniors! If you would like to accept your invitation to
-									participate in the program, please review our Orientation
-									Guide with your parents asap. This document details the Summer
-									packing list, housing logistics and community rules for the
-									program. If you have any questions, feel free to{' '}
-									<Link
-										className='text-brand-dark font-semibold'
-										href='mailto:kamar.mack@wallot.app'
-										target='_blank'
-									>
-										contact our team
-									</Link>
-									.
-								</p>
-							</div>
-							<Separator className='my-6' />
-							<div className='flex justify-start space-x-5 mt-4'>
-								<div className='w-16 h-2 rounded-md bg-brand'></div>
-								<div
-									className={cn(
-										'w-16 h-2 rounded-md',
-										hasReadAgreement || isAcceptanceLetterSigned
-											? 'bg-brand'
-											: 'bg-gray-200',
-									)}
-								></div>
-							</div>
-							<div
-								className={cn(
-									hasReadAgreement || isAcceptanceLetterSigned
-										? 'hidden'
-										: 'mt-6',
-								)}
-							>
-								<div className='max-w-sm'>
-									<p className='font-light text-xs'>
-										Once you have reviewed the orientation guide with a parent
-										or guardian, continue to the next step.
+					{isAcceptanceLetterReady ? (
+						<div
+							className={cn(
+								'mt-8 flex',
+								'flex-col lg:flex-row',
+								'space-y-8 lg:space-y-0',
+								'lg:space-x-8',
+								'',
+							)}
+						>
+							<div className={cn('lg:max-w-lg')}>
+								<div>
+									<p className='font-semibold text-xl'>
+										Congratulations! Let's Confirm Your Spot.
+									</p>
+									<p className='font-light text-sm mt-1'>
+										It's our distinct pleasure to welcome you to{' '}
+										<span className='font-semibold'>
+											SHARP (Summer Honors Academic Research Program)
+										</span>
+										, Wallot's flagship research opportunity for graduating
+										seniors! If you would like to accept your invitation to
+										participate in the program, please review our Orientation
+										Guide with your parents asap. This document details the
+										Summer packing list, housing logistics and community rules
+										for the program. If you have any questions, feel free to{' '}
+										<Link
+											className='text-brand-dark font-semibold'
+											href='mailto:kamar.mack@wallot.app'
+											target='_blank'
+										>
+											contact our team
+										</Link>
+										.
 									</p>
 								</div>
+								<Separator className='my-6' />
+								<div className='flex justify-start space-x-5 mt-4'>
+									<div className='w-16 h-2 rounded-md bg-brand'></div>
+									<div
+										className={cn(
+											'w-16 h-2 rounded-md',
+											hasReadAgreement || isAcceptanceLetterSigned
+												? 'bg-brand'
+												: 'bg-gray-200',
+										)}
+									></div>
+								</div>
 								<div
 									className={cn(
-										'mt-2 flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0',
+										hasReadAgreement || isAcceptanceLetterSigned
+											? 'hidden'
+											: 'mt-6',
 									)}
 								>
-									{[
-										{
-											isSelected: hasReadAgreement,
-											subtitle:
-												"I'm ready to accept my invitation to the program",
-											title: 'Continue',
-										},
-									].map(({ isSelected, subtitle, title }) => {
-										return (
-											<button
-												className={cn(
-													'flex items-center space-x-3 px-3 py-2',
-													isSelected ? 'bg-gray-200' : 'bg-white',
-													'border border-gray-300 rounded-md',
-													'transition duration-200 ease-in-out hover:bg-gray-100',
-												)}
-												key={title}
-												type='button'
-												onClick={() => setHasReadAgreement(true)}
-											>
-												<div className=''>
-													{isSelected ? (
-														<GoCheckCircleFill className='text-brand-dark text-lg' />
-													) : (
-														<GoCircle className='text-gray-400 text-lg' />
+									<div className='max-w-sm'>
+										<p className='font-light text-xs'>
+											Once you have reviewed the orientation guide with a parent
+											or guardian, continue to the next step.
+										</p>
+									</div>
+									<div
+										className={cn(
+											'mt-2 flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0',
+										)}
+									>
+										{[
+											{
+												isSelected: hasReadAgreement,
+												subtitle:
+													"I'm ready to accept my invitation to the program",
+												title: 'Continue',
+											},
+										].map(({ isSelected, subtitle, title }) => {
+											return (
+												<button
+													className={cn(
+														'flex items-center space-x-3 px-3 py-2',
+														isSelected ? 'bg-gray-200' : 'bg-white',
+														'border border-gray-300 rounded-md',
+														'transition duration-200 ease-in-out hover:bg-gray-100',
 													)}
+													key={title}
+													type='button'
+													onClick={() => setHasReadAgreement(true)}
+												>
+													<div className=''>
+														{isSelected ? (
+															<GoCheckCircleFill className='text-brand-dark text-lg' />
+														) : (
+															<GoCircle className='text-gray-400 text-lg' />
+														)}
+													</div>
+													<div className='text-left'>
+														<div>
+															<p className='font-semibold text-sm'>{title}</p>
+														</div>
+														<div className='lg:max-w-44'>
+															<p className='font-light text-xs'>{subtitle}</p>
+														</div>
+													</div>
+												</button>
+											);
+										})}
+									</div>
+								</div>
+								<div
+									className={cn(
+										hasReadAgreement || isAcceptanceLetterSigned
+											? 'mt-6'
+											: 'hidden',
+									)}
+								>
+									{isAcceptanceLetterSigned ? (
+										<Fragment>
+											<div className='border border-gray-400 py-3 px-4 rounded-md w-fit lg:max-w-sm'>
+												<div className='flex items-center space-x-2'>
+													<GoCheckCircleFill className='text-brand-dark' />
+													<p className='font-semibold text-base'>Accepted</p>
 												</div>
-												<div className='text-left'>
-													<div>
-														<p className='font-semibold text-sm'>{title}</p>
-													</div>
-													<div className='lg:max-w-44'>
-														<p className='font-light text-xs'>{subtitle}</p>
-													</div>
+												<div className='mt-1'>
+													<p className='font-light text-xs'>
+														Your seat for the program has been confirmed! Please
+														check your email for additional instructions and
+														communcations from our team.
+													</p>
+												</div>
+											</div>
+										</Fragment>
+									) : (
+										<Fragment>
+											<button
+												className=''
+												onClick={() => setHasReadAgreement(false)}
+											>
+												<div className='flex items-center space-x-1'>
+													<GoChevronLeft className='text-xs text-gray-500' />
+													<p className='font-medium text-xs text-gray-500'>
+														Back
+													</p>
 												</div>
 											</button>
-										);
-									})}
+											<form
+												onSubmit={handleSubmit((formData) => {
+													if (!client_verification) {
+														toast({
+															title: 'Invalid verification code.',
+															description:
+																'Please check your email for the correct link to sign your acceptance letter.',
+														});
+														return;
+													}
+													const data = {
+														...formData,
+														client_verification,
+													};
+
+													console.log(
+														'Saving e-signatures with following data:',
+														data,
+													);
+													toast({
+														title: 'Saving your e-signatures',
+														description: 'This may take a few moments...',
+													});
+
+													acceptResearchSeat(data);
+												})}
+											>
+												{fields.map((fieldProps) => (
+													<LiteFormFieldContainer
+														key={fieldProps.fieldKey}
+														{...fieldProps}
+													/>
+												))}
+												<SubmitButton
+													className='w-full lg:w-1/2 mt-4 !bg-slate-100 !border-slate-300 !border'
+													textClassName='!text-brand-dark'
+													isSubmitting={isFormSubmitting}
+													text='Confirm Agreement'
+												/>
+												{Boolean(formStateErrorMessages) && (
+													<div className='mt-2.5'>
+														<LiteFormFieldError
+															fieldErrorMessage={formStateErrorMessages}
+														/>
+													</div>
+												)}
+											</form>
+										</Fragment>
+									)}
 								</div>
 							</div>
-							<div
-								className={cn(
-									hasReadAgreement || isAcceptanceLetterSigned
-										? 'mt-6'
-										: 'hidden',
-								)}
-							>
-								{isAcceptanceLetterSigned ? (
-									<Fragment>
-										<div className='border border-gray-400 py-3 px-4 rounded-md w-fit lg:max-w-sm'>
-											<div className='flex items-center space-x-2'>
-												<GoCheckCircleFill className='text-brand-dark' />
-												<p className='font-semibold text-base'>Accepted</p>
-											</div>
-											<div className='mt-1'>
-												<p className='font-light text-xs'>
-													Your seat for the program has been confirmed! Please
-													check your email for additional instructions and
-													communcations from our team.
-												</p>
-											</div>
-										</div>
-									</Fragment>
-								) : (
-									<Fragment>
-										<button
-											className=''
-											onClick={() => setHasReadAgreement(false)}
-										>
-											<div className='flex items-center space-x-1'>
-												<GoChevronLeft className='text-xs text-gray-500' />
-												<p className='font-medium text-xs text-gray-500'>
-													Back
-												</p>
-											</div>
-										</button>
-										<form
-											onSubmit={handleSubmit((formData) => {
-												if (!client_verification) {
-													toast({
-														title: 'Invalid verification code.',
-														description:
-															'Please check your email for the correct link to sign your acceptance letter.',
-													});
-													return;
-												}
-												const data = {
-													...formData,
-													client_verification,
-												};
-
-												console.log(
-													'Saving e-signatures with following data:',
-													data,
-												);
-												toast({
-													title: 'Saving your e-signatures',
-													description: 'This may take a few moments...',
-												});
-
-												acceptResearchSeat(data);
-											})}
-										>
-											{fields.map((fieldProps) => (
-												<LiteFormFieldContainer
-													key={fieldProps.fieldKey}
-													{...fieldProps}
-												/>
-											))}
-											<SubmitButton
-												className='w-full lg:w-1/2 mt-4 !bg-slate-100 !border-slate-300 !border'
-												textClassName='!text-brand-dark'
-												isSubmitting={isFormSubmitting}
-												text='Confirm Agreement'
-											/>
-											{Boolean(formStateErrorMessages) && (
-												<div className='mt-2.5'>
-													<LiteFormFieldError
-														fieldErrorMessage={formStateErrorMessages}
-													/>
-												</div>
-											)}
-										</form>
-									</Fragment>
-								)}
-							</div>
-						</div>
-						{Boolean(documentUrl) && Boolean(mobileThumbnail) ? (
 							<Fragment>
 								{/* Mobile: tappable thumbnail that downloads the PDF */}
 								<a
@@ -444,10 +450,20 @@ const Page: NextPage = () => {
 									/>
 								</div>
 							</Fragment>
-						) : (
-							<div>Loading...</div>
-						)}
-					</div>
+						</div>
+					) : (
+						<div>
+							<div className='flex space-x-8'>
+								<div className='flex-1'>
+									<Skeleton className='bg-slate-300 h-28' />
+									<Skeleton className={cn('bg-slate-300 h-[20vh] mt-8')} />
+								</div>
+								<Skeleton
+									className={cn('bg-slate-300 h-[80vh]', 'flex-[2_2_0%]')}
+								/>
+							</div>
+						</div>
+					)}
 				</div>
 			</div>
 		</PageComponent>
