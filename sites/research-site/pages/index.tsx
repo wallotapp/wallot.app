@@ -11,6 +11,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { PlatformLogo } from 'ergonomic-react/src/components/brand/PlatformLogo';
 import { useState } from 'react';
+import { GoPlus } from 'react-icons/go';
 
 type Program = 'Summer Program' | 'Research Fellowship';
 
@@ -257,19 +258,36 @@ const Page: NextPage<PageStaticProps> = (props) => {
 							'lg:max-w-lg lg:mx-auto',
 						)}
 					>
-						<div>
-							<p className='font-normal text-3xl'>
-								1960s with the release of Letraset
-							</p>
-						</div>
-						<div>
-							<p className='font-light text-xs leading-relaxed'>
-								It was popularised in the 1960s with the release of Letraset
-								sheets containing Lorem Ipsum passages, and more recently with
-								desktop publishing software like Aldus PageMaker including
-								versions of Lorem Ipsum.
-							</p>
-						</div>
+						{[
+							{
+								answer:
+									'It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+								question: '1960s with the release of Letraset',
+							},
+							{
+								answer:
+									'It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+								question: '1960s with the release of Letraset',
+							},
+						].map(({ answer, question }) => {
+							return (
+								<div className='border-b border-b-gray-200 py-4'>
+									<div className='flex items-center justify-between'>
+										<div>
+											<p className='font-normal text-base'>{question}</p>
+										</div>
+										<div>
+											<GoPlus />
+										</div>
+									</div>
+									<div className='mt-2.5'>
+										<p className='font-light text-xs text-gray-700 leading-relaxed'>
+											{answer}
+										</p>
+									</div>
+								</div>
+							);
+						})}
 					</div>
 					{/* Footer */}
 				</div>
