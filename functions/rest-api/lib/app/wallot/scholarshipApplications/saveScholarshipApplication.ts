@@ -10,6 +10,14 @@ import {
 import { db } from '../../../services.js';
 import { getUpdateUserParamsFromScholarshipApplicationFormDataParams } from './getUpdateUserParamsFromScholarshipApplicationFormDataParams.js';
 import { getUpdateScholarshipApplicationParamsFromScholarshipApplicationFormDataParams } from './getUpdateScholarshipApplicationParamsFromScholarshipApplicationFormDataParams.js';
+import { DateTime } from 'luxon';
+import { variables } from '../../../variables.js';
+
+const now = DateTime.now().toUTC();
+const { SERVER_VAR_VISIONARY_SCHOLARSHIP_CLOSE_TIMESTAMP: closeTimestamp } =
+	variables;
+const close = DateTime.fromISO(closeTimestamp);
+const isClosed = now > close;
 
 export const saveScholarshipApplication = async (
 	params: ScholarshipApplicationFormDataParams,
@@ -18,6 +26,11 @@ export const saveScholarshipApplication = async (
 	firebaseUser: FirebaseUser | null,
 	headers: Record<string, unknown>,
 ): Promise<FunctionResponse<ScholarshipApplicationFormDataResponse>> => {
+	if (isClosed)
+		throw new Error(
+			'Our application is now closed. Contact us at scholarships@wallot.app if you have special circumstances which caused a delay in completing your application.',
+		);
+
 	if (!firebaseUser) throw new Error('Unauthorized');
 	const email = firebaseUser.email;
 	if (email == null) throw new Error('User email not found');
