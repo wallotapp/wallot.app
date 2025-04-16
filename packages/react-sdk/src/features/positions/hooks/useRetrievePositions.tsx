@@ -29,7 +29,7 @@ export function useRetrievePositions(
 		onSuccess: (data: AlpacaPosition[]) => {
 			console.log('retrievePositions operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 		enabled: firebaseUser != null && (options?.enabled ?? true),
 	});
 }

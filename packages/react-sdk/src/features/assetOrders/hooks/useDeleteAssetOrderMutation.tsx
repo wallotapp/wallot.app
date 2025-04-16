@@ -21,6 +21,6 @@ export function useDeleteAssetOrderMutation(
 		onSuccess: () => {
 			console.log('deleteAssetOrder operation successful');
 		},
-		...options,
+		...(options ?? {}),
 	});
 }
