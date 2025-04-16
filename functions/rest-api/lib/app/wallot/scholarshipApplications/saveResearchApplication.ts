@@ -8,6 +8,14 @@ import {
 	ScholarshipApplication,
 } from '@wallot/js';
 import { db } from '../../../services.js';
+import { DateTime } from 'luxon';
+import { variables } from '../../../variables.js';
+
+const now = DateTime.now().toUTC();
+const { SERVER_VAR_VISIONARY_SCHOLARSHIP_CLOSE_TIMESTAMP: closeTimestamp } =
+	variables;
+const close = DateTime.fromISO(closeTimestamp);
+const isClosed = now > close;
 
 export const saveResearchApplication = async (
 	params: ResearchApplicationFormDataParams,
@@ -15,6 +23,11 @@ export const saveResearchApplication = async (
 	_query: Record<string, never>,
 	firebaseUser: FirebaseUser | null,
 ): Promise<FunctionResponse<ResearchApplicationFormDataResponse>> => {
+	if (isClosed)
+		throw new Error(
+			'Our application is now closed. Contact us at scholarships@wallot.app if you have special circumstances which caused a delay in completing your application.',
+		);
+
 	if (!firebaseUser) throw new Error('Unauthorized');
 
 	const researchApplicationRef = db
