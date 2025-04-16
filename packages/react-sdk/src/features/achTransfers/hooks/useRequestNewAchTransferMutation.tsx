@@ -27,6 +27,6 @@ export function useRequestNewAchTransferMutation(
 		onSuccess: (data: RequestNewAchTransferResponse) => {
 			console.log('requestNewAchTransfer operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 }

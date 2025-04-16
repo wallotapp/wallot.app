@@ -29,7 +29,7 @@ export function useRetrieveDocuments(
 		onSuccess: (data: AlpacaDocument[]) => {
 			console.log('retrieveDocuments operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 		enabled: firebaseUser != null && (options?.enabled ?? true),
 	});
 }

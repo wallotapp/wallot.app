@@ -46,7 +46,7 @@ export function useRetrieveInvestmentProductNetGainPage(
 				data,
 			);
 		},
-		...options,
+		...(options ?? {}),
 		enabled: options?.enabled ?? true,
 	});
 }

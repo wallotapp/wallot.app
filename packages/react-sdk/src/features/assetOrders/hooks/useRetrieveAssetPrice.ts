@@ -33,7 +33,7 @@ export function useRetrieveAssetPrice(
 		onSuccess: (data: RetrieveAssetPriceResponse) => {
 			console.log('retrieveAssetPrice operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 		enabled: firebaseUser != null && (options?.enabled ?? true),
 	});
 }

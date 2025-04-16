@@ -30,7 +30,7 @@ export function useConnectBankAccountsMutation(
 			onSuccess: (data: ConnectBankAccountsResponse) => {
 				console.log('connectBankAccounts operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 }

@@ -17,7 +17,7 @@ export function useQueryResourcesForLoggedInUser<
 			},
 			reactQueryOptions: {
 				enabled: isResourcePageQueryEnabled,
-				...options,
+				...(options ?? {}),
 			},
 		});
 		const resourcesForLoggedInUser = (resourcePageQueryObserver.data

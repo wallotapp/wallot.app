@@ -24,6 +24,6 @@ export function useRequestNewOrderMutation(
 		onSuccess: (data: RequestNewOrderResponse) => {
 			console.log('requestNewOrder operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 }

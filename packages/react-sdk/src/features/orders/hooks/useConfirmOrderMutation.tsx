@@ -25,6 +25,6 @@ export function useConfirmOrderMutation(
 		onSuccess: (data: ConfirmOrderResponse) => {
 			console.log('confirmOrder operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 }

@@ -28,6 +28,6 @@ export function useTokenizeBankAccountMutation(
 		onSuccess: (data: TokenizeBankAccountResponse) => {
 			console.log('tokenizeBankAccount operation successful', data);
 		},
-		...options,
+		...(options ?? {}),
 	});
 }

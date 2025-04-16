@@ -36,7 +36,7 @@ export function useCreateStripeFinancialConnectionsSessionMutation(
 					data,
 				);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 }

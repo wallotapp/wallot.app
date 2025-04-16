@@ -24,7 +24,7 @@ export function useUpdateScholarshipApplicationMutation(
 			onSuccess: (data: UpdateScholarshipApplicationMutationData) => {
 				console.log('Update operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 }

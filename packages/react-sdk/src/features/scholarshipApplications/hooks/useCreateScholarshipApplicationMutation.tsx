@@ -24,7 +24,7 @@ export function useCreateScholarshipApplicationMutation(
 			onSuccess: (data: CreateScholarshipApplicationMutationData) => {
 				console.log('Create operation successful', data);
 			},
-			...options,
+			...(options ?? {}),
 		},
 	);
 }
