@@ -10,10 +10,11 @@ import {
 import { getCloudTasksScheduleDelaySeconds } from './getCloudTasksScheduleDelaySeconds.js';
 
 export type SendEmailWithGmailAPIParams = SendEmailNotificationParams & {
-	pdf?: {
+	cc?: string;
+	pdfs?: {
 		fileName?: string; // Defaults to 'file.pdf'
 		url: string; // Full URL to the PDF (including access token)
-	};
+	}[];
 	sender_email: string;
 	sender_name: string;
 	sender_user_id: string;
@@ -29,7 +30,7 @@ export function sendEmailWithGmailAPI(
 	} = variables;
 	return async function ({
 		html_body: htmlBody,
-		pdf,
+		pdfs = [],
 		recipient_email: recipientEmail,
 		sender_email: senderEmail = defaultSendFromEmail,
 		sender_name: senderName = defaultSendFromName,
@@ -46,7 +47,7 @@ export function sendEmailWithGmailAPI(
 			auth,
 		});
 
-		if (pdf == null) {
+		if (!Array.isArray(pdfs) || pdfs.length === 0) {
 			const emailContent = [
 				`Content-Type: text/html; charset="UTF-8"`,
 				`MIME-Version: 1.0`,
@@ -80,10 +81,22 @@ export function sendEmailWithGmailAPI(
 
 		// 1. Download the PDF file using ky-universal.
 		//    Note: ky automatically throws on non-2xx status codes.
-		const response = await ky.get(pdf.url);
-		const pdfArrayBuffer = await response.arrayBuffer();
-		const pdfBuffer = Buffer.from(pdfArrayBuffer);
-		const pdfBase64 = pdfBuffer.toString('base64');
+		// const response = await ky.get(pdf.url);
+		// const pdfArrayBuffer = await response.arrayBuffer();
+		// const pdfBuffer = Buffer.from(pdfArrayBuffer);
+		// const pdfBase64 = pdfBuffer.toString('base64');
+		const attachments = await Promise.all(
+			pdfs.map(async (file, idx) => {
+				const res = await ky.get(file.url);
+				const buf = Buffer.from(await res.arrayBuffer());
+				return {
+					name:
+						file.fileName ||
+						(pdfs.length === 1 ? 'file.pdf' : `file${idx}.pdf`),
+					base64: buf.toString('base64'),
+				};
+			}),
+		);
 
 		// 2. Create a unique MIME boundary string.
 		const boundary = '----=_Part_' + new Date().getTime();
@@ -107,17 +120,17 @@ export function sendEmailWithGmailAPI(
 			htmlBody,
 			'',
 
-			// Part 2: The PDF attachment.
-			`--${boundary}`,
-			`Content-Type: application/pdf; name="${pdf.fileName ?? 'file.pdf'}"`,
-			'MIME-Version: 1.0',
-			'Content-Transfer-Encoding: base64',
-			`Content-Disposition: attachment; filename="${
-				pdf.fileName ?? 'file.pdf'
-			}"`,
-			'',
-			pdfBase64,
-			'',
+			// Part 2: The PDF attachments.
+			...attachments.flatMap((attachment) => [
+				`--${boundary}`,
+				`Content-Type: application/pdf; name="${attachment.name}"`,
+				'MIME-Version: 1.0',
+				'Content-Transfer-Encoding: base64',
+				`Content-Disposition: attachment; filename="${attachment.name}"`,
+				'',
+				attachment.base64,
+				'',
+			]),
 
 			// End the MIME message.
 			`--${boundary}--`,

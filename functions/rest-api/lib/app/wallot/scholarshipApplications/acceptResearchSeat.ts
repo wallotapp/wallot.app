@@ -266,10 +266,7 @@ ${JSON.stringify({ researchApplication, client_verification }, null, 2)}
 
 		await gmail.sendEmail({
 			html_body: body,
-			pdf: {
-				url: downloadUrl,
-				fileName: fileNamePretty,
-			},
+			pdfs: [{ url: downloadUrl, fileName: fileNamePretty }],
 			recipient_email: R.uniq(
 				[user.firebase_auth_email, parent_email]
 					.map((email) => email?.trim()?.toLowerCase())
