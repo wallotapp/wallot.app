@@ -10,7 +10,7 @@ import {
 import { getCloudTasksScheduleDelaySeconds } from './getCloudTasksScheduleDelaySeconds.js';
 
 export type SendEmailWithGmailAPIParams = SendEmailNotificationParams & {
-	cc?: string;
+	cc?: string | null;
 	pdfs?: {
 		fileName?: string; // Defaults to 'file.pdf'
 		url: string; // Full URL to the PDF (including access token)
@@ -29,6 +29,7 @@ export function sendEmailWithGmailAPI(
 		SERVER_VAR_GMAIL_NOTIFICATIONS_USER_ID: defaultUserId,
 	} = variables;
 	return async function ({
+		cc = null,
 		html_body: htmlBody,
 		pdfs = [],
 		recipient_email: recipientEmail,
@@ -55,6 +56,7 @@ export function sendEmailWithGmailAPI(
 				`to: ${recipientEmail}`,
 				`from: ${senderName} <${senderEmail}>`,
 				`subject: ${subject}`,
+				Boolean(cc) ? `cc: ${cc}` : '',
 				'',
 				htmlBody,
 			].join('\n');
@@ -109,6 +111,7 @@ export function sendEmailWithGmailAPI(
 			`to: ${recipientEmail}`,
 			`from: ${senderName} <${senderEmail}>`,
 			`subject: ${subject}`,
+			Boolean(cc) ? `cc: ${cc}` : '',
 			'',
 
 			// Part 1: The HTML body.
